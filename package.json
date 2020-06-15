@@ -1,5 +1,5 @@
 {
-  "name": "english-for-kids",
+  "name": "RS Lang",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -11,9 +11,10 @@
     "build": "npm run clear -s && webpack --progress",
     "lint": "eslint ./src",
     "lint:fix": "eslint ./src --fix",
-    "clear": "del-cli dist"
+    "clear": "del-cli dist",
+    "test": "jest"
   },
-  "author": "Ilya Lokalin",
+  "author": "Group 22 RS School 2020q1",
   "license": "ISC",
   "repository": {
     "type": "git",
@@ -40,6 +41,7 @@
     "html-loader": "^0.5.5",
     "html-webpack-plugin": "^3.2.0",
     "image-webpack-loader": "^6.0.0",
+    "jest": "^26.0.1",
     "mini-css-extract-plugin": "^0.8.0",
     "node-sass": "^4.13.0",
     "postcss-loader": "^3.0.0",
