@@ -1,0 +1,44 @@
+.page {
+  --height-header: 80px;
+  --height-footer: 40px;
+
+  margin: 0 auto;
+  max-width: 600px;
+  min-height: 100vh;
+
+  &__header {
+    width: 100%;
+    height: var(--height-header);
+    text-align: center;
+    line-height: var(--height-header);
+  }
+
+  &__main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: grey;
+    width: 100%;
+    height: calc(100vh - var(--height-header) - var(--height-footer) );
+  }
+
+  &__button {
+    outline: none;
+    border: 1px solid darkgray;
+    background: none;
+    cursor: pointer;
+    padding: 10px 20px;
+    color: white;
+  }
+
+  &__footer {
+    background-color: #7777;
+    width: 100%;
+    text-align: center;
+    line-height: var(--height-footer);
+  }
+
+  &--fill &__header {
+    background-color: darkgray;
+  }
+}
