@@ -7,6 +7,10 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ENV = process.env.npm_lifecycle_event;
 const isDev = ENV === 'dev';
 const isProd = ENV === 'build';
+const PATH = {
+  source: path.join(__dirname, 'src'),
+  dist: path.join(__dirname, 'dist')
+}
 
 function setDevTool() {
   if (isDev) {
@@ -30,15 +34,24 @@ const config = {
       alias: {
         Src: path.resolve(__dirname, './src'),
         Components: path.resolve(__dirname, './src/components'),
-        Service: path.resolve(__dirname, './src/service/'),
-        Pages: path.resolve(__dirname, './src/pages/'),
+        Service:    path.resolve(__dirname, './src/service/'),
+        Pages:      path.resolve(__dirname, './src/pages/'),
       },
       extensions: ['.js', '.json'],
     },
-  entry: {index: './src/index.js'},
+  entry: {
+    'index':    PATH.source + '/pages/index/index.js',
+    'audition': PATH.source + '/pages/audition/index.js',
+    'pazzle':   PATH.source + '/pages/pazzle/index.js',
+    'savana':   PATH.source + '/pages/savana/index.js',
+    'speak-it': PATH.source + '/pages/speak-it/index.js',
+    'sprint':   PATH.source + '/pages/sprint/index.js',
+  },
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: '[name].js'
+    filename: (chunkData) => {
+      return chunkData.chunk.name === 'index' ? '[name].js' : '[name]/[name].js'
+    }
   },
   mode: setDMode(),
   devtool: setDevTool(),
@@ -115,11 +128,37 @@ const config = {
 
   plugins: [
     new MiniCssExtractPlugin({
-      filename: 'style.css',
+      filename: './css/[name].css'
     }),
     new HtmlWebPackPlugin({
-      template: './public/index.html',
+      template: PATH.source + '/pages/index/index.html',
+      chunks: ['index'],
       filename: './index.html'
+    }),
+    new HtmlWebPackPlugin({
+      template: PATH.source + '/pages/audition/index.html',
+      chunks: ['audition'],
+      filename: 'audition/index.html'
+    }),
+    new HtmlWebPackPlugin({
+      template: PATH.source + '/pages/pazzle/index.html',
+      chunks: ['pazzle'],
+      filename: 'pazzle/index.html'
+    }),
+    new HtmlWebPackPlugin({
+      template: PATH.source + '/pages/savana/index.html',
+      chunks: ['savana'],
+      filename: 'savana/index.html'
+    }),
+    new HtmlWebPackPlugin({
+      template: PATH.source + '/pages/speak-it/index.html',
+      chunks: ['speak-it'],
+      filename: 'speak-it/index.html'
+    }),
+    new HtmlWebPackPlugin({
+      template: PATH.source + '/pages/sprint/index.html',
+      chunks: ['sprint'],
+      filename: 'sprint/index.html'
     }),
   ],
 
