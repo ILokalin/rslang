@@ -48,7 +48,7 @@ const config = {
     'sprint':   PATH.source + '/pages/sprint/index.js',
   },
   output: {
-    path: path.resolve(__dirname, 'dist'),
+    path: PATH.dist,
     filename: (chunkData) => {
       return chunkData.chunk.name === 'index' ? '[name].js' : '[name]/[name].js'
     }
