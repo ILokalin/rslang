@@ -43,7 +43,7 @@ const config = {
     'index':    PATH.source + '/pages/index/index.js',
     'audition': PATH.source + '/pages/audition/index.js',
     'puzzle':   PATH.source + '/pages/puzzle/index.js',
-    'savana':   PATH.source + '/pages/savana/index.js',
+    'savanna':   PATH.source + '/pages/savanna/index.js',
     'speak-it': PATH.source + '/pages/speak-it/index.js',
     'sprint':   PATH.source + '/pages/sprint/index.js',
   },
@@ -146,9 +146,9 @@ const config = {
       filename: 'puzzle/index.html'
     }),
     new HtmlWebPackPlugin({
-      template: PATH.source + '/pages/savana/index.html',
-      chunks: ['savana'],
-      filename: 'savana/index.html'
+      template: PATH.source + '/pages/savanna/index.html',
+      chunks: ['savanna'],
+      filename: 'savanna/index.html'
     }),
     new HtmlWebPackPlugin({
       template: PATH.source + '/pages/speak-it/index.html',
