@@ -1,8 +1,10 @@
-import './service/DomGen/DomGen';
+import './index.scss';
+
+require.context('Src', true, /\.(png|svg|jpg|gif|mp3)$/);
 
 // eslint-disable-next-line no-console
 console.log(
   '%cTask RS Lang\n',
   'font-family: sans-serif; font-size: 28px; letter-spacing: 0.1em;',
-  'RS School, group 22 2020q1'
+  'RS School, group 22 2020q1',
 );
