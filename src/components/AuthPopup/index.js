@@ -1,1 +1,1 @@
-export { AuthPopup } from './AuthPopup.js';
+export { AuthPopup } from './AuthPopup';
