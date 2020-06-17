@@ -1,9 +1,24 @@
 import './index.scss';
-import { AuthPopup } from 'Components/AuthPopup';
+// import { AuthPopup } from 'Components/AuthPopup';
+import { ServerAPI } from 'Service/ServerAPI';
 
 require.context('Src', true, /\.(png|svg|jpg|gif|mp3)$/);
 
-AuthPopup();
+const serverAPI = new ServerAPI();
+const titleUser = document.querySelector('.title');
+
+ serverAPI.getUser().then(
+  (userInfo) => {
+    console.log('We have user', userInfo);
+    titleUser.innerText += ` ${  userInfo}`;
+  },
+  (errorStatus) => {
+    console.log('User canceled');
+    titleUser.innerText += ` Incognito`;
+  }
+)
+
+// AuthPopup();
 
 // eslint-disable-next-line no-console
 console.log(
