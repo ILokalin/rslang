@@ -14,10 +14,20 @@
     box-sizing: border-box;
 }
 
+html {
+  font-size: 16px;
+
+  @media screen and (max-width: 500px) {
+    font-size: 10px;
+  }
+}
+
 body {
   background-size: cover;
-  background-repeat: repeat;
+  background-repeat: no-repeat;
   background-image: url('./assets/images/Flat-Mountains.svg');
+  background-position: bottom;
+  height: 100vh;
 }
 
 .hidden {
@@ -49,9 +59,9 @@ main {
 
 .home-page__desc {
   width: 80%;
-  margin: 100px 20px 20px;
+  margin: 10% 20px 20px;
   font-size: 2rem;
-  @extend .blue-text; 
+  @extend .brown-text; 
 }
 
 .hints {
@@ -71,7 +81,7 @@ main {
 }
 
 .game-header {
-   @extend .blue-text, 
+   @extend .brown-text, 
 }
 
 .hints-panel, .game-header, .footer-buttons, .game-container {
@@ -91,10 +101,14 @@ main {
 }
 
 .game-result, .game-input {
-  width: 80%;
+  width: 60%;
  // border-radius: 15px;
-  @extend .deep-purple, .lighten-3;
+  @extend .red, .lighten-4;
   margin: 10px auto;
+
+  @media screen and (max-width: 700px) {
+    width: 95%;
+  }
 }
 
 .game-container {
@@ -107,7 +121,7 @@ main {
 
 .sentence-translation {
   width: fit-content;
-  color: white;
+  @extend .brown-text; 
 }
 
 .game-result {
@@ -141,8 +155,8 @@ main {
 }
 
 .game-input{
-  height: 120px;
-  padding: 25px 0;
+  height: 60px;
+  padding: 12px 0;
 
   & .game-row {
    justify-content: end;
