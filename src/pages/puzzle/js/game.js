@@ -39,6 +39,7 @@ const renderPuzzlesInInputField = (sentence) => {
   const currentRow = gameState.currentSentence + 1;
   const gameResults = document.querySelector(`.game-result .game-row:nth-child(${currentRow})`);
   gameResults.setAttribute('style', `height: ${estimatedHeight}px;`);
+
   gameResults.classList.add('droppable');
 
   let sx = 0;
@@ -95,6 +96,7 @@ function dragHandler(mousedownEvent) {
   this.addEventListener('mouseup', (mouseupEvent) => {
     this.style.cursor = 'pointer';
     this.style.zIndex = 'auto';
+    ;
     const target = gameResults.getBoundingClientRect();
     const current = inputField.querySelector('.game-row').getBoundingClientRect();
     const coordX = mouseupEvent.clientX;
@@ -117,12 +119,11 @@ function dragHandler(mousedownEvent) {
           this.dataset.currentOrder = 0;
         }
       }
-
       // check if draggable inside input field
     } else if (coordX >= current.left && coordX <= current.right
       && coordY >= current.top && coordY <= current.bottom) {
-      gameResults.appendChild(this);
-    } else {
+          gameResults.appendChild(this);                
+      } else {
       inputField.querySelector('.game-row').appendChild(this);
     }
     connectPuzzles(gameResults);
@@ -134,6 +135,7 @@ function dragHandler(mousedownEvent) {
       dontKnowBtn.classList.add('hidden');
       gameResults.classList.remove('droppable');
     }
+    this.removeAttribute('data-is-moved');
     document.removeEventListener('mousemove', onMouseMoveHandler);
   });
 }

@@ -76,7 +76,7 @@ const setRoundPainting = (paintingObj) => {
   linkToPainting.setAttribute('href', longSrc);
 };
 
-const showBackgroundPic = () => { painting.style.zIndex = 1000; };
+const showBackgroundPic = () => { painting.style.zIndex = 1; };
 const hideBackgroundPic = () => { painting.style.zIndex = -2000; };
 const setPaintingInfo = () => {
   const paintingDetails = getRoundPainting();
@@ -100,8 +100,14 @@ const getGameRowWidth = () => document.querySelector('.game-row').offsetWidth;
 const getGameRowHeight = () => painting.getBoundingClientRect().height * 0.1;
 
 const getSizeOfPiece = (canvas, word) => {
+  const gameResult = document.querySelector('.game-result');
   const ctx = canvas.getContext('2d');
-  ctx.font = '24px Montserrat';
+  if (gameResult.offsetWidth < 500) {
+    ctx.font = '0.7rem Montserrat';
+  }
+  else {
+    ctx.font = '1rem Montserrat';
+  }  
   return ctx.measureText(word).width + 17 * 2;
 };
 

@@ -144,9 +144,15 @@ const setBackgroundToPuzzlePiece = (canvas, sx, sy, word, isPictureOn) => {
   }
   ctx.stroke();
   ctx.globalAlpha = 1;
-  ctx.strokeStyle = '#00695c';
-  ctx.font = '24px Montserrat';
-  ctx.strokeText(word, (canvas.width - ctx.measureText(word).width) / 2, (canvas.height / 3) * 2);
+  ctx.fillStyle = '#795548';
+  //ctx.font = '24px Montserrat';
+  if (gameResult.offsetWidth < 500) {
+    ctx.font = '0.8rem Montserrat';
+  }
+  else {
+    ctx.font = '1rem Montserrat';
+  }  
+  ctx.fillText(word, (canvas.width - ctx.measureText(word).width) / 2, (canvas.height / 3) * 2);
   ctx.strokeStyle = 'white';
 };
 
