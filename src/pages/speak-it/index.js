@@ -1,3 +1,8 @@
-import './index.scss';
+import './scss/index.scss';
+import { Intro } from './components/Intro';
+import { Cards } from './components/Cards';
 
-require.context('Src', true, /\.(png|svg|jpg|gif|mp3)$/);
+const intro = new Intro();
+const cards = new Cards();
+
+//require.context('Src', true, /\.(png|svg|jpg|gif|mp3)$/);

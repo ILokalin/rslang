@@ -1,11 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Speak it</title>
-  </head>
-  <body>
-    <h1>Speak it</h1>
-  </body>
+    <meta name="viewport" content="width = device-width, initial-scale=1" />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&amp;display=swap" rel="stylesheet" />
+    <title>SpeakIt</title>
+    <link rel="icon" href="http://icons.iconarchive.com/icons/cjdowner/cryptocurrency/256/ICON-icon.png" />
+</head>
+<body>
+<main class="main">
+    <div class="intro">
+        <h1 class="title">SpeakIt</h1>
+        <p class="intro-text">
+            Click on the words to hear them sound.
+            <br />
+            Click on the button and speak the words into the microphone.
+        </p>
+        <a href="#" class="btn intro-btn">Start</a>
+    </div>
+    <div class="container hidden">
+        <div class="res">
+            <ul class="points">
+                <li class="point activePoint"></li>
+                <li class="point"></li>
+                <li class="point"></li>
+                <li class="point"></li>
+                <li class="point"></li>
+                <li class="point"></li>
+            </ul>
+            <div class="score"></div>
+        </div>
+        <div class="images">
+            <img class="img word-img" src="" alt="" />
+            <p class="translation"></p>
+            <input type="text" class="input none" readonly="" />
+        </div>
+        <div class="items"></div>
+        <div class="btns">
+            <a href="#" class="btn restart">
+                Restart
+            </a>
+            <a href="#" class="btn voice user-speech voice-active">
+                Speak please
+            </a>
+            <a href="#" class="btn result">
+                Results
+            </a>
+        </div>
+    </div>
+    <div class="results hidden">
+        <div class="results-container">
+            <p class="errors">
+                Ошибок
+                <span class="errors-num">10</span>
+            </p>
+            <div class="errors-item"></div>
+            <p class="success">
+                Знаю
+                <span class="succes-num">0</span>
+            </p>
+            <div class="success-item"></div>
+            <div class="btns btns-res">
+                <a href="#" class="btn btn-res return">
+                    Return
+                </a>
+                <a href="#" class="btn btn-res new-game">
+                    New game
+                </a>
+            </div>
+        </div>
+    </div>
+    <audio class="audio"></audio>
+</main>
+</body>
 </html>
