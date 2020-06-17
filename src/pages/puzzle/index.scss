@@ -1,1 +1,198 @@
 @import 'Src/scss/normalize';
+@import url('https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700,800,900&display=swap&subset=cyrillic,cyrillic-ext');
+@import 'materialize-css';
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
+@mixin flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+* {
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+  background-size: cover;
+  background-repeat: repeat;
+  background-image: url('./assets/images/Flat-Mountains.svg');
+}
+
+.hidden {
+    display: none!important;
+}
+
+.authorization {
+  width: 50%;
+  margin: 0 auto;
+  & h1 {
+    color: rgb(250, 116, 116);
+    margin: 0;
+    text-align: center;
+  }
+  opacity: 0.8;
+}
+
+main {
+  width: 95vw;
+  margin: 0 auto;
+}
+
+.home-page {
+  width: 100%;
+  flex-direction: column;  
+  @include flex;
+ 
+}
+
+.home-page__desc {
+  width: 80%;
+  margin: 100px 20px 20px;
+  font-size: 2rem;
+  @extend .blue-text; 
+}
+
+.hints {
+  @include flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.hints li, .level-select, .range-field, .round-select  {
+  padding-left: 20px;
+}
+
+.sidenav-trigger {
+  position: absolute;
+  top: 20px;
+  color: white;
+}
+
+.game-header {
+   @extend .blue-text, 
+}
+
+.hints-panel, .game-header, .footer-buttons, .game-container {
+  @include flex;
+}
+
+.hints-panel li, .footer-buttons li {
+  margin: 0 5px;
+}
+
+.footer-buttons {
+  justify-content: space-around;
+}
+
+.footer-btn {
+  margin-bottom: 20px;
+}
+
+.game-result, .game-input {
+  width: 80%;
+ // border-radius: 15px;
+  @extend .deep-purple, .lighten-3;
+  margin: 10px auto;
+}
+
+.game-container {
+  flex-direction: column;
+}
+
+.translation-container {
+  height: 20px;
+}
+
+.sentence-translation {
+  width: fit-content;
+  color: white;
+}
+
+.game-result {
+  position:relative;
+  overflow: hidden;
+}
+
+.painting {
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  transition: z-index 0.5s;
+  z-index: -2000;
+}
+
+.game-row {
+  display: flex;
+  justify-content: center;
+  flex-wrap: no-wrap;
+}
+
+.word {
+  display: inline-block;
+  background-color: transparent;
+  cursor: pointer;
+  transition: all 0.5s;
+  position: relative;
+}
+
+.game-input{
+  height: 120px;
+  padding: 25px 0;
+
+  & .game-row {
+   justify-content: end;
+    padding-left: 5px;
+  }
+}
+
+$inset-shadow:
+  inset -12px -12px 30px 5px #e1bee7    ,
+  inset 12px 12px 30px 5px rgba(50, 58, 73, 0.2);
+
+.droppable {
+ background-color: #e6e9ef;
+ box-shadow: $inset-shadow;
+}
+
+.round-statistics-page  {
+  margin: 0 auto;
+  background-color:rgba(256, 256, 256, 0.8);
+  width: 60%;
+}
+
+.badge {
+  border-radius: 5px;
+}
+
+.miniature-painting{
+  width: 100px;
+  border-radius: 5px;
+  margin: 10px auto;
+}
+
+.sound-icon {
+  cursor: pointer;
+}
+
+.miniature-container {
+  margin: 0 auto;
+  width: 80%;
+  height: 150px;
+}
+
+.round-statistics-know, .round-statistics-dontknow {
+  font-weight: 600;
+  margin-top: 10px;
+}
+
+.round-statistics-buttons{
+  margin: 20px;
+  height: 50px;
+  display: flex;
+  justify-content: space-around;
+}

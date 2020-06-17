@@ -1,0 +1,35 @@
+const authorization = document.querySelector('.authorization');
+const logInBtn = document.querySelector('.login-btn ');
+const signUpBtn = document.querySelector('.signup-btn');
+const logoutBtn = document.querySelector('.logout-btn');
+const gamePage = document.querySelector('.game-page');
+const homePage = document.querySelector('.home-page');
+const translateBtn = document.querySelector('.translate-btn');
+const pronounceBtn = document.querySelector('.pronounce-btn');
+const pictureBtn = document.querySelector('.picture-btn');
+const inputField = document.querySelector('.game-input');
+const dontKnowBtn = document.querySelector('.dontknow-btn');
+const checkBtn = document.querySelector('.check-btn');
+const continueBtn = document.querySelector('.continue-btn');
+const resultsBtn = document.querySelector('.results-btn');
+const painting = document.querySelector('.painting');
+const audio = document.querySelector('audio');
+const translation = document.querySelector('.sentence-translation');
+const paintingInfo = inputField.querySelector('.painting-info');
+const sideNav = document.querySelector('.sidenav');
+const roundsCount = [45, 41, 40, 29, 29, 25];
+const errorMsg = document.querySelector('.error-message');
+const miniature = document.querySelector('.miniature-painting');
+const miniatureInfo = document.querySelector('.miniature-painting-info');
+const linkToPainting = document.querySelector('.link-to-painting');
+const roundStatisticsPage = document.querySelector('.round-statistics-page');
+const fullStatPage = document.querySelector('.full-stat-page');
+const statBtn = document.querySelector('.statistic-btn');
+
+
+export {
+  authorization, logInBtn, signUpBtn, gamePage, homePage, translateBtn, pronounceBtn,
+  pictureBtn, inputField, dontKnowBtn, checkBtn, continueBtn, resultsBtn, painting,
+  audio, translation, paintingInfo, sideNav, roundsCount, errorMsg, logoutBtn,
+  miniature, miniatureInfo, linkToPainting, roundStatisticsPage, fullStatPage, statBtn,
+};
