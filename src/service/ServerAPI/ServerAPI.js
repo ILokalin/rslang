@@ -1,8 +1,9 @@
+import { AuthPopup } from 'Components/AuthPopup';
+
 const API_URL = 'https://afternoon-falls-25894.herokuapp.com/';
 const API_CREATE_USER = 'users';
 const API_LOGIN_USER = 'signin';
 
-/* eslint-disable consistent-return */
 export class ServerAPI {
   constructor() {
     this.userId = localStorage.getItem('userId');
@@ -12,33 +13,39 @@ export class ServerAPI {
 
   isSuccess(response) {
     return response.status >= 200 && response.status < 300;
-  };
+  }
 
   packError(response) {
     return {
       status: response.status,
       message: response.statusText,
-    }
+    };
   }
 
-  // async createUser1(user) {
-  //   const rawResponse = await fetch('https://afternoon-falls-25894.herokuapp.com/users', {
-  //     method: 'POST',
-  //     headers: {
-  //       Accept: 'application/json',
-  //       'Content-Type': 'application/json',
-  //     },
-  //     body: JSON.stringify(user),
-  //   });
-  //   try {
-  //     const content = await rawResponse.json();
-  //     this.isValid = 1;
-  //     return content;
-  //   } catch (e) {
-  //     console.log(rawResponse);
-  //     this.isValid = 0;
-  //   }
-  // }
+  checkToken() {
+    const { userId, token } = localStorage;
+
+    if (userId && token) {
+      return true;
+    } 
+    return false;
+  }
+
+  getUser() {
+    return new Promise((resolve, reject) => {
+      if (checkToken()) {
+        // try connect
+      }
+      AuthPopup().then(
+        () => {
+          return true;
+        },
+        () => {
+          return false;
+        }
+      )
+    })
+  }
 
   createUser(user) {
     return new Promise((resolve, reject) => {
@@ -49,36 +56,18 @@ export class ServerAPI {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(user),
-      }).then((rawResponse) => {
-        if (this.isSuccess(rawResponse)) {
-          return rawResponse.json();
-        }
-        reject(this.packError(rawResponse));
-      }).then((response) => {
-        resolve(response)
       })
-    })
+        .then((rawResponse) => {
+          if (this.isSuccess(rawResponse)) {
+            return rawResponse.json();
+          }
+          reject(this.packError(rawResponse));
+        })
+        .then((response) => {
+          resolve(response);
+        });
+    });
   }
-
-  // Logins a user and returns a JWT-token
-  // async loginUser(user) {
-  //   const rawResponse = await fetch('https://afternoon-falls-25894.herokuapp.com/signin', {
-  //     method: 'POST',
-  //     headers: {
-  //       Accept: 'application/json',
-  //       'Content-Type': 'application/json',
-  //     },
-  //     body: JSON.stringify(user),
-  //   });
-  //   try {
-  //     const content = await rawResponse.json();
-  //     this.isValid = 1;
-  //     return content;
-  //   } catch (e) {
-  //     console.log(rawResponse);
-  //     this.isValid = 0;
-  //   }
-  // }
 
   loginUser(user) {
     return new Promise((resolve, reject) => {
@@ -89,15 +78,17 @@ export class ServerAPI {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(user),
-      }).then((rawResponse) => {
-        if (this.isSuccess(rawResponse)) {
-          return rawResponse.json();
-        }
-        reject(this.packError(rawResponse));
-      }).then((response) => {
-        resolve(response);
       })
-    })
+        .then((rawResponse) => {
+          if (this.isSuccess(rawResponse)) {
+            return rawResponse.json();
+          }
+          reject(this.packError(rawResponse));
+        })
+        .then((response) => {
+          resolve(response);
+        });
+    });
   }
 
   // Learned words
