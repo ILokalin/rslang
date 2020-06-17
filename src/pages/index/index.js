@@ -1,6 +1,9 @@
 import './index.scss';
+import { AuthPopup } from 'Components/AuthPopup';
 
 require.context('Src', true, /\.(png|svg|jpg|gif|mp3)$/);
+
+AuthPopup();
 
 // eslint-disable-next-line no-console
 console.log(
