@@ -43,7 +43,7 @@ const config = {
     'index':    PATH.source + '/pages/index/index.js',
     'audition': PATH.source + '/pages/audition/index.js',
     'puzzle':   PATH.source + '/pages/puzzle/index.js',
-    'savanna':   PATH.source + '/pages/savanna/index.js',
+    'savanna':  PATH.source + '/pages/savanna/index.js',
     'speak-it': PATH.source + '/pages/speak-it/index.js',
     'sprint':   PATH.source + '/pages/sprint/index.js',
   },
@@ -100,6 +100,7 @@ const config = {
             loader: 'file-loader',
             options: {
               outputPath: 'img',
+              publicPath: '../img',
               name: '[name].[ext]'
           }},
         ]
@@ -110,6 +111,8 @@ const config = {
           loader: 'file-loader',
           options: {
             outputPath: 'fonts',
+            publicPath: '../fonts',
+            name: '[name].[ext]'
           }
         }]
       },
@@ -119,6 +122,7 @@ const config = {
           loader: 'file-loader',
           options: {
             outputPath: 'sound',
+            publicPath: '../sound',
             name: '[name].[ext]'
           }
         }]
