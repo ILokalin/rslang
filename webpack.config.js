@@ -100,6 +100,7 @@ const config = {
             loader: 'file-loader',
             options: {
               outputPath: 'img',
+              publicPath: '../img',
               name: '[name].[ext]'
           }},
         ]
