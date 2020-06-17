@@ -1,0 +1,23 @@
+.auth-popup {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: #3337;
+
+  &__menu {
+    display: flex;
+    flex-direction: column;
+    padding-top: 10vh;
+    width: 50%;
+    min-width: 300px;
+    margin: 0 auto;
+    background-color: grey;
+  }
+
+  &__button {
+    width: 100px;
+    cursor: pointer;
+  }
+}
