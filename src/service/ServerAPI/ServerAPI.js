@@ -1,14 +1,15 @@
 import { AuthPopup } from 'Components/AuthPopup';
 
 const API_URL = 'https://afternoon-falls-25894.herokuapp.com/';
-const API_CREATE_USER = 'users';
+const API_USERS = 'users';
 const API_LOGIN_USER = 'signin';
+const API_SETTINGS = 'settings';
 
 export class ServerAPI {
   constructor() {
-    this.userId = localStorage.getItem('userId');
-    this.token = localStorage.getItem('token');
-    this.isValid = '0';
+    // this.userId = localStorage.getItem('userId');
+    // this.token = localStorage.getItem('token');
+    // this.isValid = '0';
   }
 
   isSuccess(response) {
@@ -27,29 +28,82 @@ export class ServerAPI {
 
     if (userId && token) {
       return true;
-    } 
+    }
     return false;
   }
 
   getUser() {
     return new Promise((resolve, reject) => {
-      if (checkToken()) {
-        // try connect
+      const showLoginUserPopup = () => {
+        AuthPopup().then(
+          () => {
+            return true;
+          },
+          () => {
+            return false;
+          }
+        )
       }
-      AuthPopup().then(
-        () => {
-          return true;
-        },
-        () => {
-          return false;
-        }
-      )
+
+      if (checkToken()) {
+        this.apiUserSettingsGet(this.userId).then(
+          (options) => {
+            resolve(options);
+          },
+          () => {
+            showLoginUserPopup().then(
+              () => {
+                //попытка логина
+                resolve();
+              },
+              () => {
+                // Игра без имени
+                reject();
+              }
+            );
+          }
+        )
+      } else {
+        showLoginUserPopup().then(
+          // TODO убрать повтор после отладки
+          () => {
+            //попытка логина
+            resolve();
+          },
+          () => {
+            // Игра без имени
+            reject();
+          }
+        );
+      }
     })
   }
 
-  createUser(user) {
+  apiUserSettingsGet() {
     return new Promise((resolve, reject) => {
-      fetch(API_URL + API_CREATE_USER, {
+      fetch(`${API_URL}${API_USERS}/${localStorage.userId}/${API_SETTINGS}`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${localStorage.token}`,
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        }
+      }).then(
+        (rawResponse) => {
+          if (this.isSuccess(rawResponse)) {
+            return rawResponse.json();
+          }
+          reject(this.packError(rawResponse));
+        })
+        .then((response) => {
+          resolve(response);
+        })
+    })
+  }
+
+  apiUserCreate(user) {
+    return new Promise((resolve, reject) => {
+      fetch(API_URL + API_USERS, {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -64,6 +118,9 @@ export class ServerAPI {
           reject(this.packError(rawResponse));
         })
         .then((response) => {
+          const { id, email } = response;
+          localStorage.setItem("userId", id);
+          localStorage.setItem('email', email);
           resolve(response);
         });
     });
