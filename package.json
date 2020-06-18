@@ -21,6 +21,15 @@
     "type": "git",
     "url": ""
   },
+  "jest": {
+    "moduleDirectories": [
+      "node_modules"
+    ],
+    "moduleNameMapper": {
+      "^Components(.*)$": "<rootDir>/src/components$1",
+      "^Service(.*)$": "<rootDir>/src/service$1"
+    }
+  },
   "devDependencies": {
     "@babel/core": "^7.6.0",
     "@babel/preset-env": "^7.6.0",
