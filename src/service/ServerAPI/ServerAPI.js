@@ -1,17 +1,12 @@
+/* eslint-disable class-methods-use-this */
 import { AuthPopup } from 'Components/AuthPopup';
 
 const API_URL = 'https://afternoon-falls-25894.herokuapp.com/';
 const API_USERS = 'users';
-const API_LOGIN_USER = 'signin';
 const API_SETTINGS = 'settings';
+const API_SIGNIN = 'signin';
 
 export class ServerAPI {
-  constructor() {
-    // this.userId = localStorage.getItem('userId');
-    // this.token = localStorage.getItem('token');
-    // this.isValid = '0';
-  }
-
   isSuccess(response) {
     return response.status >= 200 && response.status < 300;
   }
@@ -25,7 +20,6 @@ export class ServerAPI {
 
   checkToken() {
     const { userId, token } = localStorage;
-
     if (userId && token) {
       return true;
     }
@@ -41,11 +35,11 @@ export class ServerAPI {
           },
           () => {
             return false;
-          }
-        )
-      }
+          },
+        );
+      };
 
-      if (checkToken()) {
+      if (this.checkToken()) {
         this.apiUserSettingsGet(this.userId).then(
           (options) => {
             resolve(options);
@@ -59,10 +53,10 @@ export class ServerAPI {
               () => {
                 // Игра без имени
                 reject();
-              }
+              },
             );
-          }
-        )
+          },
+        );
       } else {
         showLoginUserPopup().then(
           // TODO убрать повтор после отладки
@@ -73,10 +67,33 @@ export class ServerAPI {
           () => {
             // Игра без имени
             reject();
-          }
+          },
         );
       }
-    })
+    });
+  }
+
+  apiUserSettingsPut(store) {
+    return new Promise((resolve, reject) => {
+      fetch(`${API_URL}${API_USERS}/${localStorage.userId}/${API_SETTINGS}`, {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${localStorage.token}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(store),
+      })
+        .then((rawResponse) => {
+          if (!this.isSuccess(rawResponse)) {
+            reject(this.packError(rawResponse));
+          }
+          return rawResponse.json();
+        })
+        .then((response) => {
+          resolve(response);
+        });
+    });
   }
 
   apiUserSettingsGet() {
@@ -84,12 +101,12 @@ export class ServerAPI {
       fetch(`${API_URL}${API_USERS}/${localStorage.userId}/${API_SETTINGS}`, {
         method: 'GET',
         headers: {
-          'Authorization': `Bearer ${localStorage.token}`,
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        }
-      }).then(
-        (rawResponse) => {
+          Authorization: `Bearer ${localStorage.token}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      })
+        .then((rawResponse) => {
           if (this.isSuccess(rawResponse)) {
             return rawResponse.json();
           }
@@ -97,8 +114,8 @@ export class ServerAPI {
         })
         .then((response) => {
           resolve(response);
-        })
-    })
+        });
+    });
   }
 
   apiUserCreate(user) {
@@ -112,23 +129,23 @@ export class ServerAPI {
         body: JSON.stringify(user),
       })
         .then((rawResponse) => {
-          if (this.isSuccess(rawResponse)) {
-            return rawResponse.json();
+          if (!this.isSuccess(rawResponse)) {
+            reject(this.packError(rawResponse));
           }
-          reject(this.packError(rawResponse));
+          return rawResponse.json();
         })
         .then((response) => {
           const { id, email } = response;
-          localStorage.setItem("userId", id);
+          localStorage.setItem('userId', id);
           localStorage.setItem('email', email);
           resolve(response);
         });
     });
   }
 
-  loginUser(user) {
+  apiUserSignIn(user) {
     return new Promise((resolve, reject) => {
-      fetch(API_URL + API_LOGIN_USER, {
+      fetch(API_URL + API_SIGNIN, {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -137,197 +154,204 @@ export class ServerAPI {
         body: JSON.stringify(user),
       })
         .then((rawResponse) => {
-          if (this.isSuccess(rawResponse)) {
-            return rawResponse.json();
+          if (!this.isSuccess(rawResponse)) {
+            reject(this.packError(rawResponse));
           }
-          reject(this.packError(rawResponse));
+          return rawResponse.json();
         })
         .then((response) => {
+          const { userId, token } = response;
+          localStorage.setItem('userId', userId);
+          localStorage.setItem('token', token);
           resolve(response);
         });
     });
   }
 
-  // Learned words
-  async createUserWord(wordId, word) {
-    const rawResponse = await fetch(
-      `https://afternoon-falls-25894.herokuapp.com/users/${this.userId}/words/${wordId}`,
-      {
-        method: 'POST',
-        withCredentials: true,
-        headers: {
-          Authorization: `Bearer ${this.token}`,
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(word),
-      },
-    );
-    try {
-      const content = await rawResponse.json();
-      this.isValid = 1;
-      return content;
-    } catch (e) {
-      console.log(rawResponse);
-      this.isValid = 0;
-    }
+  testAuth() {
+    return AuthPopup();
   }
 
-  async getUserWord(wordId) {
-    const rawResponse = await fetch(
-      `https://afternoon-falls-25894.herokuapp.com/users/${this.userId}/words/${wordId}`,
-      {
-        method: 'GET',
-        withCredentials: true,
-        headers: {
-          Authorization: `Bearer ${this.token}`,
-          Accept: 'application/json',
-        },
-      },
-    );
-    try {
-      const content = await rawResponse.json();
-      this.isValid = 1;
-      return content;
-    } catch (e) {
-      console.log(rawResponse);
-      this.isValid = 0;
-    }
-  }
+  // // Learned words
+  // async createUserWord(wordId, word) {
+  //   const rawResponse = await fetch(
+  //     `https://afternoon-falls-25894.herokuapp.com/users/${this.userId}/words/${wordId}`,
+  //     {
+  //       method: 'POST',
+  //       withCredentials: true,
+  //       headers: {
+  //         Authorization: `Bearer ${this.token}`,
+  //         Accept: 'application/json',
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify(word),
+  //     },
+  //   );
+  //   try {
+  //     const content = await rawResponse.json();
+  //     this.isValid = 1;
+  //     return content;
+  //   } catch (e) {
+  //     console.log(rawResponse);
+  //     this.isValid = 0;
+  //   }
+  // }
 
-  async getAllUserWords() {
-    const rawResponse = await fetch(
-      `https://afternoon-falls-25894.herokuapp.com/users/${this.userId}/words`,
-      {
-        method: 'GET',
-        withCredentials: true,
-        headers: {
-          Authorization: `Bearer ${this.token}`,
-          Accept: 'application/json',
-        },
-      },
-    );
-    try {
-      const content = await rawResponse.json();
-      this.isValid = 1;
-      return content;
-    } catch (e) {
-      console.log(rawResponse);
-      this.isValid = 0;
-    }
-  }
+  // async getUserWord(wordId) {
+  //   const rawResponse = await fetch(
+  //     `https://afternoon-falls-25894.herokuapp.com/users/${this.userId}/words/${wordId}`,
+  //     {
+  //       method: 'GET',
+  //       withCredentials: true,
+  //       headers: {
+  //         Authorization: `Bearer ${this.token}`,
+  //         Accept: 'application/json',
+  //       },
+  //     },
+  //   );
+  //   try {
+  //     const content = await rawResponse.json();
+  //     this.isValid = 1;
+  //     return content;
+  //   } catch (e) {
+  //     console.log(rawResponse);
+  //     this.isValid = 0;
+  //   }
+  // }
 
-  // settings
+  // async getAllUserWords() {
+  //   const rawResponse = await fetch(
+  //     `https://afternoon-falls-25894.herokuapp.com/users/${this.userId}/words`,
+  //     {
+  //       method: 'GET',
+  //       withCredentials: true,
+  //       headers: {
+  //         Authorization: `Bearer ${this.token}`,
+  //         Accept: 'application/json',
+  //       },
+  //     },
+  //   );
+  //   try {
+  //     const content = await rawResponse.json();
+  //     this.isValid = 1;
+  //     return content;
+  //   } catch (e) {
+  //     console.log(rawResponse);
+  //     this.isValid = 0;
+  //   }
+  // }
 
-  /* @param {Object} settings
-   *  @return {Promise}
-   *
-   * @example
-   * const settings = {
-   *   "wordsPerDay": 0, --> must be > 0
-   *   "optional": {} --> must contain only NOT EMPTY STRING fields
-   *  }
-   */
-  async updateUserSettings(settings) {
-    const rawResponse = await fetch(
-      `https://afternoon-falls-25894.herokuapp.com/users/${this.userId}/settings`,
-      {
-        method: 'PUT',
-        withCredentials: true,
-        headers: {
-          Authorization: `Bearer ${this.token}`,
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(settings),
-      },
-    );
-    try {
-      const content = await rawResponse.json();
-      this.isValid = 1;
-      return content;
-    } catch (e) {
-      console.log(rawResponse);
-      this.isValid = 0;
-    }
-  }
+  // // settings
 
-  async getUserSettings() {
-    const rawResponse = await fetch(
-      `https://afternoon-falls-25894.herokuapp.com/users/${this.userId}/settings`,
-      {
-        method: 'GET',
-        withCredentials: true,
-        headers: {
-          Authorization: `Bearer ${this.token}`,
-          Accept: 'application/json',
-        },
-      },
-    );
-    try {
-      const content = await rawResponse.json();
-      this.isValid = 1;
-      return content;
-    } catch (e) {
-      console.log(rawResponse);
-      this.isValid = 0;
-    }
-  }
+  // /* @param {Object} settings
+  //  *  @return {Promise}
+  //  *
+  //  * @example
+  //  * const settings = {
+  //  *   "wordsPerDay": 0, --> must be > 0
+  //  *   "optional": {} --> must contain only NOT EMPTY STRING fields
+  //  *  }
+  //  */
+  // async updateUserSettings(settings) {
+  //   const rawResponse = await fetch(
+  //     `https://afternoon-falls-25894.herokuapp.com/users/${this.userId}/settings`,
+  //     {
+  //       method: 'PUT',
+  //       withCredentials: true,
+  //       headers: {
+  //         Authorization: `Bearer ${this.token}`,
+  //         Accept: 'application/json',
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify(settings),
+  //     },
+  //   );
+  //   try {
+  //     const content = await rawResponse.json();
+  //     this.isValid = 1;
+  //     return content;
+  //   } catch (e) {
+  //     console.log(rawResponse);
+  //     this.isValid = 0;
+  //   }
+  // }
 
-  // user statistics
+  // async getUserSettings() {
+  //   const rawResponse = await fetch(
+  //     `https://afternoon-falls-25894.herokuapp.com/users/${this.userId}/settings`,
+  //     {
+  //       method: 'GET',
+  //       withCredentials: true,
+  //       headers: {
+  //         Authorization: `Bearer ${this.token}`,
+  //         Accept: 'application/json',
+  //       },
+  //     },
+  //   );
+  //   try {
+  //     const content = await rawResponse.json();
+  //     this.isValid = 1;
+  //     return content;
+  //   } catch (e) {
+  //     console.log(rawResponse);
+  //     this.isValid = 0;
+  //   }
+  // }
 
-  /* @param {Object} statistics
-   *  @return {Promise}
-   *
-   * @example
-   * const statistics = {
-   *   "learnedWords": 0,
-   *   "optional": {} --> must contain only NOT EMPTY STRING fields
-   *  }
-   */
-  async updateUserStatistics(statistics) {
-    const rawResponse = await fetch(
-      `https://afternoon-falls-25894.herokuapp.com/users/${this.userId}/statistics`,
-      {
-        method: 'PUT',
-        withCredentials: true,
-        headers: {
-          Authorization: `Bearer ${this.token}`,
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(statistics),
-      },
-    );
-    try {
-      const content = await rawResponse.json();
-      this.isValid = 1;
-      return content;
-    } catch (e) {
-      console.log(rawResponse);
-      this.isValid = 0;
-    }
-  }
+  // // user statistics
 
-  async getUserStatistics() {
-    const rawResponse = await fetch(
-      `https://afternoon-falls-25894.herokuapp.com/users/${this.userId}/statistics`,
-      {
-        method: 'GET',
-        withCredentials: true,
-        headers: {
-          Authorization: `Bearer ${this.token}`,
-          Accept: 'application/json',
-        },
-      },
-    );
-    try {
-      const content = await rawResponse.json();
-      this.isValid = 1;
-      return content;
-    } catch (e) {
-      console.log(rawResponse);
-      this.isValid = 0;
-    }
-  }
+  // /* @param {Object} statistics
+  //  *  @return {Promise}
+  //  *
+  //  * @example
+  //  * const statistics = {
+  //  *   "learnedWords": 0,
+  //  *   "optional": {} --> must contain only NOT EMPTY STRING fields
+  //  *  }
+  //  */
+  // async updateUserStatistics(statistics) {
+  //   const rawResponse = await fetch(
+  //     `https://afternoon-falls-25894.herokuapp.com/users/${this.userId}/statistics`,
+  //     {
+  //       method: 'PUT',
+  //       withCredentials: true,
+  //       headers: {
+  //         Authorization: `Bearer ${this.token}`,
+  //         Accept: 'application/json',
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify(statistics),
+  //     },
+  //   );
+  //   try {
+  //     const content = await rawResponse.json();
+  //     this.isValid = 1;
+  //     return content;
+  //   } catch (e) {
+  //     console.log(rawResponse);
+  //     this.isValid = 0;
+  //   }
+  // }
+
+  // async getUserStatistics() {
+  //   const rawResponse = await fetch(
+  //     `https://afternoon-falls-25894.herokuapp.com/users/${this.userId}/statistics`,
+  //     {
+  //       method: 'GET',
+  //       withCredentials: true,
+  //       headers: {
+  //         Authorization: `Bearer ${this.token}`,
+  //         Accept: 'application/json',
+  //       },
+  //     },
+  //   );
+  //   try {
+  //     const content = await rawResponse.json();
+  //     this.isValid = 1;
+  //     return content;
+  //   } catch (e) {
+  //     console.log(rawResponse);
+  //     this.isValid = 0;
+  //   }
+  // }
 }
