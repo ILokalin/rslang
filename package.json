@@ -67,6 +67,7 @@
     "core-js": "^3.4.7",
     "effector-react": "^20.7.4",
     "materialize-css": "^1.0.0-rc.2",
+    "node-fetch": "^2.6.0",
     "normalize.css": "^8.0.1"
   }
 }
