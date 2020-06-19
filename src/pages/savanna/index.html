@@ -9,32 +9,73 @@
 
 <body>
   <div class="app-savanna">
-    <div class="header-savanna">
+    <div class="header-savanna hidden">
+      <div class="header-savanna__control">
+        <img class="sound-icon" src="/img/soundon.svg" alt="">
+      </div>
       <div class="header-savanna__health">
-        <img src="" alt="health">
+        <img src="/img/heart.png" alt="health">
+        <img src="/img/heart.png" alt="health">
+        <img src="/img/heart.png" alt="health">
+        <img src="/img/heart.png" alt="health">
+        <img src="/img/heart.png" alt="health">
       </div>
     </div>
-    <!-- <div class="main-savanna">
-          <div class="main-savanna__question-container">
-              <p class="main-savanna__question-word">arrive</p>
-          </div>
-          <div class="main-savanna__answer-container">
-              <p class="main-savanna__answer-word">есть</p>
-              <p class="main-savanna__answer-word">спать</p>
-              <p class="main-savanna__answer-word">прибывать</p>
-              <p class="main-savanna__answer-word">ловить</p>
-          </div>
-          <div class="main-savanna__icon-container">
-              <img class="main-savanna__icon" src="" alt="">
-          </div>
-      </div> -->
-
-
-    <div class="start-menu-container">
-      <button class="btn start">Играть</button>
-      <button class="btn stat">Статистика</button>
+    <div class="main-savanna hidden">
+      <div class="main-savanna__question-container">
+        <p class="main-savanna__question-word">arrive</p>
+      </div>
+      <div class="main-savanna__answer-container">
+        <p class="main-savanna__answer-word">есть</p>
+        <p class="main-savanna__answer-word">спать</p>
+        <p class="main-savanna__answer-word">прибывать</p>
+        <p class="main-savanna__answer-word">ловить</p>
+      </div>
+      <div class="main-savanna__icon-container">
+        <img class="main-savanna__icon" src="/img/shapes-and-symbols.png" alt="icon">
+      </div>
     </div>
 
+    <div class="start-menu-container">
+      <div class="intro">
+        <p class="intro-text">САВАННА!</p>
+        <p class="intro-text">Используй клавиши 1, 2, 3 и 4, чтобы дать быстрый ответ!</p>
+        <p class="intro-text">Или кликай мышкой.</p>
+      </div>
+      <div class="btns">
+        <button class="btn start">Играть</button>
+        <button class="btn back">Назад</button>
+      </div>
+    </div>
+
+    <div class="menu-option-container hidden">
+      <button class="btn repeat">Повторение</button>
+      <button class="btn new-words">Новые слова</button>
+    </div>
+
+    <div class="menu-choose-difficult hidden">
+      <p class="difficult-title">Выберите сложность:</p>
+      <div class="difficult-container">
+        <button class="difficult-button">1</button>
+        <button class="difficult-button">2</button>
+        <button class="difficult-button">3</button>
+        <button class="difficult-button">4</button>
+        <button class="difficult-button">5</button>
+        <button class="difficult-button">6</button>
+      </div>
+    </div>
+
+    <div class="results-container hidden">
+      <div class="result">
+        <p class="result-text">Выучено слов: </p>
+        <p class="result-text">На повторение: </p>
+      </div>
+      <div class="btns">
+        <button class="btn restart">Новая Игра</button>
+        <button class="btn back">Назад</button>
+      </div>
+
+    </div>
 
   </div>
 </body>
