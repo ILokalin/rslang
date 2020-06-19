@@ -1,33 +1,53 @@
 .auth-popup {
+  display: flex;
   position: fixed;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
-  background-color: #3337;
-  display: flex;
   align-items: center;
+  background-color: #3337;
 
   &__menu {
-    padding: 50px;
     display: flex;
     flex-direction: column;
-    padding-top: 100px;
+    margin: 0 auto;
+    border: 1px solid #3333;
+    border-radius: 10px;
+    background-color: grey;
+    padding: 50px;
+    padding-top: 50px;
     width: 50%;
     min-width: 300px;
-    margin: 0 auto;
-    background-color: grey;
-    border-radius: 10px;
-    border: 1px solid #3333
+  }
+
+  &__title {
+    margin: 0 auto 10px;
+    color: #ccc;
+  }
+
+  &__describe {
+    margin: 0 auto 10px;
+    color: #ccc;
   }
 
   &__input {
     margin-bottom: 20px;
-    height: 24px;
-    padding: 5px;
     outline: none;
+    border: 1px solid #3333;
     border-radius: 4px;
-    border: 1px solid #3333
+    padding: 5px;
+    height: 24px;
+  }
+
+  &__password-hint {
+    margin: 0 auto 10px;
+    color: #ccc6;
+    transition: 2s;
+
+    &:hover {
+      color: #fff;
+    }
   }
 
   &__buttons-line {
@@ -36,14 +56,19 @@
   }
 
   &__button {
+    margin-left: 20px;
+    outline: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background: none;
+    cursor: pointer;
     width: 100px;
     height: 30px;
-    margin-left: 20px;
-    cursor: pointer;
-    outline: none;
-    border-radius: 4px;
     color: #ccc;
-    border: 1px solid #ccc;
-    background: none;
+
+    &:disabled {
+      opacity: .5;
+      cursor: default;
+    }
   }
 }
