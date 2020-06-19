@@ -2,23 +2,9 @@ import { ServerAPI } from '../ServerAPI';
 import LocalStorageMock from './LocalStorageMock';
 
 global.fetch = require('node-fetch');
-const AuthPopup = require('./Authpopup');
-// import { AuthPopup } from './Authpopup';
 
-const serverAPI = new ServerAPI();
 global.localStorage = new LocalStorageMock();
-global.fetch = require('node-fetch');
-
-jest.mock('./AuthPopup');
-
-AuthPopup.mockImplementation(() => {
-  return true;
-})
-
-beforeEach(() => {
-  AuthPopup.mockClear();
-})
-
+const serverAPI = new ServerAPI();
 const testUser = {
   email: 'pufic@test.ru',
   password: 'puficTest_1',
@@ -96,16 +82,11 @@ describe('ServerAPI test', () => {
     );
   });
 
-  it('check mock for auth', () => {
-
-    expect(serverAPI.testAuth).toBe(true);
-  })
-
-  it('apiUserCreate doesn\'t create a new user with existing email', async () => {
-    await expect(serverAPI.apiUserCreate(testUser)).rejects.toEqual(
-      expect.objectContaining({
-        message: expect.stringContaining('Expectation Failed'),
-      }),
-    );
-  });
+  // it('apiUserCreate doesn\'t create a new user with existing email', async () => {
+  //   await expect(serverAPI.apiUserCreate(testUser)).rejects.toEqual(
+  //     expect.objectContaining({
+  //       message: expect.stringContaining('Expectation Failed'),
+  //     }),
+  //   );
+  // });
 });
