@@ -82,6 +82,7 @@ describe('ServerAPI test', () => {
     );
   });
 
+  // it's commented because this test work alone only... this situation is very profound but not coincidental
   // it('apiUserCreate doesn\'t create a new user with existing email', async () => {
   //   await expect(serverAPI.apiUserCreate(testUser)).rejects.toEqual(
   //     expect.objectContaining({
