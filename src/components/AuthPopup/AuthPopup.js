@@ -1,4 +1,5 @@
 import { DomGen } from 'Service/DomGen';
+import { ServerAPI } from 'Service/ServerAPI';
 
 export function AuthPopup() {
   const { body } = document;
@@ -10,10 +11,14 @@ export function AuthPopup() {
         tag: 'div',
         className: 'menu',
         children: [
-          { tag: 'input', className: 'input', placeholder: 'email' },
-          { tag: 'input', className: 'input', placeholder: 'password' },
-          { tag: 'button', className: 'button', innerText: 'Login', isAccess: 'login' },
-          { tag: 'button', className: 'button', innerText: 'Cancel', isAccess: 'cancel' },
+          { tag: 'input', className: 'input', placeholder: 'email', isAccess: 'email' },
+          { tag: 'input', className: 'input', type: 'password', placeholder: 'password', isAccess: 'password' },
+          {
+            tag: 'div', className: 'buttons-line', children: [
+              { tag: 'button', className: 'button', innerText: 'Login', isAccess: 'login' },
+              { tag: 'button', className: 'button', innerText: 'Cancel', isAccess: 'cancel' },
+            ]
+          }
         ],
       },
     ],
@@ -27,13 +32,17 @@ export function AuthPopup() {
 
   return new Promise((resolve, reject) => {
     const tryLogin = () => {
+      const user = {
+        email: popup.email.value,
+        password: popup.password.value
+      }
       removePopup();
-      resolve();
+      resolve(user);
     };
 
     const cancelAuth = () => {
       removePopup();
-      reject();
+      reject({ message: 'Пользователь отказался от логинизации ¯\_(ツ)_/¯' });
     };
 
     popup.login.addEventListener('click', tryLogin);
