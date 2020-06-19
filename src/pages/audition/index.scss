@@ -1,1 +1,20 @@
 @import 'Src/scss/normalize';
+
+.word-image-element {
+  width: 200px;
+  height: 200px;
+}
+
+.audio-element {
+  width: 200px;
+  height: 200px;
+  background-color: red;
+}
+
+.correct {
+  border: green solid 1px;
+}
+
+.wrong {
+  border: red solid 1px;
+}
