@@ -1,2 +1,67 @@
-@import 'Src/scss/normalize';
+//@import 'Src/scss/normalize';
 @import 'materialize-css';
+@import 'swiper/css/swiper';
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
+
+.header__title {
+  font-size: 3rem;
+}
+
+.header__description {
+  @extend .teal-text;
+
+}
+
+.cards-container {
+  width: 100%;
+}
+
+.swiper-container {
+  width: 50%;
+  max-width: 400px;
+  border: 2px solid #bdbdbd;
+  border-radius: 2px
+}
+
+.swiper-slide {
+  margin: 0;
+  
+}
+
+.card-image {
+  height: 50%;
+}
+
+.img-placeholder {
+  display: block;
+  background-color: #80cbc4;
+  border-radius: 2px 2px 0 0;
+  position: relative;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+}
+
+#input_text {
+  display: inline-block;
+  width: 50px;
+  border: 2px solid #80cbc4;
+  border-radius: 5px;
+  font-size: 2rem;
+}
+
+.footer-buttons {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+
+  & .btn-small {
+    margin: 0 5px; 
+    padding: 0 2px 0 3px;
+    font-size: 1rem;
+  }
+}
