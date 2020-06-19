@@ -6,27 +6,40 @@
   <title>Cards</title>
 </head>
 <body>
-  <h1>Cards</h1> 
-  <p>Learn new words and repeat difficult!</p>
-  <div>Progress scale</div>
-   <div class="progress">
-      <div class="determinate" style="width: 70%"></div>
-      <div class="swiper-container">
-        <div class="swiper-wrapper">
-          <div class="swiper-slide">Slide 1</div>
-          <div class="swiper-slide">Slide 2</div>
-          <div class="swiper-slide">Slide 3</div>
-          ...
-        </div>
-        <div class="swiper-pagination"></div>
-        <div class="swiper-button-prev"></div>
-        <div class="swiper-button-next"></div>
-
+  <header>
+    <h1 class="header__title center">Cards</h1> 
+    <p class="header__description center">Learn new words and repeat difficult!</p>  
+  </header>
+  <main>
+    <div class="swiper-container">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide card large">
+          <div class="card-image">
+            <img src="https://raw.githubusercontent.com/jules0802/rslang-data/master/files/03_0042.jpg" alt="picture-association">
+            <span class="card-title word-category">new</span>
+          </div>
+          <div class="card-content">     
+            <input id="input_text" type="text" autofocus data-length="4">  
+            <div class="divider"></div>
+            <div>Translation</div>
+          </div>
+          <div class="card-action">
+            <div class="footer-buttons">
+              <a class="again-btn waves-effect waves-light btn-large tooltipped" data-position="bottom" data-tooltip="Снова"><i class="material-icons left">autorenew</i></a>
+              <a class="hard-btn waves-effect waves-light btn-large tooltipped" data-position="bottom" data-tooltip="Трудно"><i class="material-icons left">sentiment_neutral</i></a>
+              <a class="good-btn waves-effect waves-light btn-large tooltipped" data-position="bottom" data-tooltip="Хорошо"><i class="material-icons left">sentiment_satisfied</i></a>
+              <a class="simle-btn waves-effect waves-light btn-large tooltipped" data-position="bottom" data-tooltip="Легко"><i class="material-icons left">insert_emoticon</i></a>
+            </div>          
+          </div>                   
+        </div>      
+      </div>   
+    </div>
+    <div class="progress">
+        <div class="determinate" style="width: 70%"></div>
       </div>
-
-  </div>
-
-  
-
+      <div class="swiper-pagination"></div>
+      <div class="swiper-button-prev"></div>
+    <div class="swiper-button-next"></div> 
+  </main>
 </body>
 </html>
