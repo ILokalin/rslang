@@ -18,10 +18,10 @@ const whoIsGameFor = () => {
       loginButton.removeEventListener('click', whoIsGameFor);
       loginButton.addEventListener('click', userLogout);
     },
-    (errorStatus) => {
+    (rejectReport) => {
       console.log('User canceled');
-      titleUser.innerText += ` for Mr. Incognito`;
-      reportLine.innerText = errorStatus.message;
+      titleUser.innerText = `Select game ${rejectReport.name}`;
+      reportLine.innerText = rejectReport.message;
     }
   )
 }
