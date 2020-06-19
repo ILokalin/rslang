@@ -1,5 +1,6 @@
 /* eslint-disable class-methods-use-this */
 import { AuthPopup } from 'Components/AuthPopup';
+// import { openLoginPopup, stateAuth } from 'Service/Model';
 
 const API_URL = 'https://afternoon-falls-25894.herokuapp.com/';
 const API_USERS = 'users';
@@ -7,16 +8,6 @@ const API_SETTINGS = 'settings';
 const API_SIGNIN = 'signin';
 
 export class ServerAPI {
-  isSuccess(response) {
-    return response.status >= 200 && response.status < 300;
-  }
-
-  packError(response) {
-    return {
-      status: response.status,
-      message: response.statusText,
-    };
-  }
 
   checkToken() {
     const { userId, token } = localStorage;
@@ -26,51 +17,76 @@ export class ServerAPI {
     return false;
   }
 
+  logoutUser() {
+    localStorage.setItem('token', '');
+  }
+
   getUser() {
     return new Promise((resolve, reject) => {
       const showLoginUserPopup = () => {
-        AuthPopup().then(
-          () => {
-            return true;
-          },
-          () => {
-            return false;
-          },
-        );
+        return new Promise((resolve, reject) => {
+          AuthPopup().then(
+            (user) => {
+              resolve(user);
+            },
+            (error) => {
+              reject(error);
+            },
+          );
+        })
+      };
+
+      const rejectErrorReport = (errorReport) => {
+        reject(errorReport);
       };
 
       if (this.checkToken()) {
-        this.apiUserSettingsGet(this.userId).then(
-          (options) => {
-            resolve(options);
+        this.apiUserSettingsGet().then(
+          (userSettings) => {
+            resolve(userSettings.optional);
           },
-          () => {
+          (errorUser) => {
             showLoginUserPopup().then(
-              () => {
+              (user) => {
                 //попытка логина
-                resolve();
+                resolve(user);
               },
-              () => {
-                // Игра без имени
-                reject();
-              },
+              rejectErrorReport
             );
           },
         );
       } else {
-        showLoginUserPopup().then(
-          // TODO убрать повтор после отладки
-          () => {
-            //попытка логина
-            resolve();
-          },
-          () => {
-            // Игра без имени
-            reject();
-          },
-        );
+        showLoginUserPopup()
+          .then(
+            (user) => {
+              console.log(user)
+              return this.apiUserSignIn(user);
+            },
+          )
+          .then(
+            () => {
+              return this.apiUserSettingsGet();
+            },
+          )
+          .then(
+            (userSettings) => {
+              resolve(userSettings.optional);
+            },
+            rejectErrorReport
+          )
       }
     });
+  }
+
+  isSuccess(response) {
+    return response.status >= 200 && response.status < 300;
+  }
+
+  packError(response) {
+    return {
+      status: response.status,
+      message: response.statusText,
+    };
   }
 
   apiUserSettingsPut(store) {
@@ -166,10 +182,6 @@ export class ServerAPI {
           resolve(response);
         });
     });
-  }
-
-  testAuth() {
-    return AuthPopup();
   }
 
   // // Learned words
