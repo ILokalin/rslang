@@ -4,6 +4,7 @@ import book3 from '../data/books/book3';
 import book4 from '../data/books/book4';
 import book5 from '../data/books/book5';
 import book6 from '../data/books/book6';
+import { WORD_TRANSLATION, WORD_INPUT, WORD_IMG } from '../data/constants';
 
 const Utils = {
   getWordsCount: (sentence) => sentence.split(' ').length,
@@ -40,6 +41,35 @@ const Utils = {
   resetCards: () => {
     const CARDS = document.querySelectorAll('.item');
     CARDS.forEach((card) => card.classList.remove('activeItem'));
+  },
+
+  resetMainCard: () => {
+    WORD_IMG.src = WORD_IMG.dataset.src;
+    WORD_TRANSLATION.innerText = WORD_TRANSLATION.dataset.text;
+    WORD_INPUT.value = '';
+    if (JSON.parse(localStorage.isStart) === true) {
+      WORD_INPUT.classList.remove('none');
+      WORD_TRANSLATION.classList.add('none');
+    } else {
+      WORD_INPUT.classList.add('none');
+      WORD_TRANSLATION.classList.remove('none');
+    }
+  },
+
+  disableCardClick: () => {
+    const CARDS = document.querySelectorAll('.item');
+    if (JSON.parse(localStorage.isStart) === true) {
+      CARDS.forEach((item) => {
+        const card = item;
+        card.style.pointerEvents = 'none';
+        card.classList.remove('activeItem');
+      });
+    } else {
+      CARDS.forEach((item) => {
+        const card = item;
+        card.style.pointerEvents = 'auto';
+      });
+    }
   },
 };
 
