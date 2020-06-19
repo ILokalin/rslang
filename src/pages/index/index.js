@@ -1,24 +1,44 @@
 import './index.scss';
-// import { AuthPopup } from 'Components/AuthPopup';
 import { ServerAPI } from 'Service/ServerAPI';
 
 require.context('Src', true, /\.(png|svg|jpg|gif|mp3)$/);
 
-const serverAPI = new ServerAPI();
-const titleUser = document.querySelector('.title');
+const serverAPI = new ServerAPI;
+const titleUser = document.querySelector('.page__title');
+const reportLine = document.querySelector('.page__report')
+const loginButton = document.querySelector('.page__login-button');
 
- serverAPI.getUser().then(
-  (userInfo) => {
-    console.log('We have user', userInfo);
-    titleUser.innerText += ` ${  userInfo}`;
-  },
-  (errorStatus) => {
-    console.log('User canceled');
-    titleUser.innerText += ` Incognito`;
-  }
-)
+const whoIsGameFor = () => {
+  serverAPI.getUser().then(
+    (userSettings) => {
+      console.log('We have user', userSettings.name);
+      titleUser.innerText = `Select game ${userSettings.name}`;
 
-// AuthPopup();
+      loginButton.innerText = 'LogOut';
+      loginButton.removeEventListener('click', whoIsGameFor);
+      loginButton.addEventListener('click', userLogout);
+    },
+    (errorStatus) => {
+      console.log('User canceled');
+      titleUser.innerText += ` for Mr. Incognito`;
+      reportLine.innerText = errorStatus.message;
+    }
+  )
+}
+
+const userLogout = () => {
+  serverAPI.logoutUser();
+
+  loginButton.removeEventListener('click', userLogout);
+  loginButton.addEventListener('click', whoIsGameFor);
+
+  titleUser.innerText = 'Select game...';
+  loginButton.innerText = 'LogIn';
+}
+
+loginButton.addEventListener('click', whoIsGameFor);
+whoIsGameFor();
+
 
 // eslint-disable-next-line no-console
 console.log(
