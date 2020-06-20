@@ -5,7 +5,7 @@ const API_SETTINGS = 'settings';
 const API_SIGNIN = 'signin';
 const API_WORDS = 'words';
 
-export class ServerAPI {
+export class ServerTemp {
 
   logoutUser() {
     localStorage.setItem('token', '');
