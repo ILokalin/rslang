@@ -71,29 +71,29 @@
   
 }
 
-.card-image {
-  height: 50%;
+.card-image img{
+  height: 50%!important;
 }
 
 .img-placeholder {
   display: block;
   background-color: #80cbc4;
   border-radius: 2px 2px 0 0;
-  position: relative;
+  position: absolute;
   left: 0;
   right: 0;
   top: 0;
   bottom: 0;
   width: 100%;
   height: 100%;
+  z-index: -1;
 }
 
-#input_text {
+.card-content .input_text {
   display: inline-block;
-  width: 50px;
-  border: 2px solid #80cbc4;
-  border-radius: 5px;
-  font-size: 2rem;
+  border: 2px solid #80cbc4!important;
+  border-radius: 5px!important;
+  font-size: 2rem!important;
 }
 
 .footer-buttons {
