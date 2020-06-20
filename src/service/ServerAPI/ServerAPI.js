@@ -20,7 +20,6 @@ export class ServerAPI {
       fetch(API_URL + API_WORDS, {
         method: 'GET',
         headers: {
-          Authorization: `Bearer ${localStorage.token}`,
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
