@@ -1,0 +1,100 @@
+.btns {
+  display: flex;
+  margin-bottom: 80px;
+}
+
+.btn {
+  font-size: 24px;
+  font-weight: 300;
+  line-height: 62px;
+
+  display: inline-block;
+  visibility: visible;
+  min-width: 200px;
+  height: 62px;
+  margin: 0 auto;
+  padding: 0 25px;
+  transition: 0.15s;
+  text-align: center;
+  text-decoration: none;
+  color: #fff;
+  border-radius: 4px;
+  background: #00c49d;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1),
+    0 2px 4px 0 rgba(14, 30, 37, 0.12);
+  appearance: none;
+  &:hover {
+    background: #00c2b2 !important;
+  }
+  &:focus {
+    outline: 0;
+  }
+  &:active {
+    outline: 0;
+  }
+}
+
+.activeBtn {
+  transition: 0.15s;
+  color: #fff;
+  background: #009179;
+  &:hover {
+    transition: 0.15s;
+    color: #fff;
+    background: #009179;
+  }
+}
+
+.btn.voice {
+  width: 660px;
+  margin: 0 30px;
+}
+
+.btns-res {
+  margin-bottom: 10px;
+}
+
+.btn-res {
+  font-size: 20px;
+  min-width: 160px;
+  margin: 0;
+  color: rgba(14, 30, 37, 0.7);
+  border: 1px solid rgba(14, 30, 37, 0.7);
+  background: transparent;
+  &:nth-child(1) {
+    margin-right: 40px;
+  }
+  &:hover {
+    background: rgba(60, 70, 97, 0.1);
+  }
+  &:focus {
+    background: rgba(60, 70, 97, 0.1);
+  }
+  &:active {
+    background: rgba(60, 70, 97, 0.1);
+  }
+}
+
+@media only screen and (max-width: 1400px) {
+  .btn.voice {
+    width: 360px;
+  }
+}
+
+@media only screen and (max-width: 1000px) {
+ .btns {
+    flex-direction: column;
+  }
+
+  .restart,
+  .user-speech,
+  .result {
+    margin: 20px;
+  }
+
+  .btn.voice {
+    width: 50vw;
+    margin: 0 20px;
+  }
+
+}

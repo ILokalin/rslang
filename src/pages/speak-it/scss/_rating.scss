@@ -1,0 +1,12 @@
+.score {
+  display: flex;
+  justify-content: flex-end;
+  height: 40px;
+}
+
+.star {
+  width: 40px;
+  height: 40px;
+  background-image: url(../assets/img/star.svg);
+  background-size: 40px 40px;
+}

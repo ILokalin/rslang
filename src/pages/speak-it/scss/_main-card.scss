@@ -1,0 +1,58 @@
+.word {
+  font-size: 22px;
+  margin: 0;
+  padding: 0 5px;
+
+  color: #0e1e25;
+}
+
+.translation {
+  font-size: 22px;
+  min-height: 40px;
+  margin: 0;
+  margin-bottom: 20px;
+  padding: 0 5px;
+  padding: 5px;
+  text-align: center;
+
+  color: #0e1e25;
+  color: rgba(14, 30, 37, 0.7);
+  border-bottom: 1px solid #ced4da;
+}
+
+input[type="text"].word-input {
+  font-size: 20px;
+  font-size: 22px;
+  line-height: 40px;
+
+  display: block;
+  width: 100%;
+  max-width: 1140px;
+  height: 50px;
+  margin: 0 auto;
+  margin-bottom: 30px;
+  padding: 5px 20px;
+  text-align: center;
+  color: rgba(14, 30, 37, 0.7);
+  border: 0;
+  border-bottom: 1px solid rgb(206, 212, 218);
+  background-color: transparent;
+  background-image: url(../assets/img/microphone.svg);
+  background-repeat: no-repeat;
+  background-position: 10px 15px;
+  background-size: 20px;
+  &:focus {
+    outline-color: #009179;
+  }
+
+  &.none {
+    display: none;
+  }
+}
+
+@media only screen and (max-width: 470px) {
+ .img {
+    width: 350px;
+    height: auto;
+  }
+}
