@@ -1,5 +1,5 @@
 import Swiper from 'swiper';
-import ElementGen from 'Src/service/DomGen/DomGen';
+import {ElementGen} from 'Src/service/DomGen/DomGen';
 
 const mySwiper = new Swiper('.swiper-container', {
   slidesPerView: 1,
@@ -21,6 +21,7 @@ const mySwiper = new Swiper('.swiper-container', {
 });
 
 const wordContentUrl = 'https://raw.githubusercontent.com/jules0802/rslang-data/master/'
-const divider = ElementGen('div', 'divider');
+const divider = ElementGen('div', 'divider', null);
 
-export {mySwiper}
+
+export {mySwiper, divider}

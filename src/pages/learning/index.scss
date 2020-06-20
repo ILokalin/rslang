@@ -68,9 +68,17 @@
 
 .swiper-slide {
   margin: 0;
+  background-color: #f1f8e9;
   
 }
 
+.card-content {
+  padding-top: 10px!important;
+}
+
+.card-image{
+  max-height: 45%!important;
+}
 .card-image img{
   height: 50%!important;
 }
@@ -96,7 +104,7 @@
   font-size: 2rem!important;
 }
 
-.footer-buttons {
+.card-action {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
