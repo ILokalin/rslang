@@ -6,10 +6,10 @@ export default class Intro {
     this.el.addEventListener('click', Intro.startButtonClick);
   }
 
-  static startButtonClick(evt) {
+  static startButtonClick(e) {
     INTRO.classList.add('hidden');
     document.body.style.backgroundImage = 'none';
     GAME_CONTAINER.classList.remove('hidden');
-    evt.preventDefault();
+    e.preventDefault();
   }
 }

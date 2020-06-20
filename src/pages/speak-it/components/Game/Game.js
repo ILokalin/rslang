@@ -35,13 +35,13 @@ export default class Game {
     this.createCardPage();
     LEVELS.forEach(this.onLevelClick, this);
     RESTART.addEventListener('click', this.onRestartBtnClick.bind(this));
-    RETURN.addEventListener('click', this.onReturnBtnClick.bind(this));
+    RETURN.addEventListener('click', Utils.onReturnBtnClick);
     NEW_GAME.addEventListener('click', this.onNewGameBtnClick.bind(this));
     RESULTS_BTN.addEventListener('click', this.showResults.bind(this));
     this.recognition = new SpeechRecognitionService(this.props);
   }
 
-  showResults(evt) {
+  showResults(e) {
     RESULTS.classList.remove('hidden');
     ERRORS.innerText = this.props.errors;
     KNOW.innerText = this.props.know;
@@ -54,14 +54,14 @@ export default class Game {
       });
       RESULTS_ERRORS.appendChild(item);
     });
-    this.props.knowArr.forEach((item, i) => {
+    this.props.knowArr.forEach((item) => {
       item.classList.remove('activeItem');
       item.addEventListener('click', () => {
         Utils.playAudio(item.getAttribute('data-audio'));
       });
       RESULTS_KNOW.appendChild(item);
     });
-    evt.preventDefault();
+    e.preventDefault();
   }
 
   onLevelClick(el, index) {
@@ -70,20 +70,15 @@ export default class Game {
     });
   }
 
-  onRestartBtnClick(evt) {
+  onRestartBtnClick(e) {
     this.restartGame();
-    evt.preventDefault();
+    e.preventDefault();
   }
 
-  onReturnBtnClick(evt) {
-    RESULTS.classList.add('hidden');
-    evt.preventDefault();
-  }
-
-  onNewGameBtnClick(evt) {
+  onNewGameBtnClick(e) {
     this.restartGame();
     RESULTS.classList.add('hidden');
-    evt.preventDefault();
+    e.preventDefault();
   }
 
   createCardPage() {

@@ -4,7 +4,7 @@ import book3 from '../data/books/book3';
 import book4 from '../data/books/book4';
 import book5 from '../data/books/book5';
 import book6 from '../data/books/book6';
-import { WORD_TRANSLATION, WORD_INPUT, WORD_IMG, SCORE } from '../data/constants';
+import { WORD_TRANSLATION, WORD_INPUT, WORD_IMG, SCORE, RESULTS } from '../data/constants';
 
 const Utils = {
   getWordsCount: (sentence) => sentence.split(' ').length,
@@ -72,9 +72,15 @@ const Utils = {
     }
   },
 
+  onReturnBtnClick: (e) => {
+    RESULTS.classList.add('hidden');
+    e.preventDefault();
+  },
+
   clearScore: () => {
     SCORE.innerHTML = '';
   },
+
   increaseScore: () => {
     SCORE.insertAdjacentHTML('beforeend', `<div class="star"></div>`);
   },

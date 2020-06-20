@@ -47,7 +47,7 @@ export default class SpeechRecognitionService {
     }
   }
 
-  speakButtonClick() {
+  speakButtonClick(evt) {
     Utils.clearScore();
     localStorage.isStart = !JSON.parse(localStorage.isStart);
     if (JSON.parse(localStorage.isStart)) {
@@ -61,9 +61,9 @@ export default class SpeechRecognitionService {
       SPEAK_BTN.classList.remove('activeBtn');
       SPEAK_BTN.innerText = 'Speak please';
       Utils.resetMainCard();
-      // createTotalScore(mistakes, know, group);
       Utils.disableCardClick();
       Utils.resetCards();
     }
+    evt.preventDefault();
   }
 }
