@@ -88,7 +88,7 @@ export function AuthPopup() {
           popup.reportLine.innerText = 'Please input correct email address';
         }
         if (!PASSWORD_REGEXP.test(popup.password.value)) {
-          popup.reportLine.iinerText = 'Please use correct password format. See below.';
+          popup.reportLine.innerText = 'Please use correct password format. See below.';
         }
       }
     };
