@@ -43,7 +43,7 @@ loginButton.addEventListener('click', whoIsGameFor);
 whoIsGameFor();
 
 const wordsLoad = () => {
-  serverAPI.apiGetWords()
+  serverAPI.getWords({group: 1, page: wordPagesCount++})
     .then(
       (words) => {
         console.log(words);
