@@ -3,6 +3,7 @@ const HtmlWebPackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const webpack = require('webpack');
 
 const ENV = process.env.npm_lifecycle_event;
 const isDev = ENV === 'dev';
@@ -42,6 +43,7 @@ const config = {
   entry: {
     'index':    PATH.source + '/pages/index/index.js',
     'audition': PATH.source + '/pages/audition/index.js',
+    'learning': PATH.source + '/pages/learning/index.js',
     'puzzle':   PATH.source + '/pages/puzzle/index.js',
     'savanna':  PATH.source + '/pages/savanna/index.js',
     'speak-it': PATH.source + '/pages/speak-it/index.js',
@@ -164,6 +166,16 @@ const config = {
       chunks: ['sprint'],
       filename: 'sprint/index.html'
     }),
+    new HtmlWebPackPlugin({
+      template: PATH.source + '/pages/learning/index.html',
+      chunks: ['learning'],
+      filename: 'learning/index.html'
+    }),
+    new webpack.ProvidePlugin({
+      $: 'jquery',
+      jQuery: 'jquery',
+      'window.jQuery': 'jquery'
+    })
   ],
 
   devServer: {
