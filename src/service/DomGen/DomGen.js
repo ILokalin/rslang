@@ -70,7 +70,7 @@ export function DomGen({ name, ...blockStruct }) {
 
 export function ElementGen(tag, className, parent) {
   const element = document.createElement(tag);
-  element.classList.add(className);
+  element.className = className;
 
   if (parent) {
     parent.append(element);
