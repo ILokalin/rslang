@@ -1,6 +1,7 @@
 import { ServerAPI } from 'Service/ServerAPI';
 import Card from './Card';
 import {mySwiper} from './constants';
+import 'materialize-css';
 
 export default class Training {
   constructor(newWordsAmountPerDay, maxWordsPerDay) {
@@ -30,6 +31,7 @@ export default class Training {
         mySwiper.appendSlide(card.cardElem);
       });
       mySwiper.update();
+      M.AutoInit();
     }    
   }
 }
