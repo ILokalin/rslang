@@ -7,6 +7,9 @@ const serverAPI = new ServerAPI;
 const titleUser = document.querySelector('.page__title');
 const reportLine = document.querySelector('.page__report')
 const loginButton = document.querySelector('.page__login-button');
+const wordsButton = document.querySelector('.page__words-button');
+
+let wordPagesCount = 0;
 
 const whoIsGameFor = () => {
   serverAPI.getUser().then(
@@ -38,6 +41,20 @@ const userLogout = () => {
 
 loginButton.addEventListener('click', whoIsGameFor);
 whoIsGameFor();
+
+const wordsLoad = () => {
+  serverAPI.apiGetWords()
+    .then(
+      (words) => {
+        console.log(words);
+      },
+      (rejectReport) => {
+        reportLine.innerText = rejectReport.message;
+      }
+    )
+}
+
+wordsButton.addEventListener('click', wordsLoad);
 
 
 // eslint-disable-next-line no-console
