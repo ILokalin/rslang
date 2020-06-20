@@ -24,4 +24,4 @@ const wordContentUrl = 'https://raw.githubusercontent.com/jules0802/rslang-data/
 const divider = ElementGen('div', 'divider', null);
 
 
-export {mySwiper, divider}
+export {mySwiper, divider, wordContentUrl}

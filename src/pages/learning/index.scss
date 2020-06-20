@@ -69,18 +69,45 @@
 .swiper-slide {
   margin: 0;
   background-color: #f1f8e9;
-  
+}
+
+.word {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px;
+}
+
+.tabs, .tab {
+  height: 30px!important;
+  line-height: 30px!important;
+  overflow: hidden;
 }
 
 .card-content {
-  padding-top: 10px!important;
+  padding: 10px!important;
+  //height: fit-content!important;
+ // overflow: scroll!important;
+
+  & p {
+    display: block;    
+    line-height: 20px;
+   // overflow: hidden;
+   // white-space: nowrap;
+   // text-overflow: ellipsis;
+  }
+
+  & .translation {
+    font-weight: bold;
+    font-size: 1.5rem;
+  }
+
+  & .transcription  {
+    font-weight: bold;
+  }
 }
 
 .card-image{
   max-height: 45%!important;
-}
-.card-image img{
-  height: 50%!important;
 }
 
 .img-placeholder {
@@ -108,8 +135,9 @@
   display: flex;
   justify-content: space-evenly;
   align-items: center;
+  padding: 5px!important;
 
-  & .btn-large {
+  & .btn-small {
     margin: 0 5px; 
   }
 }

@@ -6,7 +6,7 @@ export const measureWordWidth = (word) => {
 }
 
 export const againBtnHandler = () => {
-  
+
 
 };
 
@@ -20,4 +20,12 @@ export const goodBtnHandler = () => {
 
 export const hardBtnHandler = () => {
 
+}
+
+const updateMatrialComponents = () => {
+  M.AutoInit();
+  const sideNavOptions = {
+    edge: 'right',
+  }
+  const sideNav = M.Sidenav.init(document.querySelector('.sidenav'), sideNavOptions);
 }
