@@ -10,4 +10,3 @@ const sideNavOptions = {
 const sideNav = M.Sidenav.init(document.querySelector('.sidenav'), sideNavOptions);
 
 const train = new Training(10, 20);
-train.start();

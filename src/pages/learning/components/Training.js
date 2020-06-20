@@ -1,4 +1,6 @@
 import { ServerAPI } from 'Service/ServerAPI';
+import Card from './Card';
+import {mySwiper} from './constants';
 
 export default class Training {
   constructor(newWordsAmountPerDay, maxWordsPerDay) {
@@ -15,6 +17,7 @@ export default class Training {
     (wordsArray) => {
       console.log(wordsArray);
       this.words = wordsArray;
+      this.start();
       },
     (rejectReport) => {console.log(rejectReport)}
   )
@@ -23,7 +26,7 @@ export default class Training {
   start() {
     if(this.words.length) {
       this.words.forEach((word) => {
-        const card = new Card();
+        const card = new Card(word);
         mySwiper.appendSlide(card.cardElem);
       });
       mySwiper.update();

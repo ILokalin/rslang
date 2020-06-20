@@ -11,20 +11,13 @@ export class ServerAPI {
     localStorage.setItem('token', '');
   }
 
-  getWords(wordsQuery) {
+  getWords({ group = 0, page = 0} = {}) {
     const rejectErrorReport = (errorReport) => {
       reject(errorReport);
     };
 
     return new Promise((resolve, reject) => {
-      fetch(API_URL + API_WORDS, {
-        method: 'GET',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(wordsQuery),
-      })
+      fetch(`${API_URL}${API_WORDS}?group=${group}&page=${page}`)
         .then(
           (rawResponse) => {
             if (!this.isSuccess(rawResponse)) {
@@ -38,7 +31,7 @@ export class ServerAPI {
         })
     })
   }
- 
+  
   checkToken() {
     const { userId, token } = localStorage;
     if (userId && token) {
