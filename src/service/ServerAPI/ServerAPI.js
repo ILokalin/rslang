@@ -5,8 +5,10 @@ const API_URL = 'https://afternoon-falls-25894.herokuapp.com/';
 const API_USERS = 'users';
 const API_SETTINGS = 'settings';
 const API_SIGNIN = 'signin';
+const API_WORDS = 'words';
 
 export class ServerAPI {
+
   logoutUser() {
     localStorage.setItem('token', '');
   }
@@ -93,6 +95,35 @@ export class ServerAPI {
           resolve(response);
         });
     });
+  }
+
+  apiGetWords(wordsQuery) {
+    const rejectErrorReport = (errorReport) => {
+      reject(errorReport);
+    };
+
+    return new Promise((resolve, reject) => {
+      fetch(API_URL + API_WORDS, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${localStorage.token}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(wordsQuery),
+      })
+        .then(
+          (rawResponse) => {
+            if (!this.isSuccess(rawResponse)) {
+              reject(this.packError(rawResponse));
+            }
+            return rawResponse.json();
+          }
+        )
+        .then((response) => {
+          resolve(response);
+        })
+    })
   }
 
   apiUserSettingsGet() {
