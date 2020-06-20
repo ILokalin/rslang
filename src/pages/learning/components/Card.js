@@ -6,14 +6,15 @@ export default class Card {
   constructor(wordState) {
     this.wordState = wordState;
     this.cardElem = ElementGen('div', 'swiper-slide card large');
-    this.cardElem.appendChild(createCardImage());
-    this.cardElem.appendChild(createCardContent());
-    this.cardElem.appendChild(createCardAction());
+    this.cardElem.appendChild(this.createCardImage());
+    this.cardElem.appendChild(this.createCardContent());
+    this.cardElem.appendChild(this.createCardAction());
   }
 
   createCardImage () {
     const imageContainer = ElementGen('div', 'card-image', this.cardElem);
     const image = ElementGen('img', 'image-association', imageContainer);
+    
     image.setAttribute('src', wordContentUrl + this.wordState.image);
     const imagePlaceholder = ElementGen('div', 'img-placeholder', imageContainer);
     return imageContainer;
@@ -43,10 +44,10 @@ export default class Card {
 
   createCardAction() {
     const cardAction = ElementGen('div', 'card-action', this.cardElem);
-    cardAction.appendChild(createFooterButton('again-btn'));
-    cardAction.appendChild(createFooterButton('simple-btn'));
-    cardAction.appendChild(createFooterButton('good-btn'));
-    cardAction.appendChild(createFooterButton('hard-btn'));
+    cardAction.appendChild(this.createFooterButton('again-btn'));
+    cardAction.appendChild(this.createFooterButton('simple-btn'));
+    cardAction.appendChild(this.createFooterButton('good-btn'));
+    cardAction.appendChild(this.createFooterButton('hard-btn'));
     cardAction.addEventListener('click', this.footerBtnsHandler); 
     return cardAction;
   }
@@ -73,7 +74,7 @@ export default class Card {
     const a = ElementGen('a', `${buttonName} waves-effect waves-light btn-large tooltipped`);
     a.dataset.position = 'bottom';
     a.dataset.tooltip = buttonData[buttonName].tooltip;
-    a.insertAdjacentHTML(`<i class="material-icons left">${buttonData[buttonName].icon}</i>`);
+    a.insertAdjacentHTML('afterbegin', `<i class="material-icons left">${buttonData[buttonName].icon}</i>`);
     return a;
   };
 
