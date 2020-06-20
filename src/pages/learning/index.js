@@ -22,3 +22,9 @@ const swiper = new Swiper('.swiper-container', {
     nextSlideMessage: 'Next slide',
   },
 });
+
+const options = {
+  edge: 'right',
+}
+
+var sideNav = M.Sidenav.init(document.querySelector('.sidenav'), options);
