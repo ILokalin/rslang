@@ -29,6 +29,10 @@ body {
   background-size: cover;
 }
 
+.results {
+  top: 80px;
+}
+
 .title {
   font-size: 40px;
   margin: -100px auto 40px;
@@ -136,7 +140,7 @@ body {
 .star {
   width: 40px;
   height: 40px;
- // background-image: url(../assets/img/star.svg);
+  background-image: url(../assets/img/star.svg);
   background-size: 40px 40px;
 }
 
@@ -312,8 +316,8 @@ body {
 
 .results-container {
   width: 100%;
-  max-width: 780px;
-  min-height: 600px;
+  max-width: 700px;
+  min-height: 770px;
   padding: 40px 100px;
   text-align: left;
   background-color: #fff;
@@ -369,7 +373,6 @@ body {
 .btn-res {
   margin: 0;
   font-size: 20px;
-  padding: 10px 15px;
   min-width: 160px;
   color: rgba(14, 30, 37, .7);
   background: transparent;

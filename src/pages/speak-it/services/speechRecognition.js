@@ -1,5 +1,5 @@
 import Utils from './utils';
-import { SPEAK_BTN, WORD_INPUT, WORD_IMG, RESULTS } from '../data/constants';
+import { SPEAK_BTN, WORD_INPUT, WORD_IMG, RESULTS_BTN } from '../data/constants';
 
 export default class SpeechRecognitionService {
   constructor(props) {
@@ -27,7 +27,7 @@ export default class SpeechRecognitionService {
       .map((result) => result[0])
       .map((result) => result.transcript);
     WORD_INPUT.value = String(transcript).trim().toLowerCase();
-    const CARDS = document.querySelectorAll('.item');
+    const CARDS = document.querySelectorAll('.container .item');
     CARDS.forEach(this.checkResults, this);
   }
 
@@ -39,14 +39,16 @@ export default class SpeechRecognitionService {
         this.props.errors -= 1;
         card.classList.add('activeItem');
         WORD_IMG.src = `${card.getAttribute('data-img')}`;
-        if (this.props.knowArr.length > 10) {
-          RESULTS.classList.remove('hidden');
+        Utils.increaseScore();
+        if (this.props.knowArr.length === 1) {
+          RESULTS_BTN.click();
         }
       }
     }
   }
 
   speakButtonClick() {
+    Utils.clearScore();
     localStorage.isStart = !JSON.parse(localStorage.isStart);
     if (JSON.parse(localStorage.isStart)) {
       this.startRecording();

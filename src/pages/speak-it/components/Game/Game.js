@@ -13,6 +13,10 @@ import {
   RESULTS,
   RESULTS_BTN,
   NEW_GAME,
+  ERRORS,
+  RESULTS_ERRORS,
+  KNOW,
+  RESULTS_KNOW,
 } from '../../data/constants';
 
 export default class Game {
@@ -29,11 +33,7 @@ export default class Game {
     Utils.resetMainCard();
     this.cards = CARDS_ITEMS;
     this.createCardPage();
-    LEVELS.forEach((el, index) => {
-      el.addEventListener('click', () => {
-        this.levelClicked(el, index);
-      });
-    });
+    LEVELS.forEach(this.onLevelClick, this);
     RESTART.addEventListener('click', this.onRestartBtnClick.bind(this));
     RETURN.addEventListener('click', this.onReturnBtnClick.bind(this));
     NEW_GAME.addEventListener('click', this.onNewGameBtnClick.bind(this));
@@ -43,7 +43,31 @@ export default class Game {
 
   showResults(evt) {
     RESULTS.classList.remove('hidden');
+    ERRORS.innerText = this.props.errors;
+    KNOW.innerText = this.props.know;
+    RESULTS_ERRORS.innerHTML = '';
+    RESULTS_KNOW.innerHTML = '';
+    this.props.errorsArr.forEach((item) => {
+      item.classList.remove('activeItem');
+      item.addEventListener('click', () => {
+        Utils.playAudio(item.getAttribute('data-audio'));
+      });
+      RESULTS_ERRORS.appendChild(item);
+    });
+    this.props.knowArr.forEach((item, i) => {
+      item.classList.remove('activeItem');
+      item.addEventListener('click', () => {
+        Utils.playAudio(item.getAttribute('data-audio'));
+      });
+      RESULTS_KNOW.appendChild(item);
+    });
     evt.preventDefault();
+  }
+
+  onLevelClick(el, index) {
+    el.addEventListener('click', () => {
+      this.levelClicked(el, index);
+    });
   }
 
   onRestartBtnClick(evt) {
@@ -63,18 +87,20 @@ export default class Game {
   }
 
   createCardPage() {
+    this.props.errorsArr = [];
+    this.props.errorsArr.length = 0;
     const wordsData = Utils.getWordsForRound(this.level, this.round);
-    wordsData.forEach((item, index) => { this.createCard(item, index); }, this);
+    wordsData.forEach(this.createCard.bind(this));
     Utils.disableCardClick();
   }
 
   restartGame() {
+    Utils.clearScore();
     Utils.resetCards();
     this.props.errors = ERRORS_MAX_COUNT;
     this.props.know = 0;
-    this.props.errorsArr = [];
-    this.props.knowArr = [];
-    const CARDS = document.querySelectorAll('.item');
+    this.clearStatistics();
+    const CARDS = document.querySelectorAll('.container .item');
     CARDS.forEach(this.prepareStatisticsContent, this);
     Utils.resetMainCard();
   }
@@ -84,9 +110,15 @@ export default class Game {
     this.props.errorsArr.push(cln);
   }
 
-  levelClicked(el, index) {
+  clearStatistics() {
     this.props.errorsArr = [];
     this.props.knowArr = [];
+    this.props.errorsArr.length = 0;
+    this.props.knowArr.length = 0;
+  }
+
+  levelClicked(el, index) {
+    this.clearStatistics();
     this.restartGame();
     LEVELS.forEach((item) => item.classList.remove('activePoint'));
     el.classList.add('activePoint');

@@ -4,7 +4,7 @@ import book3 from '../data/books/book3';
 import book4 from '../data/books/book4';
 import book5 from '../data/books/book5';
 import book6 from '../data/books/book6';
-import { WORD_TRANSLATION, WORD_INPUT, WORD_IMG } from '../data/constants';
+import { WORD_TRANSLATION, WORD_INPUT, WORD_IMG, SCORE } from '../data/constants';
 
 const Utils = {
   getWordsCount: (sentence) => sentence.split(' ').length,
@@ -39,7 +39,7 @@ const Utils = {
   },
 
   resetCards: () => {
-    const CARDS = document.querySelectorAll('.item');
+    const CARDS = document.querySelectorAll('.container .item');
     CARDS.forEach((card) => card.classList.remove('activeItem'));
   },
 
@@ -57,7 +57,7 @@ const Utils = {
   },
 
   disableCardClick: () => {
-    const CARDS = document.querySelectorAll('.item');
+    const CARDS = document.querySelectorAll('.container .item');
     if (JSON.parse(localStorage.isStart) === true) {
       CARDS.forEach((item) => {
         const card = item;
@@ -71,6 +71,14 @@ const Utils = {
       });
     }
   },
+
+  clearScore: () => {
+    SCORE.innerHTML = '';
+  },
+  increaseScore: () => {
+    SCORE.insertAdjacentHTML('beforeend', `<div class="star"></div>`);
+  },
+
 };
 
 export default Utils;

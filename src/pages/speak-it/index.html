@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width = device-width, initial-scale=1" />
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&amp;display=swap" rel="stylesheet" />
     <title>SpeakIt</title>
     <link rel="icon" href="http://icons.iconarchive.com/icons/cjdowner/cryptocurrency/256/ICON-icon.png" />
 </head>
@@ -16,7 +15,7 @@
             <br />
             Click on the button and speak the words into the microphone.
         </p>
-        <a href="#" class="btn intro-btn">Start</a>
+        <a href="#" class="btn intro-btn cyan darken-1">Start</a>
     </div>
     <div class="container hidden">
         <div class="res">
@@ -32,17 +31,18 @@
         </div>
         <div class="images">
             <img class="img word-img" src="./assets/img/blank.jpg" data-src="../img/blank.jpg" alt="" />
-            <input type="text" class="input none" readonly="" />
+            <p class="translation" data-text="перевод"></p>
+            <input type="text" class="word-input none" readonly="" />
         </div>
         <div class="items"></div>
         <div class="btns">
-            <a href="#" class="btn restart">
+            <a href="#" class="btn restart cyan darken-1">
                 Restart
             </a>
-            <a href="#" class="btn voice user-speech voice-active">
+            <a href="#" class="btn voice user-speech cyan darken-1">
                 Speak please
             </a>
-            <a href="#" class="btn result">
+            <a href="#" class="btn result cyan darken-1">
                 Results
             </a>
         </div>
@@ -56,7 +56,7 @@
             <div class="errors-item"></div>
             <p class="success">
                 Знаю
-                <span class="succes-num">0</span>
+                <span class="success-num">0</span>
             </p>
             <div class="success-item"></div>
             <div class="btns btns-res">
@@ -69,7 +69,6 @@
             </div>
         </div>
     </div>
-    <audio class="audio"></audio>
 </main>
 </body>
 </html>

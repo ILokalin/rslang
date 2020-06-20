@@ -15,10 +15,10 @@ const RESULTS_BTN = document.querySelector('.result');
 const RESULTS = document.querySelector('.results');
 const RETURN = document.querySelector('.return');
 const NEW_GAME = document.querySelector('.new-game');
-const WIN = document.querySelector('.win-wrapper');
-const RESULTS_WINDOW = document.querySelector('.results');
-const RESULTS_ERRORS = document.querySelector('.errors');
-const RESULTS_KNOW = document.querySelector('.success');
+const ERRORS = document.querySelector('.errors-num');
+const KNOW = document.querySelector('.success-num');
+const RESULTS_ERRORS = document.querySelector('.errors-item');
+const RESULTS_KNOW = document.querySelector('.success-item');
 const ERRORS_MAX_COUNT = 10;
 
 export {
@@ -27,6 +27,7 @@ export {
   GAME_CONTAINER,
   CARDS_ITEMS,
   LEVELS,
+  SCORE,
   ERRORS_MAX_COUNT,
   WORD_IMG,
   WORD_TRANSLATION,
@@ -37,4 +38,8 @@ export {
   RESTART,
   RETURN,
   NEW_GAME,
+  ERRORS,
+  RESULTS_ERRORS,
+  KNOW,
+  RESULTS_KNOW,
 };
