@@ -1,5 +1,4 @@
 import { AuthPopup } from 'Components/AuthPopup';
-import { reportMessages } from './reportMessages';
 import { 
   openAuthPopup,
   closeAuthPopup, 
@@ -14,6 +13,7 @@ import {
   apiUserCreate,
   apiUserSignIn,
 } from 'Service/ServerAPI';
+import { reportMessages } from './reportMessages';
 
 const CANCEL_USER = {
   status: 0,
@@ -35,12 +35,10 @@ export class DataController {
       if (state) {
         showAuthReport('Please input email & password');
         this.isAuthInProgress = true;
-      } else {
-        if (this.isAuthInProgress) {
+      } else if (this.isAuthInProgress) {
           this.isAuthInProgress = false;
           this.reject(CANCEL_USER);
         }
-      }
     })
   }
 

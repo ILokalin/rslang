@@ -8,8 +8,7 @@ import {
 import { 
   PASSWORD_REGEXP,
   EMAIL_REGEXP,
-  CANCEL_USER
-} from './const.js';
+} from './const';
 
 export class AuthPopup {
   constructor() {

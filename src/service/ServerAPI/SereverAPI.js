@@ -4,18 +4,8 @@ function isSuccess(response) {
     return response.status >= 200 && response.status < 300;
 }
 
-function packError(response) {
-  return {
-    status: response.status,
-    message: response.statusText,
-  };
-}
 
 export function apiGetWords({ group, page }) {
-  const rejectErrorReport = (errorReport) => {
-    reject(errorReport);
-  };
-
   return new Promise((resolve, reject) => {
     fetch(`${api.url}${api.words}?group=${group}&page=${page}`)
       .then(

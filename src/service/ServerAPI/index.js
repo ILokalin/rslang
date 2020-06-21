@@ -4,4 +4,4 @@ export {
   apiUserSettingsGet,
   apiUserSettingsPut,
   apiGetWords
-} from './SereverAPI.js';
+} from './SereverAPI';

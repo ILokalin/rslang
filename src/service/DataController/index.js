@@ -1,1 +1,1 @@
-export { DataController } from './DataController.js';
+export { DataController } from './DataController';
