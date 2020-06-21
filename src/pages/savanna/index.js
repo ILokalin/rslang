@@ -1,13 +1,18 @@
 import './index.scss';
-import Helper from './js/helper/helper';
-
-const cards = Helper.getRandomRoundCards(1, 1);
-console.log(cards);
-const wordsToGuess = Helper.getWordsToGuess(cards);
-
-console.log(wordsToGuess);
+import startGame from './js/game/game';
+import { STARTBTN, RESTARTBTN, GAMEDATA } from './js/helper/constants';
 
 
+STARTBTN.addEventListener('click', () => startGame());
+RESTARTBTN.addEventListener('click', () => {
+    GAMEDATA.currentCards = [];
+    GAMEDATA.currentLevel = 1;
+    GAMEDATA.currentRound = 1;
+    GAMEDATA.health = 5;
+    GAMEDATA.roundStreak = 0;
+    console.log('ГЛОБАЛЬНЫЙ ОБЪЕКТ ПОСЛЕ РЕСТАРТА', GAMEDATA);
+    startGame();
+})
 
 
 
