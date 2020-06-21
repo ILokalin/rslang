@@ -21,6 +21,15 @@
     "type": "git",
     "url": ""
   },
+  "jest": {
+    "moduleDirectories": [
+      "node_modules"
+    ],
+    "moduleNameMapper": {
+      "^Components(.*)$": "<rootDir>/src/components$1",
+      "^Service(.*)$": "<rootDir>/src/service$1"
+    }
+  },
   "devDependencies": {
     "@babel/core": "^7.6.0",
     "@babel/preset-env": "^7.6.0",
@@ -58,6 +67,9 @@
     "core-js": "^3.4.7",
     "effector-react": "^20.7.4",
     "materialize-css": "^1.0.0-rc.2",
-    "normalize.css": "^8.0.1"
+    "normalize.css": "^8.0.1",
+    "swiper": "^5.4.5",
+    "jquery": "^3.5.0",
+    "node-fetch": "^2.6.0"
   }
 }
