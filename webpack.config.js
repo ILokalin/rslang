@@ -46,6 +46,7 @@ const config = {
     'savanna':  PATH.source + '/pages/savanna/index.js',
     'speak-it': PATH.source + '/pages/speak-it/index.js',
     'sprint':   PATH.source + '/pages/sprint/index.js',
+    'server-demo': PATH.source + '/pages/serverDemo/index.js',
   },
   output: {
     path: PATH.dist,
@@ -164,6 +165,11 @@ const config = {
       chunks: ['sprint'],
       filename: 'sprint/index.html'
     }),
+    new HtmlWebPackPlugin({
+      template: PATH.source + '/pages/serverDemo/index.html',
+      chunks: ['server-demo'],
+      filename: 'server-demo/index.html'
+    })
   ],
 
   devServer: {
