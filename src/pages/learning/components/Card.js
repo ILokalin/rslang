@@ -1,5 +1,8 @@
+/* eslint-disable no-param-reassign */
+/* eslint-disable class-methods-use-this */
 import {ElementGen} from 'Src/service/DomGen/DomGen';
-import {measureWordWidth} from './helpers';
+import {measureWordWidth, hideGuessingWordInSentence, showGuessingWordInSentence, 
+setProgressbarToCurrentPosition, againBtnAct} from './helpers';
 import {mySwiper, wordContentUrl} from './constants';
 
 export default class Card {
@@ -8,12 +11,16 @@ export default class Card {
     this.cardElem = ElementGen('div', 'swiper-slide card large col s12 m6');
     this.cardElem.appendChild(this.createCardImage());
     this.cardElem.appendChild(this.createCardContent());
+    this.createAudio();
   }
 
   createCardImage () {
     const imageContainer = ElementGen('div', 'card-image', this.cardElem);
-    const image = ElementGen('img', 'image-association', imageContainer);
+    const image = ElementGen('img', 'image-association scale-transition', imageContainer);
     image.setAttribute('src', wordContentUrl + this.wordState.image);
+    image.onload = () => {
+      image.classList.add('scale-in');
+    }
     const imagePlaceholder = ElementGen('div', 'img-placeholder', imageContainer);
     return imageContainer;
   }
@@ -21,10 +28,16 @@ export default class Card {
   createCardContent () {
     const cardContent = ElementGen('div', 'card-content', this.cardElem);    
 
-    const input = ElementGen('input', 'input_text', cardContent);
+    const form = ElementGen('form', 'form', cardContent);
+
+    const input = ElementGen('input', 'input_text', form);
     input.setAttribute('type', 'text');
-    input.setAttribute('autofocus', 'true');
-    input.setAttribute('style', `width: ${measureWordWidth(this.wordState.word)}px;`);
+    input.setAttribute('style', `width: ${measureWordWidth(this.wordState.word) + 2}px;`);
+    input.dataset.word = this.wordState.word;
+    input.dataset.tryCount = 0;
+
+    const result =  ElementGen('div', 'result', form);
+    result.setAttribute('style', `width: ${measureWordWidth(this.wordState.word) + 2}px;`);
 
     const div = ElementGen('div', 'word', cardContent);
 
@@ -37,24 +50,24 @@ export default class Card {
     const cardTabs = this.createCardTabs();
     cardContent.appendChild(cardTabs);
 
-    const tabsContent = ElementGen('div', 'card-content grey lighten-4', cardContent)
+    const tabsContent = ElementGen('div', 'card-content white', cardContent)
 
     const explain = ElementGen('div', 'explain-container', tabsContent);  
     explain.setAttribute('id', `explain-${this.wordState.word}`);
     
     const explanation = ElementGen('p', 'explanation', explain);    
     explanation.innerHTML = this.wordState.textMeaning;
-    this.hideGuessingWordInSentence(explanation);
+    hideGuessingWordInSentence(explanation);
 
     const explanationTranslation = ElementGen('p', 'explanation-translation', explain);
     explanationTranslation.innerHTML = this.wordState.textMeaningTranslate;
 
     const example = ElementGen('div', 'example-container', tabsContent);  
-    example.setAttribute('id', `example-${this.wordState.word}`);
-    this.hideGuessingWordInSentence(example);
+    example.setAttribute('id', `example-${this.wordState.word}`);   
 
     const exampleSent = ElementGen('p', 'example', example);
     exampleSent.innerHTML = this.wordState.textExample;
+    hideGuessingWordInSentence(exampleSent);
 
     const exampleTranslation = ElementGen('p', 'example-translation', example); 
     exampleTranslation.innerHTML = this.wordState.textExampleTranslate;
@@ -85,10 +98,11 @@ export default class Card {
     return cardAction;
   }
 
+  // eslint-disable-next-line class-methods-use-this
   createFooterButton (buttonName) {
     const buttonData = {
       'again-btn': {
-        icon: 'autorenew',
+        icon: 'plus_one',
         tooltip: 'Снова',
       },
       'hard-btn': {
@@ -113,9 +127,7 @@ export default class Card {
 
   footerBtnsHandler(event) {
     if(event.target.closest('.again-btn')) {
-      //TODO 
-      mySwiper.appendSlide(this.cardElem);
-      mySwiper.update();
+      againBtnAct();     
     }
     if(event.target.closest('.simple-btn')) {
       //TODO send the word to backend w difficulty 'simple'      
@@ -126,27 +138,16 @@ export default class Card {
     if(event.target.closest('.hard-btn')) {
       //TODO send the word to backend w difficulty 'hard'       
     }
+  } 
+
+  createAudio () {
+    const audio = ElementGen('audio', `audio`, this.cardElem)
+    this.setAudio(audio);
   }
 
-  hideGuessingWordInSentence (element) {
-    if (element.classList.contains('explanation')) {
-      element.querySelector('i').style.color = 'white';
-      element.querySelector('i').style.borderBottom = '1px solid black';
-    }
-    if (element.classList.contains('example')) {
-      element.querySelector('b').style.color = 'white';
-      element.querySelector('b').style.borderBottom = '1px solid black';
-    }
-  }
-
-  showGuessingWordInSentence (element) {
-    if (element.classList.contains('explanation')) {
-      element.querySelector('i').style.color = 'black';
-      element.querySelector('i').style.borderBottom = 'none';
-    }
-    if (element.classList.contains('example')) {
-      element.querySelector('b').style.color = 'black';
-      element.querySelector('b').style.borderBottom = 'none';
-    }
+  setAudio(audio) {
+    audio.dataset.wordPronounce = wordContentUrl + this.wordState.audio;
+    audio.dataset.explanationPronounce = wordContentUrl + this.wordState.audioMeaning;
+    audio.dataset.examplePronounce = wordContentUrl + this.wordState.audioExample;
   }
 }

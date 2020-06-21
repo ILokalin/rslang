@@ -1,5 +1,9 @@
 import Swiper from 'swiper';
 import {ElementGen} from 'Src/service/DomGen/DomGen';
+import {setProgressbarToCurrentPosition} from './helpers';
+import 'materialize-css';
+
+
 
 const mySwiper = new Swiper('.swiper-container', {
   slidesPerView: 1,
@@ -12,16 +16,21 @@ const mySwiper = new Swiper('.swiper-container', {
   },
   navigation: {
     nextEl: '.swiper-button-next',
-    prevEl: '.swiper-button-prev',
+    //prevEl: '.swiper-button-prev',
   },
    a11y: {
-    prevSlideMessage: 'Previous slide',
-    nextSlideMessage: 'Next slide',
+    prevSlideMessage: 'Previous card',
+    nextSlideMessage: 'Next card',
   },
+  on: {
+    slideChange: function () {
+      this.train.playNextCard();
+      setProgressbarToCurrentPosition();
+    }
+  }
 });
-
+mySwiper.allowTouchMove = false;
 const wordContentUrl = 'https://raw.githubusercontent.com/jules0802/rslang-data/master/'
-const divider = ElementGen('div', 'divider', null);
+const progressBar = document.querySelector('.progress');
 
-
-export {mySwiper, divider, wordContentUrl}
+export { mySwiper, wordContentUrl, progressBar}
