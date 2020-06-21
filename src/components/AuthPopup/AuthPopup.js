@@ -1,105 +1,96 @@
 import { DomGen } from 'Service/DomGen';
-import { ServerAPI } from 'Service/ServerAPI';
+import {
+  closeAuthPopup,
+  authPopupState,
+  setUserData,
+  authReportStore,
+} from 'Service/AppState';
+import { 
+  PASSWORD_REGEXP,
+  EMAIL_REGEXP,
+  CANCEL_USER
+} from './const.js';
 
-const PASSWORD_REGEXP = /(?=.*[0-9])(?=.*[!@#$%^&+_*])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&_*]{8,}/;
-const EMAIL_REGEXP = /.+@.+\..+/;
-const CANCEL_USER = {
-  status: 0,
-  message: 'User refused',
-  name: 'Unknown'
-}
+export class AuthPopup {
+  constructor() {
+    this.sendUserData = this.sendUserData.bind(this);
 
-export function AuthPopup() {
-  const { body } = document;
-  const serverAPI = new ServerAPI;
+    this.body = document.body;
 
-  const popup = DomGen({
-    name: 'auth-popup',
-    tag: 'div',
-    children: [
-      {
-        tag: 'div',
-        className: 'menu',
-        children: [
-          { tag: 'h2', className: 'title', innerText: 'Login/Register'},
-          { tag: 'p', className: 'describe', innerText: 'Please enter email and password', isAccess: 'reportLine'},
-          { tag: 'input', className: 'input', placeholder: 'email', isAccess: 'email' },
-          { tag: 'input', className: 'input', type: 'password', placeholder: 'password', isAccess: 'password' },
-          { tag: 'p', className: 'password-hint', innerText: 'the password must contain at least one lowercase character, one uppercase, one special character, one digit'},
-          {
-            tag: 'div', className: 'buttons-line', children: [
-              { tag: 'button', className: 'button', innerText: 'Login', isAccess: 'login' },
-              { tag: 'button', className: 'button', innerText: 'Register', value: 'register', isAccess: 'register', disabled: true},
-              { tag: 'button', className: 'button', innerText: 'Cancel', isAccess: 'cancel' },
-            ]
-          }
-        ],
-      },
-    ],
-  });
+    this.popup = DomGen({
+      name: 'auth-popup',
+      tag: 'div',
+      children: [
+        {
+          tag: 'div',
+          className: 'menu',
+          children: [
+            { tag: 'h2', className: 'title', innerText: 'Login/Register'},
+            { tag: 'p', className: 'describe', isAccess: 'reportLine'},
+            { tag: 'input', className: 'input', placeholder: 'email', isAccess: 'email' },
+            { tag: 'input', className: 'input', type: 'password', placeholder: 'password', isAccess: 'password' },
+            { tag: 'p', className: 'password-hint', innerText: 'the password must contain at least one lowercase character, one uppercase, one special character, one digit'},
+            {
+              tag: 'div', className: 'buttons-line', children: [
+                { tag: 'button', className: 'button', innerText: 'Login', isAccess: 'login' },
+                { tag: 'button', className: 'button', innerText: 'Register', value: 'register', isAccess: 'register', disabled: true},
+                { tag: 'button', className: 'button', innerText: 'Cancel', isAccess: 'cancel' },
+              ]
+            }
+          ],
+        },
+      ],
+    });
 
-  body.append(popup.block);
+    authReportStore.watch((reportMessage) => {
+      this.popup.reportLine.innerText = reportMessage;
+    })
 
-  const removePopup = () => {
-    popup.block.remove();
-  };
+    this.popup.cancel.addEventListener('click', this.cancelAuth);
+    this.popup.login.addEventListener('click', this.sendUserData);
+    this.popup.register.addEventListener('click', this.showRegisterForm);
 
-  return new Promise((resolve, reject) => {
-    const tryLogin = ({ target }) => {
-      const isRegister = target.value === 'register';
-      const isValidate = EMAIL_REGEXP.test(popup.email.value) && PASSWORD_REGEXP.test(popup.password.value);
-      const user = {
-        email: popup.email.value,
-        password: popup.password.value,
-      }
-      
-      if (isValidate) {
-        if (isRegister) {
-          serverAPI.apiUserCreate(user)
-            .then(
-              () => {
-                return serverAPI.apiUserSignIn(user); 
-              }
-            )
-            .then(
-              () => {
-                removePopup();
-                resolve();
-              },
-              (rejectReport) => {
-                isErrorEmailOrPassword = rejectReport === 422 || rejectReport === 403;
-                popup.reportLine.innerText = isErrorEmailOrPassword ? 'Incorrect e-mail or password' : rejectReport.status;
-              }
-            )
-        } else {
-          serverAPI.apiUserSignIn(user)
-            .then(
-              () => {
-                removePopup();
-                resolve();
-              },
-              (rejectReport) => {
-                popup.reportLine.innerText = rejectReport.status === 403 ? 'Incorrect e-mail or password' : rejectReport.message;
-              }
-            )
-        }
+    authPopupState.watch((state) => {
+      if (state) {
+        this.openPopup();
       } else {
-        if (!EMAIL_REGEXP.test(popup.email.value)) {
-          popup.reportLine.innerText = 'Please input correct email address';
-        }
-        if (!PASSWORD_REGEXP.test(popup.password.value)) {
-          popup.reportLine.innerText = 'Please use correct password format. See below.';
-        }
+        this.closePopup();
       }
-    };
+    })
+  }
+  
+  openPopup() {
+    this.body.append(this.popup.block);
+  }
 
-    const cancelAuth = () => {
-      removePopup();
-      reject(CANCEL_USER);
-    };
+  closePopup() {
+    this.popup.block.remove();
+  }
 
-    popup.login.addEventListener('click', tryLogin);
-    // popup.register.addEventListener('click', tryLogin);
-    popup.cancel.addEventListener('click', cancelAuth);
-  });
+  cancelAuth() {
+    closeAuthPopup()
+  }
+
+  sendUserData() {
+    const isValidate = EMAIL_REGEXP.test(this.popup.email.value) && PASSWORD_REGEXP.test(this.popup.password.value);
+    const user = {
+      email: this.popup.email.value,
+      password: this.popup.password.value,
+    }
+
+    if (isValidate) {
+      setUserData(user);
+    } else {
+      if (!EMAIL_REGEXP.test(this.popup.email.value)) {
+          this.popup.reportLine.innerText = 'Please input correct email address';
+        }
+        if (!PASSWORD_REGEXP.test(this.popup.password.value)) {
+          this.popup.reportLine.innerText = 'Please use correct password format. See below.';
+        }
+    }
+  }
+
+  showRegisterForm() {
+    this.popup.reportLine.innerText = 'development in progress'
+  }
 }
