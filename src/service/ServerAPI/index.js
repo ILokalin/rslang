@@ -3,5 +3,5 @@ export {
   apiUserSignIn,
   apiUserSettingsGet,
   apiUserSettingsPut,
-  apiGetWords
+  apiGetWords,
 } from './SereverAPI';

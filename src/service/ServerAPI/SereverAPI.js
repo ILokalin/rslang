@@ -1,29 +1,26 @@
 import { api } from './apiPath';
 
 function isSuccess(response) {
-    return response.status >= 200 && response.status < 300;
+  return response.status >= 200 && response.status < 300;
 }
-
 
 export function apiGetWords({ group, page }) {
   return new Promise((resolve, reject) => {
     fetch(`${api.url}${api.words}?group=${group}&page=${page}`)
-      .then(
-        (rawResponse) => {
-          if (isSuccess(rawResponse)) {
-            return rawResponse.json();
-          }
-          const error = new Error(rawResponse.statusText);
-          error.master = 'words';
-          error.code = rawResponse.status;
-          throw error;
+      .then((rawResponse) => {
+        if (isSuccess(rawResponse)) {
+          return rawResponse.json();
         }
-      )
+        const error = new Error(rawResponse.statusText);
+        error.master = 'words';
+        error.code = rawResponse.status;
+        throw error;
+      })
       .then((response) => {
         resolve(response);
       })
       .catch((errorReport) => reject(errorReport));
-  })
+  });
 }
 
 export function apiUserSettingsPut(store) {
@@ -127,14 +124,12 @@ export function apiUserSignIn(user) {
         error.code = rawResponse.status;
         throw error;
       })
-      .then(
-        (response) => {
-          const { userId, token } = response;
-          localStorage.setItem('userId', userId);
-          localStorage.setItem('token', token);
-          resolve(response);
-        }
-      )
+      .then((response) => {
+        const { userId, token } = response;
+        localStorage.setItem('userId', userId);
+        localStorage.setItem('token', token);
+        resolve(response);
+      })
       .catch((errorReport) => reject(errorReport));
   });
 }
