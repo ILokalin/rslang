@@ -1,7 +1,12 @@
+ul:not(.browser-default) {
+  &.points{
+    padding: 20px;
+  }
+}
+
 .points {
   display: flex;
   margin: 0;
-  padding: 15px !important;
 
   list-style: none;
 }

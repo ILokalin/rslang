@@ -4,7 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width = device-width, initial-scale=1" />
     <title>SpeakIt</title>
-    <link rel="icon" href="http://icons.iconarchive.com/icons/cjdowner/cryptocurrency/256/ICON-icon.png" />
 </head>
 <body>
 <nav>
@@ -22,7 +21,10 @@
             <br />
             Click on the button and speak the words into the microphone.
         </p>
-        <a href="#" class="btn btn-large waves-effect waves-light intro-btn blue darken-2 pulse">Start</a>
+        <a href="#" class="btn btn-large waves-effect waves-light intro-btn blue darken-2 pulse">
+            <i class="material-icons right">send</i>
+            Start
+        </a>
     </div>
     <div class="container hidden">
         <div class="res">
@@ -44,13 +46,15 @@
         <div class="items"></div>
         <div class="btns">
             <a href="#" class="btn btn-large restart waves-effect waves-light blue darken-2">Restart</a>
-            <a href="#" class="btn btn-large voice user-speech blue darken-2">Speak please</a>
-            <a href="#" class="btn btn-large result blue darken-2">Results</a>
+            <a href="#" class="btn btn-large waves-effect waves-light voice user-speech blue darken-2">Speak please</a>
+            <a href="#" class="btn btn-large waves-effect waves-light result blue darken-2">Results</a>
         </div>
     </div>
     <div class="results hidden">
-        <div class="results-container">
-            <p class="errors">
+        <table class="results-container responsive-table">
+            <thead></thead>
+            <tbody>
+            <tr><td><p class="errors">
                 Ошибок
                 <span class="errors-num">10</span>
             </p>
@@ -61,10 +65,12 @@
             </p>
             <div class="success-item"></div>
             <div class="btns btns-res">
-                <a href="#" class="btn btn-res return">Return</a>
-                <a href="#" class="btn btn-res new-game">New game</a>
+                <a href="#" class="btn btn-large waves-effect waves-light btn-res return">Return</a>
+                <a href="#" class="btn btn-large waves-effect waves-light btn-res new-game">New game</a>
             </div>
-        </div>
+         </tr>
+            </tbody>
+        </table>
     </div>
 </main>
 </body>

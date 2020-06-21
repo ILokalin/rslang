@@ -17,7 +17,7 @@
 
   color: #0e1e25;
   color: rgba(14, 30, 37, 0.7);
-  border-bottom: 1px solid #ced4da;
+  border-bottom: 1px solid #ffffff;
 }
 
 input[type="text"].word-input {
@@ -35,7 +35,7 @@ input[type="text"].word-input {
   text-align: center;
   color: rgba(14, 30, 37, 0.7);
   border: 0;
-  border-bottom: 1px solid rgb(206, 212, 218);
+  border-bottom: 1px solid #ffffff;
   background-color: transparent;
   background-image: url(../assets/img/microphone.svg);
   background-repeat: no-repeat;
@@ -53,6 +53,13 @@ input[type="text"].word-input {
 @media only screen and (max-width: 470px) {
  .img {
     width: 350px;
+    height: auto;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+ .img {
+    width: 300px;
     height: auto;
   }
 }
