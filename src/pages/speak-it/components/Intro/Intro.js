@@ -8,7 +8,6 @@ export default class Intro {
 
   static startButtonClick(e) {
     INTRO.classList.add('hidden');
-    document.body.style.backgroundImage = 'none';
     GAME_CONTAINER.classList.remove('hidden');
     e.preventDefault();
   }

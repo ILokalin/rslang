@@ -4,28 +4,6 @@
 }
 
 .btn {
-  font-size: 24px;
-  font-weight: 300;
-  line-height: 62px;
-
-  display: inline-block;
-  visibility: visible;
-  min-width: 200px;
-  height: 62px;
-  margin: 0 auto;
-  padding: 0 25px;
-  transition: 0.15s;
-  text-align: center;
-  text-decoration: none;
-  color: #fff;
-  border-radius: 4px;
-  background: #00c49d;
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1),
-    0 2px 4px 0 rgba(14, 30, 37, 0.12);
-  appearance: none;
-  &:hover {
-    background: #00c2b2 !important;
-  }
   &:focus {
     outline: 0;
   }
@@ -37,7 +15,7 @@
 .activeBtn {
   transition: 0.15s;
   color: #fff;
-  background: #009179;
+  background: #90caf9;
   &:hover {
     transition: 0.15s;
     color: #fff;
