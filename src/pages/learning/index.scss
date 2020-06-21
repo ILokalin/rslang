@@ -13,6 +13,13 @@
 
 }
 
+.home {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  @extend .teal-text, .text-lighten-2;
+}
+
 .sidenav-trigger {
   position: absolute;
   top: 20px;
@@ -124,11 +131,38 @@
   z-index: -1;
 }
 
-.card-content .input_text {
+.form {
+  position: relative;
+}
+
+
+
+.result{
+  position: absolute;
+  //top: 235px;
+  left:0;
+ z-index: -2;
+ margin-bottom: 8px;
+}
+
+.correct {
+  @extend .teal-text, .text-darken-3;
+  text-shadow: #e0f2f1 0 0 5px, #e0f2f1 0 0 10px, #e0f2f1 0 0 15px, #b2dfdb 0 0 20px, #80cbc4 0 0 30px, #4db6ac 0 0 40px, #26a69a 0 0 50px, #009688 0 0 75px;
+}
+
+.wrong {
+  @extend .red-text, .text-darken-2;
+  text-shadow: #ffebee 0 0 5px, #ffebee 0 0 10px, #ffebee 0 0 15px, #ffcdd2 0 0 20px, #ef9a9a 0 0 30px, #e57373 0 0 40px, #ef5350 0 0 50px, #f44336 0 0 75px;
+}
+
+.card-content .input_text, .result {
   display: inline-block;
   border: 2px solid #80cbc4!important;
   border-radius: 5px!important;
   font-size: 2rem!important;
+  background-color: white!important;
+  caret-color: #80cbc4;
+  height: 3rem;
 }
 
 .card-action {

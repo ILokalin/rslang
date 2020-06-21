@@ -44,6 +44,7 @@
       </li>
     </ul>
     <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="medium material-icons">insert_chart</i></a>
+    <a href="/index" target="_blank" class="home" ><i class="medium material-icons">home</i></a>
     
   </header>
   <main>
@@ -51,13 +52,26 @@
       <div class="swiper-wrapper">      
       </div>   
     </div>
-    <div class="progress">
-        <div class="determinate tooltipped" data-position="bottom" data-tooltip="70%" style="width: 70%"></div>
+    <div class="progress tooltipped" data-position="bottom" data-tooltip="0%">
+        <div class="determinate" style="width: 0%"></div>
       </div>
       <div class="swiper-pagination"></div>
-      <div class="swiper-button-prev"></div>
+      <!-- <div class="swiper-button-prev"></div> -->
     <div class="swiper-button-next"></div>
-    <audio></audio> 
+    <div class="modal">
+      <div class="modal-content">
+        <h4>Ура! На сегодня все.</h4>
+        <p>Есть еще новые карточки, но дневной лимит исчерпан. 
+        Вы можете увеличить лимит в настройках, но, пожалуйста, имейте ввиду, что чем больше новых карточек вы посмотрите, 
+        тем больше Вам надо будет повторять в ближайшее время. <br>
+        Настройки вы можете найти на главной странице в Меню.<br>
+        Для обучения сверх обычного расписания нажмите кнопку "Учить еще" ниже.</p>
+      </div>
+      <div class="modal-footer">
+        <a href="/index" class="modal-settings-btn modal-close waves-effect waves-green btn-flat"><i class="material-icons">home</i>Главная страница</a>
+        <a href="#!" class="modal-more-btn modal-close waves-effect waves-green btn-flat">Учить еще</a>
+      </div>
+    </div>
   </main>
 </body>
 </html>
