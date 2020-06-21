@@ -1,5 +1,5 @@
 import './index.scss';
-import AuditionGame from './audition'
+import AuditionGame from './js/audition'
 
   require.context('Src', true, /\.(png|svg|jpg|gif|mp3)$/);
 
