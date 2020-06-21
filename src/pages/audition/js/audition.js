@@ -5,6 +5,7 @@ export default class AuditionGame {
     this.user = localStorage.getItem('user') || 'Dick McDickennson';
     this.level = 0;
     this.round = 0;
+    this.correctAnswers = 0;
     this.roundsData = [];
 
     this.startGame();
@@ -144,12 +145,17 @@ export default class AuditionGame {
   }
 
   showAnswer() {
-    const image = document.querySelector('.word-image-element');
-    const word = document.querySelector('.puzzled-word-element');
-    const checkAnswerBtn = document.querySelector('.check-answer-btn');
+    const word = this.roundsData[this.round].wordTranslate;
+    const image = document.querySelector('.current-round > .word-image-element');
+    const puzzledWord = document.querySelector('.current-round > .puzzled-word-element');
+    const checkAnswerBtn = document.querySelector('.current-round > .check-answer-btn');
+    const wordTranslationBlock = document.querySelector('.current-round > .words-translations-block');
+
+    wordTranslationBlock.removeEventListener('click', this.wordClickListener);
 
     image.classList.add('answered');
-    word.classList.add('answered');
+    puzzledWord.classList.add('answered');
+    this.errorWords.push(word);
 
     if (this.round === 9) {
       checkAnswerBtn.innerText = ('Конец игры');
@@ -163,20 +169,24 @@ export default class AuditionGame {
 
   checkAnswer(event) {
     const word = this.roundsData[this.round].wordTranslate;
-    const wordTranslationBlock = document.querySelector('.words-translations-block');
+    const wordTranslationBlock = document.querySelector('.current-round > .words-translations-block');
+
 
     if (event.target.id) {
+      wordTranslationBlock.removeEventListener('click', this.wordClickListener);
+
       if(event.target.id === word) {
         event.target.classList.add('correct');
+        this.showAnswer();
         this.correctWords.push(word);
+        this.correctAnswers += 1;
 
       } else {
         event.target.classList.add('wrong');
+        this.showAnswer();
         this.errorWords.push(word);
       }
     }
-
-    wordTranslationBlock.removeEventListener('click', this.wordClickListener);
   }
 
   startRound() {
@@ -189,11 +199,11 @@ export default class AuditionGame {
     currentRoundPage.classList.remove('current-round');
     currentRoundPage.classList.add('previous-round');
 
+    const nextRoundPage = document.querySelector('.game-wrapper.next-round');
+    nextRoundPage.classList.remove('next-round');
+    nextRoundPage.classList.add('current-round');
 
     if (this.round < 9) {
-      const nextRoundPage = document.querySelector('.game-wrapper.next-round');
-      nextRoundPage.classList.remove('next-round');
-      nextRoundPage.classList.add('current-round');
       this.createNextRoundPage();
     }
 
@@ -210,7 +220,7 @@ export default class AuditionGame {
   }
 
   endGame() {
-    new AuditionGameStatistics (this.correctWords, this.errorWords)
+    new AuditionGameStatistics (this.correctWords, this.errorWords, this.correctAnswers)
   }
 }
 
