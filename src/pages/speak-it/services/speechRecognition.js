@@ -1,5 +1,5 @@
 import Utils from './utils';
-import { SPEAK_BTN, WORD_INPUT, WORD_IMG, RESULTS_BTN } from '../data/constants';
+import { SPEAK_BTN, WORD_INPUT, WORD_IMG, RESULTS_BTN, ERRORS_MAX_COUNT } from '../data/constants';
 
 export default class SpeechRecognitionService {
   constructor(props) {
@@ -40,7 +40,7 @@ export default class SpeechRecognitionService {
         card.classList.add('activeItem');
         WORD_IMG.src = `${card.getAttribute('data-img')}`;
         Utils.increaseScore();
-        if (this.props.knowArr.length === 1) {
+        if (this.props.knowArr.length === ERRORS_MAX_COUNT) {
           RESULTS_BTN.click();
         }
       }
