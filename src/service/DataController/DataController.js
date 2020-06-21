@@ -1,9 +1,9 @@
 import { AuthPopup } from 'Components/AuthPopup';
-import { 
+import {
   openAuthPopup,
-  closeAuthPopup, 
-  authPopupState, 
-  userDateStore, 
+  closeAuthPopup,
+  authPopupState,
+  userDateStore,
   showAuthReport,
 } from 'Service/AppState';
 import {
@@ -18,28 +18,30 @@ import { reportMessages } from './reportMessages';
 const CANCEL_USER = {
   status: 0,
   message: 'User refused',
-  name: 'Unknown'
-}
+  name: 'Unknown',
+};
 
-const authPopup = new AuthPopup;
+const authPopup = new AuthPopup();
 
 export class DataController {
   constructor() {
+    authPopup.init();
+
     userDateStore.watch((userData) => {
       if (this.isAuthInProgress) {
         this.authChainResponsibility(userData);
       }
-    })
+    });
 
     authPopupState.watch((state) => {
       if (state) {
         showAuthReport('Please input email & password');
         this.isAuthInProgress = true;
       } else if (this.isAuthInProgress) {
-          this.isAuthInProgress = false;
-          this.reject(CANCEL_USER);
-        }
-    })
+        this.isAuthInProgress = false;
+        this.reject(CANCEL_USER);
+      }
+    });
   }
 
   getWords(options) {
@@ -57,35 +59,32 @@ export class DataController {
       this.reject = reject;
 
       if (this.checkToken()) {
-        apiUserSettingsGet()
-          .then(
-            (userSettings) => resolve(userSettings.optional),
-            () => {
-              openAuthPopup();
-            }
-          )
+        apiUserSettingsGet().then(
+          (userSettings) => resolve(userSettings.optional),
+          () => {
+            openAuthPopup();
+          },
+        );
       } else {
         openAuthPopup();
       }
-    })
+    });
   }
 
   authChainResponsibility(userData) {
-      apiUserSignIn(userData)
-        .then(
-          () => apiUserSettingsGet(),
-        )
-        .then(
-          (userSettings) => {
-            this.isAuthInProgress = false;
-            closeAuthPopup();
-            this.resolve(userSettings.optional);
-          },
-          (rejectReport) => {
-            showAuthReport(reportMessages[rejectReport.master][rejectReport.code]);
-          }
-        )
-    }
+    apiUserSignIn(userData)
+      .then(() => apiUserSettingsGet())
+      .then(
+        (userSettings) => {
+          this.isAuthInProgress = false;
+          closeAuthPopup();
+          this.resolve(userSettings.optional);
+        },
+        (rejectReport) => {
+          showAuthReport(reportMessages[rejectReport.master][rejectReport.code]);
+        },
+      );
+  }
 
   checkToken() {
     const { userId, token } = localStorage;
