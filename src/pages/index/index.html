@@ -17,33 +17,145 @@
         </div>
       </nav>
     </header>
-      <div class="menu">
-        <ul id="slide-out" class="sidenav sidenav-fixed">
-          <div class="avatar center grey">
-            <img class="avatar__img" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/20625/avatar-bg.png" />
-            <h4 class="avatar__name">John D.</h4>
-            <a class="avatar__logout" href="#!">LOGOUT</a>
-          </div>
-          <ul >
-            <li><a href="/learning">Тренировка <i class="material-icons right">developer_mode</i></a></li>
-            <li><a href="#!">Настройки <i class="material-icons right">settings</i></a></li>
-            <li><a href="#!">Статистика <i class="material-icons right">show_chart</i></a></li>
-            <li><a href="#!">Словарь <i class="material-icons right">sort_by_alpha</i></a></a></li>
-            <li><div class="divider"></div></li> 
-            <li>
-              <a class="dropdown-trigger" href="#!" data-target="dropdown1">Select game<i class="material-icons right">arrow_drop_down</i></a>
-            </li>
-            <ul id='dropdown1' class='dropdown-content'>
-              <li><a href="/audition">Аудивызов <i class="material-icons right">phone</i></a></li>
-              <li><a href="/puzzle">Puzzle <i class="material-icons right">extension</i></a></li>
-              <li><a href="/savanna">Savanna <i class="material-icons right">pets</i></a></li>
-              <li><a href="/speak-it">Speak It <i class="material-icons right">record_voice_over</i></a></li>
-              <li><a href="/sprint">Sprint <i class="material-icons right">directions_run</i></a></li>
-              <li><a href="#">Match It <i class="material-icons right">open_with</i></a></li>
-            </ul>                  
-          </ul>
-        </ul>      
+    <div class="menu">
+      <ul id="slide-out" class="sidenav sidenav-fixed">
+        <div class="avatar center blue lighten-5">
+          <img class="avatar__img" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/20625/avatar-bg.png" />
+          <h4 class="avatar__name">John D.</h4>
+          <a class="avatar__logout" href="#!">LOGOUT</a>
+        </div>
+        <ul >
+          <li><a href="/learning" target="_blank">Тренировка <i class="material-icons right">developer_mode</i></a></li>
+          <li><a class = "menu__settings" href="#!">Настройки <i class="material-icons right">settings</i></a></li>
+          <li><a href="#!">Статистика <i class="material-icons right">show_chart</i></a></li>
+          <li><a href="#!">Словарь <i class="material-icons right">sort_by_alpha</i></a></a></li>
+          <li><div class="divider"></div></li> 
+          <li>
+            <a class="dropdown-trigger" href="#!" data-target="dropdown1">Игры<i class="material-icons right">arrow_drop_down</i></a>
+          </li>
+          <ul id='dropdown1' class='dropdown-content'>
+            <li><a href="/audition" target="_blank">Аудиовызов <i class="material-icons right green-text">phone</i></a></li>
+            <li><a href="/puzzle" target="_blank">Puzzle <i class="material-icons right red-text">extension</i></a></li>
+            <li><a href="/savanna" target="_blank">Саванна <i class="material-icons right brown-text">pets</i></a></li>
+            <li><a href="/speak-it" target="_blank">Speak It <i class="material-icons right blue-text">record_voice_over</i></a></li>
+            <li><a href="/sprint" target="_blank">Спринт <i class="material-icons right orange-text">directions_run</i></a></li>
+            <li><a href="#" target="_blank">Match It <i class="material-icons right purple-text">open_with</i></a></li>
+          </ul>                  
+        </ul>
+      </ul>      
     </div> 
+    <div class="settings-container hidden">
+      <div class="row">
+        <div class="col s12">
+          <ul class="tabs">
+            <li class="tab col s3 m6"><a class="active" href="#general">Тренировка</a></li>
+            <li class="tab col s3 m6"><a href="#card">Карточка</a></li>
+          </ul>
+        </div>
+        <div id="general" class="col s12">
+          <p class="center">Передвигайте ползунок на нужный уровень </p>
+          <form class="settings__general" action="#">
+          <div class="row">
+            <h5 class="center">Общее количество карточек в день</h5>
+            <p class="range-field">            
+              <input class="general__max-amount" type="range" value=30  min="15" max="40"/>                          
+            </p>
+          </div>
+          <div class="row">
+            <h5 class="center">Количество новых карточек в день</h5>
+            <p class="range-field">            
+              <input class="general__new-amount" type="range" value=15  min="15" max="40"/>                          
+            </p>
+          </div>
+          <div class="row">
+            <p>
+              <label>
+                <input type="checkbox" />
+                <span>Изучать только новые слова</span>
+              </label>  
+            </p> 
+          </div> 
+          <div class="row">        
+            <a class="waves-effect waves-light btn center">Cохранить настройки</a>
+          </div>
+          </form>
+        </div>
+        <div id="card" class="col s12">
+          <p class="center"> Укажите, что вы хотите видеть на карточке </p>
+          <form class="settings__card" action="#">
+            <div class="row">
+              <div class="card-info-checkboxes col s6">
+                <p class="tooltipped" data-position="bottom" data-tooltip="Минимум одна отметка">Информация о слове *</p>
+                <ul>
+                  <li>            
+                    <label>
+                      <input type="checkbox" checked="checked" />
+                      <span>Перевод</span>
+                    </label>             
+                  </li>
+                  <li>               
+                    <label>
+                      <input type="checkbox" />
+                      <span>Значение</span>
+                    </label>              
+                  </li>            
+                  <li>               
+                    <label>
+                      <input type="checkbox" />
+                      <span>Пример</span>
+                    </label>               
+                  </li>
+                </ul>          
+              </div>           
+              <div class="additional-info-checkboxes col s6">
+                <p>Дополнительно:</p>
+                <ul>
+                  <li>            
+                    <label>
+                      <input type="checkbox" checked="checked" />
+                      <span>Картинка-ассоциация</span>
+                    </label>             
+                  </li>
+                  <li>               
+                    <label>
+                      <input type="checkbox" checked="checked"/>
+                      <span>Транскрипция</span>
+                    </label>              
+                  </li> 
+                </ul>          
+              </div>
+            </div>
+            <div class="row">
+              <div class="footer-buttons-toggler col s6">
+                <p>Кнопки Вашей оценки сложности слова</p>
+                <div class="switch">
+                  <label>
+                    Выключить
+                    <input type="checkbox" checked="true">
+                    <span class="lever"></span>
+                    Включить
+                  </label>
+                </div>
+              </div>
+              <div class="delete-button-toggler col s6">
+                <p>Кнопка "Удалить"</p>
+                <div class="switch">
+                  <label>
+                    Выключить
+                    <input type="checkbox" checked="true">
+                    <span class="lever"></span>
+                    Включить
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <a class="waves-effect waves-light btn">Cохранить настройки</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
 

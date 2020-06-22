@@ -11,3 +11,20 @@ console.log(
 );
 
  M.AutoInit();
+
+document.querySelector('.menu__settings').addEventListener('click', () => {
+  document.querySelector('.settings-container').classList.remove('hidden');
+})
+
+const settings = {
+  cardsPerDay: 30,
+  newCardsPerDay: 15,
+  justNewWords: 0,
+  cardContainsTranslation: 1,
+  cardContainsMeaning: 0,
+  cardContainsExample: 0,
+  cardContainsPicture: 1,
+  cardContainsTranscription: 1,
+  footerBtnsEnabled: 1,
+  deleteBtnEnabled: 1,
+}
