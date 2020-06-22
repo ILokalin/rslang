@@ -22,10 +22,12 @@ import {
 } from './canvas';
 
 import {
-  sendStatisticsToBackEnd, fillStatistics, clearStatistics,
-  saveGlobalStatistics, setRoundStatistics, clearRoundStatistics,
+  sendStatisticsToBackEnd, saveGlobalStatistics,  
 } from './statisticsService';
 
+import {
+  fillStatistics, clearStatistics, setRoundStatistics, clearRoundStatistics,
+} from './statRenderingService';
 
 let gameState = null;
 

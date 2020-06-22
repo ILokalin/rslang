@@ -1,4 +1,4 @@
-import { store, setInitialStore } from './storage';
+import { store } from './storage';
 import {
   authorization, logInBtn, signUpBtn, gamePage, homePage, translateBtn, pronounceBtn, pictureBtn,
   roundsCount, errorMsg, logoutBtn, inputField, roundStatisticsPage, translation, fullStatPage,
@@ -8,10 +8,9 @@ import {
   saveStatisticsToStore, sendStatisticsToBackEnd,
   sendInitialStatisticsToBackEnd,
 } from './statisticsService';
-import User from './User';
 
 // eslint-disable-next-line
-import { startRound, setRound, hidePaintingInfo, hideBackgroundPic } from './game';
+import { startRound, hidePaintingInfo, hideBackgroundPic } from './game';
 import { setBackgroundToPuzzlePiece } from './canvas';
 
 
@@ -159,7 +158,7 @@ const loginHandler = async () => {
   } else {
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
-    const newUser = new User(email, password);
+    const newUser = { email, password };
     const loggedInUser = await loginUser(newUser);
     if (loggedInUser.userId) {
       errorMsg.innerText = '';
@@ -187,7 +186,7 @@ const loginHandler = async () => {
 const signupHandler = async () => {
   const email = document.getElementById('email').value;
   const password = document.getElementById('password').value;
-  const newUser = new User(email, password);
+  const newUser = { email, password };
   const createdUser = await createUser(newUser);
   if (createdUser.id) {
     errorMsg.innerText = '';
@@ -196,7 +195,7 @@ const signupHandler = async () => {
       id: loggedInUser.userId,
       token: loggedInUser.token,
     };
-    setInitialStore(user);
+    store.setInitialStore(user);
     sendInitialStatisticsToBackEnd();
     localStorage.setItem('user', JSON.stringify(user));
     authorization.classList.add('hidden');
@@ -226,8 +225,7 @@ const logoutHandler = (event) => {
   hideBackgroundPic();
   fullStatPage.classList.add('hidden');
   roundStatisticsPage.classList.add('hidden');
-  store.user = null;
-  setInitialStore(null);
+  store.setInitialStore(null);
   localStorage.clear();
 };
 

@@ -1,6 +1,19 @@
 /* eslint-disable no-unsafe-finally */
 import { openModal } from './modal';
 
+const processResponce = async (responce) => {
+  let content;
+  try {
+    content = await responce.json();
+  } catch (e) {
+    console.log(e);
+    openModal(responce);
+    content = responce.status;
+  } finally {
+    return content;
+  }
+}
+
 const createUser = async (user) => {
   const rawResponse = await fetch('https://afternoon-falls-25894.herokuapp.com/users', {
     method: 'POST',
@@ -10,15 +23,7 @@ const createUser = async (user) => {
     },
     body: JSON.stringify(user),
   });
-  let content;
-  try {
-    content = await rawResponse.json();
-  } catch (e) {
-    console.log(e);
-    content = rawResponse.status;
-  } finally {
-    return content;
-  }
+  return await processResponce(rawResponse);
 };
 
 // Logins a user and returns a JWT-token
@@ -31,15 +36,7 @@ const loginUser = async (user) => {
     },
     body: JSON.stringify(user),
   });
-  let content;
-  try {
-    content = await rawResponse.json();
-  } catch (e) {
-    console.log(e);
-    content = rawResponse.status;
-  } finally {
-    return content;
-  }
+return await processResponce(rawResponse);
 };
 
 // user statistics
@@ -55,15 +52,7 @@ const updateUserStatistics = async (userId, token, statistics) => {
     body: JSON.stringify(statistics),
   });
   let content;
-  try {
-    content = await rawResponse.json();
-  } catch (e) {
-    console.log(e);
-    openModal(rawResponse);
-    content = rawResponse.status;
-  } finally {
-    return content;
-  }
+  return await processResponce(rawResponse);
 };
 
 const getUserStatistics = async (userId, token) => {
@@ -75,16 +64,7 @@ const getUserStatistics = async (userId, token) => {
       Accept: 'application/json',
     },
   });
-  let content;
-  try {
-    content = await rawResponse.json();
-  } catch (e) {
-    console.log(e);
-    openModal(rawResponse);
-    content = rawResponse.status;
-  } finally {
-    return content;
-  }
+  return await processResponce(rawResponse);
 };
 
 export {
