@@ -115,11 +115,12 @@ const config = {
         }]
       },
       {
-        test: /\.(mp3)$/,
+        test: /\.(mp3|wav)$/,
         use: [{
           loader: 'file-loader',
           options: {
             outputPath: 'sound',
+            publicPath: '../sound',
             name: '[name].[ext]'
           }
         }]

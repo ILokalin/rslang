@@ -4,7 +4,7 @@ body {
   padding: 0;
   font-family: 'Open Sans', sans-serif;
   font-size: 10px;
-  background: url('/img/background1.png');
+  background: url('./assets/img/background1.png');
   min-height: 100vh;
 }
 
@@ -29,21 +29,22 @@ body {
   padding: 10px;
   background-color: rgba(0, 0, 0, 0.3);
   border-radius: 7px;
+  height: 32px;
 }
-.main-savanna {
+.game-savanna {
   position: relative;
   width: 100%;
 }
-.main-savanna__question-container {
+.game-savanna__question-container {
   position: absolute;
-  top: -35px;
+  top: -20px;
   left: calc(50% - 68px);
 }
-.main-savanna__question-word {
+.game-savanna__question-word {
   color: white;
   font-size: 1.7rem;
 }
-.main-savanna__answer-container {
+.game-savanna__answer-container {
   margin: 0 auto;
   display: flex;
   padding-top: 570px;
@@ -51,23 +52,23 @@ body {
   width: 100%;
   max-width: 1200px;
 }
-.main-savanna__answer-word {
+.game-savanna__answer-word {
   color: white;
   font-size: 1.5rem;
   padding: 5px 10px;
 }
-.main-savanna__answer-word:hover {
+.game-savanna__answer-word:hover {
   background-color: rgba(0, 0, 0, 0.3);
   cursor: pointer;
 }
-.main-savanna__icon-container {
+.game-savanna__icon-container {
   margin-top: 30px;
   width: 64px;
   height: 64px;
   position: absolute;
   left: calc(50% - 64px);
 }
-.main-savanna__icon {
+.game-savanna__icon {
   width: 64px;
   height: 64px;
 }

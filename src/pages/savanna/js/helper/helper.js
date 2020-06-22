@@ -4,9 +4,9 @@ import book3 from '../data/book3';
 import book4 from '../data/book4';
 import book5 from '../data/book5';
 import book6 from '../data/book6';
-// eslint-disable-next-line no-unused-vars
-import { GUESSWORD, ANSWERCONTAINER, GAMEDATA, STAT, HEADER, GAMECONTAINER, INFO, GUESSCONTAINER } from './constants';
+import { guessWord, answerContsainer, header, gameContainer, resultContainer, stat, gameData, audio } from './constants';
 
+require.context('Src', true, /\.(png|svg|jpg|gif|mp3|wav)$/);
 
 // eslint-disable-next-line no-unused-vars
 function makeRandomArr(a, b) {
@@ -24,35 +24,35 @@ const Helper = {
 
     renderRoundGame: (dataSet) => {
         const answers = []
-        console.log('ДОБАВАИЛИ КАРТОЧКИ', dataSet[0]);
-        const сardToGuess = dataSet[0].pop();
-        console.log('ТЕКУЩЕЕ УГАДЫВАЕМОЕ СЛОВО', сardToGuess);
-        GAMEDATA.wordContainer = сardToGuess;
+        const сardToGuess = dataSet.pop();
+        gameData.wordContainer = сardToGuess;
         const wordToGuess = сardToGuess.wordTranslate;
         for (let i = 0; i < 3; i += 1) {
-            answers.push(dataSet[0].pop().wordTranslate)
+            answers.push(dataSet.pop().wordTranslate)
         }
 
         answers.push(wordToGuess);
         answers.sort(makeRandomArr);
-        GUESSWORD.innerHTML = сardToGuess.word;
-        ANSWERCONTAINER.innerHTML = '';
-        answers.forEach(word => {
+        guessWord.innerHTML = сardToGuess.word;
+        answerContsainer.innerHTML = '';
+        answers.forEach((word, index) => {
             const p = document.createElement('p');
-            p.classList.add('main-savanna__answer-word');
-            p.innerText = word;
-            ANSWERCONTAINER.appendChild(p);
+            p.classList.add('game-savanna__answer-word');
+            p.innerText = `${index + 1} ${word}`;
+            answerContsainer.appendChild(p);
         })
     },
+
     renderStat: () => {
-        HEADER.classList.add('hidden');
-        GAMECONTAINER.classList.add('hidden');
-        INFO.classList.remove('hidden');
-        STAT.innerHTML = `<p class="result-text">Выучено слов: ${GAMEDATA.knowWords.length}</p>
-                        <p class="result-text">На повторение: ${GAMEDATA.errorWords.length}</p>`;
+        header.classList.add('hidden');
+        gameContainer.classList.add('hidden');
+        resultContainer.classList.remove('hidden');
+        stat.innerHTML = `<p class="result-text">Выучено слов: ${gameData.knowWords.length}</p>
+                        <p class="result-text">На повторение: ${gameData.errorWords.length}</p>`;
     },
-    moveGuessContainer: (px) => {
-        GUESSCONTAINER.style.top = `${px}`;
+
+    playSuccess: () => {
+        audio.src = './assets/sound/success.wav';
     }
 
 }

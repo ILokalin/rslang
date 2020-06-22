@@ -1,16 +1,17 @@
-const STARTBTN = document.querySelector('.start');
-const RESTARTBTN = document.querySelector('.restart');
-const BACKBTN = document.querySelector('.back');
-const GUESSWORD = document.querySelector('.main-savanna__question-word');
-const GUESSCONTAINER = document.querySelector('.main-savanna__question-container');
-const ANSWERCONTAINER = document.querySelector('.main-savanna__answer-container');
-const HEADER = document.querySelector('.header-savanna');
-const STARTMENU = document.querySelector('.start-menu-container');
-const GAMECONTAINER = document.querySelector('.main-savanna');
-const ANSWERS = document.querySelectorAll('.main-savanna__answer-word');
-const INFO = document.querySelector('.results-container');
-const STAT = document.querySelector('.result');
-const GAMEDATA = {
+const startButton = document.querySelector('.start');
+const restartButton = document.querySelector('.restart');
+const backButton = document.querySelector('.back');
+const guessWord = document.querySelector('.game-savanna__question-word');
+const guessContainer = document.querySelector('.game-savanna__question-container');
+const answerContsainer = document.querySelector('.game-savanna__answer-container');
+const appContainer = document.querySelector('.app-savanna');
+const header = document.querySelector('.header-savanna');
+const startMenu = document.querySelector('.start-menu-container');
+const gameContainer = document.querySelector('.game-savanna');
+const resultContainer = document.querySelector('.results-container');
+const stat = document.querySelector('.result');
+const audio = document.querySelector('.audio');
+const gameData = {
     currentCards: [],
     count: 0,
     wordContainer: [],
@@ -22,4 +23,4 @@ const GAMEDATA = {
     health: 5,
 }
 
-export { STARTBTN, BACKBTN, GUESSWORD, ANSWERCONTAINER, HEADER, STARTMENU, GAMECONTAINER, ANSWERS, GAMEDATA, INFO, RESTARTBTN, STAT, GUESSCONTAINER };
+export { startButton, restartButton, backButton, guessWord, guessContainer, answerContsainer, appContainer, header, startMenu, gameContainer, resultContainer, stat, audio, gameData };
