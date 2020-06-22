@@ -166,7 +166,8 @@ const formHandler = (event) => {
 
 const againBtnAct = () => {
   const dupl = mySwiper.slides[mySwiper.activeIndex].cloneNode(true);
-  dupl.querySelector('.input').value = '';
+  console.log(dupl);
+  dupl.querySelector('.input_text').value = '';
   dupl.querySelector('.result').innerText = '';
   mySwiper.appendSlide(dupl);
   mySwiper.update();

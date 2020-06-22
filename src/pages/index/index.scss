@@ -1,7 +1,24 @@
 @import 'Src/scss/normalize';
 @import 'Src/scss/components';
+@import 'materialize-css';
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 
-
-body {
-  padding: 50px;
+header, main, footer {
+  padding-left: 300px;
 }
+
+@media only screen and (max-width : 992px) {
+  header, main, footer {
+    padding-left: 0;
+  }
+}
+
+.avatar img {
+  margin-top: 10px;
+  width:100px;
+  border-radius:50%;
+  overflow:hidden;
+  border:4px solid #80cbc4;
+  box-shadow:0 0 0 4px rgba(255,255,255,0.2);
+}
+>>>>>>> feat: add header and side menu to main page
