@@ -20,6 +20,16 @@
   border-bottom: 1px solid #ffffff;
 }
 
+.img {
+  width: 390px;
+  height: 260px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  box-shadow: 5px 5px 25px rgba(118, 118, 118, 0.25);
+  object-fit: cover;
+  display: block;
+}
+
 input[type="text"].word-input {
   font-size: 20px;
   font-size: 22px;
@@ -36,10 +46,11 @@ input[type="text"].word-input {
   color: rgba(14, 30, 37, 0.7);
   border: 0;
   border-bottom: 1px solid #ffffff;
+  box-sizing: border-box;
   background-color: transparent;
   background-image: url(../assets/img/microphone.svg);
   background-repeat: no-repeat;
-  background-position: 10px 15px;
+  background-position: 15px;
   background-size: 20px;
   &:focus {
     outline-color: #009179;
@@ -61,5 +72,13 @@ input[type="text"].word-input {
  .img {
     width: 300px;
     height: auto;
+    margin: 0 auto 10px auto;
+    text-align: center;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  input[type="text"].word-input {
+    width: 80%;
   }
 }

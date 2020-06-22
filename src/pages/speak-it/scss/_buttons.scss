@@ -53,19 +53,19 @@
 
 @media only screen and (max-width: 1000px) {
   .container {
-  .btns {
-    flex-direction: column;
-  }
+    .btns {
+      flex-direction: column;
+    }
 
-  .restart,
-  .user-speech,
-  .result {
-    margin: 20px;
-  }
+    .restart,
+    .user-speech,
+    .result {
+      margin: 20px;
+    }
 
-  .btn.voice {
-    width: 50vw;
-    margin: 0 20px;
-  }
+    .btn.voice {
+      width: 50vw;
+      margin: 0 20px;
+    }
   }
 }

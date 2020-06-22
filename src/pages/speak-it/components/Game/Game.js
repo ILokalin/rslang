@@ -42,7 +42,6 @@ export default class Game {
   }
 
   showResults(e) {
-    RESULTS.classList.remove('hidden');
     ERRORS.innerText = this.props.errors;
     KNOW.innerText = this.props.know;
     RESULTS_ERRORS.innerHTML = '';
@@ -61,6 +60,8 @@ export default class Game {
       });
       RESULTS_KNOW.appendChild(item);
     });
+    RESULTS.classList.remove('hidden');
+    Utils.goToTop();
     e.preventDefault();
   }
 
