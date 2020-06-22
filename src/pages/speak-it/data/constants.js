@@ -20,6 +20,7 @@ const KNOW = document.querySelector('.success-num');
 const RESULTS_ERRORS = document.querySelector('.errors-item');
 const RESULTS_KNOW = document.querySelector('.success-item');
 const ERRORS_MAX_COUNT = 10;
+const speechRecognitionLanguage = 'en-US';
 
 export {
   INTRO,
@@ -42,4 +43,5 @@ export {
   RESULTS_ERRORS,
   KNOW,
   RESULTS_KNOW,
+  speechRecognitionLanguage,
 };

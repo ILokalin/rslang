@@ -1,5 +1,12 @@
 import Utils from './utils';
-import { SPEAK_BTN, WORD_INPUT, WORD_IMG, RESULTS_BTN, ERRORS_MAX_COUNT } from '../data/constants';
+import {
+  SPEAK_BTN,
+  WORD_INPUT,
+  WORD_IMG,
+  RESULTS_BTN,
+  ERRORS_MAX_COUNT,
+  speechRecognitionLanguage,
+} from '../data/constants';
 
 export default class SpeechRecognitionService {
   constructor(props) {
@@ -7,7 +14,7 @@ export default class SpeechRecognitionService {
     window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     this.recognition = new SpeechRecognition();
     this.recognition.interimResults = true;
-    this.recognition.lang = 'en-US';
+    this.recognition.lang = speechRecognitionLanguage;
     this.recognition.addEventListener('result', this.onResult.bind(this));
     SPEAK_BTN.addEventListener('click', this.speakButtonClick.bind(this));
   }
@@ -27,9 +34,7 @@ export default class SpeechRecognitionService {
   }
 
   onResult(event) {
-    const transcript = Array.from(event.results)
-      .map((result) => result[0])
-      .map((result) => result.transcript);
+    const { transcript } = event.results[0][0];
     WORD_INPUT.value = String(transcript).trim().toLowerCase();
     const CARDS = document.querySelectorAll('.container .item');
     CARDS.forEach(this.checkResults, this);
