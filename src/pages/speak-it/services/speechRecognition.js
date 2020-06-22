@@ -13,8 +13,12 @@ export default class SpeechRecognitionService {
   }
 
   startRecording() {
-    this.recognition.start();
-    this.recognition.addEventListener('end', this.recognition.start);
+    try {
+      this.recognition.start();
+      this.recognition.addEventListener('end', this.recognition.start);
+    } catch (err) {
+      localStorage.isStart = true;
+    }
   }
 
   stopRecording() {
