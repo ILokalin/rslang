@@ -3,29 +3,46 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>RS Lang 22</title>
   </head>
   <body>
-    <h2>Select game</h2>
-    <ul>
-      <li>
-        <a href="/learning">Тренировка</a>
-      </li>
-      <li>
-        <a href="/audition">Аудивызов</a>
-      </li>
-      <li>
-        <a href="/puzzle">Puzzle</a>
-      </li>
-      <li>
-        <a href="/savanna">Savanna</a>
-      </li>
-      <li>
-        <a href="/speak-it">Speak It</a>
-      </li>
-      <li>
-        <a href="/sprint">Sprint</a>
-      </li>
-    </ul>
+    <header>
+      <nav>
+        <div class="nav-wrapper teal lighten-2">
+          <a href="#" class="brand-logo center">RS Lang 22</a>
+          <ul id="nav-mobile" class="right">
+            <li><a class="waves-effect waves-light btn">LOGOUT</a></li>
+          </ul>
+          <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+        </div>
+      </nav>
+    </header>
+      <div class="menu">
+        <ul id="slide-out" class="sidenav sidenav-fixed">
+          <div class="avatar center grey">
+            <img class="avatar__img" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/20625/avatar-bg.png" />
+            <h4 class="avatar__name">John D.</h4>
+            <a class="avatar__logout" href="#!">LOGOUT</a>
+          </div>
+          <ul >
+            <li><a href="/learning">Тренировка <i class="material-icons right">developer_mode</i></a></li>
+            <li><a href="#!">Настройки <i class="material-icons right">settings</i></a></li>
+            <li><a href="#!">Статистика <i class="material-icons right">show_chart</i></a></li>
+            <li><a href="#!">Словарь <i class="material-icons right">sort_by_alpha</i></a></a></li>
+            <li><div class="divider"></div></li> 
+            <li>
+              <a class="dropdown-trigger" href="#!" data-target="dropdown1">Select game<i class="material-icons right">arrow_drop_down</i></a>
+            </li>
+            <ul id='dropdown1' class='dropdown-content'>
+              <li><a href="/audition">Аудивызов <i class="material-icons right">phone</i></a></li>
+              <li><a href="/puzzle">Puzzle <i class="material-icons right">extension</i></a></li>
+              <li><a href="/savanna">Savanna <i class="material-icons right">pets</i></a></li>
+              <li><a href="/speak-it">Speak It <i class="material-icons right">record_voice_over</i></a></li>
+              <li><a href="/sprint">Sprint <i class="material-icons right">directions_run</i></a></li>
+              <li><a href="#">Match It <i class="material-icons right">open_with</i></a></li>
+            </ul>                  
+          </ul>
+        </ul>      
+    </div> 
   </body>
 </html>
