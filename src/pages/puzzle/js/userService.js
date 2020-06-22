@@ -1,14 +1,14 @@
 /* eslint-disable no-unsafe-finally */
 import { openModal } from './modal';
 
-const processResponce = async (responce) => {
+const processResponce = async (response) => {
   let content;
   try {
-    content = await responce.json();
+    content = await response.json();
   } catch (e) {
     console.log(e);
-    openModal(responce);
-    content = responce.status;
+    openModal(response);
+    content = response.status;
   } finally {
     return content;
   }
@@ -67,6 +67,6 @@ const getUserStatistics = async (userId, token) => {
   return await processResponce(rawResponse);
 };
 
-export {
-  createUser, loginUser, updateUserStatistics, getUserStatistics,
-};
+//export {
+//  createUser, loginUser, updateUserStatistics, getUserStatistics,
+//};

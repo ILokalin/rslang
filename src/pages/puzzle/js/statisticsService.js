@@ -27,7 +27,7 @@ const saveStatisticsToStore = (statistics) => {
   localStorage.setItem('dates', JSON.stringify(store.dates));
 };
 
-const sendStatisticsToBackEnd = async () => {
+/*const sendStatisticsToBackEnd = async () => {
   const requestBody = {
     learnedWords: 0,
     optional: {
@@ -43,9 +43,9 @@ const sendStatisticsToBackEnd = async () => {
     },
   };
   await updateUserStatistics(store.user.id, store.user.token, requestBody);
-};
+};*/
 
-const sendInitialStatisticsToBackEnd = async () => {
+/*const sendInitialStatisticsToBackEnd = async () => {
   const requestBody = {
     learnedWords: 0,
     optional: {
@@ -61,7 +61,7 @@ const sendInitialStatisticsToBackEnd = async () => {
     },
   };
   await updateUserStatistics(store.user.id, store.user.token, requestBody);
-};
+};*/
 
 const getDateString = () => {
   const options = {
@@ -88,11 +88,9 @@ const saveGlobalStatistics = (gameState) => {
   localStorage.setItem('passedRounds', JSON.stringify(store.passedRounds));
   localStorage.setItem('iKnowPerRound', JSON.stringify(store.iKnowPerRound));
   localStorage.setItem('dates', JSON.stringify(store.dates));
-  sendStatisticsToBackEnd();
 };
 
 
 export {
-  saveStatisticsToStore, sendStatisticsToBackEnd,
-  sendInitialStatisticsToBackEnd, saveGlobalStatistics,
+  saveStatisticsToStore, saveGlobalStatistics,
 };

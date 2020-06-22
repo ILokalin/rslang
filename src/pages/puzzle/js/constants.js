@@ -1,6 +1,6 @@
-const authorization = document.querySelector('.authorization');
-const logInBtn = document.querySelector('.login-btn ');
-const signUpBtn = document.querySelector('.signup-btn');
+// const authorization = document.querySelector('.authorization');
+// const logInBtn = document.querySelector('.login-btn ');
+// const signUpBtn = document.querySelector('.signup-btn');
 const logoutBtn = document.querySelector('.logout-btn');
 const gamePage = document.querySelector('.game-page');
 const homePage = document.querySelector('.home-page');
@@ -25,11 +25,11 @@ const linkToPainting = document.querySelector('.link-to-painting');
 const roundStatisticsPage = document.querySelector('.round-statistics-page');
 const fullStatPage = document.querySelector('.full-stat-page');
 const statBtn = document.querySelector('.statistic-btn');
-
+const puzzleGrooveWidth = 17;
 
 export {
-  authorization, logInBtn, signUpBtn, gamePage, homePage, translateBtn, pronounceBtn,
+  gamePage, homePage, translateBtn, pronounceBtn,
   pictureBtn, inputField, dontKnowBtn, checkBtn, continueBtn, resultsBtn, painting,
   audio, translation, paintingInfo, sideNav, roundsCount, errorMsg, logoutBtn,
-  miniature, miniatureInfo, linkToPainting, roundStatisticsPage, fullStatPage, statBtn,
+  miniature, miniatureInfo, linkToPainting, roundStatisticsPage, fullStatPage, statBtn, puzzleGrooveWidth,
 };

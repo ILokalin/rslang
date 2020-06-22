@@ -1,13 +1,10 @@
 import { store } from './storage';
 import {
-  authorization, logInBtn, signUpBtn, gamePage, homePage, translateBtn, pronounceBtn, pictureBtn,
-  roundsCount, errorMsg, logoutBtn, inputField, roundStatisticsPage, translation, fullStatPage,
+  gamePage, homePage, translateBtn, pronounceBtn, pictureBtn,
+  roundsCount,  logoutBtn, inputField, roundStatisticsPage, translation, fullStatPage,
 } from './constants';
-import { createUser, loginUser, getUserStatistics } from './userService';
-import {
-  saveStatisticsToStore, sendStatisticsToBackEnd,
-  sendInitialStatisticsToBackEnd,
-} from './statisticsService';
+// import { createUser, loginUser, getUserStatistics } from './userService';
+// import {  saveStatisticsToStore, } from './statisticsService';
 
 // eslint-disable-next-line
 import { startRound, hidePaintingInfo, hideBackgroundPic } from './game';
@@ -16,7 +13,7 @@ import { setBackgroundToPuzzlePiece } from './canvas';
 
 const checkIfUserIsSaved = () => {
   if (store.user) {
-    authorization.classList.add('hidden');
+    // authorization.classList.add('hidden');
     homePage.classList.remove('hidden');
     logoutBtn.classList.remove('hidden');
   }
@@ -57,12 +54,12 @@ const checkCheckboxes = () => {
   }
 };
 
-const playButtonHandler = () => {
+const playButtonHandler = async () => {
   gamePage.classList.remove('hidden');
   homePage.classList.add('hidden');
   checkCheckboxes();
   handleRoundsPerLevel();
-  startRound();
+  await startRound();
 };
 
 const selectLevelHandler = (event) => {
@@ -70,7 +67,7 @@ const selectLevelHandler = (event) => {
   localStorage.setItem('level', store.level);
   document.querySelector('.round-select input').classList.remove('disabled');
   handleRoundsPerLevel();
-  sendStatisticsToBackEnd();
+  // sendStatisticsToBackEnd();
 };
 
 const chooseRoundHandler = (event) => {
@@ -80,7 +77,7 @@ const chooseRoundHandler = (event) => {
   } else {
     document.querySelector('.round-select input').setAttribute('style', 'background-color: white;');
   }
-  sendStatisticsToBackEnd();
+  // sendStatisticsToBackEnd();
   localStorage.setItem('round', store.round);
 };
 
@@ -132,93 +129,93 @@ const checkBoxHandler = async (event) => {
       }
     }
   }
-  sendStatisticsToBackEnd();
+  // sendStatisticsToBackEnd();
 };
 
-const registerHandler = (event) => {
-  event.preventDefault();
-  if (!logInBtn.classList.contains('hidden')) {
-    logInBtn.classList.add('hidden');
-    signUpBtn.classList.remove('hidden');
-    document.querySelector('.register-msg').innerText = 'Already have account?';
-    document.querySelector('.register-btn a').innerText = 'Log in';
-  } else {
-    logInBtn.classList.remove('hidden');
-    signUpBtn.classList.add('hidden');
-    document.querySelector('.register-msg').innerText = 'No account?';
-    document.querySelector('.register-btn a').innerText = 'Register Now!';
-  }
-};
+// const registerHandler = (event) => {
+//   event.preventDefault();
+//   if (!logInBtn.classList.contains('hidden')) {
+//     logInBtn.classList.add('hidden');
+//     signUpBtn.classList.remove('hidden');
+//     document.querySelector('.register-msg').innerText = 'Already have account?';
+//     document.querySelector('.register-btn a').innerText = 'Log in';
+//   } else {
+//     logInBtn.classList.remove('hidden');
+//     signUpBtn.classList.add('hidden');
+//     document.querySelector('.register-msg').innerText = 'No account?';
+//     document.querySelector('.register-btn a').innerText = 'Register Now!';
+//   }
+// };
 
-const loginHandler = async () => {
-  if (store.user) {
-    authorization.classList.add('hidden');
-    homePage.classList.remove('hidden');
-    logoutBtn.classList.remove('hidden');
-  } else {
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-    const newUser = { email, password };
-    const loggedInUser = await loginUser(newUser);
-    if (loggedInUser.userId) {
-      errorMsg.innerText = '';
-      const user = {
-        id: loggedInUser.userId,
-        token: loggedInUser.token,
-      };
-      store.user = user;
-      const statistics = await getUserStatistics(store.user.id, store.user.token);
-      if (statistics.optional) {
-        saveStatisticsToStore(statistics);
-      } else {
-        await sendInitialStatisticsToBackEnd();
-      }
-      localStorage.setItem('user', JSON.stringify(user));
-      authorization.classList.add('hidden');
-      homePage.classList.remove('hidden');
-      logoutBtn.classList.remove('hidden');
-    } else {
-      errorMsg.innerText = 'Wrong email or password';
-    }
-  }
-};
+// const loginHandler = async () => {
+//   if (store.user) {
+//     authorization.classList.add('hidden');
+//     homePage.classList.remove('hidden');
+//     logoutBtn.classList.remove('hidden');
+//   } else {
+//     const email = document.getElementById('email').value;
+//     const password = document.getElementById('password').value;
+//     const newUser = { email, password };
+//     const loggedInUser = await loginUser(newUser);
+//     if (loggedInUser.userId) {
+//       errorMsg.innerText = '';
+//       const user = {
+//         id: loggedInUser.userId,
+//         token: loggedInUser.token,
+//       };
+//       store.user = user;
+//       const statistics = await getUserStatistics(store.user.id, store.user.token);
+//       if (statistics.optional) {
+//         saveStatisticsToStore(statistics);
+//       } else {
+//         await sendInitialStatisticsToBackEnd();
+//       }
+//       localStorage.setItem('user', JSON.stringify(user));
+//       authorization.classList.add('hidden');
+//       homePage.classList.remove('hidden');
+//       logoutBtn.classList.remove('hidden');
+//     } else {
+//       errorMsg.innerText = 'Wrong email or password';
+//     }
+//   }
+// };
 
-const signupHandler = async () => {
-  const email = document.getElementById('email').value;
-  const password = document.getElementById('password').value;
-  const newUser = { email, password };
-  const createdUser = await createUser(newUser);
-  if (createdUser.id) {
-    errorMsg.innerText = '';
-    const loggedInUser = await loginUser(newUser);
-    const user = {
-      id: loggedInUser.userId,
-      token: loggedInUser.token,
-    };
-    store.setInitialStore(user);
-    sendInitialStatisticsToBackEnd();
-    localStorage.setItem('user', JSON.stringify(user));
-    authorization.classList.add('hidden');
-    homePage.classList.remove('hidden');
-    logoutBtn.classList.remove('hidden');
-  } else {
-    switch (createdUser) {
-      case 417: {
-        errorMsg.innerText = 'This account already exists. Please, log in.';
-        break;
-      }
-      default: {
-        errorMsg.innerText = 'Password should contain at least 8 symbols: uppercase letter, lowercase letter, a digit and one special characters: + -_ @ $!% *? & #.,;: [] {}.';
-      }
-    }
-  }
-};
+// const signupHandler = async () => {
+//   const email = document.getElementById('email').value;
+//   const password = document.getElementById('password').value;
+//   const newUser = { email, password };
+//   const createdUser = await createUser(newUser);
+//   if (createdUser.id) {
+//     errorMsg.innerText = '';
+//     const loggedInUser = await loginUser(newUser);
+//     const user = {
+//       id: loggedInUser.userId,
+//       token: loggedInUser.token,
+//     };
+//     store.setInitialStore(user);
+//     sendInitialStatisticsToBackEnd();
+//     localStorage.setItem('user', JSON.stringify(user));
+//     authorization.classList.add('hidden');
+//     homePage.classList.remove('hidden');
+//     logoutBtn.classList.remove('hidden');
+//   } else {
+//     switch (createdUser) {
+//       case 417: {
+//         errorMsg.innerText = 'This account already exists. Please, log in.';
+//         break;
+//       }
+//       default: {
+//         errorMsg.innerText = 'Password should contain at least 8 symbols: uppercase letter, lowercase letter, a digit and one special characters: + -_ @ $!% *? & #.,;: [] {}.';
+//       }
+//     }
+//   }
+// };
 
 
 const logoutHandler = (event) => {
   event.preventDefault();
-  authorization.classList.remove('hidden');
-  homePage.classList.add('hidden');
+  // authorization.classList.remove('hidden');
+  homePage.classList.remove('hidden');
   gamePage.classList.add('hidden');
   translation.classList.add('hidden');
   hidePaintingInfo();
@@ -231,7 +228,7 @@ const logoutHandler = (event) => {
 
 
 export {
-  playButtonHandler, selectLevelHandler, chooseRoundHandler, checkBoxHandler, registerHandler,
-  checkCheckboxes, handleRoundsPerLevel, loginHandler, signupHandler,
+  playButtonHandler, selectLevelHandler, chooseRoundHandler, checkBoxHandler, 
+  checkCheckboxes, handleRoundsPerLevel, 
   logoutHandler, checkIfUserIsSaved,
 };

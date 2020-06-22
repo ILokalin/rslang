@@ -10,11 +10,11 @@ import {
   shuffleArray, getSymbolsCount, getGameRowWidth, getGameRowHeight, getRoundPainting,
   setRoundPainting, setGameRound, getWordsForRound, roundStatisticAudioHandler, autopronounce,
   connectSentenceWithHints, showTranslation, hideTranslation, getSizeOfPiece,
-  setRound, getPaintingCutSrc, getPaintingImageSrc,
-} from './gameService';
+  setRound, } from './gameService/gameService';
 import {
   inputField, dontKnowBtn, checkBtn, continueBtn, resultsBtn, painting, audio, translation,
   translateBtn, pronounceBtn, pictureBtn, roundStatisticsPage, gamePage, fullStatPage, statBtn,
+  puzzleGrooveWidth,
 } from './constants';
 import {
   drawPuzzlePiece, drawFirstPuzzlePiece, drawLastPuzzlePiece, drawCorrect,
@@ -22,7 +22,7 @@ import {
 } from './canvas';
 
 import {
-  sendStatisticsToBackEnd, saveGlobalStatistics,  
+  saveGlobalStatistics,  
 } from './statisticsService';
 
 import {
@@ -33,10 +33,12 @@ let gameState = null;
 
 const renderPuzzlesInInputField = (sentence) => {
   document.querySelector('.game-input .game-row').innerHTML = '';
-  const symbolsCount = getSymbolsCount(sentence);
+  const regexp = /(<(\/?[^>]+)>)/g;
+  sentence = sentence.replace(regexp, '');
+  const symbolsCount = getSymbolsCount(sentence);  
   const arr = sentence.split(' ');
   const gameRowWidth = getGameRowWidth();
-  const estimatedLength = getLengthOfAllPieces(arr) - 17 * (arr.length - 1);
+  const estimatedLength = getLengthOfAllPieces(arr) - puzzleGrooveWidth * (arr.length - 1);
   const estimatedHeight = getGameRowHeight();
   const currentRow = gameState.currentSentence + 1;
   const gameResults = document.querySelector(`.game-result .game-row:nth-child(${currentRow})`);
@@ -61,14 +63,14 @@ const renderPuzzlesInInputField = (sentence) => {
     canvas.dataset.sy = sy;
     canvas.dataset.word = element;
     if (index === 0) {
-      drawFirstPuzzlePiece(canvas, estimatedSize + toAddtoEachPiece - 17);
+      drawFirstPuzzlePiece(canvas, estimatedSize + toAddtoEachPiece - puzzleGrooveWidth);
     } else if (index === arr.length - 1) {
       drawLastPuzzlePiece(canvas, estimatedSize + toAddtoEachPiece - 1);
     } else {
-      drawPuzzlePiece(canvas, estimatedSize + toAddtoEachPiece - 17);
+      drawPuzzlePiece(canvas, estimatedSize + toAddtoEachPiece - puzzleGrooveWidth);
     }
     setBackgroundToPuzzlePiece(canvas, sx, sy, element, +pictureBtn.dataset.pictureOn);
-    sx += estimatedSize + toAddtoEachPiece - 17;
+    sx += estimatedSize + toAddtoEachPiece - puzzleGrooveWidth;
     canvases.push(canvas);
   });
 
@@ -142,7 +144,7 @@ function dragHandler(mousedownEvent) {
   });
 }
 
-const playNextSentence = () => {
+const playNextSentence = async () => {
   checkCheckboxes();
   const word = gameState.words[gameState.currentSentence];
   const sentence = word.textExample;
@@ -187,7 +189,7 @@ pictureBtn.addEventListener('click', () => {
 
 // Round begin
 
-const startRound = () => {
+const startRound = async () => {
   document.querySelectorAll('.game-row').forEach((el) => {
     el.innerHTML = '';
     el.classList.remove('droppable');
@@ -195,7 +197,7 @@ const startRound = () => {
   });
   clearRoundStatistics();
   gameState = {
-    words: getWordsForRound(store.level, store.round),
+    words: await getWordsForRound(store.level, store.round),
     currentSentence: 0,
     know: [],
     dontknow: [],
@@ -205,12 +207,9 @@ const startRound = () => {
   setRoundPainting(getRoundPainting());
   setPaintingInfo();
   
-  painting.onload = () => {
+  painting.onload = async () => {
     document.querySelector('.game-result').setAttribute('style', `height: ${painting.clientHeight}px`);
-    setTimeout(() => {
-      playNextSentence();
-    }, 500);
-    
+   await playNextSentence();
   };
   pictureBtn.dataset.pictureOn = store.hints.isPictureOn;
   hideTranslation();
@@ -229,7 +228,6 @@ const goToNextRound = () => {
   setRound();
   localStorage.setItem('level', store.level);
   localStorage.setItem('round', store.round);
-  sendStatisticsToBackEnd();
   startRound();
 };
 
@@ -261,13 +259,13 @@ dontKnowBtn.addEventListener('click', () => {
   continueBtn.classList.remove('hidden');
 });
 
-continueBtn.addEventListener('click', () => {
+continueBtn.addEventListener('click', async () => {
   const currentRow = gameState.currentSentence + 1;
   const gameResults = document.querySelector(`.game-result .game-row:nth-child(${currentRow})`);
   gameResults.children.forEach((word) => { drawWhiteBorder(word); });
   if (gameState.currentSentence < 9) {
     gameState.currentSentence += 1;
-    playNextSentence();
+    await playNextSentence();
     continueBtn.classList.add('hidden');
     dontKnowBtn.classList.remove('hidden');
   } else {
