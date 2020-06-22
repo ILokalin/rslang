@@ -1,14 +1,17 @@
 export default class AuditionGameStatistics {
-  constructor (correct, error, answers) {
-    this.correctWords = correct;
-    this.errorWords = error;
-    this.correctAnswers = answers;
-    this.writeStatistics();
+  constructor (words) {
+    this.gameWords = words;
+    this.getGameStatistics();
   }
 
-  writeStatistics () {
-    console.log(this.correctWords)
-    console.log(this.errorWords)
-    alert(this.correctAnswers)
+
+
+  getGameStatistics() {
+    const answeredWords = this.gameWords.filter((word) => word.answer);
+    const errorWords = this.gameWords.filter((word) => !word.answer);
+    const gamePoints = answeredWords.length;
+    console.log(answeredWords);
+    console.log(errorWords);
+    alert(`У вас ${gamePoints} правильных ответов`)
   }
 }

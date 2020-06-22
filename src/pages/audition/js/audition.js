@@ -10,8 +10,6 @@ export default class AuditionGame {
 
     this.startGame();
 
-    this.correctWords = [];
-    this.errorWords = [];
     this.wordClickListener = this.checkAnswer.bind(this);
     this.showAnswerListener = this.showAnswer.bind(this);
     this.endRoundListener = this.endRound.bind(this);
@@ -155,7 +153,7 @@ export default class AuditionGame {
 
     image.classList.add('answered');
     puzzledWord.classList.add('answered');
-    this.errorWords.push(word);
+    this.roundsData[this.round].answer = false;
 
     if (this.round === 9) {
       checkAnswerBtn.innerText = ('Конец игры');
@@ -178,13 +176,12 @@ export default class AuditionGame {
       if(event.target.id === word) {
         event.target.classList.add('correct');
         this.showAnswer();
-        this.correctWords.push(word);
-        this.correctAnswers += 1;
+        this.roundsData[this.round].answer = true;
 
       } else {
         event.target.classList.add('wrong');
         this.showAnswer();
-        this.errorWords.push(word);
+        this.roundsData[this.round].answer = false;
       }
     }
   }
@@ -220,7 +217,7 @@ export default class AuditionGame {
   }
 
   endGame() {
-    new AuditionGameStatistics (this.correctWords, this.errorWords, this.correctAnswers)
+    new AuditionGameStatistics(this.roundsData);
   }
 }
 

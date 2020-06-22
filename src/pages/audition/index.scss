@@ -1,5 +1,9 @@
 @import 'Src/scss/normalize';
 
+.game-wrapper {
+  padding: 50px;
+}
+
 .word-image-element {
   width: 200px;
   height: 200px;
@@ -17,6 +21,7 @@
 .words-translations-block {
   display: flex;
   justify-content: space-between;
+  padding: 10px 30px;
 }
 
 .word-image-element {
