@@ -1,0 +1,9 @@
+body {
+  background: linear-gradient(160deg, #02ccba 0%, #aa7ecd 100%);
+  min-height: 100vh;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 33% 33% 33%;
+}

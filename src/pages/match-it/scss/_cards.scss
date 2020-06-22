@@ -1,0 +1,28 @@
+.draggable, .droptarget {
+  margin: 30px;
+  padding: 30px;
+  text-align: center;
+  color: white;
+  font-size: 2rem;
+  border-radius: 8px;
+  box-shadow: 5px 2px 20px 0 rgba(46, 61, 73, 0.5);
+}
+
+.droptarget {
+  border: 10px dashed white;
+  transition: border-width 0.5s linear;
+}
+
+.hover {
+  border-width: 20px;
+}
+
+.one {
+  background-color: #f15e0f;
+}
+.two {
+  background-color: #a532f1;
+}
+.three {
+  background-color: #2274a5;
+}
