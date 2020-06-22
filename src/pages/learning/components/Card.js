@@ -39,6 +39,8 @@ export default class Card {
     const result =  ElementGen('div', 'result', form);
     result.setAttribute('style', `width: ${measureWordWidth(this.wordState.word) + 2}px;`);
 
+    
+
     const div = ElementGen('div', 'word', cardContent);
 
     const translation = ElementGen('p', 'translation', div);

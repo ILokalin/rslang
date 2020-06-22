@@ -2,13 +2,21 @@
 @import 'materialize-css';
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 
-header, main, footer {
+.hidden {
+  display: none;
+}
+
+header, main, footer, .settings-container {
   padding-left: 300px;
 }
 
+
 @media only screen and (max-width : 992px) {
-  header, main, footer {
+  header, main, footer, .settings-container {
     padding-left: 0;
+  }
+  .settings-container {
+    width: 80%;
   }
 }
 
@@ -19,4 +27,21 @@ header, main, footer {
   overflow:hidden;
   border:4px solid #80cbc4;
   box-shadow:0 0 0 4px rgba(255,255,255,0.2);
+}
+
+.tab .active {
+  @extend .z-depth-2;  
+}
+
+.settings-container {
+  margin: 5px auto;
+  border: 4px solid #80cbc4;
+}
+
+ #general, #card {
+   padding: 20px;
+ }
+
+.settings__general {
+  margin-top: 2rem;
 }
