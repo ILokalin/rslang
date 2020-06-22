@@ -20,13 +20,46 @@ export class AuthPopup {
           children: [
             { tag: 'h2', className: 'title', innerText: 'Login/Register' },
             { tag: 'p', className: 'describe', isAccess: 'reportLine' },
-            { tag: 'input', className: 'input', placeholder: 'email', isAccess: 'email' },
             {
-              tag: 'input',
-              className: 'input',
-              type: 'password',
-              placeholder: 'password',
-              isAccess: 'password',
+              tag: 'div', classAdd: 'col,s12', children: [
+                {
+                  tag: 'div', classAdd: 'input-field,col,s12', children: [
+                    {
+                      tag: 'input',
+                      id: 'email',
+                      classAdd: 'validate',
+                      type: 'email',
+                      isAccess: 'email',
+                    },
+                    {
+                      tag: 'label',
+                      for: 'email',
+                      innerText: 'Email'
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              tag: 'div', classAdd: 'col,s12', children: [
+                {
+                  tag: 'div', classAdd: 'input-field,col,s12', children: [
+                    {
+                      tag: 'input',
+                      id: 'password',
+                      classAdd: 'validate,white',
+                      type: 'password',
+                      placeholder: 'password',
+                      isAccess: 'password',
+                    },
+                    {
+                      tag: 'label',
+                      for: 'password',
+                      innerText: 'Password'
+                    }
+                  ]
+                }
+              ]
             },
             {
               tag: 'p',
@@ -41,19 +74,26 @@ export class AuthPopup {
                 {
                   tag: 'button',
                   className: 'button',
-                  classAdd: ',waves-effect,waves-light,btn',
+                  classAdd: 'waves-effect,waves-light,btn',
+                  innerText: 'Register',
+                  value: 'register',
+                  isAccess: 'register',
+                  disabled: true,
+                },
+                {
+                  tag: 'button',
+                  className: 'button',
+                  classAdd: 'waves-effect,waves-light,btn',
                   innerText: 'Login',
                   isAccess: 'login',
                 },
                 {
                   tag: 'button',
                   className: 'button',
-                  innerText: 'Register',
-                  value: 'register',
-                  isAccess: 'register',
-                  disabled: true,
+                  classAdd: 'waves-effect,waves-light,btn',
+                  innerText: 'Cancel',
+                  isAccess: 'cancel'
                 },
-                { tag: 'button', className: 'button', innerText: 'Cancel', isAccess: 'cancel' },
               ],
             },
           ],

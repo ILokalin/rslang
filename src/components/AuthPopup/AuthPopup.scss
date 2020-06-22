@@ -14,7 +14,7 @@
     margin: 0 auto;
     border: 1px solid #3333;
     border-radius: 10px;
-    background-color: grey;
+    // background-color: grey;
     padding: 50px;
     padding-top: 50px;
     width: 50%;
@@ -57,18 +57,6 @@
 
   &__button {
     margin-left: 20px;
-    outline: none;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    background: none;
     cursor: pointer;
-    width: 100px;
-    height: 30px;
-    color: #ccc;
-
-    &:disabled {
-      opacity: .5;
-      cursor: default;
-    }
   }
 }
