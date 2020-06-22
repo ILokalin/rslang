@@ -1,8 +1,5 @@
 import './index.scss';
 import 'materialize-css';
-
-require.context('Src', true, /\.(png|svg|jpg|gif|mp3)$/);
-
 import { store } from './js/storage';
 import {
   playButtonHandler, selectLevelHandler, chooseRoundHandler, checkBoxHandler, registerHandler,
@@ -12,6 +9,8 @@ import {
   logInBtn, signUpBtn, sideNav, logoutBtn,
 } from './js/constants';
 import { startRound } from './js/game';
+
+require.context('Src', true, /\.(png|svg|jpg|gif|mp3)$/);
 
 // eslint-disable-next-line no-undef
 M.AutoInit();

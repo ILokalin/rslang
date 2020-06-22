@@ -1,5 +1,4 @@
 import { painting } from './constants';
-import { getPaintingCutSrc } from './gameService';
 
 const drawPuzzlePiece = (canvas, size) => {
   const ctx = canvas.getContext('2d');
@@ -145,7 +144,6 @@ const setBackgroundToPuzzlePiece = (canvas, sx, sy, word, isPictureOn) => {
   ctx.stroke();
   ctx.globalAlpha = 1;
   ctx.fillStyle = '#795548';
-  //ctx.font = '24px Montserrat';
   if (gameResult.offsetWidth < 500) {
     ctx.font = '0.8rem Montserrat';
   }
