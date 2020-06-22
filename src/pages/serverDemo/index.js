@@ -3,9 +3,9 @@ import { DataController } from 'Service/DataController';
 
 require.context('Src', true, /\.(png|svg|jpg|gif|mp3)$/);
 
-const dataController = new DataController;
+const dataController = new DataController();
 const titleUser = document.querySelector('.page__title');
-const reportLine = document.querySelector('.page__report')
+const reportLine = document.querySelector('.page__report');
 const loginButton = document.querySelector('.page__login-button');
 const wordsButton = document.querySelector('.page__words-button');
 
@@ -26,9 +26,9 @@ const whoIsGameFor = () => {
       console.log('User canceled');
       titleUser.innerText = `Select game ${rejectReport.name}`;
       reportLine.innerText = rejectReport.message;
-    }
-  )
-}
+    },
+  );
+};
 
 const userLogout = () => {
   dataController.logoutUser();
@@ -38,25 +38,23 @@ const userLogout = () => {
 
   titleUser.innerText = 'Select game...';
   loginButton.innerText = 'LogIn';
-}
+};
 
 loginButton.addEventListener('click', whoIsGameFor);
 whoIsGameFor();
 
 const wordsLoad = () => {
-  dataController.getWords({group: 1, page: wordPagesCount++})
-    .then(
-      (words) => {
-        console.log(words);
-      },
-      (rejectReport) => {
-        reportLine.innerText = rejectReport.message;
-      }
-    )
-}
+  dataController.getWords({ group: 1, page: wordPagesCount++ }).then(
+    (words) => {
+      console.log(words);
+    },
+    (rejectReport) => {
+      reportLine.innerText = rejectReport.message;
+    },
+  );
+};
 
 wordsButton.addEventListener('click', wordsLoad);
-
 
 // eslint-disable-next-line no-console
 console.log(

@@ -1,3 +1,4 @@
+// import ServerAPI from '../../../../service/ServerAPI';
 import ServerAPI from '../server';
 
 const startGameButton = document.getElementById('controls_start-btn');
@@ -15,6 +16,8 @@ const timetVIew = document.getElementById('timer');
 const timerWrap = document.getElementById('timer-wrap');
 const timeWrapper = document.getElementById('timer-wrapper');
 const seriesImage = document.getElementById('series-image');
+const stepToNextWordIndex = 1;
+const defaultGameScoreValue = 0;
 const words = [];
 
 export default class GameSprint {
@@ -61,8 +64,8 @@ export default class GameSprint {
   }
 
   wrongIndexTranslateWord() {
-    const num = Math.floor(Math.random() * (words.length - 1 - 0 + 1)) + 0;
-    return num === this.currentWordIndex ? this.wrongIndexTranslateWord() : num;
+    const indexWrongTranslateWord = Math.floor(Math.random() * (words.length - 1 - 0 + 1)) + 0;
+    return indexWrongTranslateWord === this.currentWordIndex ? this.wrongIndexTranslateWord() : indexWrongTranslateWord;
   }
 
   wrongAnswer() {
@@ -151,14 +154,25 @@ export default class GameSprint {
     timeWrapper.appendChild(timerWrap);
   }
 
+  defaultGameValue() {
+    this.currentGameTime = this.gameTime;
+    this.currentWordIndex = 0;
+    this.seriesRightAnswer = 0;
+    this.seriesPoint = 1;
+    this.startSeriesPoint = 0;
+    this.poinForRightAnswer = 10;
+
+  }
+
   startGame() {
     timerWrap.remove();
     blockSeries.style.background = 'white';
     seriesPoinMultiplayVIew.innerText = '';
     startGameButton.addEventListener('click', () => {
       words.sort(() => Math.random() - 0.5);
-      console.log(words);
-      this.gameScore = 0;
+
+      this.gameScore = defaultGameScoreValue;
+
       scoreView.innerHTML = `${this.gameScore}`;
       GameSprint.startTimerView();
       startGameButton.classList.add('hide');
@@ -166,13 +180,7 @@ export default class GameSprint {
       this.defaultLeavelView();
       GameSprint.removeRightSeriesViewPoint();
 
-      this.currentGameTime = this.gameTime;
-      this.currentWordIndex = 0;
-      this.seriesRightAnswer = 0;
-      this.seriesPoint = 1;
-      this.startSeriesPoint = 0;
-      this.poinForRightAnswer = 10;
-
+      this.defaultGameValue();
       this.updateTime(this.currentGameTime);
       this.renderWords();
     });
@@ -180,7 +188,7 @@ export default class GameSprint {
 
   answerButtonsEvent() {
     buttonWrong.addEventListener('click', () => {
-      this.currentWordIndex += 1;
+      this.currentWordIndex += stepToNextWordIndex;
       if (this.translateWordStatus) {
         this.wrongAnswer();
       } else {
@@ -200,17 +208,6 @@ export default class GameSprint {
     });
   }
 
-  // async init() {
-  //   const ser = new ServerAPI(); // TODO
-  //   const wordsServer = await ser.getWords();
-  //   wordsServer.map(({ word, wordTranslate }) => {
-  //     return words.push({ word, wordTranslate })
-  //   });
-  //   console.log(words);
-  //   this.startGame();
-  //   this.answerButtonsEvent();
-  // }
-
   init() {
     const ser = new ServerAPI(); // TODO
     const wordsServer = ser.getWords();
@@ -220,20 +217,6 @@ export default class GameSprint {
         return ser.getWords();
       }),
     );
-    // .then((data2) =>
-    //   data2.map(({ word, wordTranslate }) => {
-    //     words.push({ word, wordTranslate });
-    //     return words;
-    //   }),
-    // );
-
-    //   wordsServer.then((data) => data.map(({ word, wordTranslate }) => {
-    //     words.push({ word, wordTranslate })
-    //     return ser.getWords(1, 1)
-    //  })).then ((data2) => data2.map(({ word, wordTranslate }) => {
-    //    console.log(data2);
-    //   words.push({ word, wordTranslate });
-    //   return words}));
     this.startGame();
     this.answerButtonsEvent();
   }

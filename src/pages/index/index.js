@@ -2,7 +2,6 @@ import './index.scss';
 
 require.context('Src', true, /\.(png|svg|jpg|gif|mp3)$/);
 
-
 // eslint-disable-next-line no-console
 console.log(
   '%cTask RS Lang\n',
