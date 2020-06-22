@@ -65,7 +65,7 @@
   },
   "dependencies": {
     "core-js": "^3.4.7",
-    "effector-react": "^20.7.4",
+    "effector": "^20.17.0",
     "materialize-css": "^1.0.0-rc.2",
     "normalize.css": "^8.0.1",
     "swiper": "^5.4.5",
