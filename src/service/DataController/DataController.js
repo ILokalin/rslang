@@ -73,8 +73,6 @@ export class DataController {
     });
   }
 
-  
-
   setUserOptions(userSettingsUpload) {
     return new Promise((resolve, reject) => {
       this.resolve = resolve;
@@ -83,36 +81,35 @@ export class DataController {
 
       if (this.checkToken()) {
         apiUserSettingsGet()
-          .then(
-            (userSettingsOrigin) => {
-              const sendObject = {
-                optional: this.packUserSettings({
-                  ...this.unpackUserSettings(userSettingsOrigin.optional),
-                  ...this.userSettingsUpload,
-                })
-              }
-              return apiUserSettingsPut(sendObject);
-            })
+          .then((userSettingsOrigin) => {
+            const sendObject = {
+              optional: this.packUserSettings({
+                ...this.unpackUserSettings(userSettingsOrigin.optional),
+                ...this.userSettingsUpload,
+              }),
+            };
+            return apiUserSettingsPut(sendObject);
+          })
           .then(
             (userSettings) => resolve(this.unpackUserSettings(userSettings.optional)),
-            (rejectReport) => reject(rejectReport)
-          )
+            (rejectReport) => reject(rejectReport),
+          );
       } else {
         this.authChainResponsibility = this.chainSignInSettingsGetPut;
         this.userSettings = userSettings;
         openAuthPopup();
       }
-    })
+    });
   }
 
   chainSignInSettingsGetPut() {
     apiUserSignIn(userData)
-      .then(() => apiUserSettingsPut({optional: this.userSettings}))
+      .then(() => apiUserSettingsPut({ optional: this.userSettings }))
       .then(
         (userSettings) => {
           this.isAuthInProgress = false;
           closeAuthPopup();
-          this.userOptions = {...this.userOptions, ...userSettings.optional};
+          this.userOptions = { ...this.userOptions, ...userSettings.optional };
           return apiUserSettingsPut(this.userOptions);
         },
         (rejectReport) => {

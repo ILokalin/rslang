@@ -18,5 +18,5 @@ export const reportMessages = {
     401: 'Access token is missing or invalid',
     404: 'User not found',
     422: 'Incorrect e-mail or password',
-  }
-}
+  },
+};
