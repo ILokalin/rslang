@@ -26,13 +26,23 @@ export function DomGen({ name, ...blockStruct }) {
   const classGen = bemClassGenerator(name);
 
   const createTag = (element) => {
-    const { tag, isAccess, className = '', children, ...addData } = element;
+   const { tag, isAccess, classAdd, className, children, ...addData } = element;
 
     const domElement = document.createElement(tag);
 
-    classGen(className).forEach((singleClassName) => {
-      domElement.classList.add(singleClassName);
-    });
+    if (className) {
+      classGen(className).forEach((singleClassName) => {
+        domElement.classList.add(singleClassName);
+      });
+    }
+
+    if (classAdd) {
+      classAdd.split(',').forEach((singleClassName) => {
+        if (singleClassName !== '') {
+          domElement.classList.add(singleClassName);
+        }
+      });
+    }
 
     if (isAccess) {
       bemBlock[isAccess] = domElement;
@@ -70,7 +80,7 @@ export function DomGen({ name, ...blockStruct }) {
 
 export function ElementGen(tag, className, parent) {
   const element = document.createElement(tag);
-  element.classList.add(className);
+  element.className = className;
 
   if (parent) {
     parent.append(element);
