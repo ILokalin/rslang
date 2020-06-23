@@ -11,9 +11,13 @@ const startGame = () => {
     gameData.currentCards = (Helper.getRandomRoundCards(gameData.currentLevel, gameData.currentRound));
     Helper.renderRoundGame(gameData.currentCards);
     gameContainer.addEventListener('click', event => {
-        if (event.target.classList.contains('game-savanna__answer-word') && event.target.innerText === gameData.wordContainer.wordTranslate) {
+        if (gameData.currentLevel === 6 && gameData.currentRound === 6) {
+            Helper.renderStat();
+            return;
+        }
+        if (event.target.classList.contains('game-savanna__answer-word') && event.target.innerText.slice(2) === gameData.wordContainer.wordTranslate) {
             gameData.knowWords.push(gameData.wordContainer);
-            if (gameData.roundStreak >= 7) {
+            if (gameData.roundStreak >= 7 && gameData.currentLevel !== 6) {
                 gameData.currentLevel += 1;
                 gameData.roundStreak = 0;
                 gameData.currentCards = Helper.getRandomRoundCards(gameData.currentLevel, gameData.currentRound);
@@ -22,12 +26,9 @@ const startGame = () => {
                 gameData.currentCards = Helper.getRandomRoundCards(gameData.currentLevel, gameData.currentRound);
             }
             gameData.roundStreak += 1;
-            if (gameData.currentLevel > 6) {
-                Helper.renderStat();
-            }
+            console.log('Угадал', gameData)
             Helper.renderRoundGame(gameData.currentCards);
-            Helper.playSuccess();
-        } else if (event.target.classList.contains('game-savanna__answer-word') && event.target.innerText !== gameData.wordContainer.wordTranslate) {
+        } else if (event.target.classList.contains('game-savanna__answer-word') && event.target.innerText.slice(2) !== gameData.wordContainer.wordTranslate) {
             gameData.errorWords.push(gameData.wordContainer);
             gameData.roundStreak = 0;
             gameData.health -= 1;
@@ -36,6 +37,7 @@ const startGame = () => {
             } else {
                 Helper.renderRoundGame(gameData.currentCards);
             }
+            console.log('НЕ угадал', gameData);
         }
     })
 }

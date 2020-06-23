@@ -17,8 +17,8 @@ const gameData = {
     wordContainer: [],
     knowWords: [],
     errorWords: [],
-    currentRound: 1,
-    currentLevel: 1,
+    currentRound: 5,
+    currentLevel: 6,
     roundStreak: 0,
     health: 5,
 }

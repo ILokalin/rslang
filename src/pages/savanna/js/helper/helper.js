@@ -18,7 +18,7 @@ const Helper = {
 
     getRandomRoundCards: (level, round) => {
         const dataSet = [book1, book2, book3, book4, book5, book6];
-        const result = dataSet[level - 1].filter(el => el.id > (round - 1) * 100 && el.id <= (round - 1) * 100 + 100);
+        const result = dataSet[level - 1].slice((round - 1) * 100, (round - 1) * 100 + 99);
         return result.sort(makeRandomArr);
     },
 
