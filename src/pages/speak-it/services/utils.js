@@ -1,21 +1,21 @@
-import book1 from '../data/books/book1';
-import book2 from '../data/books/book2';
-import book3 from '../data/books/book3';
-import book4 from '../data/books/book4';
-import book5 from '../data/books/book5';
-import book6 from '../data/books/book6';
-import { WORD_TRANSLATION, WORD_INPUT, WORD_IMG, SCORE, RESULTS } from '../data/constants';
+import { apiGetWords } from 'Service/ServerAPI';
+import {
+  WORD_TRANSLATION,
+  WORD_INPUT,
+  WORD_IMG,
+  SCORE,
+  RESULTS,
+  ERRORS_MAX_COUNT,
+  CARDS_ITEMS,
+} from '../data/constants';
 
 const Utils = {
-  getWordsCount: (sentence) => sentence.split(' ').length,
+  getRandomRound: () => Math.round(0 - 0.5 + Math.random() * (29 - 0 + 1)),
 
-  getWordsForRound: (level, round) => {
-    const booksArr = [book1, book2, book3, book4, book5, book6];
-    const [start, end] = [(round - 1) * 10, (round - 1) * 10 + 10];
-    const wordsArr = booksArr[level - 1]
-      .filter((el) => Utils.getWordsCount(el.textExample) <= 10)
-      .slice(start, end);
-    return wordsArr;
+  getWordsForRound: async (level, round) => {
+    const wordsArr = await apiGetWords({ group: level - 1, page: round - 1 });
+    wordsArr.sort(() => 0.5 - Math.random());
+    return wordsArr.slice(0, ERRORS_MAX_COUNT);
   },
 
   playAudio: (src) => {
@@ -33,6 +33,11 @@ const Utils = {
   cardClicked: (card) => {
     Utils.resetCards();
     card.classList.add('activeItem');
+  },
+
+  resetCardMinWidth(minHeight) {
+    const height = CARDS_ITEMS.offsetHeight.toString();
+    CARDS_ITEMS.style.minHeight = `${minHeight || height}px`;
   },
 
   resetCards: () => {

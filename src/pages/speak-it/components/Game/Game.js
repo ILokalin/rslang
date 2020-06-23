@@ -31,7 +31,6 @@ export default class Game {
       knowArr: [],
     };
     Utils.resetMainCard();
-    this.cards = CARDS_ITEMS;
     this.createCardPage();
     LEVELS.forEach(this.onLevelClick, this);
     RESTART.addEventListener('click', this.onRestartBtnClick.bind(this));
@@ -82,12 +81,13 @@ export default class Game {
     e.preventDefault();
   }
 
-  createCardPage() {
+  async createCardPage() {
     this.props.errorsArr = [];
     this.props.errorsArr.length = 0;
-    const wordsData = Utils.getWordsForRound(this.level, this.round);
-    wordsData.forEach(this.createCard.bind(this));
-    Utils.disableCardClick();
+    const wordsData = await Utils.getWordsForRound(this.level, this.round);
+    await wordsData.forEach(this.createCard.bind(this));
+    await Utils.disableCardClick();
+    Utils.resetCardMinWidth('0');
   }
 
   restartGame() {
@@ -118,9 +118,10 @@ export default class Game {
     this.restartGame();
     LEVELS.forEach((item) => item.classList.remove('activePoint'));
     el.classList.add('activePoint');
+    Utils.resetCardMinWidth();
     CARDS_ITEMS.innerHTML = '';
     this.level = index + 1;
-    this.round = Math.round(0 - 0.5 + Math.random() * (29 - 0 + 1));
+    this.round = Utils.getRandomRound();
     this.createCardPage();
   }
 
