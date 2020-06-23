@@ -14,36 +14,33 @@ const blockSeries = document.getElementById('series');
 const timetVIew = document.getElementById('timer');
 const timerWrap = document.getElementById('timer-wrap');
 const timeWrapper = document.getElementById('timer-wrapper');
-const seriesImage = document.getElementById('series-image');
 const stepToNextWordIndex = 1;
 const defaultGameScoreValue = 0;
 const timeAnswerResultVIew = 200;
 const poinForNextLevel = 4;
 const seriesViewDefaulltBackgraundColor = 'white';
-const seriesImageDefaultBackgraundColor = 'linear-gradient(40deg, rgb(210, 239, 26), rgb(178, 231, 12));';
+const parrotYellow = document.getElementById('parrot-yellow');
+const parrotBrown = document.getElementById('parrot-brown');
+const parrotPink = document.getElementById('parrot-pink');
 const LevelViewInfo = {
   one: {
     color: seriesViewDefaulltBackgraundColor,
     seriesText: '',
-    levelText: 'Уровень 1',
     levelPoints: 10,
   },
   two: {
     color: 'linear-gradient(40deg,#00bf82,#0099ae',
     seriesText: '+20 очков за слово',
-    levelText: 'Уровень 2',
     levelPoints: 20,
   },
   three: {
     color: 'linear-gradient(40deg,#ffd86f,#fc6262)',
     seriesText: '+40 очков за слово',
-    levelText: 'Уровень 3',
     levelPoints: 40,
   },
   four: {
     color: 'linear-gradient(40deg,#df1fe2,#fc6262)',
     seriesText: '+80 очков за слово',
-    levelText: 'Уровень 4',
     levelPoints: 80,
   },
 };
@@ -101,7 +98,7 @@ export default class GameSprint {
   }
 
   wrongAnswer() {
-    const {one} = LevelViewInfo;
+    const { one } = LevelViewInfo;
     gameView.classList.add('wrong');
     setTimeout(() => gameView.classList.remove('wrong'), timeAnswerResultVIew);
     this.seriesRightAnswer = this.startSeriesPoint;
@@ -141,7 +138,7 @@ export default class GameSprint {
   }
 
   transitionOnNextLevel() {
-    const {one, two, three ,four} = LevelViewInfo;
+    const { one, two, three, four } = LevelViewInfo;
 
     this.levelPointScore += 1;
     GameSprint.removeRightSeriesViewPoint();
@@ -151,29 +148,24 @@ export default class GameSprint {
         blockSeries.style.background = one.color;
         this.poinForRightAnswer = one.levelPoints;
         seriesPoinMultiplayVIew.innerText = one.seriesText;
-        seriesImage.innerText = one.levelText;
-        seriesImage.style.background = one.color;
         break;
       case 2:
         blockSeries.style.background = two.color;
         this.poinForRightAnswer = two.levelPoints;
         seriesPoinMultiplayVIew.innerText = two.seriesText;
-        seriesImage.innerText = two.levelText;
-        seriesImage.style.background = two.color;
+        parrotYellow.classList.remove('hide');
         break;
       case 3:
         blockSeries.style.background = three.color;
         this.poinForRightAnswer = three.levelPoints;
         seriesPoinMultiplayVIew.innerText = three.seriesText;
-        seriesImage.innerText = three.levelText;
-        seriesImage.style.background = three.color;
+        parrotBrown.classList.remove('hide');
         break;
       default:
         blockSeries.style.background = four.color;
         this.poinForRightAnswer = four.levelPoints;
         seriesPoinMultiplayVIew.innerText = four.seriesText;
-        seriesImage.innerText = four.levelText;
-        seriesImage.style.background = four.color;
+        parrotPink.classList.remove('hide')
     }
     this.seriesRightAnswer = this.startSeriesPoint;
   }
@@ -181,13 +173,15 @@ export default class GameSprint {
   defaultLeavelView() {
     this.levelPointScore = 1;
     blockSeries.style.background = seriesViewDefaulltBackgraundColor;
-    seriesImage.innerText = 'Уровень 1';
-    seriesImage.style.background = seriesImageDefaultBackgraundColor;
+    parrotYellow.classList.add('hide');
+    parrotBrown.classList.add('hide');
+    parrotPink.classList.add('hide');
   }
 
   static startTimerView() {
     timerWrap.remove();
     timeWrapper.appendChild(timerWrap);
+
   }
 
   defaultGameValue() {
@@ -225,6 +219,7 @@ export default class GameSprint {
   startGame() {
     timerWrap.remove();
     this.stratButtonEvents();
+    console.log(words);
   }
 
   answerButtonsEvent() {
@@ -253,13 +248,7 @@ export default class GameSprint {
 
   static getWordsForGame() {
     const dataController = new DataController();
-    Promise.all([
-      dataController.getWords({ group: 0, page: 0 }),
-      dataController.getWords({ group: 0, page: 1 }),
-      dataController.getWords({ group: 0, page: 2 }),
-      dataController.getWords({ group: 0, page: 3 }),
-      dataController.getWords({ group: 0, page: 4 }),
-    ]).then(
+    dataController.getWords({ group: 1, page: 1, wordsPerPage: 200 }).then(
       (value) => {
         value.flat().map(({ word, wordTranslate }) => {
           return words.push({ word, wordTranslate });

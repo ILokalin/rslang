@@ -91,8 +91,9 @@ body {
   }
 
   .series_image {
-    width: 200px;
-    height: 50px;
+    position: relative;
+    width: 250px;
+    height: 70px;
     background: linear-gradient(40deg, rgb(210, 239, 26), rgb(178, 231, 12));
     border-radius: 10px;
     display: flex;
@@ -100,15 +101,20 @@ body {
     justify-content: center;
     align-items: center;
     font-size: 2.0rem;
+    background-image: url('../../../src/assets/img/stick.png');
+    background-repeat: no-repeat;
+    background-position: bottom 10px right 20px;
   }
 
   .studied-word {
     font-size: 3.0rem;
     margin: 10px 0;
+    text-align: center;
   }
 
   #studied-word--translated {
     margin: 10px 0 30px;
+    text-align: center;
   }
 
   .answer-icon {
@@ -260,6 +266,42 @@ body {
       width: 80px;
       height: 80px;
     }
+  }
+
+  .parrot {
+    position: absolute;
+  }
+
+  .parrot_blue {
+    left: 30px;
+    top: 5px;
+    width: 53px;
+    height: 62px;
+    background: url("/img/parrot-blue.png") no-repeat;
+  }
+
+  .parrot_yellow {
+    width: 45px;
+    height: 64px;
+    background: url("/img/parrot-yellow.png") no-repeat;
+    left: 80px;
+    top: 4px;
+  }
+
+  .parrot_brown {
+    width: 56px;
+    height: 53px;
+    background: url("/img/parrot-brown.png") no-repeat;
+    left: 127px;
+    top: 12px;
+  }
+
+  .parrot_pink {
+    width: 45px;
+    height: 58px;
+    background: url("/img/parrot-pink.png") no-repeat;
+    left: 176px;
+    top: 11px;
   }
 
   @keyframes line {
