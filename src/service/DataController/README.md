@@ -10,11 +10,12 @@ const dataController = new DataController;
 dataController.getWords(options)
   .then(
     (wordsArray) => {...},
-    (rejectReport) => {...обработка ошибки}
+    (rejectReport) => {...Bad request}
   )
 ```
 
 **options**
+
 ```
 {
   group,
@@ -23,12 +24,14 @@ dataController.getWords(options)
   wordsPerPage
 }
 ```
+
 - group:number - number of group from 0 to 5. Default: 0
-- page:number  - number of page from 0 to 29. Default: 0
+- page:number - number of page from 0 to 29. Default: 0
 - wordsPerExampleSentenceLTE: - maximum quntity words per sentence in example. Need fo game Puzzle. Default: 100
 - wordsPerPage: Words per page. Checked for 10, 100, 400, 800 words... Default: doesn't used
 
 **rejectReport**
+
 ```
 {
   status: status from server,
@@ -42,7 +45,7 @@ WARN: for bad page/group range, `getWords` returned an empty array and status 20
 
 ## getUser
 
-Returns a Promise. 
+Returns a Promise.
 Resolve - user login and have iser settings.
 Reject - user canceled login form
 
@@ -76,6 +79,39 @@ dataController.getUser()
   name: 'Unknown'
 }
 ```
+
+## setUserOptions
+
+The method for saving users settings (**NOT STATISTIC!**) data. If token expired - open login form. Example:
+
+```
+import { DataController } from 'Service/DataController';
+
+const dataController = new DataController();
+dataController.setUserOptions(userSettings)
+  .then(
+    (userSettings) => {...resolves with saved data},
+    (rejectReport) => {...user canceled authorization}
+  )
+```
+
+**userSettings** - object with fields:
+
+```
+{
+  name,
+  settings
+  ...
+}
+```
+
+- name - user name
+- settings - **_Reserved_** for card game options
+- ... - **here use names of your game for options**
+
+**Important! User for this data format:**
+email: 'checker@mail.ru',
+password: 'checkerCH#2',
 
 ## logOut
 
