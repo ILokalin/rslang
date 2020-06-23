@@ -1,5 +1,4 @@
-// import ServerAPI from '../../../../service/ServerAPI';
-import ServerAPI from '../server';
+import { DataController } from '../../../../service/DataController';
 
 const startGameButton = document.getElementById('controls_start-btn');
 const scoreView = document.getElementById('score');
@@ -18,6 +17,37 @@ const timeWrapper = document.getElementById('timer-wrapper');
 const seriesImage = document.getElementById('series-image');
 const stepToNextWordIndex = 1;
 const defaultGameScoreValue = 0;
+const timeAnswerResultVIew = 200;
+const poinForNextLevel = 4;
+const seriesViewDefaulltBackgraundColor = 'white';
+const seriesImageDefaultBackgraundColor = 'linear-gradient(40deg, rgb(210, 239, 26), rgb(178, 231, 12));';
+const LevelViewInfo = {
+  one: {
+    color: seriesViewDefaulltBackgraundColor,
+    seriesText: '',
+    levelText: 'Уровень 1',
+    levelPoints: 10,
+  },
+  two: {
+    color: 'linear-gradient(40deg,#00bf82,#0099ae',
+    seriesText: '+20 очков за слово',
+    levelText: 'Уровень 2',
+    levelPoints: 20,
+  },
+  three: {
+    color: 'linear-gradient(40deg,#ffd86f,#fc6262)',
+    seriesText: '+40 очков за слово',
+    levelText: 'Уровень 3',
+    levelPoints: 40,
+  },
+  four: {
+    color: 'linear-gradient(40deg,#df1fe2,#fc6262)',
+    seriesText: '+80 очков за слово',
+    levelText: 'Уровень 4',
+    levelPoints: 80,
+  },
+};
+const clearTextValue = '';
 const words = [];
 
 export default class GameSprint {
@@ -65,34 +95,37 @@ export default class GameSprint {
 
   wrongIndexTranslateWord() {
     const indexWrongTranslateWord = Math.floor(Math.random() * (words.length - 1 - 0 + 1)) + 0;
-    return indexWrongTranslateWord === this.currentWordIndex ? this.wrongIndexTranslateWord() : indexWrongTranslateWord;
+    return indexWrongTranslateWord === this.currentWordIndex
+      ? this.wrongIndexTranslateWord()
+      : indexWrongTranslateWord;
   }
 
   wrongAnswer() {
+    const {one} = LevelViewInfo;
     gameView.classList.add('wrong');
-    setTimeout(() => gameView.classList.remove('wrong'), 200);
+    setTimeout(() => gameView.classList.remove('wrong'), timeAnswerResultVIew);
     this.seriesRightAnswer = this.startSeriesPoint;
     GameSprint.removeRightSeriesViewPoint();
     this.defaultLeavelView();
-    this.poinForRightAnswer = 10;
-    blockSeries.style.background = 'white';
-    seriesPoinMultiplayVIew.innerText = '';
+    this.poinForRightAnswer = one.levelPoints;
+    blockSeries.style.background = one.color;
+    seriesPoinMultiplayVIew.innerText = one.levelText;
 
     answerImage.classList.add('answer_img--wrong');
-    setTimeout(() => answerImage.classList.remove('answer_img--wrong'), 200);
+    setTimeout(() => answerImage.classList.remove('answer_img--wrong'), timeAnswerResultVIew);
   }
 
   rightAnswer() {
     gameView.classList.add('right');
-    setTimeout(() => gameView.classList.remove('right'), 200);
+    setTimeout(() => gameView.classList.remove('right'), timeAnswerResultVIew);
 
     answerImage.classList.add('answer_img--right');
-    setTimeout(() => answerImage.classList.remove('answer_img--right'), 200);
+    setTimeout(() => answerImage.classList.remove('answer_img--right'), timeAnswerResultVIew);
 
     this.gameScore += this.poinForRightAnswer;
     scoreView.innerHTML = `${this.gameScore}`;
     this.seriesRightAnswer += this.seriesPoint;
-    if (this.seriesRightAnswer < 4) {
+    if (this.seriesRightAnswer < poinForNextLevel) {
       for (let i = 0; i <= this.seriesRightAnswer - 1; i += 1) {
         seriesRightAnswerView[i].classList.add('series_answer--right');
       }
@@ -108,45 +141,48 @@ export default class GameSprint {
   }
 
   transitionOnNextLevel() {
+    const {one, two, three ,four} = LevelViewInfo;
+
     this.levelPointScore += 1;
     GameSprint.removeRightSeriesViewPoint();
+
     switch (this.levelPointScore) {
       case 1:
-        blockSeries.style.background = 'white';
-        this.poinForRightAnswer = 10;
-        seriesPoinMultiplayVIew.innerText = '';
-        seriesImage.innerText = 'Уровень 1';
-        seriesImage.style.background = 'green';
+        blockSeries.style.background = one.color;
+        this.poinForRightAnswer = one.levelPoints;
+        seriesPoinMultiplayVIew.innerText = one.seriesText;
+        seriesImage.innerText = one.levelText;
+        seriesImage.style.background = one.color;
         break;
       case 2:
-        blockSeries.style.background = 'linear-gradient(40deg,#00bf82,#0099ae)';
-        this.poinForRightAnswer = 20;
-        seriesPoinMultiplayVIew.innerText = '+20 очков за слово';
-        seriesImage.innerText = 'Уровень 2';
-        seriesImage.style.background = 'linear-gradient(40deg,#00bf82,#0099ae)';
+        blockSeries.style.background = two.color;
+        this.poinForRightAnswer = two.levelPoints;
+        seriesPoinMultiplayVIew.innerText = two.seriesText;
+        seriesImage.innerText = two.levelText;
+        seriesImage.style.background = two.color;
         break;
       case 3:
-        blockSeries.style.background = 'linear-gradient(40deg,#ffd86f,#fc6262)';
-        this.poinForRightAnswer = 40;
-        seriesPoinMultiplayVIew.innerText = '+40 очков за слово';
-        seriesImage.innerText = 'Уровень 3';
-        seriesImage.style.background = 'linear-gradient(40deg,#ffd86f,#fc6262)';
+        blockSeries.style.background = three.color;
+        this.poinForRightAnswer = three.levelPoints;
+        seriesPoinMultiplayVIew.innerText = three.seriesText;
+        seriesImage.innerText = three.levelText;
+        seriesImage.style.background = three.color;
         break;
       default:
-        blockSeries.style.background = 'linear-gradient(40deg,#df1fe2,#fc6262)';
-        this.poinForRightAnswer = 80;
-        seriesPoinMultiplayVIew.innerText = '+80 очков за слово';
-        seriesImage.innerText = 'Уровень 4';
-        seriesImage.style.background = 'linear-gradient(40deg,#df1fe2,#fc6262)';
+        blockSeries.style.background = four.color;
+        this.poinForRightAnswer = four.levelPoints;
+        seriesPoinMultiplayVIew.innerText = four.seriesText;
+        seriesImage.innerText = four.levelText;
+        seriesImage.style.background = four.color;
     }
     this.seriesRightAnswer = this.startSeriesPoint;
   }
 
   defaultLeavelView() {
     this.levelPointScore = 1;
-    blockSeries.style.background = 'white';
+    blockSeries.style.background = seriesViewDefaulltBackgraundColor;
     seriesImage.innerText = 'Уровень 1';
-    seriesImage.style.background = 'green';
+    seriesImage.style.background = seriesImageDefaultBackgraundColor;
   }
 
   static startTimerView() {
@@ -161,34 +197,40 @@ export default class GameSprint {
     this.seriesPoint = 1;
     this.startSeriesPoint = 0;
     this.poinForRightAnswer = 10;
-
   }
 
-  startGame() {
-    timerWrap.remove();
-    blockSeries.style.background = 'white';
-    seriesPoinMultiplayVIew.innerText = '';
+  stratButtonEvents() {
     startGameButton.addEventListener('click', () => {
-      words.sort(() => Math.random() - 0.5);
-
+      this.defaultGameValue();
       this.gameScore = defaultGameScoreValue;
 
+      words.sort(() => Math.random() - 0.5);
+
+      blockSeries.style.background = seriesViewDefaulltBackgraundColor;
+      seriesPoinMultiplayVIew.innerText = clearTextValue;
       scoreView.innerHTML = `${this.gameScore}`;
+      this.defaultLeavelView();
+
+      GameSprint.removeRightSeriesViewPoint();
       GameSprint.startTimerView();
+
       startGameButton.classList.add('hide');
       gameView.classList.remove('hide');
-      this.defaultLeavelView();
-      GameSprint.removeRightSeriesViewPoint();
 
-      this.defaultGameValue();
       this.updateTime(this.currentGameTime);
       this.renderWords();
     });
   }
 
+  startGame() {
+    timerWrap.remove();
+    this.stratButtonEvents();
+  }
+
   answerButtonsEvent() {
     buttonWrong.addEventListener('click', () => {
       this.currentWordIndex += stepToNextWordIndex;
+
       if (this.translateWordStatus) {
         this.wrongAnswer();
       } else {
@@ -198,7 +240,8 @@ export default class GameSprint {
     });
 
     buttonRight.addEventListener('click', () => {
-      this.currentWordIndex += 1;
+      this.currentWordIndex += stepToNextWordIndex;
+
       if (this.translateWordStatus) {
         this.rightAnswer();
       } else {
@@ -208,16 +251,29 @@ export default class GameSprint {
     });
   }
 
-  init() {
-    const ser = new ServerAPI(); // TODO
-    const wordsServer = ser.getWords();
-    wordsServer.then((data) =>
-      data.map(({ word, wordTranslate }) => {
-        words.push({ word, wordTranslate });
-        return ser.getWords();
-      }),
+  static getWordsForGame() {
+    const dataController = new DataController();
+    Promise.all([
+      dataController.getWords({ group: 0, page: 0 }),
+      dataController.getWords({ group: 0, page: 1 }),
+      dataController.getWords({ group: 0, page: 2 }),
+      dataController.getWords({ group: 0, page: 3 }),
+      dataController.getWords({ group: 0, page: 4 }),
+    ]).then(
+      (value) => {
+        value.flat().map(({ word, wordTranslate }) => {
+          return words.push({ word, wordTranslate });
+        });
+      },
+      (reason) => {
+        answerImage.innerText = `${reason}`;
+      },
     );
+  }
+
+  init() {
     this.startGame();
     this.answerButtonsEvent();
+    GameSprint.getWordsForGame();
   }
 }

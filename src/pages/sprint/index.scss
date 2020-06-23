@@ -33,6 +33,13 @@ body {
     background-color: white;
     border-radius: 5%;
     box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+    overflow: hidden;
+  }
+
+  @media (max-width: 420px) {
+    .container {
+      border-radius: 35px;
+    }
   }
 
   .game {
@@ -55,7 +62,6 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center; 
-    border-radius: 30px 30px 0 0;
     clip-path: polygon(0% 0%, 100% 0%, 100% 78%, 50% 98%, 0 78%);
   }
 
@@ -87,7 +93,7 @@ body {
   .series_image {
     width: 200px;
     height: 50px;
-    background-color: green;
+    background: linear-gradient(40deg, rgb(210, 239, 26), rgb(178, 231, 12));
     border-radius: 10px;
     display: flex;
     text-align: center;
@@ -141,6 +147,14 @@ body {
     display: flex;
     justify-content: space-around;
     margin-top: 40px;
+  }
+
+  @media (max-width: 420px) {
+    .answer-buttons {
+      flex-direction: column-reverse;
+      height: 100px;
+      justify-content: space-between;
+    }
   }
 
   .btn {
