@@ -4,7 +4,6 @@ import {setProgressbarToCurrentPosition} from './helpers';
 import { DataController } from 'Service/DataController/DataController.js';
 import 'materialize-css';
 
-
 const mySwiper = new Swiper('.swiper-container', {
   slidesPerView: 1,
   centeredSlides: true,
@@ -36,3 +35,4 @@ const settings = JSON.parse(localStorage.getItem('settings'));
 const dataController = new DataController;
 
 export { mySwiper, wordContentUrl, progressBar, settings, dataController}
+

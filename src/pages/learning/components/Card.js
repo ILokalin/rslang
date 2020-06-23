@@ -35,9 +35,8 @@ export default class Card {
     const cardContent = ElementGen('div', 'card-content', this.cardElem);    
 
     const form = ElementGen('form', 'form', cardContent);
+
     form.addEventListener('click', this.formBtnsHandler);
-
-
 
     const input = ElementGen('input', 'input_text', form);
     input.setAttribute('type', 'text');
@@ -46,6 +45,7 @@ export default class Card {
     input.dataset.tryCount = 0;
 
     const result =  ElementGen('div', 'result', form);
+
     result.setAttribute('style', `width: ${measureWordWidth(this.wordState.word) + 2}px;`);    
 
     const deleteBtn = ElementGen('i', 'delete-btn teal-text waves-effect waves-light medium material-icons right tooltipped', form);
@@ -94,17 +94,20 @@ export default class Card {
      if (!settings.cardContainsMeaning) {
       explanation.classList.add('hidden');
     }
+
     hideGuessingWordInSentence(explanation);
 
     const explanationTranslation = ElementGen('p', 'explanation-translation', explain);
     explanationTranslation.innerHTML = this.wordState.textMeaningTranslate;
 
     const example = ElementGen('div', 'example-container', tabsContent);  
+
     example.setAttribute('id', `example-${this.wordState.word}`);
 
     const exampleSent = ElementGen('p', 'example', example);
     exampleSent.innerHTML = this.wordState.textExample;
     hideGuessingWordInSentence(exampleSent);
+
     if (!settings.cardContainsExample) {
       exampleSent.classList.add('hidden');
     } 
@@ -130,8 +133,9 @@ export default class Card {
     const tab2 = ElementGen('li', 'tab col s3', ul);
 
     tab1.innerHTML = `<a class="active" href="#explain-${this.wordState.word}">Explain</a>`;
+
     tab2.innerHTML = `<a href="#example-${this.wordState.word}">Example</a>`;
- 
+
     return cardTabs;
   }
 

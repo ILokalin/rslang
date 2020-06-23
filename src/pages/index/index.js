@@ -18,6 +18,7 @@ document.querySelector('.menu__settings').addEventListener('click', () => {
   justNewWords: 0,
   cardContainsTranslation: 1,
   cardContainsMeaning: 0,
+
   cardContainsMeaningTransl: 0,
   cardContainsExample: 0,
   cardContainsExampleTransl: 0,

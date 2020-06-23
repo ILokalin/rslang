@@ -8,4 +8,3 @@ M.AutoInit();
 console.log(settings);
 const train = new Training(settings.newCardsPerDay, settings.cardsPerDay);
 mySwiper.train = train;
-

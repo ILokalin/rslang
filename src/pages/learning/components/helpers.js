@@ -179,3 +179,4 @@ setProgressbarToCurrentPosition,
 hideGuessingWordInSentence, showGuessingWordInSentence, 
 formHandler, againBtnAct, allowNextCard, showTranscription,
 showExplanation, showExample, audioPlay  }
+
