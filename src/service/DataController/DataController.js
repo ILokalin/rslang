@@ -35,7 +35,7 @@ export class DataController {
 
     authPopupState.watch((state) => {
       if (state) {
-        showAuthReport('Please input email & password');
+        showAuthReport(reportMessages.default.welcome);
         this.isAuthInProgress = true;
       } else if (this.isAuthInProgress) {
         this.isAuthInProgress = false;
@@ -60,18 +60,68 @@ export class DataController {
 
       if (this.checkToken()) {
         apiUserSettingsGet().then(
-          (userSettings) => resolve(userSettings.optional),
+          (userSettings) => resolve(this.unpackUserSettings(userSettings.optional)),
           () => {
+            this.authChainResponsibility = this.chainSignInSettingsGet;
             openAuthPopup();
           },
         );
       } else {
+        this.authChainResponsibility = this.chainSignInSettingsGet;
         openAuthPopup();
       }
     });
   }
 
-  authChainResponsibility(userData) {
+  
+
+  setUserOptions(userSettingsUpload) {
+    return new Promise((resolve, reject) => {
+      this.resolve = resolve;
+      this.reject = reject;
+      this.userSettingsUpload = userSettingsUpload;
+
+      if (this.checkToken()) {
+        apiUserSettingsGet()
+          .then(
+            (userSettingsOrigin) => {
+              const sendObject = {
+                optional: this.packUserSettings({
+                  ...this.unpackUserSettings(userSettingsOrigin.optional),
+                  ...this.userSettingsUpload,
+                })
+              }
+              return apiUserSettingsPut(sendObject);
+            })
+          .then(
+            (userSettings) => resolve(this.unpackUserSettings(userSettings.optional)),
+            (rejectReport) => reject(rejectReport)
+          )
+      } else {
+        this.authChainResponsibility = this.chainSignInSettingsGetPut;
+        this.userSettings = userSettings;
+        openAuthPopup();
+      }
+    })
+  }
+
+  chainSignInSettingsGetPut() {
+    apiUserSignIn(userData)
+      .then(() => apiUserSettingsPut({optional: this.userSettings}))
+      .then(
+        (userSettings) => {
+          this.isAuthInProgress = false;
+          closeAuthPopup();
+          this.userOptions = {...this.userOptions, ...userSettings.optional};
+          return apiUserSettingsPut(this.userOptions);
+        },
+        (rejectReport) => {
+          showAuthReport(reportMessages[rejectReport.master][rejectReport.code]);
+        },
+      );
+  }
+
+  chainSignInSettingsGet(userData) {
     apiUserSignIn(userData)
       .then(() => apiUserSettingsGet())
       .then(
@@ -92,5 +142,21 @@ export class DataController {
       return true;
     }
     return false;
+  }
+
+  unpackUserSettings(userSettings) {
+    const resultUserSettings = {};
+    for (const field in userSettings) {
+      resultUserSettings[field] = JSON.parse(userSettings[field]);
+    }
+    return resultUserSettings;
+  }
+
+  packUserSettings(userSettings) {
+    const resultUserSettings = {};
+    for (const field in userSettings) {
+      resultUserSettings[field] = JSON.stringify(userSettings[field]);
+    }
+    return resultUserSettings;
   }
 }
