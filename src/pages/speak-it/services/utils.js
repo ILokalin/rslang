@@ -1,4 +1,3 @@
-import { apiGetWords } from 'Service/ServerAPI';
 import {
   WORD_TRANSLATION,
   WORD_INPUT,
@@ -12,8 +11,8 @@ import {
 const Utils = {
   getRandomRound: () => Math.round(0 - 0.5 + Math.random() * (29 - 0 + 1)),
 
-  getWordsForRound: async (level, round) => {
-    const wordsArr = await apiGetWords({ group: level - 1, page: round - 1 });
+  getWordsForRound: async (dataController, level, round) => {
+    const wordsArr = await dataController.getWords({ group: level - 1, page: round - 1 });
     wordsArr.sort(() => 0.5 - Math.random());
     return wordsArr.slice(0, ERRORS_MAX_COUNT);
   },

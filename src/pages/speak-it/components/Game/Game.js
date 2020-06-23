@@ -1,9 +1,10 @@
+import { DataController } from 'Service/DataController';
 import Utils from '../../services/utils';
 import SpeechRecognitionService from '../../services/speechRecognition';
+import GameSettings from '../GameSettings';
 
 import {
   CARDS_ITEMS,
-  LEVELS,
   ERRORS_MAX_COUNT,
   WORD_IMG,
   WORD_TRANSLATION,
@@ -21,8 +22,8 @@ import {
 
 export default class Game {
   constructor() {
-    this.level = 1;
-    this.round = 1;
+    this.gameSettings = new GameSettings();
+    this.gameSettings.init(this.levelOrRoundSelected.bind(this));
     localStorage.isStart = false;
     this.props = {
       errors: ERRORS_MAX_COUNT,
@@ -31,8 +32,8 @@ export default class Game {
       knowArr: [],
     };
     Utils.resetMainCard();
+    this.dataController = new DataController();
     this.createCardPage();
-    LEVELS.forEach(this.onLevelClick, this);
     RESTART.addEventListener('click', this.onRestartBtnClick.bind(this));
     RETURN.addEventListener('click', Utils.onReturnBtnClick);
     NEW_GAME.addEventListener('click', this.onNewGameBtnClick.bind(this));
@@ -64,12 +65,6 @@ export default class Game {
     e.preventDefault();
   }
 
-  onLevelClick(el, index) {
-    el.addEventListener('click', () => {
-      this.levelClicked(el, index);
-    });
-  }
-
   onRestartBtnClick(e) {
     this.restartGame();
     e.preventDefault();
@@ -81,10 +76,10 @@ export default class Game {
     e.preventDefault();
   }
 
-  async createCardPage() {
+  async createCardPage(level = 1, round = 1) {
     this.props.errorsArr = [];
     this.props.errorsArr.length = 0;
-    const wordsData = await Utils.getWordsForRound(this.level, this.round);
+    const wordsData = await Utils.getWordsForRound(this.dataController, level, round);
     await wordsData.forEach(this.createCard.bind(this));
     await Utils.disableCardClick();
     Utils.resetCardMinWidth('0');
@@ -113,16 +108,13 @@ export default class Game {
     this.props.knowArr.length = 0;
   }
 
-  levelClicked(el, index) {
+  levelOrRoundSelected(level, round) {
     this.clearStatistics();
     this.restartGame();
-    LEVELS.forEach((item) => item.classList.remove('activePoint'));
-    el.classList.add('activePoint');
     Utils.resetCardMinWidth();
     CARDS_ITEMS.innerHTML = '';
-    this.level = index + 1;
     this.round = Utils.getRandomRound();
-    this.createCardPage();
+    this.createCardPage(level, round);
   }
 
   createCard(data, index) {

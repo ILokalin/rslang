@@ -26,16 +26,38 @@
             Start
         </a>
     </div>
+    <div class="game-page">
+        <ul id="slide-out" class="sidenav">
+            <li>
+                <div class="user-view"> Choose game options </div>
+            </li>
+            <li>
+                <div class="divider"></div>
+            </li>
+            <li><a class="subheader">Difficulty</a></li>
+            <li>
+                <div class="level-select input-field col s12">
+                    <select>
+                        <option value="1" selected>Level 1</option>
+                        <option value="2">Level 2</option>
+                        <option value="3">Level 3</option>
+                        <option value="4">Level 4</option>
+                        <option value="5">Level 5</option>
+                        <option value="6">Level 6</option>
+                    </select>
+                </div>
+            </li>
+            <li>
+                <div class="round-select input-field col s6">
+                    <input class="disabled validate" placeholder="Choose round" min="1" max="30" type="number">
+                </div>
+            </li>
+        </ul>
+        <a href="#" data-target="slide-out" class="sidenav-trigger hidden"><i class="material-icons">menu</i></a>
+    </div>
     <div class="container hidden">
         <div class="res">
-            <ul class="points">
-                <li class="point activePoint"></li>
-                <li class="point"></li>
-                <li class="point"></li>
-                <li class="point"></li>
-                <li class="point"></li>
-                <li class="point"></li>
-            </ul>
+            <h4 class="round-label">Round 1.1</h4>
             <div class="score"></div>
         </div>
         <div class="images">
@@ -64,8 +86,8 @@
             </p>
             <div class="success-item"></div>
             <div class="btns btns-res">
-                <a href="#" class="btn btn-large waves-effect waves-light btn-res return">Return</a>
-                <a href="#" class="btn btn-large waves-effect waves-light btn-res new-game">New game</a>
+                <a href="#" class="btn waves-effect waves-light btn-res return">Return</a>
+                <a href="#" class="btn waves-effect waves-light btn-res new-game">New game</a>
             </div>
          </tr>
         </table>

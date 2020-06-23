@@ -25,6 +25,8 @@ body {
 .main {
   visibility: visible;
   transition: 0.5s;
+  width: 95vw;
+  margin: 0 auto;
 }
 
 .hidden {
@@ -56,4 +58,8 @@ body {
 
 .none {
   display: none;
+}
+
+.round-label {
+  padding-left: 10px;
 }
