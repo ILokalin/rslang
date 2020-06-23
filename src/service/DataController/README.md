@@ -25,8 +25,8 @@ dataController.getWords(options)
 ```
 - group:number - номер группы от 0 до 5
 - page:number  - номер страницы от 0 до 29 
-- wordsPerExampleSentenceLTE: - **doesn't work**
-- wordsPerPage: **doesn't work**
+- wordsPerExampleSentenceLTE: - words per sentence in exampl... good works from 5 to 10
+- wordsPerPage: Words per page. Works with `wordsPerExampleSentenceLTE` when value set from 5 to 10
 
 default options {page: 0, group: 0}
 
