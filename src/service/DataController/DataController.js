@@ -81,7 +81,11 @@ export class DataController {
 
       if (this.checkToken()) {
         apiUserSettingsGet()
-          .then((userSettingsOrigin) => apiUserSettingsPut(this.prepareUploadSetting(userSettingsOrigin, this.userSettingsUpload)))
+          .then((userSettingsOrigin) =>
+            apiUserSettingsPut(
+              this.prepareUploadSetting(userSettingsOrigin, this.userSettingsUpload),
+            ),
+          )
           .then(
             (userSettings) => resolve(this.unpackUserSettings(userSettings.optional)),
             (rejectReport) => reject(rejectReport),
@@ -105,12 +109,14 @@ export class DataController {
   chainSignInSettingsGetSettingsPut(userData) {
     apiUserSignIn(userData)
       .then(() => apiUserSettingsGet())
-      .then((userSettingsOrigin) => apiUserSettingsPut(this.prepareUploadSetting(userSettingsOrigin, this.userSettingsUpload)))
+      .then((userSettingsOrigin) =>
+        apiUserSettingsPut(this.prepareUploadSetting(userSettingsOrigin, this.userSettingsUpload)),
+      )
       .then(
         (userSettings) => {
           this.isAuthInProgress = false;
           closeAuthPopup();
-          this.resolve(this.unpackUserSettings(userSettings.optional))
+          this.resolve(this.unpackUserSettings(userSettings.optional));
         },
         (rejectReport) => {
           showAuthReport(reportMessages[rejectReport.master][rejectReport.code]);

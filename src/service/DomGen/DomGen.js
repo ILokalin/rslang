@@ -26,7 +26,7 @@ export function DomGen({ name, ...blockStruct }) {
   const classGen = bemClassGenerator(name);
 
   const createTag = (element) => {
-   const { tag, isAccess, classAdd, className, children, ...addData } = element;
+    const { tag, isAccess, classAdd, className, children, ...addData } = element;
 
     const domElement = document.createElement(tag);
 
