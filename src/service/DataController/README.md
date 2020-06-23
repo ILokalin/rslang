@@ -23,12 +23,10 @@ dataController.getWords(options)
   wordsPerPage
 }
 ```
-- group:number - номер группы от 0 до 5
-- page:number  - номер страницы от 0 до 29 
-- wordsPerExampleSentenceLTE: - words per sentence in exampl... good works from 5 to 10
-- wordsPerPage: Words per page. Works with `wordsPerExampleSentenceLTE` when value set from 5 to 10
-
-default options {page: 0, group: 0}
+- group:number - number of group from 0 to 5. Default: 0
+- page:number  - number of page from 0 to 29. Default: 0
+- wordsPerExampleSentenceLTE: - maximum quntity words per sentence in example. Need fo game Puzzle. Default: 100
+- wordsPerPage: Words per page. Checked for 10, 100, 400, 800 words... Default: doesn't used
 
 **rejectReport**
 ```
