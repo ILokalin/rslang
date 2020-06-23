@@ -22,6 +22,7 @@ const CANCEL_USER = {
 };
 
 const authPopup = new AuthPopup();
+const defaultZeroBlock = { page: 0, group: 0 };
 
 export class DataController {
   constructor() {
@@ -45,8 +46,7 @@ export class DataController {
   }
 
   getWords(options) {
-    const { group = 0, page = 0 } = options;
-    return apiGetWords({ group, page });
+    return apiGetWords({ ...defaultZeroBlock, ...options });
   }
 
   logoutUser() {

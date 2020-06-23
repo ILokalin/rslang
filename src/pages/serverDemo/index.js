@@ -12,6 +12,8 @@ const wordsButton = document.querySelector('.page__words-button');
 const putDataButton = document.querySelector('.page__put-button');
 const getDataButton = document.querySelector('.page__get-button');
 const newName = document.querySelector('.page__input-name');
+const firstValue = document.querySelector('.page__input-words-example');
+const secondValue = document.querySelector('.page__input-words-ppage');
 
 let wordPagesCount = 0;
 
@@ -54,14 +56,24 @@ loginButton.addEventListener('click', whoIsGameFor);
 whoIsGameFor();
 
 const wordsLoad = () => {
-  dataController.getWords({ group: 1, page: wordPagesCount++ }).then(
-    (words) => {
-      console.log(words);
-    },
-    (rejectReport) => {
-      reportLine.innerText = rejectReport.message;
-    },
-  );
+  const wordsPerExampleSentenceLTE = firstValue.value;
+  const wordsPerPage = secondValue.value;
+
+  dataController
+    .getWords({
+      group: 1,
+      page: wordPagesCount++,
+      wordsPerExampleSentenceLTE,
+      wordsPerPage,
+    })
+    .then(
+      (words) => {
+        console.log(words);
+      },
+      (rejectReport) => {
+        reportLine.innerText = rejectReport.message;
+      },
+    );
 };
 
 wordsButton.addEventListener('click', wordsLoad);
