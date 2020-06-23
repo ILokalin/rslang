@@ -1,15 +1,22 @@
 import { api } from './apiPath';
 
+const defaultWordsPerExample = 100;
+
 function isSuccess(response) {
   return response.status >= 200 && response.status < 300;
 }
 
 export function apiGetWords(requestData) {
-  const { page, group, wordsPerExampleSentenceLTE, wordsPerPage } = requestData;
-  const wordsPerExampleString = wordsPerExampleSentenceLTE
+  const { page, group, wordsPerExampleSentenceLTE = '', wordsPerPage = '' } = requestData;
+
+  let wordsPerExampleString = wordsPerExampleSentenceLTE
     ? `&wordsPerExampleSentenceLTE=${wordsPerExampleSentenceLTE}`
     : '';
   const wordsPerPageString = wordsPerPage ? `&wordsPerPage=${wordsPerPage}` : '';
+
+  if (wordsPerPage !== '' && wordsPerExampleSentenceLTE === '') {
+    wordsPerExampleString = `&wordsPerExampleSentenceLTE=${defaultWordsPerExample}`;
+  }
 
   return new Promise((resolve, reject) => {
     fetch(
