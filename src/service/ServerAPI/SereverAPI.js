@@ -23,7 +23,7 @@ export function apiGetWords({ group, page }) {
   });
 }
 
-export function apiUserSettingsPut(store) {
+export function apiUserSettingsPut(userSettingsUpload) {
   return new Promise((resolve, reject) => {
     fetch(`${api.url}${api.users}/${localStorage.userId}/${api.settings}`, {
       method: 'PUT',
@@ -32,7 +32,7 @@ export function apiUserSettingsPut(store) {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(store),
+      body: JSON.stringify(userSettingsUpload),
     })
       .then((rawResponse) => {
         if (isSuccess(rawResponse)) {
@@ -43,8 +43,8 @@ export function apiUserSettingsPut(store) {
         error.code = rawResponse.status;
         throw error;
       })
-      .then((response) => {
-        resolve(response);
+      .then((userSettings) => {
+        resolve(userSettings);
       })
       .catch((errorReport) => reject(errorReport));
   });
