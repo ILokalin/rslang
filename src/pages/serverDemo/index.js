@@ -9,7 +9,7 @@ const reportLine = document.querySelector('.page__report');
 const loginButton = document.querySelector('.page__login-button');
 const wordsButton = document.querySelector('.page__words-button');
 
-const firstValue = document.querySelector('.page__input-words-lte');
+const firstValue = document.querySelector('.page__input-words-example');
 const secondValue = document.querySelector('.page__input-words-ppage');
 
 let wordPagesCount = 0;
