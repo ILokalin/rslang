@@ -81,36 +81,36 @@ export class DataController {
 
       if (this.checkToken()) {
         apiUserSettingsGet()
-          .then((userSettingsOrigin) => {
-            const sendObject = {
-              optional: this.packUserSettings({
-                ...this.unpackUserSettings(userSettingsOrigin.optional),
-                ...this.userSettingsUpload,
-              }),
-            };
-            return apiUserSettingsPut(sendObject);
-          })
+          .then((userSettingsOrigin) => apiUserSettingsPut(this.prepareUploadSetting(userSettingsOrigin, this.userSettingsUpload)))
           .then(
             (userSettings) => resolve(this.unpackUserSettings(userSettings.optional)),
             (rejectReport) => reject(rejectReport),
           );
       } else {
-        this.authChainResponsibility = this.chainSignInSettingsGetPut;
-        this.userSettings = userSettings;
+        this.authChainResponsibility = this.chainSignInSettingsGetSettingsPut;
         openAuthPopup();
       }
     });
   }
 
-  chainSignInSettingsGetPut() {
+  prepareUploadSetting(originSettings, uploadSettings) {
+    return {
+      optional: this.packUserSettings({
+        ...this.unpackUserSettings(originSettings.optional),
+        ...uploadSettings,
+      }),
+    };
+  }
+
+  chainSignInSettingsGetSettingsPut(userData) {
     apiUserSignIn(userData)
-      .then(() => apiUserSettingsPut({ optional: this.userSettings }))
+      .then(() => apiUserSettingsGet())
+      .then((userSettingsOrigin) => apiUserSettingsPut(this.prepareUploadSetting(userSettingsOrigin, this.userSettingsUpload)))
       .then(
         (userSettings) => {
           this.isAuthInProgress = false;
           closeAuthPopup();
-          this.userOptions = { ...this.userOptions, ...userSettings.optional };
-          return apiUserSettingsPut(this.userOptions);
+          this.resolve(this.unpackUserSettings(userSettings.optional))
         },
         (rejectReport) => {
           showAuthReport(reportMessages[rejectReport.master][rejectReport.code]);
@@ -125,7 +125,7 @@ export class DataController {
         (userSettings) => {
           this.isAuthInProgress = false;
           closeAuthPopup();
-          this.resolve(userSettings.optional);
+          this.resolve(this.unpackUserSettings(userSettings.optional));
         },
         (rejectReport) => {
           showAuthReport(reportMessages[rejectReport.master][rejectReport.code]);
