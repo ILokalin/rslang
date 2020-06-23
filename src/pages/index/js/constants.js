@@ -10,6 +10,8 @@ const modal = M.Modal.getInstance(document.querySelector('.greeting'));
 const translation = document.querySelector('.card__show-translation');
 const meaning = document.querySelector('.card__show-meaning');
 const example = document.querySelector('.card__show-example');
+const exampleTranslation = document.querySelector('.card__show-example-translation');
+const meaningTranslation = document.querySelector('.card__show-meaning-translation');
 const picture = document.querySelector('.card__show-picture');
 const transcription = document.querySelector('.card__show-transcription');
 const footer = document.querySelector('.card__show-footer-btns');
@@ -19,8 +21,11 @@ const cardsPerDay = document.querySelector('.general__max-amount');
 const newCardsPerDay = document.querySelector('.general__new-amount');
 const justNewWords = document.querySelector('.general__only-new-words');
 const generalMessage = document.querySelector('.general__info-message');
+const showAnswerBtn = document.querySelector('.card__show-answer-btn');
+const autoPlay = document.querySelector('.card__autoplay');
 
 export {dataController, titleUser, loginButton, logoutButtons, 
 settingsSaveBtns, modal, translation, meaning, 
 example, picture, transcription, footer, deleteCard, message, 
-cardsPerDay, newCardsPerDay, justNewWords, generalMessage }
+cardsPerDay, newCardsPerDay, justNewWords, generalMessage, 
+exampleTranslation, meaningTranslation, showAnswerBtn, autoPlay, }

@@ -88,8 +88,6 @@ export function ElementGen(tag, className, parent) {
   }
 
   return element;
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> feat: add auth to home, settings to cards
+
+

@@ -3,6 +3,9 @@
 @import 'swiper/css/swiper';
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 
+.hidden {
+  display: none!important;
+}
 
 .header__title {
   font-size: 3rem;

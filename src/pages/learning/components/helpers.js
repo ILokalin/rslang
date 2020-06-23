@@ -1,4 +1,4 @@
-import { progressBar, mySwiper, } from './constants';
+import { progressBar, mySwiper, settings } from './constants';
 
 const measureWordWidth = (word) => {
   const canvas = document.createElement('canvas');
@@ -151,9 +151,9 @@ const formHandler = (event) => {
     }, 3000);
   } else {
     const audio = event.target.closest('.card').querySelector('.audio');
-    //audioPlay(audio);
-    console.log(mySwiper.activeIndex );
-    console.log(mySwiper.slides);
+    if(settings.autoplay) {
+      audioPlay(audio);
+    }    
     allowNextCard();
     showTranscription();
     showExplanation();
@@ -174,7 +174,8 @@ const againBtnAct = () => {
   setProgressbarToCurrentPosition(); 
 }
 
-
-
-export { measureWordWidth, updateMaterialComponents, setProgressbarToCurrentPosition, 
-hideGuessingWordInSentence, showGuessingWordInSentence, formHandler, againBtnAct }
+export { measureWordWidth, updateMaterialComponents, 
+setProgressbarToCurrentPosition, 
+hideGuessingWordInSentence, showGuessingWordInSentence, 
+formHandler, againBtnAct, allowNextCard, showTranscription,
+showExplanation, showExample, audioPlay  }

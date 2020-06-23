@@ -5,7 +5,7 @@ import Training from './components/Training';
 
 
 M.AutoInit();
-
-const train = new Training(settings.cardPerDay, settings.newCardsPerDay);
+console.log(settings);
+const train = new Training(settings.newCardsPerDay, settings.cardsPerDay);
 mySwiper.train = train;
 

@@ -1,7 +1,7 @@
 import { dataController, titleUser, loginButton, logoutButtons, 
 settingsSaveBtns, modal, translation, meaning, 
 example, picture, transcription, footer, deleteCard, message, cardsPerDay, 
-newCardsPerDay, justNewWords, generalMessage } from '../constants';
+newCardsPerDay, justNewWords, generalMessage, exampleTranslation, meaningTranslation, showAnswerBtn, autoPlay } from '../constants';
 
 const whoIsGameFor = () => {
   dataController.getUser().then(
@@ -23,10 +23,8 @@ const whoIsGameFor = () => {
 
 const userLogout = () => {
   dataController.logoutUser();
-
   loginButton.classList.remove('hidden');
   logoutButtons.forEach((btn) => { btn.classList.add('hidden'); });
-
   titleUser.innerText = 'CAPTAIN ANONIMUS';
 }
 
@@ -34,19 +32,24 @@ loginButton.addEventListener('click', whoIsGameFor);
 logoutButtons.forEach((btn) => { 
   btn.addEventListener('click', userLogout);
 });
-//TODO
-  const settings = {
-        cardsPerDay: 30,
-        newCardsPerDay: 15,
-        justNewWords: 0,
-        cardContainsTranslation: 1,
-        cardContainsMeaning: 0,
-        cardContainsExample: 0,
-        cardContainsPicture: 1,
-        cardContainsTranscription: 1,
-        footerBtnsEnabled: 1,
-        deleteBtnEnabled: 1,
-      }
+//TODO get settings from backend
+const settings = {
+  lastTrain: 'date',
+  cardsPerDay: 30,
+  newCardsPerDay: 15,
+  justNewWords: 0,
+  cardContainsTranslation: 1,
+  cardContainsMeaning: 0,
+  cardContainsMeaningTransl: 0,
+  cardContainsExample: 0,
+  cardContainsExampleTransl: 0,
+  cardContainsPicture: 1,
+  cardContainsTranscription: 1,
+  footerBtnsEnabled: 1,
+  deleteBtnEnabled: 1,
+  showAnswerBtnEnabled: 0,
+  autoPlayEnabled: 1,
+}
 settingsSaveBtns.forEach((btn) => {
   btn.addEventListener('click', (event) => {
     if (event.target.closest('form.settings__general')) {
@@ -71,6 +74,10 @@ settingsSaveBtns.forEach((btn) => {
         settings.cardContainsTranscription = +transcription.checked;
         settings.footerBtnsEnabled = +footer.checked;
         settings.deleteBtnEnabled = +deleteCard.checked;
+        settings.cardContainsMeaningTransl = +meaningTranslation.checked;
+        settings.cardContainsExampleTransl = +exampleTranslation.checked;
+        settings.showAnswerBtnEnabled = +showAnswerBtn.checked;
+        settings.autoPlayEnabled = +autoPlay.checked;
       }      
     }
     console.log(settings);

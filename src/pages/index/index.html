@@ -91,23 +91,31 @@
               <div class="card-info-checkboxes col s6">
                 <p class="tooltipped" data-position="bottom" data-tooltip="Минимум одна отметка">Информация о слове *</p>
                 <ul>
-                  <li>            
-                    <label>
+                  <li class="row">            
+                    <label class="center">
                       <input class="card__show-translation" type="checkbox" checked="checked" />
-                      <span>Перевод</span>
+                      <span>Перевод слова</span>
                     </label>             
                   </li>
-                  <li>               
+                  <li class="row">               
                     <label>
                       <input class="card__show-meaning" type="checkbox" />
                       <span>Значение</span>
-                    </label>              
+                    </label>  
+                    <label class="right">
+                      <input class="card__show-meaning-translation" type="checkbox" />
+                      <span>Перевод</span>
+                    </label>                    
                   </li>            
-                  <li>               
+                  <li class="row">               
                     <label>
                       <input class="card__show-example" type="checkbox" />
                       <span>Пример</span>
-                    </label>               
+                    </label>  
+                     <label class="right">
+                      <input class="card__show-example-translation" type="checkbox" />
+                      <span>Перевод</span>
+                    </label>                 
                   </li>
                 </ul>          
               </div>           
@@ -147,6 +155,30 @@
                   <label>
                     Выключить
                     <input class="card__show-delete-btn" type="checkbox" checked="true">
+                    <span class="lever"></span>
+                    Включить
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="show-answer-button-toggler col s6">
+                <p>Кнопка "Показать ответ"</p>
+                <div class="switch">
+                  <label>
+                    Выключить
+                    <input class="card__show-answer-btn"  type="checkbox" checked="true">
+                    <span class="lever"></span>
+                    Включить
+                  </label>
+                </div>
+              </div>
+              <div class="autoplay-toggler col s6">
+                <p>Автовоспроизведене слова и предложений</p>
+                <div class="switch">
+                  <label>
+                    Выключить
+                    <input class="card__autoplay" type="checkbox" checked="true">
                     <span class="lever"></span>
                     Включить
                   </label>
