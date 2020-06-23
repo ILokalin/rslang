@@ -4,9 +4,17 @@ function isSuccess(response) {
   return response.status >= 200 && response.status < 300;
 }
 
-export function apiGetWords({ group, page }) {
+export function apiGetWords(requestData) {
+  const { page, group, wordsPerExampleSentenceLTE, wordsPerPage } = requestData;
+  const wordsPerExampleString = wordsPerExampleSentenceLTE
+    ? `&wordsPerExampleSentenceLTE=${wordsPerExampleSentenceLTE}`
+    : '';
+  const wordsPerPageString = wordsPerPage ? `&wordsPerPage=${wordsPerPage}` : '';
+
   return new Promise((resolve, reject) => {
-    fetch(`${api.url}${api.words}?group=${group}&page=${page}`)
+    fetch(
+      `${api.url}${api.words}?group=${group}&page=${page}${wordsPerExampleString}${wordsPerPageString}`,
+    )
       .then((rawResponse) => {
         if (isSuccess(rawResponse)) {
           return rawResponse.json();
