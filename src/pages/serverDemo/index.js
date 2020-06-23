@@ -17,7 +17,7 @@ let wordPagesCount = 0;
 const whoIsGameFor = () => {
   dataController.getUser().then(
     (userSettings) => {
-      console.log('We have user', userSettings.name);
+      console.log('We have user', userSettings);
       titleUser.innerText = `Select game ${userSettings.name}`;
       reportLine.innerText = 'Good day';
 

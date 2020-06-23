@@ -26,6 +26,7 @@ export function DomGen({ name, ...blockStruct }) {
   const classGen = bemClassGenerator(name);
 
   const createTag = (element) => {
+
    const { tag, isAccess, classAdd, className, children, ...addData } = element;
 
     const domElement = document.createElement(tag);
@@ -87,4 +88,8 @@ export function ElementGen(tag, className, parent) {
   }
 
   return element;
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> feat: add auth to home, settings to cards

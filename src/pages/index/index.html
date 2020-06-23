@@ -10,8 +10,9 @@
       <nav>
         <div class="nav-wrapper teal lighten-2">
           <a href="#" class="brand-logo center">RS Lang 22</a>
-          <ul id="nav-mobile" class="right">
-            <li><a class="waves-effect waves-light btn">LOGOUT</a></li>
+          <ul id="nav-mobile nav" class="right">
+            <li><a class="nav__login waves-effect waves-light btn">LOGIN</a></li>
+            <li><a class="nav__logout logout-btn waves-effect waves-light btn hidden">LOGOUT</a></li>
           </ul>
           <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
         </div>
@@ -21,8 +22,8 @@
       <ul id="slide-out" class="sidenav sidenav-fixed">
         <div class="avatar center blue lighten-5">
           <img class="avatar__img" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/20625/avatar-bg.png" />
-          <h4 class="avatar__name">John D.</h4>
-          <a class="avatar__logout" href="#!">LOGOUT</a>
+          <h4 class="avatar__name">CAPTAIN ANONIMUS</h4>
+          <a class="avatar__logout logout-btn hidden" href="#!">LOGOUT</a>
         </div>
         <ul >
           <li><a href="/learning" target="_blank">Тренировка <i class="material-icons right">developer_mode</i></a></li>
@@ -43,7 +44,7 @@
           </ul>                  
         </ul>
       </ul>      
-    </div> 
+    </div>
     <div class="settings-container hidden">
       <div class="row">
         <div class="col s12">
@@ -64,20 +65,23 @@
           <div class="row">
             <h5 class="center">Количество новых карточек в день</h5>
             <p class="range-field">            
-              <input class="general__new-amount" type="range" value=15  min="15" max="40"/>                          
+              <input class="general__new-amount" type="range" value=15  min="0" max="40"/>                          
             </p>
           </div>
           <div class="row">
             <p>
               <label>
-                <input type="checkbox" />
+                <input type="checkbox" class="general__only-new-words" />
                 <span>Изучать только новые слова</span>
               </label>  
             </p> 
           </div> 
           <div class="row">        
-            <a class="waves-effect waves-light btn center">Cохранить настройки</a>
+            <a class="settings-save-btn waves-effect waves-light btn center">Cохранить настройки</a>
           </div>
+          <div class="row">
+              <p class="general__info-message red-text hidden">Количество новых карточек не может превышать общее количество изучаемых слов в день!</p>
+            </div>
           </form>
         </div>
         <div id="card" class="col s12">
@@ -89,19 +93,19 @@
                 <ul>
                   <li>            
                     <label>
-                      <input type="checkbox" checked="checked" />
+                      <input class="card__show-translation" type="checkbox" checked="checked" />
                       <span>Перевод</span>
                     </label>             
                   </li>
                   <li>               
                     <label>
-                      <input type="checkbox" />
+                      <input class="card__show-meaning" type="checkbox" />
                       <span>Значение</span>
                     </label>              
                   </li>            
                   <li>               
                     <label>
-                      <input type="checkbox" />
+                      <input class="card__show-example" type="checkbox" />
                       <span>Пример</span>
                     </label>               
                   </li>
@@ -112,13 +116,13 @@
                 <ul>
                   <li>            
                     <label>
-                      <input type="checkbox" checked="checked" />
+                      <input class="card__show-picture" type="checkbox" checked="checked" />
                       <span>Картинка-ассоциация</span>
                     </label>             
                   </li>
                   <li>               
                     <label>
-                      <input type="checkbox" checked="checked"/>
+                      <input class="card__show-transcription"  type="checkbox" checked="checked"/>
                       <span>Транскрипция</span>
                     </label>              
                   </li> 
@@ -131,7 +135,7 @@
                 <div class="switch">
                   <label>
                     Выключить
-                    <input type="checkbox" checked="true">
+                    <input class="card__show-footer-btns"  type="checkbox" checked="true">
                     <span class="lever"></span>
                     Включить
                   </label>
@@ -142,7 +146,7 @@
                 <div class="switch">
                   <label>
                     Выключить
-                    <input type="checkbox" checked="true">
+                    <input class="card__show-delete-btn" type="checkbox" checked="true">
                     <span class="lever"></span>
                     Включить
                   </label>
@@ -150,12 +154,26 @@
               </div>
             </div>
             <div class="row">
-              <a class="waves-effect waves-light btn">Cохранить настройки</a>
+              <a class="settings-save-btn waves-effect waves-light btn">Cохранить настройки</a>
+            </div>
+            <div class="row">
+              <p class="card__info-message red-text hidden">В блоке "Информация о слове" должна быть хотя бы одна отметка!</p>
             </div>
           </form>
         </div>
       </div>
     </div>
+    <div class="modal greeting">
+      <div class="modal-content">
+        <h4>Добро пожаловать!</h4>
+        <p>Для заучивания слов в нашем приложении применяется метод интервальных повторений. <br>
+        Интервальные повторения — это метод эффективного запоминания, его суть в том, чтобы повторять заученную информацию через определенные промежутки времени (без повторений она быстро забудется)<br>
+        Для того, чтобы мы могли подобрать индивидуальные интервалы для каждого изучаемого слова, предлагаем Вам для начала выбрать подходящие Вам настройки. </p>
+      </div>
+      <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat">Начать!</a>
+      </div>
+  </div>
   </body>
 </html>
 

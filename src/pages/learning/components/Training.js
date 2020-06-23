@@ -1,6 +1,6 @@
-import { ServerAPI } from 'Service/ServerAPI';
+import { apiGetWords } from 'Service/ServerAPI/SereverAPI.js';
 import Card from './Card';
-import {mySwiper} from './constants';
+import {mySwiper, settings} from './constants';
 import 'materialize-css';
 import { updateMaterialComponents, setProgressbarToCurrentPosition, formHandler } from './helpers';
 
@@ -10,15 +10,13 @@ export default class Training {
     this.newWordsAmountPerDay = newWordsAmountPerDay;
     this.maxWordsPerDay = maxWordsPerDay;
     // TODO ServerAPI
-    const serverApi = new ServerAPI();
     const wordsQuery = {
       group:0,
-      page:6,      
+      page:1,      
     }
-    serverApi.getWords(wordsQuery).then(
+    apiGetWords(wordsQuery).then(
     (wordsArray) => {
       console.log(wordsArray);
-
       this.words = wordsArray.slice(0, 3);
       this.start();
       },
@@ -47,6 +45,7 @@ export default class Training {
     const currentInput =  currentForm.querySelector('.input_text');
     currentInput.focus();    
     currentForm.addEventListener('submit', formHandler);
+    console.log(settings);
   }
 
   stop() {

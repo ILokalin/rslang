@@ -2,6 +2,7 @@
 @import 'Src/scss/components';
 @import 'materialize-css';
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+@import 'Src/scss/components';
 
 .hidden {
   display: none;
@@ -45,4 +46,5 @@ header, main, footer, .settings-container {
 
 .settings__general {
   margin-top: 2rem;
-}>>>>>>> feat: add header and side menu to main page
+}
+
