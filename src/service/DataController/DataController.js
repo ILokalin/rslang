@@ -3,7 +3,7 @@ import {
   openAuthPopup,
   closeAuthPopup,
   authPopupState,
-  userDateStore,
+  userDataStore,
   showAuthReport,
 } from 'Service/AppState';
 import {
@@ -12,6 +12,9 @@ import {
   apiUserSettingsGet,
   apiUserCreate,
   apiUserSignIn,
+  apiUserWordsSave,
+  apiUserWordsGet,
+  apiUserWordsGetAll,
 } from 'Service/ServerAPI';
 import { reportMessages } from './reportMessages';
 import { dataControllerConst } from './dataControllerConst';
@@ -28,7 +31,7 @@ export class DataController {
   constructor() {
     authPopup.init();
 
-    userDateStore.watch((userData) => {
+    userDataStore.watch((userData) => {
       if (this.isAuthInProgress) {
         this.authChainResponsibility(userData);
       }
@@ -43,6 +46,34 @@ export class DataController {
         this.reject(CANCEL_USER);
       }
     });
+  }
+
+  userWordsGetAll() {
+    return apiUserWordsGetAll();
+  }
+
+  userWordsGet(wordId) {
+    return apiUserWordsGet(wordId);
+  }
+
+  userWordsPut(wordData) {
+    const sendWordData = {
+      difficulty: wordData.status,
+      optional: {
+        lastDate: new Date().toDateString()
+      }
+    }
+    return apiUserWordsSave(wordData.id, sendWordData, 'PUT')
+  }
+
+  userWordsPost(wordData) {
+    const sendWordData = {
+      difficulty: wordData.status,
+      optional: {
+        lastDate: new Date().toDateString()
+      }
+    }
+    return apiUserWordsPut(wordData.id, sendWordData, 'POST')
   }
 
   getMaterials(file) {
@@ -103,15 +134,6 @@ export class DataController {
     });
   }
 
-  prepareUploadSetting(originSettings, uploadSettings) {
-    return {
-      optional: this.packUserSettings({
-        ...this.unpackUserSettings(originSettings.optional),
-        ...uploadSettings,
-      }),
-    };
-  }
-
   chainSignInSettingsGetSettingsPut(userData) {
     apiUserSignIn(userData)
       .then(() => apiUserSettingsGet())
@@ -151,6 +173,15 @@ export class DataController {
       return true;
     }
     return false;
+  }
+
+  prepareUploadSetting(originSettings, uploadSettings) {
+    return {
+      optional: this.packUserSettings({
+        ...this.unpackUserSettings(originSettings.optional),
+        ...uploadSettings,
+      }),
+    };
   }
 
   unpackUserSettings(userSettings) {
