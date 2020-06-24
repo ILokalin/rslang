@@ -1,7 +1,6 @@
 import { DataController } from 'Service/DataController';
 import Utils from '../../services/utils';
 import SpeechRecognitionService from '../../services/speechRecognition';
-import Authorization from '../../services/Authorization';
 import GameSettings from '../GameSettings';
 
 import {
@@ -40,7 +39,6 @@ export default class Game {
     NEW_GAME.addEventListener('click', this.onNewGameBtnClick.bind(this));
     RESULTS_BTN.addEventListener('click', this.showResults.bind(this));
     this.recognition = new SpeechRecognitionService(this.props);
-    this.authorization = new Authorization();
   }
 
   showResults(e) {
