@@ -6,29 +6,45 @@ import { updateMaterialComponents, setProgressbarToCurrentPosition, formHandler 
 
 export default class Training {
   constructor(newWordsAmountPerDay, maxWordsPerDay) {
-    this.date = new Date();
-    console.log(newWordsAmountPerDay, maxWordsPerDay);
-    this.newWordsAmountPerDay = newWordsAmountPerDay;
-    this.maxWordsPerDay = maxWordsPerDay;
+    this.shortTermStat = {
+      date: new Date(),
+      totalCards: 0,
+      wrightAnswers: 0,
+      newWords:0,
+      chain: 0,
+      longestChain:0,
+    }
+    const newWordsQuery = {
+        group:0,
+        page:1,
+        wordsPerExampleSentenceLTE: '',
+        wordsPerPage: newWordsAmountPerDay,
+      };
     // TODO query 
    if (settings.justNewWords) {
-     const wordsQuery = {
-      group:0,
-      page:1,
-      wordsPerExampleSentenceLTE: '',
-      wordsPerPage: 60,
-    };
-    console.log(wordsQuery);
-    dataController.getWords(wordsQuery).then(
-      (wordsArray) => {
-        console.log(wordsArray);
-        this.words = wordsArray.slice(0, 3);
-        this.start();
-      },
-      (rejectReport) => {
-        console.log(rejectReport);
-      },
-    );
+      dataController.getWords(newWordsQuery).then(
+        (wordsArray) => {
+          console.log(wordsArray);
+          this.words = wordsArray.slice(0, 3);
+          this.start();
+        },
+        (rejectReport) => {
+          console.log(rejectReport);
+        }
+      );
+    } else {
+      //TODO get user words and new words   
+      dataController.getWords(newWordsQuery).then(
+        (wordsArray) => {
+          console.log(wordsArray);
+          this.words = wordsArray.slice(0, 3);
+          this.start();
+        },
+        (rejectReport) => {
+          console.log(rejectReport);
+        }
+      );
+    }
   }
 
   start() {
@@ -37,7 +53,7 @@ export default class Training {
         const card = new Card(word);
         mySwiper.appendSlide(card.cardElem);
       });
-      mySwiper.update();
+      mySwiper.update();      
       updateMaterialComponents();
       this.playNextCard();
     }
@@ -55,5 +71,17 @@ export default class Training {
 
   stop() {
     mySwiper.destroy(false, true);
+  }
+
+  updateStat() {
+    if (mySwiper.train.shortTermStat.longestChain <  mySwiper.train.shortTermStat.chain) {
+      mySwiper.train.shortTermStat.longestChain = mySwiper.train.shortTermStat.chain;
+    }
+    document.querySelector('.statistics__new-words-num').innerText = this.shortTermStat.newWords;
+    document.querySelector('.statistics__correct-answers').innerText = `${Math.round(this.shortTermStat.wrightAnswers/this.shortTermStat.totalCards*100)}%`;
+    document.querySelector('.statistics__total-cards').innerText = this.shortTermStat.totalCards;
+    document.querySelector('.statistics__correct-in-row').innerText = this.shortTermStat.longestChain;
+    localStorage.setItem('stat', JSON.stringify(this.shortTermStat));
+    console.log(this.shortTermStat);
   }
 }

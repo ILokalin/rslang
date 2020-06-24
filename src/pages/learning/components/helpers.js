@@ -66,6 +66,7 @@ const hideTranscription = () => {
 };
 
 const allowNextCard = () => {
+  console.log(mySwiper);
   if (mySwiper.activeIndex === mySwiper.slides.length - 1) {
     const modal = M.Modal.getInstance(document.querySelector('.modal'));
     modal.open();
@@ -139,29 +140,33 @@ const formHandler = (event) => {
   });
 
   if (isWrong) {
+    mySwiper.train.shortTermStat.chain = 0;
     // TODO set word to difficult category if wrong
     result.style.zIndex = 2;
     input.value = '';
     input.setAttribute('placeholder', input.dataset.word);
     input.focus();
-
     setTimeout(() => {
       result.style.zIndex = -1;
       result.innerHTML = '';
     }, 3000);
   } else {
+    if (+input.dataset.tryCount === 1) {
+      // TODO send to learned user words
+      mySwiper.train.shortTermStat.wrightAnswers++;      
+    }    
+    mySwiper.train.shortTermStat.chain++;
+    mySwiper.train.shortTermStat.totalCards++;
     const audio = event.target.closest('.card').querySelector('.audio');
     if (settings.autoplay) {
       audioPlay(audio);
     }
+    mySwiper.train.updateStat();  
     allowNextCard();
     showTranscription();
     showExplanation();
-    showExample();
-    if (input.dataset.tryCount === 1) {
-      // TODO send to learned user words
-    }
-  }
+    showExample();    
+  }  
 };
 
 const againBtnAct = () => {
