@@ -8,13 +8,13 @@
   display: none;
 }
 
-header, main, footer, .settings-container {
+header, main, footer, .settings-container, .statistics-container {
   padding-left: 300px;
 }
 
 
 @media only screen and (max-width : 992px) {
-  header, main, footer, .settings-container {
+  header, main, footer, .settings-container, .statistics-container {
     padding-left: 0;
   }
   .settings-container {
@@ -76,7 +76,6 @@ header, main, footer, .settings-container {
   @media screen and (max-width: 650px) {
     display:none;
   }
-
 }
 
 .sc-gauge  { 
@@ -107,7 +106,7 @@ header, main, footer, .settings-container {
 
 .sc-percentage { 
   position:absolute; 
-  top: 5rem; 
+  top: 7rem; 
   left:-200%; 
   width:400%; 
   height:400%; 
@@ -135,6 +134,41 @@ header, main, footer, .settings-container {
   width:100%;  
   font-size:3rem; 
   font-weight:700;
+}
+
+//statistic linechart
+
+.chart-container {
+  position: relative;
+}
+
+#chart {
+	height: 50%;
+	width: 50%;
+}
+#chartjs-tooltip {
+  cursor: pointer;
+	width: 1px;
+	position: absolute;
+	bottom: 50%;
+	transform: translateX(-.5px);
+	background: white;
+	text-align: center;
+	transition: .3s;
+	opacity: 0;
+	&.active {
+		opacity: 1;
+	}
+	&__text {
+		position: absolute;
+		top: -32px;
+		transform: translateX(-50%);
+		padding: 2px 0;
+		background: white;
+		border-radius: 16px;
+		font-size: 12px;
+		transition: .3s;
+	}
 }
 
 
