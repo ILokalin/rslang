@@ -24,6 +24,7 @@ export default class Game {
   constructor() {
     this.gameSettings = new GameSettings();
     this.gameSettings.init(this.levelOrRoundSelected.bind(this));
+    this.gameSettings.displayRound();
     localStorage.isStart = false;
     this.props = {
       errors: ERRORS_MAX_COUNT,
@@ -33,10 +34,7 @@ export default class Game {
     };
     Utils.resetMainCard();
     this.dataController = new DataController();
-    this.dataController.getUser().then(
-      (userSettings) => Utils.displayUserName(userSettings),
-      (rejectReport) => console.log(rejectReport),
-    );
+    this.dataController.getUser().then(Utils.displayUserName);
     this.createCardPage();
     RESTART.addEventListener('click', this.onRestartBtnClick.bind(this));
     RETURN.addEventListener('click', Utils.onReturnBtnClick);

@@ -16,6 +16,17 @@ const Utils = {
 
   getRandomRound: () => Math.round(0 - 0.5 + Math.random() * (29 - 0 + 1)),
 
+  getCurrentRound: () => {
+    if (!localStorage.getItem('speakItGameRound')) {
+      localStorage.setItem('speakItGameRound', '1.1');
+    }
+    return localStorage.getItem('speakItGameRound');
+  },
+
+  setCurrentRound: (round) => {
+    localStorage.setItem('speakItGameRound', round);
+  },
+
   getWordsForRound: async (dataController, level, round) => {
     const wordsArr = await dataController.getWords({ group: level - 1, page: round - 1 });
     wordsArr.sort(() => 0.5 - Math.random());
