@@ -6,9 +6,14 @@ import {
   RESULTS,
   ERRORS_MAX_COUNT,
   CARDS_ITEMS,
+  userNameEl,
 } from '../data/constants';
 
 const Utils = {
+  displayUserName: (userSettings) => {
+    userNameEl.innerText = `Hi, ${userSettings.name}!`;
+  },
+
   getRandomRound: () => Math.round(0 - 0.5 + Math.random() * (29 - 0 + 1)),
 
   getWordsForRound: async (dataController, level, round) => {

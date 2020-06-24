@@ -24,6 +24,7 @@ const sideNavTriggerEl = document.querySelector('.sidenav-trigger');
 const levelSelectEl = document.querySelector('.level-select select');
 const roundSelectEl = document.querySelector('.round-select');
 const roundLabelEl = document.querySelector('.round-label');
+const userNameEl = document.querySelector('.user-name');
 
 export {
   INTRO,
@@ -50,4 +51,5 @@ export {
   levelSelectEl,
   roundSelectEl,
   roundLabelEl,
+  userNameEl,
 };

@@ -33,6 +33,10 @@ export default class Game {
     };
     Utils.resetMainCard();
     this.dataController = new DataController();
+    this.dataController.getUser().then(
+      (userSettings) => Utils.displayUserName(userSettings),
+      (rejectReport) => console.log(rejectReport),
+    );
     this.createCardPage();
     RESTART.addEventListener('click', this.onRestartBtnClick.bind(this));
     RETURN.addEventListener('click', Utils.onReturnBtnClick);

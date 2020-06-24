@@ -63,3 +63,10 @@ body {
 .round-label {
   padding-left: 10px;
 }
+
+div .auth-popup__menu {
+  position: absolute;
+  top: 10%;
+  left: 25%;
+  z-index: 1000;
+}
