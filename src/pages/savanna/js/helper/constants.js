@@ -12,15 +12,30 @@ const resultContainer = document.querySelector('.results-container');
 const stat = document.querySelector('.result');
 const audio = document.querySelector('.audio');
 const gameData = {
-    currentCards: [],
-    count: 0,
-    wordContainer: [],
-    knowWords: [],
-    errorWords: [],
-    currentRound: 5,
-    currentLevel: 6,
-    roundStreak: 0,
-    health: 5,
-}
+  currentCards: [],
+  count: 0,
+  wordContainer: [],
+  knowWords: [],
+  errorWords: [],
+  currentRound: 5,
+  currentLevel: 6,
+  roundStreak: 0,
+  health: 5,
+};
 
-export { startButton, restartButton, backButton, guessWord, guessContainer, answerContsainer, appContainer, header, startMenu, gameContainer, resultContainer, stat, audio, gameData };
+export {
+  startButton,
+  restartButton,
+  backButton,
+  guessWord,
+  guessContainer,
+  answerContsainer,
+  appContainer,
+  header,
+  startMenu,
+  gameContainer,
+  resultContainer,
+  stat,
+  audio,
+  gameData,
+};
