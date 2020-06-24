@@ -78,6 +78,7 @@ header, main, footer, .settings-container {
   }
 
 }
+
 .sc-gauge  { 
   width:200px; 
   height:200px; 
@@ -93,6 +94,7 @@ header, main, footer, .settings-container {
   overflow:hidden; 
   text-align:center; 
 }
+
 .sc-mask { 
   position:absolute; 
   top:20px; 
@@ -102,6 +104,7 @@ header, main, footer, .settings-container {
   background-color:#fff; 
   border-radius:150px 150px 0 0; 
 }
+
 .sc-percentage { 
   position:absolute; 
   top: 5rem; 
@@ -110,20 +113,25 @@ header, main, footer, .settings-container {
   height:400%; 
   margin-left:100px; 
   background-color:#ef6c00; 
-  }
+}
+
 .sc-percentage { 
   transform:rotate(150deg); 
   transform-origin: top center; 
 }
+
 .sc-min { 
   float: left; 
-  }
+}
+
 .sc-max { 
   float:right; 
 }
+
 .sc-value { 
   position:absolute; 
-  top:50%; left:0; 
+  top:40%; 
+  left:0; 
   width:100%;  
   font-size:3rem; 
   font-weight:700;
