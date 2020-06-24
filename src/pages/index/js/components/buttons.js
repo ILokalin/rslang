@@ -16,7 +16,6 @@ const whoIsGameFor = () => {
     (rejectReport) => {
       console.log('User canceled');
       titleUser.innerText = `${rejectReport.name}`;
-      reportLine.innerText = rejectReport.message;
     }
   )
 }
@@ -32,7 +31,7 @@ loginButton.addEventListener('click', whoIsGameFor);
 logoutButtons.forEach((btn) => { 
   btn.addEventListener('click', userLogout);
 });
-//TODO get settings from backend
+// TODO get settings from backend
 const settings = {
   lastTrain: 'date',
   cardsPerDay: 30,
@@ -61,8 +60,7 @@ settingsSaveBtns.forEach((btn) => {
         settings.newCardsPerDay = +newCardsPerDay.value;
         settings.justNewWords = +justNewWords.checked;
       }     
-    } else {
-      if (!(translation.checked || translation.checked || example.checked)) {
+    } else if (!(translation.checked || translation.checked || example.checked)) {
         message.classList.remove('hidden');
         translation.checked = true;
       } else {
@@ -78,8 +76,7 @@ settingsSaveBtns.forEach((btn) => {
         settings.cardContainsExampleTransl = +exampleTranslation.checked;
         settings.showAnswerBtnEnabled = +showAnswerBtn.checked;
         settings.autoPlayEnabled = +autoPlay.checked;
-      }      
-    }
+      }
     console.log(settings);
     localStorage.setItem('settings', JSON.stringify(settings));
     // TODO send settings to backend

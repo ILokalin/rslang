@@ -1,7 +1,7 @@
 import Swiper from 'swiper';
 import {ElementGen} from 'Src/service/DomGen/DomGen';
+import { DataController } from 'Service/DataController/DataController';
 import {setProgressbarToCurrentPosition} from './helpers';
-import { DataController } from 'Service/DataController/DataController.js';
 import 'materialize-css';
 
 const mySwiper = new Swiper('.swiper-container', {
@@ -15,14 +15,14 @@ const mySwiper = new Swiper('.swiper-container', {
   },
   navigation: {
     nextEl: '.swiper-button-next',
-    //prevEl: '.swiper-button-prev',
+    // prevEl: '.swiper-button-prev',
   },
    a11y: {
     prevSlideMessage: 'Previous card',
     nextSlideMessage: 'Next card',
   },
   on: {
-    slideChange: function () {
+    slideChange () {
       this.train.playNextCard();
       setProgressbarToCurrentPosition();
     }

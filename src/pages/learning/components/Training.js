@@ -1,4 +1,4 @@
-import { DataController } from 'Service/DataController/DataController.js';
+/* eslint-disable class-methods-use-this */
 import Card from './Card';
 import {mySwiper, settings, dataController } from './constants';
 import 'materialize-css';
@@ -15,7 +15,7 @@ export default class Training {
       group:0,
       page:1,
       wordsPerExampleSentenceLTE: '',
-      wordsPerPage: newWordsAmountPerDay,      
+      wordsPerPage: 60,      
     }
     console.log(wordsQuery)
     dataController.getWords(wordsQuery).then(
@@ -49,7 +49,6 @@ export default class Training {
     const currentInput =  currentForm.querySelector('.input_text');
     currentInput.focus();    
     currentForm.addEventListener('submit', formHandler);
-    console.log(settings);
   }
 
   stop() {

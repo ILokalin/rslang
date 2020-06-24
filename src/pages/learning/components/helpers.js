@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { progressBar, mySwiper, settings } from './constants';
 
 const measureWordWidth = (word) => {
@@ -25,6 +26,7 @@ const hardBtnHandler = () => {
 }
 
 const updateMaterialComponents = () => {
+  // eslint-disable-next-line no-undef
   M.AutoInit();
   const sideNavOptions = {
     edge: 'right',
@@ -42,9 +44,8 @@ const setProgressbarToCurrentPosition = () => {
   progressBar.querySelector('.determinate').style.width = progress;
   progressBar.dataset.tooltip = progress;
 }
-
 const hideGuessingWordInSentence = (element) => {
-    if (element.classList.contains('explanation')) {
+    if (element.classList.contains('explanation')) {      
       element.querySelector('i').style.color = 'white';
       element.querySelector('i').style.borderBottom = '1px solid black';
     }
@@ -73,6 +74,18 @@ const hideTranscription = () => {
   mySwiper.slides[mySwiper.activeIndex].querySelector('.transcription').classList.add('.hidden');
 }
 
+const allowNextCard = () => {
+  if (mySwiper.activeIndex === mySwiper.slides.length - 1) {
+    const modal = M.Modal.getInstance(document.querySelector('.modal'));
+    modal.open();
+    progressBar.querySelector('.determinate').style.width = '100%';
+    progressBar.dataset.tooltip = '100%';
+  } else {
+    mySwiper.allowSlideNext = true;
+    mySwiper.navigation.nextEl.classList.remove('swiper-button-disabled');
+  }
+}
+
 const audioPlay = (audio) => {
   const tracks = [audio.dataset.wordPronounce, audio.dataset.explanationPronounce, audio.dataset.examplePronounce];
   let current = 0;
@@ -80,7 +93,7 @@ const audioPlay = (audio) => {
   audio.autoplay = true;
   audio.onended = function() {
     console.log(current);
-    current++;
+    current+=1;
     if (current === tracks.length) {
       allowNextCard();
       
@@ -90,17 +103,7 @@ const audioPlay = (audio) => {
     }    
   }
 } 
-const allowNextCard = () => {
-  if (mySwiper.activeIndex === mySwiper.slides.length-1) {
-    const modal = M.Modal.getInstance(document.querySelector('.modal'));
-    modal.open();
-    progressBar.querySelector('.determinate').style.width = '100%';
-    progressBar.dataset.tooltip = '100%';       
-  } else {
-    mySwiper.allowSlideNext = true;
-    mySwiper.navigation.nextEl.classList.remove('swiper-button-disabled');
-  }      
-}
+
 
 const showExplanation = () => {
   const explanation = mySwiper.slides[mySwiper.activeIndex].querySelector('.explanation');  
@@ -139,7 +142,7 @@ const formHandler = (event) => {
   })
 
   if (isWrong) {
-    //TODO set word to difficult category if wrong
+    // TODO set word to difficult category if wrong
     result.style.zIndex = 2;
     input.value = '';
     input.setAttribute('placeholder', input.dataset.word);

@@ -182,28 +182,29 @@ export default class Card {
       againBtnAct();     
     }
     if(event.target.closest('.simple-btn')) {
-      //TODO send the word to backend w difficulty 'simple'      
+      // TODO send the word to backend w difficulty 'simple'      
     }
     if(event.target.closest('.good-btn')) {
-      //TODO send the word to backend w difficulty 'good' 
+      // TODO send the word to backend w difficulty 'good' 
     }
     if(event.target.closest('.hard-btn')) {
-      //TODO send the word to backend w difficulty 'hard'       
+      // TODO send the word to backend w difficulty 'hard'       
     }
   } 
 
   formBtnsHandler(event) {
     const input = event.target.closest('.form').querySelector('.input_text');
      if(event.target.closest('.delete-btn')) {
+      // eslint-disable-next-line no-undef
       M.toast({html: `Слово ${input.dataset.word} удалено из Словаря. Вы можете восстановить его в Словаре`});
-      //TODO send the word to backend w difficulty 'deleted'
+      // TODO send the word to backend w difficulty 'deleted'
       
     }
     if(event.target.closest('.show-answer-btn')) {
-      //TODO send the word to backend w difficulty 'hard'
+      // TODO send the word to backend w difficulty 'hard'
       input.value =  input.dataset.word;   
       const audio = event.target.closest('.card').querySelector('.audio');
-      //audioPlay(audio);
+      // audioPlay(audio);
       allowNextCard();
       showTranscription();
       showExplanation();

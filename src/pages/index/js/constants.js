@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import { DataController } from 'Service/DataController';
 import 'materialize-css';
 
