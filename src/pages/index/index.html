@@ -46,7 +46,7 @@
         </ul>
       </ul>      
     </div>
-    <main>
+    <main class="hidden">
       <ul>
         <li>
           <div class="training-btn-container">
@@ -61,16 +61,16 @@
                 <ul>
                   <li><h5 class="blue-grey-text">За сегодня:</h5></li>
                   <li>
-                    <p><span class="statistics__new-words-num">6</span> новых слов выучено</p>
+                    <p><span class="statistics__new-words-num">0</span> новых слов выучено</p>
                   </li>
                   <li>
-                    <p><span class="statistics__correct-answers">6</span> повторений слов</p>
+                    <p><span class="statistics__repeated-words">0</span> повторений слов</p>
                   </li>
                   <li>
-                    <p><span class="statistics__total-cards">10</span> карточек</p>
+                    <p><span class="statistics__total-cards">0</span> карточек</p>
                   </li>
                   <li>
-                    <p><span class="statistics__correct-in-row">2</span> верных ответов подряд</p>
+                    <p><span class="statistics__correct-in-row">0</span> верных ответов подряд</p>
                   </li>
                 </ul>
               </blockquote>             
@@ -80,13 +80,13 @@
                 <ul>
                   <li><h5 class="blue-grey-text">План на сегодня: </h5></li>
                   <li>
-                    <p>Выучить новых слов: <span class="statistics__new-words-num">6</span></p>
+                    <p>Выучить новых слов: <span class="plan__new"></span></p>
                   </li>
                   <li>
-                    <p>Повторить слов: <span class="statistics__correct-answers">6</span></p>
+                    <p>Повторить слов: <span class="plan_repeat"></span></p>
                   </li>
                   <li>
-                    <p>Открыть карточек: <span class="statistics__total-cards">10</span></p>
+                    <p>Открыть карточек: <span class="plan__total"></span></p>
                   </li>
                 </ul>
               </blockquote> 
@@ -355,6 +355,15 @@
               <p class="card__info-message red-text hidden">В блоке "Информация о слове" должна быть хотя бы одна отметка!</p>
             </div>
           </form>
+        </div>
+      </div>
+    </div>
+    <div class="statistics-container">
+      <h4 class="center">Статистика</h4> 
+      <div class="chart-container">
+        <canvas id="chart"></canvas>
+        <div id="chartjs-tooltip">
+          <div id="chartjs-tooltip__text"></div>
         </div>
       </div>
     </div>

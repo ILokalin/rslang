@@ -39,25 +39,8 @@ justNewWords.addEventListener('change', () => {
   }
 });
 
-const settings = {
-  lastTrain: 'date',
-  cardsPerDay: 30,
-  newCardsPerDay: 15,
-  justNewWords: 0,
-  cardContainsTranslation: 1,
-  cardContainsMeaning: 0,
-  cardContainsMeaningTransl: 0,
-  cardContainsExample: 0,
-  cardContainsExampleTransl: 0,
-  cardContainsPicture: 1,
-  cardContainsTranscription: 1,
-  footerBtnsEnabled: 1,
-  deleteBtnEnabled: 1,
-  showAnswerBtnEnabled: 0,
-  autoPlayEnabled: 1,
-};
-
-const handleSettingsView = () => {
+export const handleSettingsView = () => {
+  const settings = JSON.parse(localStorage.getItem('settings'));
   settings.cardsPerDay = +cardsPerDay.value;
   newCardsPerDay.value = +settings.newCardsPerDay;
   justNewWords.checked = !!settings.justNewWords;
@@ -74,4 +57,4 @@ const handleSettingsView = () => {
   autoPlay.checked = settings.autoPlayEnabled;
 };
 
-handleSettingsView();
+
