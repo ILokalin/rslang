@@ -4,4 +4,4 @@ export const api = {
   settings: 'settings',
   signin: 'signin',
   words: 'words',
-}
+};
