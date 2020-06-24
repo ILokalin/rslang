@@ -14,6 +14,7 @@ import {
   apiUserSignIn,
 } from 'Service/ServerAPI';
 import { reportMessages } from './reportMessages';
+import { dataControllerConst } from './dataControllerConst';
 
 const CANCEL_USER = {
   status: 0,
@@ -22,7 +23,6 @@ const CANCEL_USER = {
 };
 
 const authPopup = new AuthPopup();
-const defaultZeroBlock = { page: 0, group: 0 };
 
 export class DataController {
   constructor() {
@@ -45,8 +45,14 @@ export class DataController {
     });
   }
 
+  getMaterials(file) {
+    return new Promise ((resolve, reject) => {
+      resolve(`${dataController.materialPath}${file}`);
+    })
+  }
+
   getWords(options) {
-    return apiGetWords({ ...defaultZeroBlock, ...options });
+    return apiGetWords({ ...dataControllerConst.defaultZeroBlock, ...options });
   }
 
   logoutUser() {
