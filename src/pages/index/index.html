@@ -26,11 +26,11 @@
           <a class="avatar__logout logout-btn hidden" href="#!">LOGOUT</a>
         </div>
         <ul >
-          <li><a class = "menu__home"href="#">Главная страница<i class="material-icons right">home</i></a></li>
+          <li><a class="menu__home"href="#">Главная страница<i class="material-icons right">home</i></a></li>
           <li><a href="/learning" target="_blank">Тренировка <i class="material-icons right">developer_mode</i></a></li>
-          <li><a class = "menu__settings" href="#!">Настройки <i class="material-icons right">settings</i></a></li>
-          <li><a href="#!">Статистика <i class="material-icons right">show_chart</i></a></li>
-          <li><a href="#!">Словарь <i class="material-icons right">sort_by_alpha</i></a></a></li>
+          <li><a class="menu__settings" href="#!">Настройки <i class="material-icons right">settings</i></a></li>
+          <li><a class="menu__statistics" href="#!">Статистика <i class="material-icons right">show_chart</i></a></li>
+          <li><a class="menu__vocabulary" href="#!">Словарь <i class="material-icons right">sort_by_alpha</i></a></a></li>
           <li><div class="divider"></div></li> 
           <li>
             <a class="dropdown-trigger" href="#!" data-target="dropdown1">Игры<i class="material-icons right">arrow_drop_down</i></a>
@@ -358,7 +358,7 @@
         </div>
       </div>
     </div>
-    <div class="statistics-container">
+    <div class="statistics-container hidden">
       <h4 class="center">Статистика</h4> 
       <div class="chart-container">
         <canvas id="chart"></canvas>
@@ -366,6 +366,25 @@
           <div id="chartjs-tooltip__text"></div>
         </div>
       </div>
+    </div>
+    <div class="vocabulary-container">
+      <h4 class="center">Словарь</h4>
+      <div>
+        <div class="row">
+          <div class="col s12">
+            <ul class="tabs">
+              <li class="tab col s3"><a href="#test1">Test 1</a></li>
+              <li class="tab col s3"><a class="active" href="#test2">Test 2</a></li>
+              <li class="tab col s3 disabled"><a href="#test3">Disabled Tab</a></li>
+              <li class="tab col s3"><a href="#test4">Test 4</a></li>
+            </ul>
+          </div>
+          <div id="test1" class="col s12">Test 1</div>
+          <div id="test2" class="col s12">Test 2</div>
+          <div id="test3" class="col s12">Test 3</div>
+          <div id="test4" class="col s12">Test 4</div>
+        </div>
+      </div>      
     </div>
     <div class="modal greeting">
       <div class="modal-content">

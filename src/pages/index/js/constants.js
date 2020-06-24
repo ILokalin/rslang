@@ -24,8 +24,16 @@ const justNewWords = document.querySelector('.general__only-new-words');
 const generalMessage = document.querySelector('.general__info-message');
 const showAnswerBtn = document.querySelector('.card__show-answer-btn');
 const autoPlay = document.querySelector('.card__autoplay');
+const settings = document.querySelector('.settings-container');
+const statistcs = document.querySelector('.statistics-container');
+const vocabulary = document.querySelector('.vocabulary-container');
+const main = document.querySelector('main');
 
 export {
+  settings,
+  statistcs,
+  vocabulary,
+  main,
   dataController,
   titleUser,
   loginButton,

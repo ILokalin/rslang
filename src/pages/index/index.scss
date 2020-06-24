@@ -8,13 +8,13 @@
   display: none;
 }
 
-header, main, footer, .settings-container, .statistics-container {
+header, main, footer, .settings-container, .statistics-container, .vocabulary-container {
   padding-left: 300px;
 }
 
 
 @media only screen and (max-width : 992px) {
-  header, main, footer, .settings-container, .statistics-container {
+  header, main, footer, .settings-container, .statistics-container, .vocabulary-container {
     padding-left: 0;
   }
   .settings-container {
