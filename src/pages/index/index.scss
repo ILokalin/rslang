@@ -8,13 +8,21 @@
   display: none;
 }
 
+<<<<<<< HEAD
 header, main, footer, .settings-container, .statistics-container, .vocabulary-container {
+=======
+header, main, footer, .settings-container, .statistics-container {
+>>>>>>> feat: add linechart layout
   padding-left: 300px;
 }
 
 
 @media only screen and (max-width : 992px) {
+<<<<<<< HEAD
   header, main, footer, .settings-container, .statistics-container, .vocabulary-container {
+=======
+  header, main, footer, .settings-container, .statistics-container {
+>>>>>>> feat: add linechart layout
     padding-left: 0;
   }
   .settings-container {

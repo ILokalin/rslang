@@ -12,4 +12,3 @@ require.context('Src', true, /\.(png|svg|jpg|gif|mp3)$/);
 M.AutoInit();
 renderShortTermStat();
 renderStatChart();
-

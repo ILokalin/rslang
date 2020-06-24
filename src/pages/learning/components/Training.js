@@ -32,8 +32,8 @@ export default class Training {
           console.log(rejectReport);
         }
       );
-    } else {
-      // TODO get user words and new words   
+   } else {
+      // TODO get user words and new words
       dataController.getWords(newWordsQuery).then(
         (wordsArray) => {
           console.log(wordsArray);
