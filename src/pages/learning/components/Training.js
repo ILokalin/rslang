@@ -10,10 +10,11 @@ export default class Training {
     console.log(newWordsAmountPerDay, maxWordsPerDay);
     this.newWordsAmountPerDay = newWordsAmountPerDay;
     this.maxWordsPerDay = maxWordsPerDay;
-    // TODO ServerAPI
-    const wordsQuery = {
-      group: 0,
-      page: 1,
+    // TODO query 
+   if (settings.justNewWords) {
+     const wordsQuery = {
+      group:0,
+      page:1,
       wordsPerExampleSentenceLTE: '',
       wordsPerPage: 60,
     };
