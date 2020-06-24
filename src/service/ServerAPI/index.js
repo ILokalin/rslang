@@ -5,4 +5,3 @@ export {
   apiUserSettingsPut,
   apiGetWords,
 } from './SereverAPI';
-

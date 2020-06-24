@@ -88,5 +88,3 @@ export function ElementGen(tag, className, parent) {
 
   return element;
 }
-
-

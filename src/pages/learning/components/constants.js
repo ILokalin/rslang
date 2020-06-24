@@ -1,7 +1,7 @@
 import Swiper from 'swiper';
-import {ElementGen} from 'Src/service/DomGen/DomGen';
+import { ElementGen } from 'Src/service/DomGen/DomGen';
 import { DataController } from 'Service/DataController/DataController';
-import {setProgressbarToCurrentPosition} from './helpers';
+import { setProgressbarToCurrentPosition } from './helpers';
 import 'materialize-css';
 
 const mySwiper = new Swiper('.swiper-container', {
@@ -9,7 +9,7 @@ const mySwiper = new Swiper('.swiper-container', {
   centeredSlides: true,
   watchSlidesProgress: true,
   effect: 'fade',
-  pagination: { 
+  pagination: {
     el: '.swiper-pagination',
     type: 'fraction',
   },
@@ -17,22 +17,21 @@ const mySwiper = new Swiper('.swiper-container', {
     nextEl: '.swiper-button-next',
     // prevEl: '.swiper-button-prev',
   },
-   a11y: {
+  a11y: {
     prevSlideMessage: 'Previous card',
     nextSlideMessage: 'Next card',
   },
   on: {
-    slideChange () {
+    slideChange() {
       this.train.playNextCard();
       setProgressbarToCurrentPosition();
-    }
-  }
+    },
+  },
 });
 mySwiper.allowTouchMove = false;
-const wordContentUrl = 'https://raw.githubusercontent.com/jules0802/rslang-data/master/'
+const wordContentUrl = 'https://raw.githubusercontent.com/jules0802/rslang-data/master/';
 const progressBar = document.querySelector('.progress');
 const settings = JSON.parse(localStorage.getItem('settings'));
-const dataController = new DataController;
+const dataController = new DataController();
 
-export { mySwiper, wordContentUrl, progressBar, settings, dataController}
-
+export { mySwiper, wordContentUrl, progressBar, settings, dataController };

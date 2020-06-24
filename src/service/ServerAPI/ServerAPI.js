@@ -6,32 +6,29 @@ const API_SIGNIN = 'signin';
 const API_WORDS = 'words';
 
 export class ServerAPI {
-
   logoutUser() {
     localStorage.setItem('token', '');
   }
 
-  getWords({ group = 0, page = 0} = {}) {
+  getWords({ group = 0, page = 0 } = {}) {
     const rejectErrorReport = (errorReport) => {
       reject(errorReport);
     };
 
     return new Promise((resolve, reject) => {
       fetch(`${API_URL}${API_WORDS}?group=${group}&page=${page}`)
-        .then(
-          (rawResponse) => {
-            if (!this.isSuccess(rawResponse)) {
-              reject(this.packError(rawResponse));
-            }
-            return rawResponse.json();
+        .then((rawResponse) => {
+          if (!this.isSuccess(rawResponse)) {
+            reject(this.packError(rawResponse));
           }
-        )
+          return rawResponse.json();
+        })
         .then((response) => {
           resolve(response);
-        })
-    })
+        });
+    });
   }
-  
+
   checkToken() {
     const { userId, token } = localStorage;
     if (userId && token) {
