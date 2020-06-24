@@ -9,15 +9,24 @@ const reportLine = document.querySelector('.page__report');
 const loginButton = document.querySelector('.page__login-button');
 const wordsButton = document.querySelector('.page__words-button');
 
+const putDataButton = document.querySelector('.page__put-button');
+const getDataButton = document.querySelector('.page__get-button');
+const newName = document.querySelector('.page__input-name');
 const firstValue = document.querySelector('.page__input-words-example');
 const secondValue = document.querySelector('.page__input-words-ppage');
 
 let wordPagesCount = 0;
 
+const showUserInfo = (name, description) => {
+  titleUser.innerText = `Select game ${name}`;
+  reportLine.innerText = description;
+};
+
 const whoIsGameFor = () => {
   dataController.getUser().then(
     (userSettings) => {
-      console.log('We have user', userSettings);
+      console.log('We have user', userSettings.name);
+      console.log('SettingsObj: ', userSettings);
       titleUser.innerText = `Select game ${userSettings.name}`;
       reportLine.innerText = 'Good day';
 
@@ -69,9 +78,11 @@ const wordsLoad = () => {
 
 wordsButton.addEventListener('click', wordsLoad);
 
-// eslint-disable-next-line no-console
-console.log(
-  '%cTask RS Lang\n',
-  'font-family: sans-serif; font-size: 28px; letter-spacing: 0.1em;',
-  'RS School, group 22 2020q1',
-);
+const putUserSettings = () => {
+  dataController.setUserOptions({ name: newName.value }).then((userSettings) => {
+    showUserInfo(userSettings.name, 'new data');
+  });
+};
+
+putDataButton.addEventListener('click', putUserSettings);
+// getDataButton.addEventListener('click', getUserSettings);
