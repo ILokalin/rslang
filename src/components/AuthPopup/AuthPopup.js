@@ -1,6 +1,7 @@
 import { DomGen } from 'Service/DomGen';
 import { closeAuthPopup, authPopupState, setUserData, authReportStore } from 'Service/AppState';
 import { AuthPopConst } from './AuthPopupConst';
+import 'materialize-css';
 
 export class AuthPopup {
   constructor() {
@@ -15,46 +16,131 @@ export class AuthPopup {
       children: [
         {
           tag: 'div',
-          className: 'menu',
+          className: 'authorization',
           children: [
-            { tag: 'h2', className: 'title', innerText: 'Login/Register' },
-            { tag: 'p', className: 'describe', isAccess: 'reportLine' },
-            { tag: 'input', className: 'input', placeholder: 'email', isAccess: 'email' },
-            {
-              tag: 'input',
-              className: 'input',
-              type: 'password',
-              placeholder: 'password',
-              isAccess: 'password',
-            },
-            {
-              tag: 'p',
-              className: 'password-hint',
-              innerText:
-                'the password must contain at least one lowercase character, one uppercase, one special character, one digit',
-            },
             {
               tag: 'div',
-              className: 'buttons-line',
+              id: 'login-page',
+              classAdd: 'row',
               children: [
                 {
-                  tag: 'button',
-                  className: 'button',
-                  classAdd: ',waves-effect,waves-light,btn',
-                  innerText: 'Login',
-                  isAccess: 'login',
+                  tag: 'div',
+                  classAdd: 'col,s12,z-depth-6,card-panel',
+                  children: [
+                    { tag: 'h2', innerText: 'Login/Register' },
+                    { tag: 'p', isAccess: 'reportLine' },
+                    {
+                      tag: 'form',
+                      classAdd: 'login-form',
+                      children: [
+                        { tag: 'div', classAdd: 'row' },
+                        {
+                          tag: 'div',
+                          classAdd: 'row',
+                          children: [
+                            {
+                              tag: 'div',
+                              classAdd: 'input-field,col,s12',
+                              children: [
+                                {
+                                  tag: 'i',
+                                  classAdd: 'material-icons,prefix',
+                                  innerText: 'mail_outline',
+                                },
+                                {
+                                  tag: 'input',
+                                  classAdd: 'validate',
+                                  id: 'email',
+                                  type: 'email',
+                                  isAccess: 'email',
+                                },
+                                {
+                                  tag: 'label',
+                                  for: 'email',
+                                  dataError: 'wrong',
+                                  dataSuccess: 'right',
+                                  innerText: 'Email',
+                                },
+                              ],
+                            },
+                          ],
+                        },
+                        {
+                          tag: 'div',
+                          classAdd: 'row',
+                          children: [
+                            {
+                              tag: 'div',
+                              classAdd: 'input-field,col,s12',
+                              children: [
+                                {
+                                  tag: 'i',
+                                  classAdd: 'material-icons,prefix',
+                                  innerText: 'lock_outline',
+                                },
+                                {
+                                  tag: 'input',
+                                  classAdd: 'validate',
+                                  id: 'password',
+                                  type: 'password',
+                                  isAccess: 'password',
+                                },
+                                {
+                                  tag: 'label',
+                                  for: 'password',
+                                  dataError: 'wrong',
+                                  dataSuccess: 'right',
+                                  innerText: 'Password',
+                                },
+                              ],
+                            },
+                          ],
+                        },
+                        {
+                          tag: 'div',
+                          classAdd: 'row',
+                          children: [
+                            {
+                              tag: 'div',
+                              classAdd: 'input-field,col,s12',
+                              children: [
+                                {
+                                  tag: 'button',
+                                  type: 'button',
+                                  href: '#',
+                                  classAdd: 'login-btn,btn,waves-effect,waves-light,col,s12',
+                                  innerText: 'Login',
+                                  isAccess: 'login',
+                                },
+                                {
+                                  tag: 'button',
+                                  type: 'button',
+                                  href: '#',
+                                  classAdd: 'cancel-btn,btn,waves-effect,waves-light,col,s12',
+                                  innerText: 'Cancel',
+                                  isAccess: 'cancel',
+                                },
+                              ],
+                            },
+                          ],
+                        },
+                        // <div class="row">
+                        //       <div class="error-message"></div>
+                        //   </div>
+                        //   <div class="row">
+                        //       <div class="input-field col s6 m6 l6">
+                        //           <p class="margin medium-small register-msg">No account?</p>
+                        //           <p class="margin medium-small register-btn"><a href="">Register Now!</a></p>
+                        //       </div>
+                        //   </div>
+                      ],
+                    },
+                  ],
                 },
-                {
-                  tag: 'button',
-                  className: 'button',
-                  innerText: 'Register',
-                  value: 'register',
-                  isAccess: 'register',
-                  disabled: true,
-                },
-                { tag: 'button', className: 'button', innerText: 'Cancel', isAccess: 'cancel' },
               ],
             },
+
+            //         'the password must contain at least one lowercase character, one uppercase, one special character, one digit',
           ],
         },
       ],
@@ -74,7 +160,7 @@ export class AuthPopup {
 
     this.popup.cancel.addEventListener('click', this.cancelAuth);
     this.popup.login.addEventListener('click', this.sendUserData);
-    this.popup.register.addEventListener('click', this.showRegisterForm);
+    // this.popup.register.addEventListener('click', this.showRegisterForm);
   }
 
   openPopup() {

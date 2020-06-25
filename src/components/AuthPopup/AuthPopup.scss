@@ -1,74 +1,18 @@
+@import 'materialize-css';
 .auth-popup {
-  display: flex;
+  // display: flex;
   position: fixed;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
-  align-items: center;
-  background-color: #3337;
+  // align-items: center;
+  // z-index: 1000;
+  // background-color: #3337;
 
-  &__menu {
-    display: flex;
-    flex-direction: column;
-    margin: 0 auto;
-    border: 1px solid #3333;
-    border-radius: 10px;
-    background-color: grey;
-    padding: 50px;
-    padding-top: 50px;
+  &__authorization {
     width: 50%;
-    min-width: 300px;
-  }
-
-  &__title {
-    margin: 0 auto 10px;
-    color: #ccc;
-  }
-
-  &__describe {
-    margin: 0 auto 10px;
-    color: #ccc;
-  }
-
-  &__input {
-    margin-bottom: 20px;
-    outline: none;
-    border: 1px solid #3333;
-    border-radius: 4px;
-    padding: 5px;
-    height: 24px;
-  }
-
-  &__password-hint {
-    margin: 0 auto 10px;
-    color: #ccc6;
-    transition: 2s;
-
-    &:hover {
-      color: #fff;
-    }
-  }
-
-  &__buttons-line {
-    display: flex;
-    justify-content: flex-end;
-  }
-
-  &__button {
-    margin-left: 20px;
-    outline: none;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    background: none;
-    cursor: pointer;
-    width: 100px;
-    height: 30px;
-    color: #ccc;
-
-    &:disabled {
-      opacity: .5;
-      cursor: default;
-    }
+    margin: 0 auto;
+  //   height: 300px;
   }
 }
