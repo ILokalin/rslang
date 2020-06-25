@@ -21,12 +21,6 @@ const testUser = {
   password: 'checkerCH#2',
 };
 
-const cancelUser = {
-  status: 0,
-  message: 'User refused',
-  name: 'Unknown',
-};
-
 describe('Helpers tests', () => {
   test('unpack create normal object', () => {
     const optionalTest = {
@@ -156,7 +150,6 @@ describe('Test for userWords', () => {
     const testWord = {
       id: '5e9f5ee35eb9e72bc21af6f8',
       status: 'hard',
-      date: 'Wed Jun 24 2020',
     };
 
     await expect(dataController.userWordsPut(testWord)).resolves.toEqual(
@@ -183,12 +176,10 @@ describe('Test for userWords', () => {
       {
         id: '5e9f5ee35eb9e72bc21af6f8',
         status: 'hard',
-        date: 'Wed Jun 24 2020',
       },
       {
         id: '5e9f5ee35eb9e72bc21af6fa',
         status: 'hard',
-        date: 'Wed Jun 24 2020',
       },
     ];
 
