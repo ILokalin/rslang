@@ -60,26 +60,26 @@ export class DataController {
     const sendWordData = {
       difficulty: wordData.status,
       optional: {
-        lastDate: new Date().toDateString()
-      }
-    }
-    return apiUserWordsSave(wordData.id, sendWordData, 'PUT')
+        lastDate: new Date().toDateString(),
+      },
+    };
+    return apiUserWordsSave(wordData.id, sendWordData, 'PUT');
   }
 
   userWordsPost(wordData) {
     const sendWordData = {
       difficulty: wordData.status,
       optional: {
-        lastDate: new Date().toDateString()
-      }
-    }
-    return apiUserWordsPut(wordData.id, sendWordData, 'POST')
+        lastDate: new Date().toDateString(),
+      },
+    };
+    return apiUserWordsPut(wordData.id, sendWordData, 'POST');
   }
 
   getMaterials(file) {
-    return new Promise ((resolve, reject) => {
+    return new Promise((resolve, reject) => {
       resolve(`${dataController.materialPath}${file}`);
-    })
+    });
   }
 
   getWords(options) {

@@ -6,5 +6,5 @@ export {
   apiGetWords,
   apiUserWordsSave,
   apiUserWordsGet,
-  apiUserWordsGetAll
+  apiUserWordsGetAll,
 } from './SereverAPI';

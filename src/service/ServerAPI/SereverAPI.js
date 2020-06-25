@@ -30,7 +30,7 @@ export function apiUserWordsGetAll() {
         resolve(response);
       })
       .catch((errorReport) => reject(errorReport));
-  })
+  });
 }
 
 export function apiUserWordsGet(wordId) {
@@ -57,7 +57,7 @@ export function apiUserWordsGet(wordId) {
         resolve(response);
       })
       .catch((errorReport) => reject(errorReport));
-  })
+  });
 }
 
 export function apiUserWordsSave(wordId, wordData, method) {
@@ -85,7 +85,7 @@ export function apiUserWordsSave(wordId, wordData, method) {
         resolve(response);
       })
       .catch((errorReport) => reject(errorReport));
-  })
+  });
 }
 
 export function apiGetWords(requestData) {
