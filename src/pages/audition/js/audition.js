@@ -1,6 +1,7 @@
 import AuditionGameStatistics from './game-statistics'
 import { DataController } from 'Service/DataController';
 import {
+  DATA_URL,
   gameContainer,
   abortGameBtn,
   userNameEl,
@@ -17,6 +18,7 @@ export default class AuditionGame {
     this.dataController = new DataController();
 
     this.getUserData();
+    this.addSelectDifficultyHandler();
 
     this.wordClickListener = this.checkAnswer.bind(this);
     this.showAnswerListener = this.showAnswer.bind(this);
@@ -27,6 +29,18 @@ export default class AuditionGame {
 
   static getRandomNumber (max) {
       return Math.floor(Math.random() * Math.floor(max));
+  }
+
+  addSelectDifficultyHandler() {
+    navigationMenuEl.addEventListener('click', this.selectDifficultyHandler.bind(this))
+  }
+
+  selectDifficultyHandler(e) {
+    if (e.target.hasAttribute('data-id')) {
+      const itemId = parseInt(e.target.getAttribute('data-id'), 10);
+      this.level = itemId;
+      this.startGame();
+    }
   }
 
   getUserData() {
@@ -49,6 +63,7 @@ export default class AuditionGame {
 
   startGame() {
     this.round = 0;
+    this.roundsData = [];
     gameContainer.innerHTML = '';
 
     if (this.user) {
@@ -64,7 +79,6 @@ export default class AuditionGame {
       .then(
         (response) => {
           const words = response;
-          console.log(words)
           // this.createRoundsData(words);
           // this.createCurrentRoundPage();
           // this.createNextRoundPage();
@@ -92,7 +106,6 @@ export default class AuditionGame {
 
   fetchWords(pageNumber) {
     const url = `https://afternoon-falls-25894.herokuapp.com/words?group=${this.level}&page=${pageNumber}`;
-
     return fetch(url);
   }
 
@@ -118,11 +131,10 @@ export default class AuditionGame {
     while (this.roundsData.length < 10) {
       const roundWords = words.splice(0, 5);
       const roundData = {};
-
       roundData.word = roundWords[0].word;
       roundData.wordTranslate = roundWords[0].wordTranslate;
-      roundData.audio = new Audio(roundWords[0].audio.replace('files', 'sound'));
-      roundData.image = roundWords[0].image.replace('files', 'img');
+      roundData.audio = new Audio(`${DATA_URL}/${roundWords[0].audio}`);
+      roundData.image = `${DATA_URL}/${roundWords[0].image}`;
       roundData.translations = roundWords.map((word) => word.wordTranslate);
 
       roundData.translations.sort(() => Math.random() - Math.random());
