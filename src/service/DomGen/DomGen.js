@@ -30,7 +30,7 @@ export function DomGen({ name, ...blockStruct }) {
 
     const domElement = document.createElement(tag);
 
-    if (className) {
+    if (className || name) {
       classGen(className).forEach((singleClassName) => {
         domElement.classList.add(singleClassName);
       });
