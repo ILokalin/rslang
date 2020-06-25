@@ -7,7 +7,7 @@ export const authPopupState = createStore(false)
   .on(closeAuthPopup, () => false);
 
 export const setUserData = createEvent();
-export const userDateStore = createStore({}).on(setUserData, (_, userData) => userData);
+export const userDataStore = createStore({}).on(setUserData, (_, userData) => userData);
 
 export const showAuthReport = createEvent();
 export const authReportStore = createStore('').on(

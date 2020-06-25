@@ -2,7 +2,7 @@ export {
   openAuthPopup,
   closeAuthPopup,
   authPopupState,
-  userDateStore,
+  userDataStore,
   setUserData,
   authReportStore,
   showAuthReport,

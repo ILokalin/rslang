@@ -118,3 +118,153 @@ password: 'checkerCH#2',
 **I recommend not to use in games. Maybe for test only**
 
 Logout user from App and remove token from localStorage. The next call `getUser` shall open the window for authorization.
+
+## DataController
+
+add customization of user words and promise for get materials
+
+### userWordsPost
+Create new record for user word with current date. Exampl for use:
+```
+import { dataController } from 'Service/DataController';
+
+const dataController = new DataController();
+
+dataController.userWordsPost(option)
+  .then(
+    () => {... success},
+    (rejectReport) => {.. reject}
+  )
+```
+**option**
+```
+{
+  id, 
+  status
+}
+```
+- id - wordId
+- status - custom status... 'hard', 'easy', etc.
+
+
+### userWordPut
+Update exists record for user word. Exampl for use:
+```
+import { dataController } from 'Service/DataController';
+
+const dataController = new DataController();
+
+dataController.userWordsPut(option)
+  .then(
+    () => {... success},
+    (rejectReport) => {.. reject}
+  )
+```
+**option**
+```
+{
+  id, 
+  status
+}
+```
+- id - wordId
+- status - custom status... 'hard', 'easy', etc.
+
+**real sample option**
+```
+{
+  id: '5e9f5ee35eb9e72bc21af6f8',
+  status: 'hard',
+}
+```
+
+
+### userWordsGet
+Get specific word on id. Exampl:
+```
+import { dataController } from 'Service/DataController';
+
+const dataController = new DataController();
+
+dataController.userWordsPut(wordId)
+  .then(
+    (response) => {... success},
+    (rejectReport) => {.. reject}
+  )
+```
+- wordId - word id from card
+
+- response - contains object:
+  - difficulty -status
+  - optional.date - date of create or update
+
+**sample**
+```
+{
+  "id": "5ef39ffd5b1916001741287d",
+  "difficulty": "hard",
+  "optional": {
+    "lastDate": "Thu Jun 25 2020"
+  },
+  "wordId": "5e9f5ee35eb9e72bc21af6f8"
+}
+```
+
+
+### userWordsGetAll
+Get array all user words. Exampl:
+```
+import { dataController } from 'Service/DataController';
+
+const dataController = new DataController();
+
+dataController.userWordsGetAll()
+  .then(
+    (response) => {... success},
+    (rejectReport) => {.. reject}
+  )
+```
+- response - contains array of words:
+  - wordId - id of word as card
+  - id - record id
+  - difficulty - custom status
+  - optional.date - date of create/update
+
+**sample**
+```
+[
+  {
+    "id": "5ef39ffd5b1916001741287d",
+    "difficulty": "hard",
+    "optional": {
+      "lastDate": "Thu Jun 25 2020"
+    },
+    "wordId": "5e9f5ee35eb9e72bc21af6f8"
+  },
+  {
+    "id": "5ef3d0a95b19160017412b69",
+    "difficulty": "hard",
+    "optional": {
+      "lastDate": "Thu Jun 25 2020"
+    },
+    "wordId": "5e9f5ee35eb9e72bc21af6fa"
+  }
+]
+```
+
+
+### getMaterials
+Returned full path for materails.
+
+```
+const file = file/sound111.mp3
+
+getMaterials(file)
+  .then(
+    (fullPath) => {
+
+    }
+  )
+```
+- fullPath - full path as `https://raw.githubusercontent.com/ilokalin/rslang-data/master/file/sound111.mp3`
+*** next version - preload material
