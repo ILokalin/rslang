@@ -3,7 +3,7 @@ import {
   openAuthPopup,
   closeAuthPopup,
   authPopupState,
-  userDateStore,
+  userDataStore,
   showAuthReport,
 } from 'Service/AppState';
 import {
@@ -12,23 +12,20 @@ import {
   apiUserSettingsGet,
   apiUserCreate,
   apiUserSignIn,
+  apiUserWordsSave,
+  apiUserWordsGet,
+  apiUserWordsGetAll,
 } from 'Service/ServerAPI';
 import { reportMessages } from './reportMessages';
-
-const CANCEL_USER = {
-  status: 0,
-  message: 'User refused',
-  name: 'Unknown',
-};
+import { dataControllerConst } from './dataControllerConst';
 
 const authPopup = new AuthPopup();
-const defaultZeroBlock = { page: 0, group: 0 };
 
 export class DataController {
   constructor() {
     authPopup.init();
 
-    userDateStore.watch((userData) => {
+    userDataStore.watch((userData) => {
       if (this.isAuthInProgress) {
         this.authChainResponsibility(userData);
       }
@@ -36,17 +33,51 @@ export class DataController {
 
     authPopupState.watch((state) => {
       if (state) {
-        showAuthReport('Please input email & password');
+        showAuthReport(reportMessages.default.welcome);
         this.isAuthInProgress = true;
       } else if (this.isAuthInProgress) {
         this.isAuthInProgress = false;
-        this.reject(CANCEL_USER);
+        this.reject(dataControllerConst.cancelUser);
       }
     });
   }
 
+  userWordsGetAll() {
+    return apiUserWordsGetAll();
+  }
+
+  userWordsGet(wordId) {
+    return apiUserWordsGet(wordId);
+  }
+
+  userWordsPut(wordData) {
+    const sendWordData = {
+      difficulty: wordData.status,
+      optional: {
+        lastDate: new Date().toDateString(),
+      },
+    };
+    return apiUserWordsSave(wordData.id, sendWordData, 'PUT');
+  }
+
+  userWordsPost(wordData) {
+    const sendWordData = {
+      difficulty: wordData.status,
+      optional: {
+        lastDate: new Date().toDateString(),
+      },
+    };
+    return apiUserWordsPut(wordData.id, sendWordData, 'POST');
+  }
+
+  getMaterials(file) {
+    return new Promise((resolve, reject) => {
+      resolve(`${dataController.materialPath}${file}`);
+    });
+  }
+
   getWords(options) {
-    return apiGetWords({ ...defaultZeroBlock, ...options });
+    return apiGetWords({ ...dataControllerConst.defaultZeroBlock, ...options });
   }
 
   logoutUser() {
@@ -60,25 +91,69 @@ export class DataController {
 
       if (this.checkToken()) {
         apiUserSettingsGet().then(
-          (userSettings) => resolve(userSettings.optional),
+          (userSettings) => resolve(this.unpackUserSettings(userSettings.optional)),
           () => {
+            this.authChainResponsibility = this.chainSignInSettingsGet;
             openAuthPopup();
           },
         );
       } else {
+        this.authChainResponsibility = this.chainSignInSettingsGet;
         openAuthPopup();
       }
     });
   }
 
-  authChainResponsibility(userData) {
+  setUserOptions(userSettingsUpload) {
+    return new Promise((resolve, reject) => {
+      this.resolve = resolve;
+      this.reject = reject;
+      this.userSettingsUpload = userSettingsUpload;
+
+      if (this.checkToken()) {
+        apiUserSettingsGet()
+          .then((userSettingsOrigin) =>
+            apiUserSettingsPut(
+              this.prepareUploadSetting(userSettingsOrigin, this.userSettingsUpload),
+            ),
+          )
+          .then(
+            (userSettings) => resolve(this.unpackUserSettings(userSettings.optional)),
+            (rejectReport) => reject(rejectReport),
+          );
+      } else {
+        this.authChainResponsibility = this.chainSignInSettingsGetSettingsPut;
+        openAuthPopup();
+      }
+    });
+  }
+
+  chainSignInSettingsGetSettingsPut(userData) {
+    apiUserSignIn(userData)
+      .then(() => apiUserSettingsGet())
+      .then((userSettingsOrigin) =>
+        apiUserSettingsPut(this.prepareUploadSetting(userSettingsOrigin, this.userSettingsUpload)),
+      )
+      .then(
+        (userSettings) => {
+          this.isAuthInProgress = false;
+          closeAuthPopup();
+          this.resolve(this.unpackUserSettings(userSettings.optional));
+        },
+        (rejectReport) => {
+          showAuthReport(reportMessages[rejectReport.master][rejectReport.code]);
+        },
+      );
+  }
+
+  chainSignInSettingsGet(userData) {
     apiUserSignIn(userData)
       .then(() => apiUserSettingsGet())
       .then(
         (userSettings) => {
           this.isAuthInProgress = false;
           closeAuthPopup();
-          this.resolve(userSettings.optional);
+          this.resolve(this.unpackUserSettings(userSettings.optional));
         },
         (rejectReport) => {
           showAuthReport(reportMessages[rejectReport.master][rejectReport.code]);
@@ -92,5 +167,30 @@ export class DataController {
       return true;
     }
     return false;
+  }
+
+  prepareUploadSetting(originSettings, uploadSettings) {
+    return {
+      optional: this.packUserSettings({
+        ...this.unpackUserSettings(originSettings.optional),
+        ...uploadSettings,
+      }),
+    };
+  }
+
+  unpackUserSettings(userSettings) {
+    const resultUserSettings = {};
+    for (const field in userSettings) {
+      resultUserSettings[field] = JSON.parse(userSettings[field]);
+    }
+    return resultUserSettings;
+  }
+
+  packUserSettings(userSettings) {
+    const resultUserSettings = {};
+    for (const field in userSettings) {
+      resultUserSettings[field] = JSON.stringify(userSettings[field]);
+    }
+    return resultUserSettings;
   }
 }

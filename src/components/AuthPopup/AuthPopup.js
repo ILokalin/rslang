@@ -1,11 +1,10 @@
 import { DomGen } from 'Service/DomGen';
 import { closeAuthPopup, authPopupState, setUserData, authReportStore } from 'Service/AppState';
-import { PASSWORD_REGEXP, EMAIL_REGEXP } from './const';
+import { AuthPopConst } from './AuthPopupConst';
 
 export class AuthPopup {
   constructor() {
     this.sendUserData = this.sendUserData.bind(this);
-
     this.body = document.body;
   }
 
@@ -92,7 +91,8 @@ export class AuthPopup {
 
   sendUserData() {
     const isValidate =
-      EMAIL_REGEXP.test(this.popup.email.value) && PASSWORD_REGEXP.test(this.popup.password.value);
+      AuthPopConst.EMAIL_REGEXP.test(this.popup.email.value) &&
+      AuthPopConst.PASSWORD_REGEXP.test(this.popup.password.value);
     const user = {
       email: this.popup.email.value,
       password: this.popup.password.value,
@@ -101,10 +101,10 @@ export class AuthPopup {
     if (isValidate) {
       setUserData(user);
     } else {
-      if (!EMAIL_REGEXP.test(this.popup.email.value)) {
+      if (!AuthPopConst.EMAIL_REGEXP.test(this.popup.email.value)) {
         this.popup.reportLine.innerText = 'Please input correct email address';
       }
-      if (!PASSWORD_REGEXP.test(this.popup.password.value)) {
+      if (!AuthPopConst.PASSWORD_REGEXP.test(this.popup.password.value)) {
         this.popup.reportLine.innerText = 'Please use correct password format. See below.';
       }
     }

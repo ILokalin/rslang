@@ -4,4 +4,7 @@ export {
   apiUserSettingsGet,
   apiUserSettingsPut,
   apiGetWords,
+  apiUserWordsSave,
+  apiUserWordsGet,
+  apiUserWordsGetAll,
 } from './SereverAPI';

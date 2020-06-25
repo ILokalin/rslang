@@ -1,6 +1,10 @@
 export const reportMessages = {
+  default: {
+    welcome: 'Please input email & password',
+  },
   words: {
     400: 'Bad request',
+    417: 'Expectation Failed',
   },
   userSettings: {
     400: 'Bad request',
