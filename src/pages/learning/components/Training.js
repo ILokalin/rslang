@@ -33,7 +33,7 @@ export default class Training {
         }
       );
     } else {
-      //TODO get user words and new words   
+      // TODO get user words and new words   
       dataController.getWords(newWordsQuery).then(
         (wordsArray) => {
           console.log(wordsArray);
