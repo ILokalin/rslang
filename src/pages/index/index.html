@@ -3,29 +3,371 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>RS Lang 22</title>
   </head>
   <body>
-    <h2>Select game</h2>
-    <ul>
-      <li>
-        <a href="/audition">Аудивызов</a>
-      </li>
-      <li>
-        <a href="/puzzle">Puzzle</a>
-      </li>
-      <li>
-        <a href="/savanna">Savanna</a>
-      </li>
-      <li>
-        <a href="/speak-it">Speak It</a>
-      </li>
-      <li>
-         <a href="/match-it">Match It</a>
-      </li>
-      <li>
-        <a href="/sprint">Sprint</a>
-      </li>
-    </ul>
+    <header>
+      <nav>
+        <div class="nav-wrapper teal lighten-2">
+          <a href="#" class="brand-logo center">RS Lang 22</a>
+          <ul id="nav-mobile nav" class="right">
+            <li><a class="nav__login waves-effect waves-light btn">LOGIN</a></li>
+            <li><a class="nav__logout logout-btn waves-effect waves-light btn hidden">LOGOUT</a></li>
+          </ul>
+          <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+        </div>
+      </nav>
+    </header>
+    <div class="menu">
+      <ul id="slide-out" class="sidenav sidenav-fixed">
+        <div class="avatar center blue lighten-5">
+          <img class="avatar__img" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/20625/avatar-bg.png" />
+          <h4 class="avatar__name">CAPTAIN ANONIMUS</h4>
+          <a class="avatar__logout logout-btn hidden" href="#!">LOGOUT</a>
+        </div>
+        <ul >
+          <li><a href="/learning" target="_blank">Тренировка <i class="material-icons right">developer_mode</i></a></li>
+          <li><a class = "menu__settings" href="#!">Настройки <i class="material-icons right">settings</i></a></li>
+          <li><a href="#!">Статистика <i class="material-icons right">show_chart</i></a></li>
+          <li><a href="#!">Словарь <i class="material-icons right">sort_by_alpha</i></a></a></li>
+          <li><div class="divider"></div></li>
+          <li>
+            <a class="dropdown-trigger" href="#!" data-target="dropdown1">Игры<i class="material-icons right">arrow_drop_down</i></a>
+          </li>
+          <ul id='dropdown1' class='dropdown-content'>
+            <li><a href="/audition" target="_blank">Аудиовызов <i class="material-icons right green-text">phone</i></a></li>
+            <li><a href="/puzzle" target="_blank">Puzzle <i class="material-icons right red-text">extension</i></a></li>
+            <li><a href="/savanna" target="_blank">Саванна <i class="material-icons right brown-text">pets</i></a></li>
+            <li><a href="/speak-it" target="_blank">Speak It <i class="material-icons right blue-text">record_voice_over</i></a></li>
+            <li><a href="/sprint" target="_blank">Спринт <i class="material-icons right orange-text">directions_run</i></a></li>
+            <li><a href="#" target="_blank">Match It <i class="material-icons right purple-text">open_with</i></a></li>
+          </ul>
+        </ul>
+      </ul>
+    </div>
+    <main>
+      <ul>
+        <li>
+          <div class="training-btn-container">
+            <a href="/learning" target="_blank" class="training-btn waves-effect waves-light btn-large">Продолжить тренировку</a>
+          </div>
+        </li>
+        <li><div class="divider"></div></li>
+        <li>
+          <div class="main-page-statistics-container row">
+            <div class="done-today col m4 s6">
+              <blockquote>
+                <ul>
+                  <li><h5 class="blue-grey-text">За сегодня:</h5></li>
+                  <li>
+                    <p><span class="statistics__new-words-num">6</span> новых слов выучено</p>
+                  </li>
+                  <li>
+                    <p><span class="statistics__correct-answers">6</span> повторений слов</p>
+                  </li>
+                  <li>
+                    <p><span class="statistics__total-cards">10</span> карточек</p>
+                  </li>
+                  <li>
+                    <p><span class="statistics__correct-in-row">2</span> верных ответов подряд</p>
+                  </li>
+                </ul>
+              </blockquote>
+            </div>
+            <div class="plan-today col m4 s6">
+              <blockquote>
+                <ul>
+                  <li><h5 class="blue-grey-text">План на сегодня: </h5></li>
+                  <li>
+                    <p>Выучить новых слов: <span class="statistics__new-words-num">6</span></p>
+                  </li>
+                  <li>
+                    <p>Повторить слов: <span class="statistics__correct-answers">6</span></p>
+                  </li>
+                  <li>
+                    <p>Открыть карточек: <span class="statistics__total-cards">10</span></p>
+                  </li>
+                </ul>
+              </blockquote>
+            </div>
+            <div class="pie-chart col s4">
+              <div class="sc-gauge">
+                <div class="sc-background">
+                  <div class="sc-percentage"></div>
+                  <div class="sc-mask"></div>
+                  <span class="sc-value">50</span>
+                </div>
+                <span class="sc-min">0</span>
+                <span class="sc-max">100</span>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li><div class="divider"></div></li>
+        <li>
+          <div class="game-cards row">
+            <div class="row">
+              <div class="col s12 m6">
+                <div class="card small">
+                  <div class="card-image">
+                    <img src="https://via.placeholder.com/50">
+                    <span class="card-title">Аудиовызов</span>
+                  </div>
+                  <div class="card-content">
+                    <p>I am a very simple card. I am good at containing small bits of information.
+                    I am convenient because I require little markup to use effectively.</p>
+                  </div>
+                  <div class="card-action">
+                    <a class="waves-effect waves-teal btn-flat"  href="./audition" target="_blank">Играть</a>
+                  </div>
+                </div>
+              </div>
+              <div class="col s12 m6">
+                <div class="card small">
+                  <div class="card-image">
+                    <img src="https://via.placeholder.com/150">
+                    <span class="card-title">Puzzle</span>
+                  </div>
+                  <div class="card-content">
+                    <p>I am a very simple card. I am good at containing small bits of information.
+                    I am convenient because I require little markup to use effectively.</p>
+                  </div>
+                  <div class="card-action">
+                    <a class="waves-effect waves-teal btn-flat"  href="./puzzle" target="_blank">Играть</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col s12 m6">
+                <div class="card small">
+                  <div class="card-image">
+                    <img src="https://via.placeholder.com/50">
+                    <span class="card-title">Саванна</span>
+                  </div>
+                  <div class="card-content">
+                    <p>I am a very simple card. I am good at containing small bits of information.
+                    I am convenient because I require little markup to use effectively.</p>
+                  </div>
+                  <div class="card-action">
+                    <a class="waves-effect waves-teal btn-flat"  href="./savanna" target="_blank">Играть</a>
+                  </div>
+                </div>
+              </div>
+              <div class="col s12 m6">
+                <div class="card small">
+                  <div class="card-image">
+                    <img src="https://via.placeholder.com/150">
+                    <span class="card-title">Speak It</span>
+                  </div>
+                  <div class="card-content">
+                    <p>I am a very simple card. I am good at containing small bits of information.
+                    I am convenient because I require little markup to use effectively.</p>
+                  </div>
+                  <div class="card-action">
+                    <a class="waves-effect waves-teal btn-flat" href="./speak-it" target="_blank">Играть</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col s12 m6">
+                <div class="card small">
+                  <div class="card-image">
+                    <img src="https://via.placeholder.com/50">
+                    <span class="card-title">Спринт</span>
+                  </div>
+                  <div class="card-content">
+                    <p>I am a very simple card. I am good at containing small bits of information.
+                    I am convenient because I require little markup to use effectively.</p>
+                  </div>
+                  <div class="card-action">
+                    <a class="waves-effect waves-teal btn-flat" href="./sprint" target="_blank">Играть</a>
+                  </div>
+                </div>
+              </div>
+              <div class="col s12 m6">
+                <div class="card small">
+                  <div class="card-image">
+                    <img src="https://via.placeholder.com/150">
+                    <span class="card-title">Match It</span>
+                  </div>
+                  <div class="card-content">
+                    <p>I am a very simple card. I am good at containing small bits of information.
+                    I am convenient because I require little markup to use effectively.</p>
+                  </div>
+                  <div class="card-action">
+                    <a class="waves-effect waves-teal btn-flat" href="#" target="_blank">Играть</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </main>
+    <div class="settings-container hidden">
+      <div class="row">
+        <div class="col s12">
+          <ul class="tabs">
+            <li class="tab col s3 m6"><a class="active" href="#general">Тренировка</a></li>
+            <li class="tab col s3 m6"><a href="#card">Карточка</a></li>
+          </ul>
+        </div>
+        <div id="general" class="col s12">
+          <p class="center">Передвигайте ползунок на нужный уровень </p>
+          <form class="settings__general" action="#">
+          <div class="row">
+            <h5 class="center">Общее количество карточек в день</h5>
+            <p class="range-field">
+              <input class="general__max-amount" type="range" value=30  min="15" max="40"/>
+            </p>
+          </div>
+          <div class="row">
+            <h5 class="center">Количество новых карточек в день</h5>
+            <p class="range-field">
+
+              <input class="general__new-amount" type="range" value=15  min="0" max="40"/>
+            </p>
+          </div>
+          <div class="row">
+            <p>
+              <label>
+                <input type="checkbox" class="general__only-new-words" />
+                <span>Изучать только новые слова</span>
+              </label>
+            </p>
+          </div>
+          <div class="row">
+            <a class="settings-save-btn waves-effect waves-light btn center">Cохранить настройки</a>
+          </div>
+          <div class="row">
+              <p class="general__info-message red-text hidden">Количество новых карточек не может превышать общее количество изучаемых слов в день!</p>
+            </div>
+          </form>
+        </div>
+        <div id="card" class="col s12">
+          <p class="center"> Укажите, что вы хотите видеть на карточке </p>
+          <form class="settings__card" action="#">
+            <div class="row">
+              <div class="card-info-checkboxes col s6">
+                <p class="tooltipped" data-position="bottom" data-tooltip="Минимум одна отметка">Информация о слове *</p>
+                <ul>
+                  <li class="row">
+                    <label class="center">
+                      <input class="card__show-translation" type="checkbox" checked="checked" />
+                      <span>Перевод слова</span>
+                    </label>
+                  </li>
+                  <li class="row">
+                    <label>
+                      <input class="card__show-meaning" type="checkbox" />
+                      <span>Значение</span>
+                    </label>
+                    <label class="right">
+                      <input class="card__show-meaning-translation" type="checkbox" />
+                      <span>Перевод</span>
+                    </label>
+                  </li>
+                  <li class="row">
+                    <label>
+                      <input class="card__show-example" type="checkbox" />
+                      <span>Пример</span>
+                    </label>
+                     <label class="right">
+                      <input class="card__show-example-translation" type="checkbox" />
+                      <span>Перевод</span>
+                    </label>
+                  </li>
+                </ul>
+              </div>
+              <div class="additional-info-checkboxes col s6">
+                <p>Дополнительно:</p>
+                <ul>
+                  <li>
+                    <label>
+                      <input class="card__show-picture" type="checkbox" checked="checked" />
+                      <span>Картинка-ассоциация</span>
+                    </label>
+                  </li>
+                  <li>
+                    <label>
+                      <input class="card__show-transcription"  type="checkbox" checked="checked"/>
+                      <span>Транскрипция</span>
+                    </label>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="row">
+              <div class="footer-buttons-toggler col s6">
+                <p>Кнопки Вашей оценки сложности слова</p>
+                <div class="switch">
+                  <label>
+                    Выключить
+                    <input class="card__show-footer-btns"  type="checkbox" checked="true">
+                    <span class="lever"></span>
+                    Включить
+                  </label>
+                </div>
+              </div>
+              <div class="delete-button-toggler col s6">
+                <p>Кнопка "Удалить"</p>
+                <div class="switch">
+                  <label>
+                    Выключить
+                    <input class="card__show-delete-btn" type="checkbox" checked="true">
+                    <span class="lever"></span>
+                    Включить
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="show-answer-button-toggler col s6">
+                <p>Кнопка "Показать ответ"</p>
+                <div class="switch">
+                  <label>
+                    Выключить
+                    <input class="card__show-answer-btn"  type="checkbox" checked="true">
+                    <span class="lever"></span>
+                    Включить
+                  </label>
+                </div>
+              </div>
+              <div class="autoplay-toggler col s6">
+                <p>Автовоспроизведене слова и предложений</p>
+                <div class="switch">
+                  <label>
+                    Выключить
+                    <input class="card__autoplay" type="checkbox" checked="true">
+                    <span class="lever"></span>
+                    Включить
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <a class="settings-save-btn waves-effect waves-light btn">Cохранить настройки</a>
+            </div>
+            <div class="row">
+              <p class="card__info-message red-text hidden">В блоке "Информация о слове" должна быть хотя бы одна отметка!</p>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="modal greeting">
+      <div class="modal-content">
+        <h4>Добро пожаловать!</h4>
+        <p>Для заучивания слов в нашем приложении применяется метод интервальных повторений. <br>
+        Интервальные повторения — это метод эффективного запоминания, его суть в том, чтобы повторять заученную информацию через определенные промежутки времени (без повторений она быстро забудется)<br>
+        Для того, чтобы мы могли подобрать индивидуальные интервалы для каждого изучаемого слова, предлагаем Вам для начала выбрать подходящие Вам настройки. </p>
+      </div>
+      <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat">Начать!</a>
+      </div>
+  </div>
   </body>
 </html>
+

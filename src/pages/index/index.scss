@@ -1,1 +1,132 @@
-@import 'Src/scss/normalize';
+//@import 'Src/scss/normalize';
+@import 'Src/scss/components';
+@import 'materialize-css';
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+@import 'Src/scss/components';
+
+.hidden {
+  display: none;
+}
+
+header, main, footer, .settings-container {
+  padding-left: 300px;
+}
+
+
+@media only screen and (max-width : 992px) {
+  header, main, footer, .settings-container {
+    padding-left: 0;
+  }
+  .settings-container {
+    width: 80%;
+  }
+}
+
+//Side
+
+.avatar img {
+  margin-top: 10px;
+  width:100px;
+  border-radius:50%;
+  overflow:hidden;
+  border:4px solid #80cbc4;
+  box-shadow:0 0 0 4px rgba(255,255,255,0.2);
+}
+
+// Settings
+
+.tab .active {
+  @extend .z-depth-2;  
+}
+
+.settings-container {
+  margin: 5px auto;
+  border: 4px solid #80cbc4;
+}
+
+ #general, #card {
+   padding: 20px;
+ }
+
+.settings__general {
+  margin-top: 2rem;
+}
+
+// main
+
+.training-btn-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;  
+  height: 10rem;
+
+  & .training-btn {
+    width: 50%;
+  }
+}
+
+.main-page-statistics-container {
+  flex-wrap: wrap;
+  margin-bottom:0;
+}
+
+//pie
+
+.pie-chart {
+  @media screen and (max-width: 650px) {
+    display:none;
+  }
+
+}
+.sc-gauge  { 
+  width:200px; 
+  height:200px; 
+  margin: 20px auto; 
+}
+
+.sc-background { 
+  position:relative; 
+  height:100px; 
+  margin-bottom:10px; 
+  background-color:#fff; 
+  border-radius:150px 150px 0 0; 
+  overflow:hidden; 
+  text-align:center; 
+}
+.sc-mask { 
+  position:absolute; 
+  top:20px; 
+  right:20px; 
+  left:20px; 
+  height:80px; 
+  background-color:#fff; 
+  border-radius:150px 150px 0 0; 
+}
+.sc-percentage { 
+  position:absolute; 
+  top: 5rem; 
+  left:-200%; 
+  width:400%; 
+  height:400%; 
+  margin-left:100px; 
+  background-color:#ef6c00; 
+  }
+.sc-percentage { 
+  transform:rotate(150deg); 
+  transform-origin: top center; 
+}
+.sc-min { 
+  float: left; 
+  }
+.sc-max { 
+  float:right; 
+}
+.sc-value { 
+  position:absolute; 
+  top:50%; left:0; 
+  width:100%;  
+  font-size:3rem; 
+  font-weight:700;
+}
+
+
