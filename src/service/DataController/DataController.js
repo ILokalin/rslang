@@ -19,12 +19,6 @@ import {
 import { reportMessages } from './reportMessages';
 import { dataControllerConst } from './dataControllerConst';
 
-const CANCEL_USER = {
-  status: 0,
-  message: 'User refused',
-  name: 'Unknown',
-};
-
 const authPopup = new AuthPopup();
 
 export class DataController {
@@ -43,7 +37,7 @@ export class DataController {
         this.isAuthInProgress = true;
       } else if (this.isAuthInProgress) {
         this.isAuthInProgress = false;
-        this.reject(CANCEL_USER);
+        this.reject(dataControllerConst.cancelUser);
       }
     });
   }
