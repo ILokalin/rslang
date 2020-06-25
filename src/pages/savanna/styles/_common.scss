@@ -1,0 +1,29 @@
+html {
+  font-size: 16px;
+  box-sizing: border-box;
+  @media screen and (max-width: 600px) {
+    font-size: 12px;
+  }
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  background-image: url('./assets/img/savannah.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.main {
+  padding: 0px 20px;
+  margin: 0 auto;
+  height: 100%;
+}
+.text {
+  font-size: 1.7rem;
+}
+.hidden {
+  visibility: hidden;
+  pointer-events: none;
+  opacity: 0;
+}

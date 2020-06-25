@@ -1,16 +1,18 @@
-const startButton = document.querySelector('.start');
-const restartButton = document.querySelector('.restart');
-const backButton = document.querySelector('.back');
-const guessWord = document.querySelector('.game-savanna__question-word');
-const guessContainer = document.querySelector('.game-savanna__question-container');
-const answerContsainer = document.querySelector('.game-savanna__answer-container');
-const appContainer = document.querySelector('.app-savanna');
-const header = document.querySelector('.header-savanna');
-const startMenu = document.querySelector('.start-menu-container');
-const gameContainer = document.querySelector('.game-savanna');
-const resultContainer = document.querySelector('.results-container');
-const stat = document.querySelector('.result');
-const audio = document.querySelector('.audio');
+const appStartButton = document.querySelector('.app-start');
+const intro = document.querySelector('.intro');
+const difficultMenu = document.querySelector('.difficult');
+const gameStartButton = document.querySelector('.startGame');
+const currentGameStage = document.querySelector('.stage');
+const healtBar = document.querySelector('.healt-bar');
+const gameContainer = document.querySelector('.game-container');
+const gameHeader = document.querySelector('.game-header');
+const soundSwitcher = document.querySelector('.sound-switcher');
+const fallingWordText = document.querySelector('.falling-word__item');
+const fallingWordElement = document.querySelector('.falling-word');
+const answerElements = document.querySelectorAll('.answer-options__item');
+const answerContainer = document.querySelector('.answer-options');
+const health = 5;
+
 const gameData = {
   currentCards: [],
   count: 0,
@@ -24,18 +26,19 @@ const gameData = {
 };
 
 export {
-  startButton,
-  restartButton,
-  backButton,
-  guessWord,
-  guessContainer,
-  answerContsainer,
-  appContainer,
-  header,
-  startMenu,
-  gameContainer,
-  resultContainer,
-  stat,
-  audio,
+  appStartButton,
+  intro,
+  difficultMenu,
+  gameStartButton,
+  currentGameStage,
+  healtBar,
   gameData,
+  gameContainer,
+  gameHeader,
+  soundSwitcher,
+  fallingWordText,
+  answerElements,
+  answerContainer,
+  health,
+  fallingWordElement,
 };

@@ -8,54 +8,102 @@
 </head>
 
 <body>
-  <div class="app-savanna">
-    <div class="header-savanna hidden">
-      <div class="header-savanna__control">
-        <img class="sound-icon" src="./assets/img/soundon.svg" alt="">
-      </div>
-      <div class="header-savanna__health">
-        <img src="./assets/img/heart.png" alt="health">
-        <img src="./assets/img/heart.png" alt="health">
-        <img src="./assets/img/heart.png" alt="health">
-        <img src="./assets/img/heart.png" alt="health">
-        <img src="./assets/img/heart.png" alt="health">
-      </div>
+  <nav>
+    <div class="nav-wrapper brown z-depth-5">
+      <a href="#" class="brand-logo center">Savanna</a>
     </div>
-    <div class="game-savanna hidden">
+  </nav>
+  <main class="main">
+
+
+    <div class="intro">
+      <p class="intro-text">
+        Hello! You need to guess the translation of the word.
+        You can do it with the keyboard or mouse!
+      </p>
+      <p class="intro-text">
+        But first choose difficulty.
+      </p>
+      <a href="#" class="btn btn-large waves-effect waves-light intro-btn brown lighten-1 pulse app-start">
+        <i class="material-icons right">videogame_asset</i>
+        Run!
+      </a>
     </div>
 
-    <div class="start-menu-container">
-      <div class="intro">
-        <p class="intro-text">САВАННА!</p>
-        <p class="intro-text">Используй клавиши 1, 2, 3 и 4, чтобы дать быстрый ответ!</p>
-        <p class="intro-text">Или кликай мышкой.</p>
+    <div class="difficult hidden">
+      <p class="difficult-text">
+        Select the difficult!
+      </p>
+      <div class="input-field col s12">
+        <select>
+          <option value="1" selected>Round 1</option>
+          <option value="2">Round 2</option>
+          <option value="3">Round 3</option>
+          <option value="4">Round 4</option>
+          <option value="5">Round 5</option>
+          <option value="6">Round 6</option>
+        </select>
+        <label>Select Round</label>
       </div>
-      <div class="btns">
-        <button class="btn start">Играть</button>
-        <button class="btn back">Назад</button>
+      <div class="input-field col s12">
+        <select>
+          <option value="1" selected>Level 1</option>
+          <option value="2">Level 2</option>
+          <option value="3">Level 3</option>
+          <option value="4">Level 4</option>
+          <option value="5">Level 5</option>
+          <option value="6">Level 6</option>
+        </select>
+        <label>Select Level</label>
       </div>
+      <a href="#" class="btn btn-large waves-effect waves-light intro-btn brown lighten-1 pulse startGame">
+        <i class="material-icons right">videogame_asset</i>
+        Play!
+      </a>
     </div>
 
-    <div class="menu-option-container hidden">
-      <button class="btn repeat">Повторение</button>
-      <button class="btn new-words">Новые слова</button>
-    </div>
 
-    <div class="menu-choose-difficult hidden">
-      <p class="difficult-title">Выберите сложность:</p>
-      <div class="difficult-container">
-        <button class="difficult-button">1</button>
-        <button class="difficult-button">2</button>
-        <button class="difficult-button">3</button>
-        <button class="difficult-button">4</button>
-        <button class="difficult-button">5</button>
-        <button class="difficult-button">6</button>
+    <div class="game-container hidden">
+      <div class="game-header">
+        <h4 class="stage">Round 1.1</h4>
+        <ul class="game-info-settings">
+          <li class="healt-bar">
+            <img src="./assets/img/heart.svg" alt="heart">
+            <img src="./assets/img/heart.svg" alt="heart">
+            <img src="./assets/img/heart.svg" alt="heart">
+            <img src="./assets/img/heart.svg" alt="heart">
+            <img src="./assets/img/heart.svg" alt="heart">
+          </li>
+          <li>
+            <button class="hint-btn pronounce-btn col s1 btn waves-effect waves-light brown lighten-1 sound-switcher" name="action">
+              <i class="material-icons">music_note</i>
+            </button>
+          </li>
+          <li>
+            <button class="hint-btn pronounce-btn col s1 btn waves-effect waves-light brown lighten-1" name="action">
+              <i class="material-icons">exit_to_app</i>
+            </button>
+          </li>
+        </ul>
+      </div>
+      <div class="game-field">
+        <div class="falling-word">
+          <p class="falling-word__item text">arrive</p>
+        </div>
+        <div class="answer-options">
+          <p class="answer-options__item text">жизнь</p>
+          <p class="answer-options__item text">прибывать</p>
+          <p class="answer-options__item text">дом</p>
+          <p class="answer-options__item text">зарплата</p>
+        </div>
       </div>
     </div>
+    <div class="audio"></div>
 
-    </div>
-    <audio class="audio" autoplay="autoplay"></audio>
-  </div>
+
+  </main>
+
+
 </body>
 
 </html>

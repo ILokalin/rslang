@@ -1,0 +1,61 @@
+.game-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.game-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  @media screen and (max-width: 500px) {
+    flex-direction: column;
+  }
+}
+.game-info-settings {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.game-info-settings li {
+  margin: 0 5px;
+}
+.game-field {
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  height: 55vh;
+  @media screen and (max-width: 750px) {
+    flex-direction: row-reverse;
+    align-items: baseline;
+    justify-content: space-evenly;
+  }
+}
+.falling-word {
+  position: absolute;
+  pointer-events: none;
+  top: 0px;
+}
+.answer-options {
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 100%;
+  bottom: inherit;
+  @media screen and (max-width: 750px) {
+    flex-direction: column;
+    align-items: baseline;
+    bottom: 0;
+    margin-right: 20px;
+  }
+}

@@ -1,7 +1,20 @@
 import './index.scss';
-import game from './js/game/game';
-import { startButton } from './js/helper/constants';
+import 'materialize-css';
+import Intro from './js/intro/intro';
+import Game from './js/game/game';
 
-startButton.addEventListener('click', game.startGame);
+// eslint-disable-next-line no-undef
+M.AutoInit();
+document.addEventListener('DOMContentLoaded', () => {
+  const elems = document.querySelectorAll('select');
+  // eslint-disable-next-line no-unused-vars, no-undef
+  const instances = M.FormSelect.init(elems, options);
+});
+
+
+// eslint-disable-next-line no-unused-vars
+const intro = new Intro();
+// eslint-disable-next-line no-unused-vars
+const game = new Game();
 
 require.context('Src', true, /\.(png|svg|jpg|gif|mp3)$/);
