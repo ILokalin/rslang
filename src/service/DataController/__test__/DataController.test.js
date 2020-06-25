@@ -185,6 +185,7 @@ describe('Test for userWords', () => {
 
     await dataController.userWordsPut(wordsList[0]);
     await dataController.userWordsPut(wordsList[1]);
-    await expect(dataController.userWordsGetAll()).resolves.toHaveLength(2);
+    const result = await dataController.userWordsGetAll();
+    expect(result.length).toBeGreaterThanOrEqual(2);
   });
 });
