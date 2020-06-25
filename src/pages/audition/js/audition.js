@@ -1,30 +1,79 @@
 import AuditionGameStatistics from './game-statistics'
+import { DataController } from 'Service/DataController';
+import {
+  gameContainer,
+  abortGameBtn,
+  userNameEl,
+  navigationMenuEl,
+} from './constants'
 
 export default class AuditionGame {
   constructor() {
-    this.user = localStorage.getItem('user') || 'Dick McDickennson';
+    this.user = '';
     this.level = 0;
     this.round = 0;
     this.correctAnswers = 0;
     this.roundsData = [];
+    this.dataController = new DataController();
 
-    this.startGame();
+    this.getUserData();
 
     this.wordClickListener = this.checkAnswer.bind(this);
     this.showAnswerListener = this.showAnswer.bind(this);
     this.endRoundListener = this.endRound.bind(this);
+    this.logInListener = this.getUserData.bind(this);
+
   }
 
   static getRandomNumber (max) {
       return Math.floor(Math.random() * Math.floor(max));
   }
 
+  getUserData() {
+    this.dataController.getUser()
+      .then(
+        (userSettings) => {
+          userNameEl.innerText = userSettings.name;
+          this.user = userSettings.name;
+          userNameEl.removeEventListener('click', this.logInListener);
+          this.startGame();
+        },
+        (rejectReport) => {
+          console.log(rejectReport);
+          userNameEl.innerText = 'Log In';
+          userNameEl.addEventListener('click', this.logInListener);
+          this.startGame();
+        }
+      )
+  }
+
   startGame() {
     this.round = 0;
-    document.body.innerHTML = '';
+    gameContainer.innerHTML = '';
 
-    const pages = this.generatePages();
-    this.getWords(pages);
+    if (this.user) {
+      this.getUserWords();
+    } else {
+      const pages = this.generatePages();
+      this.getWords(pages);
+    }
+  }
+
+  getUserWords() {
+    this.dataController.userWordsGetAll()
+      .then(
+        (response) => {
+          const words = response;
+          console.log(words)
+          // this.createRoundsData(words);
+          // this.createCurrentRoundPage();
+          // this.createNextRoundPage();
+          // this.startRound();
+        },
+        (rejectReport) => {
+          console.log(rejectReport);
+        }
+      )
   }
 
   generatePages() {
@@ -100,7 +149,7 @@ export default class AuditionGame {
 
     const gameWrapper = document.createElement('div');
     gameWrapper.classList.add('game-wrapper');
-    document.body.append(gameWrapper);
+    gameContainer.append(gameWrapper);
 
     const wordImageEl = document.createElement('div');
     wordImageEl.classList.add('word-image-element');

@@ -6,7 +6,26 @@
   <title>Аудиовызов</title>
 </head>
 <body>
-  <h1>Аудиовызов</h1>
-  <button id="start-game-btn">Начать игру</button>
+  <nav class="navigation-block">
+    <button class="btn navigation-menu-btn">
+      <img class="burger-btn-icon" src="assets/img/burger-menu.png" alt="Toggle menu icon">
+    </button>
+    <ul class="navigation-menu">
+      <li class="user-name-el">Log in</li>
+      <li class="select-level-el" data-id="0">Level 1</li>
+      <li class="select-level-el" data-id="1">Level 2</li>
+      <li class="select-level-el" data-id="2">Level 3</li>
+      <li class="select-level-el" data-id="3">Level 4</li>
+      <li class="select-level-el" data-id="4">Level 5</li>
+      <li class="select-level-el" data-id="5">Level 6</li>
+    </ul>
+    <h1>Аудиовызов</h1>
+    <button class="btn abort-game-btn">
+      <img class="abort-game--icon" src="assets/img/game-abort-icon.png" alt="Abort game icon">
+    </button>
+  </nav>
+  <div class="game-container">
+    <button id="start-game-btn">Начать игру</button>
+  </div>
 </body>
 </html>

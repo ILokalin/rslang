@@ -1,4 +1,21 @@
-@import 'Src/scss/normalize';
+@import '../../scss/normalize';
+
+.navigation-block {
+  display: flex;
+}
+
+.navigation-menu-btn {
+  border: 0;
+  width: 45px;
+  height: 45px;
+  border-radius: 5px;
+  outline: none;
+  cursor: pointer;
+}
+
+.burger-btn-icon {
+  width: 35px;
+}
 
 .game-wrapper {
   padding: 50px;
