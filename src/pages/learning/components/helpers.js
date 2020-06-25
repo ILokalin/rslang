@@ -1,3 +1,5 @@
+/* eslint-disable no-plusplus */
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-param-reassign */
 import { progressBar, mySwiper, settings } from './constants';
 
@@ -7,8 +9,6 @@ const measureWordWidth = (word) => {
   ctx.font = 'bold 2rem Segoe UI';
   return ctx.measureText(word).width;
 };
-
-const againBtnHandler = () => {};
 
 const simpleBtnHandler = () => {};
 
@@ -22,9 +22,11 @@ const updateMaterialComponents = () => {
   const sideNavOptions = {
     edge: 'right',
   };
+  // eslint-disable-next-line no-undef
   const sideNav = M.Sidenav.init(document.querySelector('.sidenav'), sideNavOptions);
 
   const modal = document.querySelector('.modal');
+  // eslint-disable-next-line no-undef
   const modalInstance = M.Modal.init(modal);
 };
 
@@ -68,6 +70,7 @@ const hideTranscription = () => {
 const allowNextCard = () => {
   console.log(mySwiper);
   if (mySwiper.activeIndex === mySwiper.slides.length - 1) {
+    // eslint-disable-next-line no-undef
     const modal = M.Modal.getInstance(document.querySelector('.modal'));
     modal.open();
     progressBar.querySelector('.determinate').style.width = '100%';
@@ -85,10 +88,10 @@ const audioPlay = (audio) => {
     audio.dataset.examplePronounce,
   ];
   let current = 0;
+  // eslint-disable-next-line prefer-destructuring
   audio.src = tracks[0];
   audio.autoplay = true;
   audio.onended = function () {
-    console.log(current);
     current += 1;
     if (current === tracks.length) {
       allowNextCard();
@@ -123,6 +126,15 @@ const showExample = () => {
   exampleTranslation.classList.remove('hidden');
 };
 
+const againBtnAct = () => {
+  const dupl = mySwiper.slides[mySwiper.activeIndex].cloneNode(true);
+  dupl.querySelector('.input_text').value = '';
+  dupl.querySelector('.result').innerText = '';
+  mySwiper.appendSlide(dupl);
+  mySwiper.update();
+  setProgressbarToCurrentPosition();
+};
+
 const formHandler = (event) => {
   event.preventDefault();
   const input = event.target.querySelector('.input_text');
@@ -150,6 +162,7 @@ const formHandler = (event) => {
       result.style.zIndex = -1;
       result.innerHTML = '';
     }, 3000);
+    againBtnAct();
   } else {
     if (+input.dataset.tryCount === 1) {
       // TODO send to learned user words
@@ -169,15 +182,7 @@ const formHandler = (event) => {
   }  
 };
 
-const againBtnAct = () => {
-  const dupl = mySwiper.slides[mySwiper.activeIndex].cloneNode(true);
-  console.log(dupl);
-  dupl.querySelector('.input_text').value = '';
-  dupl.querySelector('.result').innerText = '';
-  mySwiper.appendSlide(dupl);
-  mySwiper.update();
-  setProgressbarToCurrentPosition();
-};
+
 
 export {
   measureWordWidth,

@@ -1,5 +1,4 @@
 import Swiper from 'swiper';
-import { ElementGen } from 'Src/service/DomGen/DomGen';
 import { DataController } from 'Service/DataController/DataController';
 import { setProgressbarToCurrentPosition } from './helpers';
 import 'materialize-css';

@@ -1,4 +1,8 @@
 import {
+  settings,
+  statistcs,
+  vocabulary,
+  main,
   dataController,
   titleUser,
   loginButton,
@@ -26,8 +30,10 @@ import {
 import {handleSettingsView} from './form-components';
 
 export const whoIsGameFor = () => {
-  document.querySelector('main').classList.add('hidden');
-  document.querySelector('.settings-container').classList.add('hidden');
+  main.classList.add('hidden');
+  settings.classList.add('hidden');
+  statistcs.classList.add('hidden');
+  vocabulary.classList.add('hidden');
   dataController.getUser().then(
     (userSettings) => {
       console.log('We have user', userSettings);
@@ -39,11 +45,10 @@ export const whoIsGameFor = () => {
       handleSettingsView();
 
       loginButton.classList.add('hidden');
-      document.querySelector('main').classList.remove('hidden');
+      main.classList.remove('hidden');
       logoutButtons.forEach((btn) => {
         btn.classList.remove('hidden');
       });
-      loginButton.removeEventListener('click', whoIsGameFor);
     },
     (rejectReport) => {
       console.log('User canceled');
@@ -67,7 +72,7 @@ export const whoIsGameFor = () => {
       };      
       localStorage.setItem('settings', JSON.stringify(settings));
       handleSettingsView();
-      document.querySelector('main').classList.remove('hidden');
+      main.classList.remove('hidden');
     },
   );
 };

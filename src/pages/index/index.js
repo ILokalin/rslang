@@ -2,7 +2,6 @@ import './index.scss';
 import 'materialize-css';
 import './js/components/buttons';
 import './js/components/sideMenu';
-import {whoIsGameFor} from './js/components/buttons';
 import './js/components/form-components';
 import {renderShortTermStat} from './js/components/mainPageStat';
 import {renderStatChart} from './js/components/statChart';
