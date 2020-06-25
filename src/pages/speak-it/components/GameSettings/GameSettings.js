@@ -5,37 +5,27 @@ export default class GameSettings {
   constructor() {
     const currentRound = Utils.getCurrentRound().split('.');
     const [level, round] = currentRound;
-    this.level = level;
-    this.round = round;
-    levelSelectEl.value = this.level.toString();
-    roundSelectEl.children[0].value = this.round.toString();
+    levelSelectEl.value = level.toString();
+    roundSelectEl.value = round.toString();
+    // eslint-disable-next-line no-undef
     M.AutoInit();
   }
 
   init(levelOrRoundSelected) {
     this.levelOrRoundSelected = levelOrRoundSelected;
-    levelSelectEl.addEventListener('change', this.onLevelSelected.bind(this));
-    roundSelectEl.addEventListener('change', this.onRoundSelected.bind(this));
+    levelSelectEl.addEventListener('change', this.updateGameData.bind(this));
+    roundSelectEl.addEventListener('change', this.updateGameData.bind(this));
+    GameSettings.displayRound();
   }
 
-  onLevelSelected(e) {
-    this.level = e.target.value;
-    this.updateGameData();
-  }
-
-  onRoundSelected(e) {
-    this.round = e.target.value;
-    this.updateGameData();
-  }
-
-  displayRound() {
-    const currentRound = `${this.level}.${this.round}`;
+  static displayRound() {
+    const currentRound = `${levelSelectEl.value}.${roundSelectEl.value}`;
     roundLabelEl.innerText = `Round ${currentRound}`;
     return currentRound;
   }
 
   updateGameData() {
-    this.levelOrRoundSelected(this.level, this.round);
-    Utils.setCurrentRound(this.displayRound());
+    this.levelOrRoundSelected();
+    Utils.setCurrentRound(GameSettings.displayRound());
   }
 }

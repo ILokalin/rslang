@@ -24,7 +24,6 @@ export default class Game {
   constructor() {
     this.gameSettings = new GameSettings();
     this.gameSettings.init(this.levelOrRoundSelected.bind(this));
-    this.gameSettings.displayRound();
     localStorage.isStart = false;
     this.props = {
       errors: ERRORS_MAX_COUNT,
@@ -34,7 +33,7 @@ export default class Game {
     };
     Utils.resetMainCard();
     this.dataController = new DataController();
-    this.dataController.getUser().then(Utils.displayUserName);
+    this.dataController.getUser().then(Utils.displayUserName, Utils.displayEmptyUserName);
     this.createCardPage();
     RESTART.addEventListener('click', this.onRestartBtnClick.bind(this));
     RETURN.addEventListener('click', Utils.onReturnBtnClick);
@@ -78,10 +77,10 @@ export default class Game {
     e.preventDefault();
   }
 
-  async createCardPage(level = 1, round = 1) {
+  async createCardPage() {
     this.props.errorsArr = [];
     this.props.errorsArr.length = 0;
-    const wordsData = await Utils.getWordsForRound(this.dataController, level, round);
+    const wordsData = await Utils.getWordsForRound(this.dataController);
     await wordsData.forEach(this.createCard.bind(this));
     await Utils.disableCardClick();
     Utils.resetCardMinWidth('0');
@@ -110,13 +109,12 @@ export default class Game {
     this.props.knowArr.length = 0;
   }
 
-  levelOrRoundSelected(level, round) {
+  levelOrRoundSelected() {
     this.clearStatistics();
     this.restartGame();
     Utils.resetCardMinWidth();
     CARDS_ITEMS.innerHTML = '';
-    this.round = Utils.getRandomRound();
-    this.createCardPage(level, round);
+    this.createCardPage();
   }
 
   createCard(data, index) {

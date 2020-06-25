@@ -7,6 +7,9 @@ import {
   ERRORS_MAX_COUNT,
   CARDS_ITEMS,
   userNameEl,
+  levelSelectEl,
+  roundSelectEl,
+  errorMessageEl,
 } from '../data/constants';
 
 const Utils = {
@@ -14,7 +17,9 @@ const Utils = {
     userNameEl.innerText = `Hi, ${userSettings.name}!`;
   },
 
-  getRandomRound: () => Math.round(0 - 0.5 + Math.random() * (29 - 0 + 1)),
+  displayEmptyUserName: () => {
+    userNameEl.innerText = '';
+  },
 
   getCurrentRound: () => {
     if (!localStorage.getItem('speakItGameRound')) {
@@ -27,10 +32,26 @@ const Utils = {
     localStorage.setItem('speakItGameRound', round);
   },
 
-  getWordsForRound: async (dataController, level, round) => {
-    const wordsArr = await dataController.getWords({ group: level - 1, page: round - 1 });
-    wordsArr.sort(() => 0.5 - Math.random());
-    return wordsArr.slice(0, ERRORS_MAX_COUNT);
+  getWordsForRound: async (dataController) => {
+    const level = parseInt(levelSelectEl.value, 10) - 1;
+    const round = parseInt(roundSelectEl.value, 10) - 1;
+    try {
+      const wordsArr = await dataController.getWords({
+        wordsPerPage: ERRORS_MAX_COUNT,
+        group: level,
+        page: round,
+      });
+      return wordsArr;
+    } catch (err) {
+      Utils.openModal(`API request failed with error: ${err.message}`);
+    }
+  },
+
+  openModal: (message) => {
+    // eslint-disable-next-line no-undef
+    const modal = M.Modal.getInstance(document.querySelector('.modal'));
+    errorMessageEl.innerText = message;
+    modal.open();
   },
 
   playAudio: (src) => {
