@@ -1,9 +1,11 @@
+/* eslint-disable no-plusplus */
+/* eslint-disable no-param-reassign */
 import Chart from 'chart.js';
 
 export const renderStatChart = () => {
-  let canvas = document.getElementById('chart');
-  let ctx    = canvas.getContext('2d');
-  let grad   = ctx.createLinearGradient(0, 0, 0, window.innerHeight);
+  const canvas = document.getElementById('chart');
+  const ctx    = canvas.getContext('2d');
+  const grad   = ctx.createLinearGradient(0, 0, 0, window.innerHeight);
 
   // Create a background gradient.
   grad.addColorStop(0, '#4db6ac')
@@ -11,17 +13,20 @@ export const renderStatChart = () => {
   grad.addColorStop(1, '#fff')
 
   // Create a shadow line.
-  let shadowLine = Chart.controllers.line.extend({
-      initialize: function () {
-        Chart.controllers.line.prototype.initialize.apply(this, arguments)
+  const shadowLine = Chart.controllers.line.extend({
+      initialize () {
+      // eslint-disable-next-line prefer-rest-params
+      Chart.controllers.line.prototype.initialize.apply(this, arguments)
 
-        var ctx = this.chart.ctx
-        var originalStroke = ctx.stroke
+        // eslint-disable-next-line no-shadow
+        const {ctx} = this.chart
+        const originalStroke = ctx.stroke
         ctx.stroke = function () {
           ctx.save()
           ctx.shadowColor = '#1a1426'
           ctx.shadowOffsetY = 5
           ctx.shadowBlur = 15
+          // eslint-disable-next-line prefer-rest-params
           originalStroke.apply(this, arguments)
           ctx.restore()
         }
@@ -29,11 +34,12 @@ export const renderStatChart = () => {
   })
   Chart.controllers.shadowLine = shadowLine
 
-  let dummyData = [0, 30, 50, 60, 80, 90, 120, 120];
-  let chart = new Chart(ctx, {
+  const dummyData = [0, 30, 50, 60, 80, 90, 120, 120];
+  // eslint-disable-next-line no-unused-vars
+  const chart = new Chart(ctx, {
     type: 'shadowLine',
     data: {
-      labels: ['', '23.06.2020', '23.06.2020', '23.06.2020', '23.06.2020', '23.06.2020'],
+      labels: ['', '23.06.2020', '23.06.2020', '23.06.2020', '23.06.2020', '23.06.2020', '23.06.2020', ],
       datasets: [{
         label: '',
         backgroundColor: grad,
@@ -83,17 +89,17 @@ export const renderStatChart = () => {
             min: 0,
             suggestedMax: Math.max.apply(null, dummyData) + 10,
 
-            callback: function(value, index, values) {
-                return value + '   '
+            callback(value) {
+                return `${value  }   `
             }
           }
         }]
       },
       // Code mostly copied from http://www.chartjs.org/docs/latest/configuration/tooltip.html#external-custom-tooltips
       tooltips: {
-        custom: function(tooltipModel) {
-          let tooltipEl     = document.getElementById('chartjs-tooltip')
-          let tooltipElText = tooltipEl.querySelector('#chartjs-tooltip__text')
+        custom(tooltipModel) {
+          const tooltipEl     = document.getElementById('chartjs-tooltip')
+          const tooltipElText = tooltipEl.querySelector('#chartjs-tooltip__text')
 
           // Hide if no tooltip
           if (tooltipModel.opacity === 0) {
@@ -114,20 +120,21 @@ export const renderStatChart = () => {
           }
 
           if (tooltipModel.body) {
-            let titleLines = tooltipModel.title || []
-            let bodyLines  = tooltipModel.body.map(getBody)
+            // const titleLines = tooltipModel.title || []
+            const bodyLines  = tooltipModel.body.map(getBody)
 
             // `this` will be the overall tooltip
-            var position = this._chart.canvas.getBoundingClientRect()
+            // eslint-disable-next-line no-underscore-dangle
+            const position = this._chart.canvas.getBoundingClientRect()
 
             // Display, position, and set styles for font
             tooltipEl.className += ' active'
-            tooltipEl.style.top = tooltipModel.caretY - 34 + 'px'
-            tooltipEl.style.height = position.height - tooltipModel.caretY + 'px'
-            tooltipElText.style.width = tooltipModel.width + 'px'
-            tooltipEl.style.left = position.left + tooltipModel.caretX + 'px'
+            tooltipEl.style.top = `${tooltipModel.caretY - 34  }px`
+            tooltipEl.style.height = `${position.height - tooltipModel.caretY  }px`
+            tooltipElText.style.width = `${tooltipModel.width  }px`
+            tooltipEl.style.left = `${position.left + tooltipModel.caretX  }px`
             if (document.documentElement.clientWidth >= 992){
-              tooltipEl.style.left = position.left + tooltipModel.caretX - 300 + 'px'  
+              tooltipEl.style.left = `${position.left + tooltipModel.caretX - 300  }px`  
             }
             
             // Hide original tooltip
@@ -137,8 +144,8 @@ export const renderStatChart = () => {
             tooltipElText.innerHTML = ''
             
             for (let i = 0; i < bodyLines.length; i++) {
-              var body = bodyLines[i]
-              tooltipElText.innerHTML += body+ ' слов изучено'
+              const body = bodyLines[i]
+              tooltipElText.innerHTML += `${body } слов изучено`
             }
           }
         }

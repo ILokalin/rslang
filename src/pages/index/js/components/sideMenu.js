@@ -5,7 +5,7 @@ vocabulary,
 main,
 } from '../constants';
 
-document.querySelector('.menu ul').addEventListener('click', () => {
+document.querySelector('.menu ul').addEventListener('click', (event) => {
   if (event.target.closest('.menu__settings')) {
     settings.classList.remove('hidden');
     main.classList.add('hidden');
