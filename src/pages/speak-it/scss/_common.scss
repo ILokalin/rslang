@@ -64,9 +64,11 @@ body {
   padding-left: 10px;
 }
 
-div .auth-popup__menu {
+.auth-popup__menu {
   position: absolute;
   top: 10%;
-  left: 25%;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
   z-index: 1000;
 }

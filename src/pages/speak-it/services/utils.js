@@ -35,16 +35,17 @@ const Utils = {
   getWordsForRound: async (dataController) => {
     const level = parseInt(levelSelectEl.value, 10) - 1;
     const round = parseInt(roundSelectEl.value, 10) - 1;
+    let wordsArr;
     try {
-      const wordsArr = await dataController.getWords({
+      wordsArr = await dataController.getWords({
         wordsPerPage: ERRORS_MAX_COUNT,
         group: level,
         page: round,
       });
-      return wordsArr;
     } catch (err) {
       Utils.openModal(`API request failed with error: ${err.message}`);
     }
+    return wordsArr;
   },
 
   openModal: (message) => {
