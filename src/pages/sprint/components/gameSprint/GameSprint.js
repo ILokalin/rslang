@@ -1,7 +1,9 @@
 import { DataController } from '../../../../service/DataController';
+// import { doc } from 'prettier';
 
 const startGameButton = document.getElementById('controls_start-btn');
 const scoreView = document.getElementById('score');
+const gameContainer = document.getElementById('container');
 const gameView = document.getElementById('game');
 const wordView = document.getElementById('studied-word');
 const wordTranslateView = document.getElementById('studied-word--translated');
@@ -99,8 +101,8 @@ export default class GameSprint {
 
   wrongAnswer() {
     const { one } = LevelViewInfo;
-    gameView.classList.add('wrong');
-    setTimeout(() => gameView.classList.remove('wrong'), timeAnswerResultVIew);
+    gameContainer.classList.add('wrong-answer');
+    setTimeout(() => gameContainer.classList.remove('wrong-answer'), timeAnswerResultVIew);
     this.seriesRightAnswer = this.startSeriesPoint;
     GameSprint.removeRightSeriesViewPoint();
     this.defaultLeavelView();
@@ -113,8 +115,8 @@ export default class GameSprint {
   }
 
   rightAnswer() {
-    gameView.classList.add('right');
-    setTimeout(() => gameView.classList.remove('right'), timeAnswerResultVIew);
+    gameContainer.classList.add('right-answer');
+    setTimeout(() => gameContainer.classList.remove('right-answer'), timeAnswerResultVIew);
 
     answerImage.classList.add('answer_img--right');
     setTimeout(() => answerImage.classList.remove('answer_img--right'), timeAnswerResultVIew);
@@ -165,7 +167,7 @@ export default class GameSprint {
         blockSeries.style.background = four.color;
         this.poinForRightAnswer = four.levelPoints;
         seriesPoinMultiplayVIew.innerText = four.seriesText;
-        parrotPink.classList.remove('hide')
+        parrotPink.classList.remove('hide');
     }
     this.seriesRightAnswer = this.startSeriesPoint;
   }
@@ -181,7 +183,6 @@ export default class GameSprint {
   static startTimerView() {
     timerWrap.remove();
     timeWrapper.appendChild(timerWrap);
-
   }
 
   defaultGameValue() {
@@ -195,6 +196,7 @@ export default class GameSprint {
 
   stratButtonEvents() {
     startGameButton.addEventListener('click', () => {
+      GameSprint.keyboardEvents();
       this.defaultGameValue();
       this.gameScore = defaultGameScoreValue;
 
@@ -219,7 +221,6 @@ export default class GameSprint {
   startGame() {
     timerWrap.remove();
     this.stratButtonEvents();
-    console.log(words);
   }
 
   answerButtonsEvent() {
@@ -258,6 +259,16 @@ export default class GameSprint {
         answerImage.innerText = `${reason}`;
       },
     );
+  }
+
+  static keyboardEvents() {
+    document.addEventListener('keydown', (e) => {
+      if (e.keyCode === 37) {
+        buttonWrong.click();
+      } else if (e.keyCode === 39) {
+        buttonRight.click();
+      }
+    });
   }
 
   init() {

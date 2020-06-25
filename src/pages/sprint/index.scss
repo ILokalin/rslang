@@ -3,14 +3,21 @@
 body {
     width: 100%;
     min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 10px;
     background: url("/img/sprintBackGround.png") no-repeat;
     background-size: cover;
+  }
+
+  .header {
+    margin-bottom: 10px;
+  }
+
+  .main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
 
   h1 {
@@ -19,6 +26,10 @@ body {
 
   .score {
       font-size: 4.0rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
   }
 
   .container {
@@ -112,6 +123,12 @@ body {
     text-align: center;
   }
 
+  @media (max-width: 520px) {
+    .studied-word {
+      font-size: 2.0rem; 
+    }
+  }
+
   #studied-word--translated {
     margin: 10px 0 30px;
     text-align: center;
@@ -163,7 +180,7 @@ body {
     }
   }
 
-  .btn {
+  .button {
     min-width: 150px;
     color: #fff;
     text-decoration: none; 
@@ -183,12 +200,19 @@ body {
     display: none;
   }
 
-  .wrong {
+  .wrong-answer {
     box-shadow: 0 14px 28px rgba(0,0,0,.25), 0 16px 52px rgba(210, 19, 19, 1);
   }
 
-  .right {
+  .right-answer {
     box-shadow: 0 14px 28px rgba(9, 230, 28, 1), 0 10px 10px rgba(0,0,0,.22);
+  }
+
+  .timer-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
 
   .timer {
@@ -328,6 +352,12 @@ body {
     100% {
       visibility: visible;
     }
+  }
+
+  .sidenav-trigger {
+    position: absolute;
+    top: 20px;
+    color: white;
   }
 
 

@@ -6,8 +6,74 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sprint</title>
 </head>
-
 <body>
+  <header class="header">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <nav>
+    <div class="nav-wrapper z-depth-5">
+      <a href="#" class="brand-logo center">Sprint</a>
+      <ul class="right">
+        <li><a class="logout-btn waves-effect waves-light btn hidden">LOGOUT</a></li>
+      </ul>
+    </div>
+  </nav> 
+  <div class="game-page hidden">
+    <ul id="slide-out" class="sidenav">
+      <li>
+        <div class="user-view"> Choose game options </div>
+      </li>                
+      <li>
+        <div class="divider"></div>
+      </li>
+      <li><a class="subheader">Difficulty</a></li>                
+      <li>
+        <div class="level-select input-field col s12">
+          <select>
+            <option value="1" selected>Level 1</option>
+            <option value="2">Level 2</option>
+            <option value="3">Level 3</option>
+            <option value="4">Level 4</option>
+            <option value="5">Level 5</option>
+            <option value="6">Level 6</option>
+          </select>
+        </div>
+      </li>
+      <li>                 
+        <div class="round-select input-field col s6">
+          <input class = "disabled" placeholder="Choose round" min="1"  type="number" class="validate">
+        </div>
+      </li>
+      <li>
+        <div class="divider"></div>
+      </li>
+      <li><a class="subheader">Hints</a></li>
+      <li>
+        <ul class="hints">
+          <li>
+            <label>
+              <input class="translate-checkbox" type="checkbox" />
+              <span>Translate</span>
+            </label>
+          </li>
+          <li>
+            <label>
+              <input class="pronounce-checkbox" type="checkbox" />
+              <span>Pronounce</span>
+            </label>
+          </li>
+          <li>
+            <label>
+              <input class="picture-checkbox" type="checkbox" />
+              <span>Picture</span>
+            </label>
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+  </header>
+  <main>
   <h1>Sprint</h1>
   <div class="timer-wrapper" id="timer-wrapper">
     <div class="timer" id="timer-wrap">
@@ -20,7 +86,7 @@
     </div>
   </div>
   <div class="score" id="score">0</div>
-  <div class="container">
+  <div class="container" id='container'>
     <div class="game hide" id="game">
       <div class="series" id="series">
         <div class="series_points">
@@ -42,14 +108,14 @@
         <div id="answer_img"></div>
       </div>
       <div class="answer-buttons">
-        <button class="answer-buttons_wrong-btn btn" id="wrong-btn">Неверно</button>
-        <button class="answer-buttons_right-btn btn" id="right-btn">Верно</button>
+        <button class="answer-buttons_wrong-btn button" id="wrong-btn">Неверно</button>
+        <button class="answer-buttons_right-btn button" id="right-btn">Верно</button>
       </div>
     </div>
     <div class="game-container_start-btn">
-      <button class="btn" id="controls_start-btn">Начать игру</button>
+      <button class="button" id="controls_start-btn">Начать игру</button>
     </div>
   </div>
+</main>
 </body>
-
 </html>

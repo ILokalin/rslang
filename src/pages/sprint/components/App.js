@@ -1,4 +1,7 @@
 import GameSprint from './gameSprint/GameSprint';
+import 'materialize-css';
+
+M.AutoInit();
 
 export default class App {
   constructor() {
