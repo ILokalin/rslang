@@ -1,17 +1,30 @@
-import book1 from '../data/book1';
-import book2 from '../data/book2';
-import book3 from '../data/book3';
-import book4 from '../data/book4';
-import book5 from '../data/book5';
-import book6 from '../data/book6';
-
-import {} from './constants';
+import { userNameElement, levelSelector, roundSelector } from './constants';
 
 const helper = {
-  getRandomRoundCards(level, round) {
-    const dataSet = [book1, book2, book3, book4, book5, book6];
-    const result = dataSet[level - 1].slice((round - 1) * 100, (round - 1) * 100 + 99);
-    return result.sort(() => Math.random() - 0.5);
+  renderUserName(userSettings) {
+    userNameElement.innerText = `Hi, ${userSettings.name}!`;
+  },
+
+  renderEmptyUserName() {
+    userNameElement.innerText = '';
+  },
+  getLevelFromOptions() {
+    console.log (+levelSelector.value)
+    console.log (typeof +levelSelector.value)
+    return +levelSelector.value;
+  },
+  getRoundFromOptions() {
+    console.log (+roundSelector.value)
+    console.log (typeof +roundSelector.value)
+    return +roundSelector.value;
+  },
+  async getCardsbyApi(dataController, level, round) {
+    const dataSet = await dataController.getWords({
+      wordsPerPage: 100,
+      group: level,
+      page: round,
+    });
+    return dataSet.sort(() => Math.random() - 0.5);
   },
 };
 

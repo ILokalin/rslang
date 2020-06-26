@@ -11,6 +11,9 @@ const fallingWordText = document.querySelector('.falling-word__item');
 const fallingWordElement = document.querySelector('.falling-word');
 const answerElements = document.querySelectorAll('.answer-options__item');
 const answerContainer = document.querySelector('.answer-options');
+const userNameElement = document.querySelector('.user-name');
+const levelSelector = document.querySelector('.level');
+const roundSelector = document.querySelector('.round');
 const health = 5;
 
 const gameData = {
@@ -41,4 +44,7 @@ export {
   answerContainer,
   health,
   fallingWordElement,
+  userNameElement,
+  levelSelector,
+  roundSelector,
 };
