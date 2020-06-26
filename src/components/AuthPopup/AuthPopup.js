@@ -27,8 +27,8 @@ export class AuthPopup {
                   tag: 'div',
                   classAdd: 'col,s12,z-depth-6,card-panel',
                   children: [
-                    { tag: 'h2', innerText: 'Login/Register' },
-                    { tag: 'p', isAccess: 'reportLine' },
+                    { tag: 'h2', classAdd: 'center-align', innerText: 'Login/Register' },
+                    { tag: 'p', classAdd: 'center-align', isAccess: 'reportLine' },
                     {
                       tag: 'form',
                       classAdd: 'login-form',
@@ -108,7 +108,7 @@ export class AuthPopup {
                                   tag: 'button',
                                   type: 'button',
                                   href: '#',
-                                  classAdd: 'login-btn,btn,waves-effect,waves-light,col,s12',
+                                  classAdd: 'login-btn,btn,waves-effect,waves-light,col,s3,offset-s6',
                                   innerText: 'Login',
                                   isAccess: 'login',
                                 },
@@ -116,7 +116,7 @@ export class AuthPopup {
                                   tag: 'button',
                                   type: 'button',
                                   href: '#',
-                                  classAdd: 'cancel-btn,btn,waves-effect,waves-light,col,s12',
+                                  classAdd: 'cancel-btn,btn,waves-effect,waves-light,teal,lighten-2,col,s3',
                                   innerText: 'Cancel',
                                   isAccess: 'cancel',
                                 },
