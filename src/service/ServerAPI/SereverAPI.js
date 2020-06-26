@@ -1,9 +1,91 @@
-import { api } from './apiPath';
+import { api } from './SereverApiConst';
 
 const defaultWordsPerExample = 100;
 
 function isSuccess(response) {
   return response.status >= 200 && response.status < 300;
+}
+
+export function apiUserWordsGetAll() {
+  return new Promise((resolve, reject) => {
+    fetch(`${api.url}${api.users}/${localStorage.userId}/${api.words}`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${localStorage.token}`,
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((rawResponse) => {
+        if (isSuccess(rawResponse)) {
+          return rawResponse.json();
+        }
+        console.log(rawResponse);
+        const error = new Error(rawResponse.statusText);
+        error.master = 'words';
+        error.code = rawResponse.status;
+        throw error;
+      })
+      .then((response) => {
+        resolve(response);
+      })
+      .catch((errorReport) => reject(errorReport));
+  });
+}
+
+export function apiUserWordsGet(wordId) {
+  return new Promise((resolve, reject) => {
+    fetch(`${api.url}${api.users}/${localStorage.userId}/${api.words}/${wordId}`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${localStorage.token}`,
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((rawResponse) => {
+        if (isSuccess(rawResponse)) {
+          return rawResponse.json();
+        }
+        console.log(rawResponse);
+        const error = new Error(rawResponse.statusText);
+        error.master = 'words';
+        error.code = rawResponse.status;
+        throw error;
+      })
+      .then((response) => {
+        resolve(response);
+      })
+      .catch((errorReport) => reject(errorReport));
+  });
+}
+
+export function apiUserWordsSave(wordId, wordData, method) {
+  return new Promise((resolve, reject) => {
+    fetch(`${api.url}${api.users}/${localStorage.userId}/${api.words}/${wordId}`, {
+      method: method,
+      headers: {
+        Authorization: `Bearer ${localStorage.token}`,
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(wordData),
+    })
+      .then((rawResponse) => {
+        if (isSuccess(rawResponse)) {
+          return rawResponse.json();
+        }
+        console.log(rawResponse);
+        const error = new Error(rawResponse.statusText);
+        error.master = 'words';
+        error.code = rawResponse.status;
+        throw error;
+      })
+      .then((response) => {
+        resolve(response);
+      })
+      .catch((errorReport) => reject(errorReport));
+  });
 }
 
 export function apiGetWords(requestData) {

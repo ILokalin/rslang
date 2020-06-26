@@ -3,7 +3,7 @@ import {
   openAuthPopup,
   closeAuthPopup,
   authPopupState,
-  userDateStore,
+  userDataStore,
   showAuthReport,
 } from 'Service/AppState';
 import {
@@ -12,23 +12,20 @@ import {
   apiUserSettingsGet,
   apiUserCreate,
   apiUserSignIn,
+  apiUserWordsSave,
+  apiUserWordsGet,
+  apiUserWordsGetAll,
 } from 'Service/ServerAPI';
 import { reportMessages } from './reportMessages';
-
-const CANCEL_USER = {
-  status: 0,
-  message: 'User refused',
-  name: 'Unknown',
-};
+import { dataControllerConst } from './dataControllerConst';
 
 const authPopup = new AuthPopup();
-const defaultZeroBlock = { page: 0, group: 0 };
 
 export class DataController {
   constructor() {
     authPopup.init();
 
-    userDateStore.watch((userData) => {
+    userDataStore.watch((userData) => {
       if (this.isAuthInProgress) {
         this.authChainResponsibility(userData);
       }
@@ -40,13 +37,47 @@ export class DataController {
         this.isAuthInProgress = true;
       } else if (this.isAuthInProgress) {
         this.isAuthInProgress = false;
-        this.reject(CANCEL_USER);
+        this.reject(dataControllerConst.cancelUser);
       }
     });
   }
 
+  userWordsGetAll() {
+    return apiUserWordsGetAll();
+  }
+
+  userWordsGet(wordId) {
+    return apiUserWordsGet(wordId);
+  }
+
+  userWordsPut(wordData) {
+    const sendWordData = {
+      difficulty: wordData.status,
+      optional: {
+        lastDate: new Date().toDateString(),
+      },
+    };
+    return apiUserWordsSave(wordData.id, sendWordData, 'PUT');
+  }
+
+  userWordsPost(wordData) {
+    const sendWordData = {
+      difficulty: wordData.status,
+      optional: {
+        lastDate: new Date().toDateString(),
+      },
+    };
+    return apiUserWordsPut(wordData.id, sendWordData, 'POST');
+  }
+
+  getMaterials(file) {
+    return new Promise((resolve, reject) => {
+      resolve(`${dataController.materialPath}${file}`);
+    });
+  }
+
   getWords(options) {
-    return apiGetWords({ ...defaultZeroBlock, ...options });
+    return apiGetWords({ ...dataControllerConst.defaultZeroBlock, ...options });
   }
 
   logoutUser() {
@@ -97,15 +128,6 @@ export class DataController {
     });
   }
 
-  prepareUploadSetting(originSettings, uploadSettings) {
-    return {
-      optional: this.packUserSettings({
-        ...this.unpackUserSettings(originSettings.optional),
-        ...uploadSettings,
-      }),
-    };
-  }
-
   chainSignInSettingsGetSettingsPut(userData) {
     apiUserSignIn(userData)
       .then(() => apiUserSettingsGet())
@@ -145,6 +167,15 @@ export class DataController {
       return true;
     }
     return false;
+  }
+
+  prepareUploadSetting(originSettings, uploadSettings) {
+    return {
+      optional: this.packUserSettings({
+        ...this.unpackUserSettings(originSettings.optional),
+        ...uploadSettings,
+      }),
+    };
   }
 
   unpackUserSettings(userSettings) {
