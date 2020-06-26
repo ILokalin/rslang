@@ -6,4 +6,4 @@ export {
   setUserData,
   authReportStore,
   showAuthReport,
-} from './AppState.js';
+} from './AppState';
