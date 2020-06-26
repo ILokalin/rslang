@@ -1,4 +1,17 @@
 @import '../../scss/normalize';
+@import '../../components/AuthPopup/AuthPopup';
+@import "materialize-css";
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
+
+.auth-popup__menu {
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
+  z-index: 1000;
+}
 
 .navigation-block {
   display: flex;

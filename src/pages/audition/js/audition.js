@@ -24,12 +24,47 @@ export default class AuditionGame {
     this.showAnswerListener = this.showAnswer.bind(this);
     this.endRoundListener = this.endRound.bind(this);
     this.logInListener = this.getUserData.bind(this);
+    this.addKeyboardHandler();
 
   }
 
   static getRandomNumber (max) {
       return Math.floor(Math.random() * Math.floor(max));
   }
+
+  addKeyboardHandler() {
+    document.addEventListener('keydown', this.keyboardHandler.bind(this));
+  }
+
+  keyboardHandler(e) {
+    const { key } = e;
+    if(key >= 1 && key <= 5) {
+      const word = this.roundsData[this.round].wordTranslate;
+      const selectedEl = document.querySelector (`.current-round [data-order="${key}"]`);
+      const selectedAnswer = selectedEl.innerText.slice(3);
+
+        if (selectedAnswer === word) {
+          selectedEl.classList.add('correct');
+          this.showAnswer();
+          this.roundsData[this.round].answer = true;
+
+        } else {
+          selectedEl.classList.add('wrong');
+          this.showAnswer();
+          this.roundsData[this.round].answer = false;
+        }
+      }
+
+      if(key === `Enter`) {
+        const puzzledWord = document.querySelector('.current-round > .puzzled-word-element');
+        if(puzzledWord.classList.contains ('answered')) {
+          this.endRound();
+        } else {
+          this.showAnswer();
+        }
+      }
+    }
+
 
   addSelectDifficultyHandler() {
     navigationMenuEl.addEventListener('click', this.selectDifficultyHandler.bind(this))
@@ -182,12 +217,13 @@ export default class AuditionGame {
 
     const wordTranslationBlock = document.createElement('div');
     wordTranslationBlock.classList.add('words-translations-block');
-    data.translations.forEach((el) => this.writeWordsTranslations(el, wordTranslationBlock));
+    data.translations.forEach((el, index) => this.writeWordsTranslations(el, index + 1, wordTranslationBlock));
     wordTranslationBlock.addEventListener('click', this.wordClickListener);
     gameWrapper.append(wordTranslationBlock);
 
     const checkAnswerBtn = document.createElement('button');
     checkAnswerBtn.classList.add('check-answer-btn');
+    checkAnswerBtn.classList.add('btn');
     checkAnswerBtn.innerText = ('Я не знаю');
     checkAnswerBtn.addEventListener('click', this.showAnswerListener);
     gameWrapper.append(checkAnswerBtn);
@@ -195,11 +231,12 @@ export default class AuditionGame {
     return gameWrapper;
   }
 
-  writeWordsTranslations(el, block) {
+  writeWordsTranslations(el, order, block) {
     const wordTranslationEl = document.createElement('div');
     wordTranslationEl.classList.add('words-translations-element');
-    wordTranslationEl.innerText = el;
+    wordTranslationEl.innerText = `${order}. ${el}`;
     wordTranslationEl.id = el;
+    wordTranslationEl.setAttribute('data-order', order)
     block.append(wordTranslationEl);
   }
 

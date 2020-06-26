@@ -6,11 +6,11 @@
   <title>Аудиовызов</title>
 </head>
 <body>
-  <nav class="navigation-block">
-    <button class="btn navigation-menu-btn">
-      <img class="burger-btn-icon" src="assets/img/burger-menu.png" alt="Toggle menu icon">
+  <nav class="navigation-block teal">
+    <button class="btn dropdown-trigger navigation-menu-btn" data-target='dropdown'>
+      <i class="material-icons">menu</i>
     </button>
-    <ul class="navigation-menu">
+    <ul id='dropdown' class="navigation-menu dropdown-content">
       <li class="user-name-el">Log in</li>
       <li class="select-level-el" data-id="0">Level 1</li>
       <li class="select-level-el" data-id="1">Level 2</li>
@@ -25,7 +25,7 @@
     </button>
   </nav>
   <div class="game-container">
-    <button id="start-game-btn">Начать игру</button>
+    <button class="btn" id="start-game-btn">Начать игру</button>
   </div>
 </body>
 </html>
