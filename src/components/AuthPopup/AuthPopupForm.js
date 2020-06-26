@@ -218,8 +218,6 @@ export const AuthPopupForm = {
             },
           ],
         },
-
-        //         'the password must contain at least one lowercase character, one uppercase, one special character, one digit',
       ],
     },
   ],
