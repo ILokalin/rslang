@@ -1,5 +1,7 @@
 /* eslint-disable guard-for-in */
 export function DomGen({ name, ...blockStruct }) {
+  let isRootElementNeedCreate = true;
+
   const bemBlock = {
     name,
     setMod(mod) {
@@ -30,7 +32,8 @@ export function DomGen({ name, ...blockStruct }) {
 
     const domElement = document.createElement(tag);
 
-    if (className || name) {
+    if (className || isRootElementNeedCreate) {
+      isRootElementNeedCreate = false;
       classGen(className).forEach((singleClassName) => {
         domElement.classList.add(singleClassName);
       });
