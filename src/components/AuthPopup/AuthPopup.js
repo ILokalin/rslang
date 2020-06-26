@@ -55,7 +55,7 @@ export class AuthPopup {
     login.style.display = "block";
     toggleBlockLogin.style.display = "none";
     toggleBlockRegister.style.display = "block";
-    this.isformRegister = false;
+    this.isFormRegister = false;
   }
 
   formToRegister() {
@@ -74,7 +74,7 @@ export class AuthPopup {
     login.style.display = "none";
     toggleBlockLogin.style.display = "block";
     toggleBlockRegister.style.display = "none";
-    this.isformRegister = true;
+    this.isFormRegister = true;
   }
 
   openPopup() {
@@ -94,29 +94,29 @@ export class AuthPopup {
     const isValidate =
       AuthPopConst.emailRegexp.test(this.popup.email.value) &&
       AuthPopConst.passwordRegexp.test(this.popup.password.value) &&
-      AuthPopConst.nameRegexp.test(this.popup.name.value);
+      (!this.isFormRegister || AuthPopConst.nameRegexp.test(this.popup.name.value));
 
     const user = {
       email: this.popup.email.value,
       password: this.popup.password.value,
     };
 
-    if (this.isformRegister) {
-      user.statusRegister = this.isformRegister;
+    if (this.isFormRegister) {
+      user.statusRegister = this.isFormRegister;
       user.name = this.popup.name.value;
     }
 
     if (isValidate) {
       setUserData(user);
     } else {
-      if (!AuthPopConst.EMAIL_REGEXP.test(this.popup.email.value)) {
+      if (!AuthPopConst.emailRegexp.test(this.popup.email.value)) {
         this.popup.reportLine.innerText = "Please input correct email address";
       }
-      if (!AuthPopConst.PASSWORD_REGEXP.test(this.popup.password.value)) {
+      if (!AuthPopConst.passwordRegexp.test(this.popup.password.value)) {
         this.popup.reportLine.innerText =
           "Please use correct password format. See below.";
       }
-      if (!AuthPopConst.nameRegexp.test(this.popup.name.value)) {
+      if (this.isFormRegister && !AuthPopConst.nameRegexp.test(this.popup.name.value)) {
         this.popup.reportLine.innerText =
           "Please use one or more letters for name";
       }
