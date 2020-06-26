@@ -27,6 +27,9 @@ export class DataController {
 
     userDataStore.watch((userData) => {
       if (this.isAuthInProgress) {
+        if (userData.statusRegister) {
+          this.authChainResponsibility = this.chainCreateSignInSettingsGet;
+        }
         this.authChainResponsibility(userData);
       }
     });
@@ -67,12 +70,12 @@ export class DataController {
         lastDate: new Date().toDateString(),
       },
     };
-    return apiUserWordsPut(wordData.id, sendWordData, 'POST');
+    return apiUserWordsSave(wordData.id, sendWordData, 'POST');
   }
 
   getMaterials(file) {
-    return new Promise((resolve, reject) => {
-      resolve(`${dataController.materialPath}${file}`);
+    return new Promise((resolve) => {
+      resolve(`${dataControllerConst.materialPath}${file}`);
     });
   }
 
@@ -148,6 +151,28 @@ export class DataController {
 
   chainSignInSettingsGet(userData) {
     apiUserSignIn(userData)
+      .then(() => apiUserSettingsGet())
+      .then(
+        (userSettings) => {
+          this.isAuthInProgress = false;
+          closeAuthPopup();
+          this.resolve(this.unpackUserSettings(userSettings.optional));
+        },
+        (rejectReport) => {
+          showAuthReport(reportMessages[rejectReport.master][rejectReport.code]);
+        },
+      );
+  }
+
+  chainCreateSignInSettingsGet(userData) {
+    const userSettingsName = {
+      optional: this.packUserSettings({
+        name: userData.name,
+      })
+    }
+    apiUserCreate(userData)
+      .then(() => apiUserSignIn(userData))
+      .then(() => apiUserSettingsPut((userSettingsName)))
       .then(() => apiUserSettingsGet())
       .then(
         (userSettings) => {
