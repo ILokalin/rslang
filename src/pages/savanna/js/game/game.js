@@ -41,6 +41,7 @@ export default class Game {
   }
 
   startGame(e) {
+    this.dataController.getUser().then((data) => console.log(data));
     this.renderLevel();
     document.body.addEventListener('keydown', this.keyboardCheckAnswer.bind(this));
     this.isFallWord();
@@ -99,9 +100,9 @@ export default class Game {
       event.target.innerText.slice(2) === this.currentWord.wordTranslate
     ) {
       this.props.knowWords.push(this.currentWord);
-      if (this.streak >= 7 && this.currentLevel !== 5) {
+      if ((this.streak >= 7 && this.currentLevel !== 5) || this.round === 5) {
         this.level += 1;
-        this.round = 1;
+        this.round = 0;
         this.streak = 0;
         this.createDataSetByApi();
       } else if (this.streak >= 3) {
@@ -128,14 +129,14 @@ export default class Game {
   keyboardCheckAnswer(event) {
     event.preventDefault();
     const checker = document.querySelector(`[key="${event.key}"]`);
-    if (this.level === 5 && this.round === 5) {
+    if ((this.level === 5 && this.round === 5) || this.round === 5) {
       console.log('МАКС ЛВЛ');
     }
     if (checker.textContent.slice(2) === this.currentWord.wordTranslate) {
       this.props.knowWords.push(this.currentWord);
       if (this.streak >= 7 && this.currentLevel !== 5) {
         this.level += 1;
-        this.round = 1;
+        this.round = 0;
         this.streak = 0;
         this.createDataSetByApi();
       } else if (this.streak >= 3) {

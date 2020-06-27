@@ -8,7 +8,7 @@ M.AutoInit();
 document.addEventListener('DOMContentLoaded', () => {
   const elems = document.querySelectorAll('select');
   // eslint-disable-next-line no-unused-vars, no-undef
-  const instances = M.FormSelect.init(elems, options);
+  const instances = M.FormSelect.init(elems);
 });
 
 
