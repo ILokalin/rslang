@@ -34,9 +34,11 @@ const setProgressbarToCurrentPosition = () => {
   const current = document.querySelector('.swiper-pagination-current').innerText;
   const total = document.querySelector('.swiper-pagination-total').innerText;
   const progress = `${Math.floor(((current - 1) / total) * 100)}%`;
+
   progressBar.querySelector('.determinate').style.width = progress;
   progressBar.dataset.tooltip = progress;
 };
+
 const hideGuessingWordInSentence = (element) => {
   if (element.classList.contains('explanation')) {
     element.querySelector('i').style.color = 'white';
@@ -89,8 +91,10 @@ const audioPlay = (audio) => {
   ];
   let current = 0;
   // eslint-disable-next-line prefer-destructuring
+
   audio.src = tracks[0];
   audio.autoplay = true;
+
   audio.onended = function () {
     current += 1;
     if (current === tracks.length) {
@@ -128,61 +132,59 @@ const showExample = () => {
 
 const againBtnAct = () => {
   const dupl = mySwiper.slides[mySwiper.activeIndex].cloneNode(true);
+
   dupl.querySelector('.input_text').value = '';
   dupl.querySelector('.result').innerText = '';
+
   mySwiper.appendSlide(dupl);
   mySwiper.update();
+
   setProgressbarToCurrentPosition();
 };
 
-const formHandler = (event) => {
-  event.preventDefault();
-  const input = event.target.querySelector('.input_text');
-  input.dataset.tryCount += 1;
-  const result = event.target.querySelector('.result');
-  input.blur();
-  let isWrong;
-  input.dataset.word.split('').forEach((el, i) => {
-    if (el === input.value[i]) {
-      result.innerHTML += `<span class="correct">${el}</span>`;
-    } else {
-      result.innerHTML += `<span class="wrong">${el}</span>`;
-      isWrong = true;
+const getLearnProgressString = (k) => {
+  if (k) {
+    if (k===0) {
+      return 'в начале изучения';
     }
-  });
+    if (k>0 && k<=2) {
+      return 'недавно начали изучать';
+    }
+    if (k>2 && k<=4) {
+      return 'хорошее начало';
+    }
+    if (k>4 && k<=8) {
+      return 'хорошо знаете слово';
+    }
+    if (k>8) {
+      return 'отлично знаете слово';
+    }
+  } 
+  return 'новое слово';
+}
 
+const updateProgress = (curProgress, isWrong) => {
+  let res;
+  const quantityOfSettingsEnabled = settings.cardContainsExample 
+    + settings.cardContainsMeaning
+    + settings.cardContainsTranslation
+    + settings.cardContainsTranscription
+    + settings.cardContainsPicture;
+  
   if (isWrong) {
-    mySwiper.train.shortTermStat.chain = 0;
-    // TODO set word to difficult category if wrong
-    result.style.zIndex = 2;
-    input.value = '';
-    input.setAttribute('placeholder', input.dataset.word);
-    input.focus();
-    setTimeout(() => {
-      result.style.zIndex = -1;
-      result.innerHTML = '';
-    }, 3000);
-    againBtnAct();
+    res = curProgress - quantityOfSettingsEnabled * 0.1;
   } else {
-    if (+input.dataset.tryCount === 1) {
-      // TODO send to learned user words
-      mySwiper.train.shortTermStat.wrightAnswers++;      
-    }    
-    mySwiper.train.shortTermStat.chain++;
-    mySwiper.train.shortTermStat.totalCards++;
-    const audio = event.target.closest('.card').querySelector('.audio');
-    if (settings.autoplay) {
-      audioPlay(audio);
-    }
-    mySwiper.train.updateStat();  
-    allowNextCard();
-    showTranscription();
-    showExplanation();
-    showExample();    
-  }  
-};
+    res = curProgress + (6 - quantityOfSettingsEnabled) * 0.1 > 0;
+  }
+  return res > 0 ? res : 0;
+}
 
-
+const showToastDeleted = (word) => {
+  // eslint-disable-next-line no-undef  
+  M.toast({
+    html: `Слово ${word} удалено из Словаря. Вы можете восстановить его в Словаре`,
+  });
+}
 
 export {
   measureWordWidth,
@@ -190,11 +192,13 @@ export {
   setProgressbarToCurrentPosition,
   hideGuessingWordInSentence,
   showGuessingWordInSentence,
-  formHandler,
   againBtnAct,
   allowNextCard,
   showTranscription,
   showExplanation,
   showExample,
   audioPlay,
+  getLearnProgressString, 
+  updateProgress,
+  showToastDeleted,
 };

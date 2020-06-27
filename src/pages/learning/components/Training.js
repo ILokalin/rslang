@@ -2,7 +2,7 @@
 import Card from './Card';
 import { mySwiper, settings, dataController } from './constants';
 import 'materialize-css';
-import { updateMaterialComponents, setProgressbarToCurrentPosition, formHandler } from './helpers';
+import { updateMaterialComponents, setProgressbarToCurrentPosition} from './helpers';
 
 export default class Training {
   constructor(newWordsAmountPerDay, maxWordsPerDay) {
@@ -60,13 +60,13 @@ export default class Training {
   }
 
   playNextCard() {
-    mySwiper.allowSlideNext = false;
-    mySwiper.navigation.nextEl.classList.add('swiper-button-disabled');
-    setProgressbarToCurrentPosition();
     const currentForm = mySwiper.slides[mySwiper.activeIndex].querySelector('.form');
     const currentInput = currentForm.querySelector('.input_text');
+
+    mySwiper.allowSlideNext = false;
+    mySwiper.navigation.nextEl.classList.add('swiper-button-disabled');
+    setProgressbarToCurrentPosition();    
     currentInput.focus();
-    currentForm.addEventListener('submit', formHandler);
   }
 
   stop() {
@@ -74,8 +74,8 @@ export default class Training {
   }
 
   updateStat() {
-    if (mySwiper.train.shortTermStat.longestChain <  mySwiper.train.shortTermStat.chain) {
-      mySwiper.train.shortTermStat.longestChain = mySwiper.train.shortTermStat.chain;
+    if (this.shortTermStat.longestChain <  this.shortTermStat.chain) {
+      this.shortTermStat.longestChain = this.shortTermStat.chain;
     }
     document.querySelector('.statistics__new-words-num').innerText = this.shortTermStat.newWords;
     document.querySelector('.statistics__correct-answers').innerText = `${Math.round(this.shortTermStat.wrightAnswers/this.shortTermStat.totalCards*100)}%`;
