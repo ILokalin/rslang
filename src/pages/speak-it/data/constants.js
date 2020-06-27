@@ -7,7 +7,6 @@ const CARDS_ITEMS = document.querySelector('.items');
 const WORD_IMG = document.querySelector('.word-img');
 const WORD_INPUT = document.querySelector('.word-input');
 const WORD_TRANSLATION = document.querySelector('.translation');
-const LEVELS = document.querySelectorAll('.point');
 const SPEAK_BTN = document.querySelector('.user-speech');
 const SCORE = document.querySelector('.score');
 const RESTART = document.querySelector('.restart');
@@ -21,13 +20,18 @@ const RESULTS_ERRORS = document.querySelector('.errors-item');
 const RESULTS_KNOW = document.querySelector('.success-item');
 const ERRORS_MAX_COUNT = 10;
 const speechRecognitionLanguage = 'en-US';
+const sideNavTriggerEl = document.querySelector('.sidenav-trigger');
+const levelSelectEl = document.querySelector('.level-select select');
+const roundSelectEl = document.querySelector('.round-select input');
+const roundLabelEl = document.querySelector('.round-label');
+const userNameEl = document.querySelector('.user-name');
+const errorMessageEl = document.querySelector('.error-text');
 
 export {
   INTRO,
   START_BTN,
   GAME_CONTAINER,
   CARDS_ITEMS,
-  LEVELS,
   SCORE,
   ERRORS_MAX_COUNT,
   WORD_IMG,
@@ -44,4 +48,10 @@ export {
   KNOW,
   RESULTS_KNOW,
   speechRecognitionLanguage,
+  sideNavTriggerEl,
+  levelSelectEl,
+  roundSelectEl,
+  roundLabelEl,
+  userNameEl,
+  errorMessageEl,
 };
