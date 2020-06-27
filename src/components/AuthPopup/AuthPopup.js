@@ -1,13 +1,8 @@
-import "materialize-css";
-import { DomGen } from "Service/DomGen";
-import {
-  closeAuthPopup,
-  authPopupState,
-  setUserData,
-  authReportStore,
-} from "Service/AppState";
-import { AuthPopConst } from "./AuthPopupConst";
-import { AuthPopupForm } from "./AuthPopupForm";
+import 'materialize-css';
+import { DomGen } from 'Service/DomGen';
+import { closeAuthPopup, authPopupState, setUserData, authReportStore } from 'Service/AppState';
+import { AuthPopConst } from './AuthPopupConst';
+import { AuthPopupForm } from './AuthPopupForm';
 
 export class AuthPopup {
   constructor() {
@@ -32,48 +27,34 @@ export class AuthPopup {
       }
     });
 
-    this.popup.cancel.addEventListener("click", this.cancelAuth);
-    this.popup.login.addEventListener("click", this.sendUserData);
-    this.popup.toggleLogin.addEventListener("click", this.formToLogin);
-    this.popup.toggleRegister.addEventListener("click", this.formToRegister);
-    this.popup.register.addEventListener("click", this.sendUserData);
+    this.popup.cancel.addEventListener('click', this.cancelAuth);
+    this.popup.login.addEventListener('click', this.sendUserData);
+    this.popup.toggleLogin.addEventListener('click', this.formToLogin);
+    this.popup.toggleRegister.addEventListener('click', this.formToRegister);
+    this.popup.register.addEventListener('click', this.sendUserData);
   }
 
   formToLogin() {
-    const {
-      header,
-      nameLine,
-      register,
-      login,
-      toggleBlockLogin,
-      toggleBlockRegister,
-    } = this.popup;
+    const { header, nameLine, register, login, toggleBlockLogin, toggleBlockRegister } = this.popup;
 
-    header.innerText = "Login";
-    nameLine.style.display = "none";
-    register.style.display = "none";
-    login.style.display = "block";
-    toggleBlockLogin.style.display = "none";
-    toggleBlockRegister.style.display = "block";
+    header.innerText = 'Login';
+    nameLine.style.display = 'none';
+    register.style.display = 'none';
+    login.style.display = 'block';
+    toggleBlockLogin.style.display = 'none';
+    toggleBlockRegister.style.display = 'block';
     this.isFormRegister = false;
   }
 
   formToRegister() {
-    const {
-      header,
-      nameLine,
-      register,
-      login,
-      toggleBlockLogin,
-      toggleBlockRegister,
-    } = this.popup;
+    const { header, nameLine, register, login, toggleBlockLogin, toggleBlockRegister } = this.popup;
 
-    header.innerText = "Register";
-    nameLine.style.display = "block";
-    register.style.display = "block";
-    login.style.display = "none";
-    toggleBlockLogin.style.display = "block";
-    toggleBlockRegister.style.display = "none";
+    header.innerText = 'Register';
+    nameLine.style.display = 'block';
+    register.style.display = 'block';
+    login.style.display = 'none';
+    toggleBlockLogin.style.display = 'block';
+    toggleBlockRegister.style.display = 'none';
     this.isFormRegister = true;
   }
 
@@ -110,15 +91,13 @@ export class AuthPopup {
       setUserData(user);
     } else {
       if (!AuthPopConst.emailRegexp.test(this.popup.email.value)) {
-        this.popup.reportLine.innerText = "Please input correct email address";
+        this.popup.reportLine.innerText = 'Please input correct email address';
       }
       if (!AuthPopConst.passwordRegexp.test(this.popup.password.value)) {
-        this.popup.reportLine.innerText =
-          "Please use correct password format. See below.";
+        this.popup.reportLine.innerText = 'Please use correct password format. See below.';
       }
       if (this.isFormRegister && !AuthPopConst.nameRegexp.test(this.popup.name.value)) {
-        this.popup.reportLine.innerText =
-          "Please use one or more letters for name";
+        this.popup.reportLine.innerText = 'Please use one or more letters for name';
       }
     }
   }
