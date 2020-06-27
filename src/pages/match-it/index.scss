@@ -1,5 +1,9 @@
 @import 'Src/scss/normalize';
-@import "materialize-css";
+@import 'materialize-css';
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
-@import "scss/common";
-@import "scss/cards";
+@import 'scss/common';
+@import 'scss/user';
+@import 'scss/intro';
+@import 'scss/cards';
+@import 'scss/buttons';
+@import 'scss/navigation';

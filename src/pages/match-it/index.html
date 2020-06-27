@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Match It</title>
   </head>
-  <body>
+  <body class="bg">
     <nav>
         <div class="nav-wrapper purple darken-2 z-depth-5">
             <a href="#" class="brand-logo center">Match It</a>
@@ -14,9 +14,25 @@
             </ul>
         </div>
     </nav>
-    <main>
-        <div class="game-page">
+    <main class="main">
+        <div class="intro">
+            <p class="intro-text">
+                Matching cards is a fun and addictive puzzle game.
+                <br />
+                Find all the matching pairs of cards and go to the next level.
+            </p>
+            <a href="#" class="btn btn-large waves-effect waves-light intro-btn purple darken-2 pulse">
+                <i class="material-icons left">art_track</i>
+                Start
+            </a>
+        </div>
+        <div class="game-page hidden">
             <ul id="slide-out" class="sidenav">
+                <div class="avatar center blue lighten-5">
+                    <img class="avatar__img" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/20625/avatar-bg.png" />
+                    <h4 class="avatar__name">CAPTAIN ANONIMUS</h4>
+                    <a class="avatar__logout logout-btn hidden" href="#!">LOGOUT</a>
+                </div>
                 <li>
                     <div class="user-view"> Choose game options </div>
                 </li>
@@ -26,65 +42,120 @@
                 <li><a class="subheader">Difficulty</a></li>
                 <li>
                     <div class="level-select input-field col s12">
-                        <div class="select-wrapper"><input class="select-dropdown dropdown-trigger" type="text" readonly="true" data-target="select-options-525efd8e-f090-bba0-4a8d-4a50d2f0251a"><ul id="select-options-525efd8e-f090-bba0-4a8d-4a50d2f0251a" class="dropdown-content select-dropdown" tabindex="0"><li id="select-options-525efd8e-f090-bba0-4a8d-4a50d2f0251a0" tabindex="0" class="selected"><span>Level 1</span></li><li id="select-options-525efd8e-f090-bba0-4a8d-4a50d2f0251a1" tabindex="0"><span>Level 2</span></li><li id="select-options-525efd8e-f090-bba0-4a8d-4a50d2f0251a2" tabindex="0"><span>Level 3</span></li><li id="select-options-525efd8e-f090-bba0-4a8d-4a50d2f0251a3" tabindex="0"><span>Level 4</span></li><li id="select-options-525efd8e-f090-bba0-4a8d-4a50d2f0251a4" tabindex="0"><span>Level 5</span></li><li id="select-options-525efd8e-f090-bba0-4a8d-4a50d2f0251a5" tabindex="0"><span>Level 6</span></li></ul><svg class="caret" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg><select tabindex="-1">
-                            <option value="1" selected="">Level 1</option>
+                        <select>
+                            <option value="1" selected>Level 1</option>
                             <option value="2">Level 2</option>
                             <option value="3">Level 3</option>
                             <option value="4">Level 4</option>
                             <option value="5">Level 5</option>
                             <option value="6">Level 6</option>
-                        </select></div>
+                        </select>
                     </div>
                 </li>
                 <li>
                     <div class="round-select input-field col s6">
-                        <input class="disabled" placeholder="Choose round" min="1" type="number" max="40">
+                        <input class="disabled validate" placeholder="Choose round" min="1" max="60" type="number">
                     </div>
-                </li>
-                <li>
-                    <div class="divider"></div>
-                </li>
-                <li><a class="subheader">Hints</a></li>
-                <li>
-                    <ul class="hints">
-                        <li>
-                            <label>
-                                <input class="translate-checkbox" type="checkbox" checked="checked">
-                                <span>Translate</span>
-                            </label>
-                        </li>
-                        <li>
-                            <label>
-                                <input class="pronounce-checkbox" type="checkbox" checked="checked">
-                                <span>Pronounce</span>
-                            </label>
-                        </li>
-                        <li>
-                            <label>
-                                <input class="picture-checkbox" type="checkbox">
-                                <span>Picture</span>
-                            </label>
-                        </li>
-                    </ul>
                 </li>
             </ul>
             <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
         </div>
-        <div class="container deck cards">
-            <div class="draggable one" draggable="true">
-                drag me
+        <div class="container cards hidden">
+            <div class="res">
+                <h4 class="round-label">Round 1.1</h4>
+                <div class="score"></div>
             </div>
-            <div class="draggable two" draggable="true">
-                drag me
+            <div class="row">
+                <div class="col s6">
+                    <div class="col s12 m6 center-align">
+                        <div id="card-1" class="card draggable">
+                            <div class="card-image">
+                                <img src="https://raw.githubusercontent.com/anasidorovich/rslang-data/master/files/01_0003.jpg" alt="empty">
+                            </div>
+                            <div class="card-content">
+                                <span class="card-title">match me</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col s12 m6 center-align">
+                        <div id="card-2" class="card draggable">
+                            <div class="card-image">
+                                <img src="https://raw.githubusercontent.com/anasidorovich/rslang-data/master/files/01_0008.jpg" alt="empty">
+                            </div>
+                            <div class="card-content">
+                                <span class="card-title">match me</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col s12 m6 center-align">
+                        <div id="card-3" class="card draggable">
+                            <div class="card-image">
+                                <img src="https://raw.githubusercontent.com/anasidorovich/rslang-data/master/files/01_0009.jpg" alt="empty">
+                            </div>
+                            <div class="card-content">
+                                <span class="card-title">match me</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col s12 m6 center-align">
+                        <div id="card-4" class="card draggable">
+                            <div class="card-image">
+                                <img src="https://raw.githubusercontent.com/anasidorovich/rslang-data/master/files/01_0001.jpg" alt="empty">
+                            </div>
+                            <div class="card-content">
+                                <span class="card-title">match me</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s6 words">
+                    <div class="col s12 m6 center-align">
+                        <div class="card word droptarget">
+                            <div class="card-image">
+                                <img src="./assets/img/blank.jpg" alt="empty">
+                            </div>
+                            <div class="card-content">
+                                <span class="card-title">word</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col s12 m6 center-align">
+                        <div class="card word droptarget">
+                            <div class="card-image">
+                                <img src="./assets/img/blank.jpg" alt="empty">
+                            </div>
+                            <div class="card-content">
+                                <span class="card-title">word</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col s12 m6 center-align">
+                        <div class="card word droptarget">
+                            <div class="card-image">
+                                <img src="./assets/img/blank.jpg" alt="empty">
+                            </div>
+                            <div class="card-content">
+                                <span class="card-title success">success</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col s12 m6 center-align">
+                        <div class="card word droptarget">
+                            <div class="card-image">
+                                <img src="./assets/img/blank.jpg" alt="empty">
+                            </div>
+                            <div class="card-content">
+                                <span class="card-title error">error</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class=" draggable three" draggable="true">
-                drag me
+            <div class="btns">
+                <a href="#" class="btn btn-large restart waves-effect waves-light">Restart</a>
+                <a href="#" class="btn btn-large waves-effect waves-light play">Lets Play!</a>
+                <a href="#" class="btn btn-large waves-effect waves-light result">Results</a>
             </div>
-        </div>
-        <div class="container words">
-            <div class="word droptarget one">drop here</div>
-            <div class="word droptarget two">drop here</div>
-            <div class="word droptarget three">drop here</div>
         </div>
     </main>
   </body>

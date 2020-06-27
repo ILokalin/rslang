@@ -1,0 +1,70 @@
+.btns {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 80px;
+  &.btns-res {
+    margin-bottom: 20px;
+  }
+}
+
+.btn {
+  &.btn-large {
+    background-color: #6ba26b;
+  }
+  &:focus {
+    outline: 0;
+  }
+  &:active {
+    outline: 0;
+  }
+}
+
+.activeBtn {
+  transition: 0.15s;
+  color: #fff;
+  background: #90caf9;
+  &:hover {
+    transition: 0.15s;
+    color: #fff;
+    background: #009179;
+  }
+}
+
+.btn.play {
+  width: 300px;
+  margin: 0 30px;
+}
+
+.btn-res:first-child {
+  margin-right: 40px;
+  margin-bottom: 10px;
+}
+
+.btn-res {
+  font-size: 20px;
+  min-width: 160px;
+  margin: 0;
+  &:nth-child(1) {
+    margin-right: 40px;
+  }
+}
+
+@media only screen and (max-width: 1400px) {
+  .btn.play {
+    width: 360px;
+  }
+}
+
+@media only screen and (max-width: 1000px) {
+  .container {
+    .btns {
+      flex-direction: column;
+    }
+
+    .restart,
+    .play,
+    .result {
+      margin: 20px;
+    }
+  }
+}

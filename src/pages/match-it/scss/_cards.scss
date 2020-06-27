@@ -1,15 +1,13 @@
-.draggable, .droptarget {
-  margin: 30px;
-  padding: 30px;
+.draggable,
+.droptarget {
   text-align: center;
   color: white;
   font-size: 2rem;
-  border-radius: 8px;
   box-shadow: 5px 2px 20px 0 rgba(46, 61, 73, 0.5);
 }
 
 .droptarget {
-  border: 10px dashed white;
+  //border: 10px dashed white;
   transition: border-width 0.5s linear;
 }
 
@@ -20,9 +18,55 @@
 .one {
   background-color: #f15e0f;
 }
+
 .two {
   background-color: #a532f1;
 }
+
 .three {
+  background-color: #ffbe0b;
+}
+
+.four {
   background-color: #2274a5;
+}
+
+.card {
+  transition: 0.5s;
+
+  .card-content {
+    padding: 0;
+    border-radius: 0 0 2px 2px;
+    .card-title {
+      color: #000000;
+    }
+    &:hover {
+      //transform: scale(1.03);
+      //background: #fff;
+    }
+  }
+}
+
+.card {
+  // background-color: grey;
+  cursor: move;
+
+  img {
+    border-style: none;
+    display: block;
+    height: 100%;
+    width: 100%;
+  }
+
+  &:active {
+    transform: scale(1.3);
+    z-index: 1000;
+    //background: #fff;
+  }
+}
+
+@media only screen and (min-width: 993px) {
+  .container {
+    width: 80%;
+  }
 }
