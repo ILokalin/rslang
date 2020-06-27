@@ -1,3 +1,5 @@
+@import "materialize-css";
+
 .auth-popup {
   display: flex;
   position: fixed;
@@ -6,69 +8,51 @@
   bottom: 0;
   left: 0;
   align-items: center;
+  z-index: 1000;
   background-color: #3337;
 
-  &__menu {
-    display: flex;
-    flex-direction: column;
-    margin: 0 auto;
-    border: 1px solid #3333;
-    border-radius: 10px;
-    background-color: grey;
-    padding: 50px;
-    padding-top: 50px;
+  &__authorization {
     width: 50%;
-    min-width: 300px;
+    margin: 0 auto;
   }
 
-  &__title {
-    margin: 0 auto 10px;
-    color: #ccc;
+  & .card-panel {
+    border-radius: 5px;
   }
 
-  &__describe {
-    margin: 0 auto 10px;
-    color: #ccc;
+  & .input-wrapper {
+    padding: 0 20px;
   }
 
-  &__input {
-    margin-bottom: 20px;
-    outline: none;
-    border: 1px solid #3333;
-    border-radius: 4px;
-    padding: 5px;
-    height: 24px;
+  & .first-line {
+    margin: 0 auto;
   }
 
-  &__password-hint {
-    margin: 0 auto 10px;
-    color: #ccc6;
-    transition: 2s;
+  & .input-field .validate {
+    padding-left: 5px;
+  }
 
-    &:hover {
-      color: #fff;
+  & .buttons-wrapper {
+    display: flex;
+    justify-content: flex-end;
+
+    & p {
+      margin: 0;
     }
   }
 
-  &__buttons-line {
-    display: flex;
-    justify-content: flex-end;
-  }
-
   &__button {
-    margin-left: 20px;
-    outline: none;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    background: none;
-    cursor: pointer;
-    width: 100px;
-    height: 30px;
-    color: #ccc;
+    &.cancel-btn.col {
+      margin-left: 5px;
+    }
 
-    &:disabled {
-      opacity: .5;
-      cursor: default;
+    &--link {
+      margin: 0;
+      border: none;
+      background: none;
+      cursor: pointer;
+      padding: 0;
+      text-decoration: underline;
     }
   }
 }
