@@ -184,3 +184,8 @@ header, main, footer, .settings-container, .statistics-container, .vocabulary-co
 .collapsible-body img{
   width: 100%;
 }
+
+.vocabulary__card-footer {
+  display: flex;
+  justify-content: space-between;
+}

@@ -4,7 +4,8 @@ class VocabularyWord {
   constructor(wordState) {
     this.wordState = wordState;
     this.cardElem = ElementGen('li', 'vocabulary__word-container');
-    this.cardElem.appendChild(this.createHeader())
+    this.cardElem.appendChild(this.createHeader());
+    this.cardElem.appendChild(this.createBody());
   }
 
   createHeader () {
@@ -26,8 +27,13 @@ class VocabularyWord {
                     <p>${this.wordState.textMeaning} <i class="material-icons" data-source="https://raw.githubusercontent.com/jules0802/rslang-data/master/${this.wordState.audioMeaning}">volume_up</i></p>
                     <p>${this.wordState.textMeaningTranslate}</p>
                     <p>${this.wordState.textExample} <i data-source="https://raw.githubusercontent.com/jules0802/rslang-data/master/${this.wordState.audioExample}" class="material-icons">volume_up</i></p>
-                    <p>${this.wordState.textExampleTranslate}</p>`);
+                    <p>${this.wordState.textExampleTranslate}</p>
+                  </div>
+                  <div class="divider"></div>
+                  <div class="vocabulary__card-footer">
+                    <p>Последнее повторение было: <span class="last-itaretion-date">${this.wordState.date}</span></p>
+                    <p>Следующее повторение будет: <span class="last-itaretion-date">${this.wordState.date}</span></p>
+                  </div>`);
     return div;
   }
-
 }
