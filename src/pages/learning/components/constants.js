@@ -28,9 +28,8 @@ const mySwiper = new Swiper('.swiper-container', {
   },
 });
 mySwiper.allowTouchMove = false;
-const wordContentUrl = 'https://raw.githubusercontent.com/jules0802/rslang-data/master/';
 const progressBar = document.querySelector('.progress');
 const settings = JSON.parse(localStorage.getItem('settings'));
 const dataController = new DataController();
 
-export { mySwiper, wordContentUrl, progressBar, settings, dataController };
+export { mySwiper, progressBar, settings, dataController };

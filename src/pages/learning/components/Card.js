@@ -12,8 +12,11 @@ import {
   showExplanation,
   showExample,
   audioPlay,
+  getLearnProgressString,
+  updateProgress,
+  showToastDeleted,
 } from './helpers';
-import { mySwiper, wordContentUrl, settings } from './constants';
+import { mySwiper, settings, dataController } from './constants';
 import 'materialize-css';
 
 export default class Card {
@@ -28,118 +31,108 @@ export default class Card {
 
   createCardImage() {
     const imageContainer = ElementGen('div', 'card-image', this.cardElem);
-    const image = ElementGen('img', 'image-association scale-transition', imageContainer);
-    image.setAttribute('src', wordContentUrl + this.wordState.image);
-    image.onload = () => {
-      image.classList.add('scale-in');
-    };
+    const cardTitle = ElementGen('span', 'card-title', imageContainer);
+    const image = ElementGen('img', 'image-association', imageContainer);
     const imagePlaceholder = ElementGen('div', 'img-placeholder', imageContainer);
+    const progress = this.wordState.userWord ? this.wordState.userWord.optional.progress : null;     
+
+    cardTitle.innerText = getLearnProgressString(progress);
+    cardTitle.dataset.progress = progress;
+    cardTitle.dataset.wordId = this.wordState.id || this.wordState._id ;
+
+    dataController.getMaterials(this.wordState.image).then((fullPath) => {
+      image.setAttribute('src', fullPath);
+      });
+    
     if (!settings.cardContainsPicture) {
       imagePlaceholder.setAttribute('style', 'z-index:2;');
     }
+
     return imageContainer;
   }
 
   createCardContent() {
     const cardContent = ElementGen('div', 'card-content', this.cardElem);
-
     const form = ElementGen('form', 'form', cardContent);
-
-    form.addEventListener('click', this.formBtnsHandler);
-
     const input = ElementGen('input', 'input_text', form);
-    input.setAttribute('type', 'text');
-    input.setAttribute('style', `width: ${measureWordWidth(this.wordState.word) + 2}px;`);
-    input.dataset.word = this.wordState.word;
-    input.dataset.tryCount = 0;
-
     const result = ElementGen('div', 'result', form);
-
-    result.setAttribute('style', `width: ${measureWordWidth(this.wordState.word) + 2}px;`);
-
     const deleteBtn = ElementGen(
       'i',
       'delete-btn teal-text waves-effect waves-light medium material-icons right tooltipped',
       form,
     );
-    deleteBtn.innerText = 'clear';
-    deleteBtn.dataset.tooltip = 'Удалить из словаря';
-    if (!settings.deleteBtnEnabled) {
-      deleteBtn.classList.add('hidden');
-    }
-
     const showAnswerBtn = ElementGen(
       'i',
       'show-answer-btn teal-text waves-effect waves-light medium material-icons right tooltipped',
       form,
     );
+    const div = ElementGen('div', 'word', cardContent);
+    const translation = ElementGen('p', 'translation', div);
+    const transcription = ElementGen('p', 'transcription', div);
+    const cardTabs = this.createCardTabs();
+    cardContent.appendChild(cardTabs);
+    const tabsContent = ElementGen('div', 'card-content white', cardContent);
+    const explain = ElementGen('div', 'explain-container', tabsContent);
+    const explanation = ElementGen('p', 'explanation', explain);
+    const explanationTranslation = ElementGen('p', 'explanation-translation', explain);
+    const example = ElementGen('div', 'example-container', tabsContent);
+    const exampleSent = ElementGen('p', 'example', example);
+    const exampleTranslation = ElementGen('p', 'example-translation', example);
+
+    form.addEventListener('click', this.formBtnsHandler);
+    form.addEventListener('submit', this.formHandler);
+   
+    input.setAttribute('type', 'text');
+    input.setAttribute('style', `width: ${measureWordWidth(this.wordState.word) + 2}px;`);
+    result.setAttribute('style', `width: ${measureWordWidth(this.wordState.word) + 2}px;`);
+    explain.setAttribute('id', `explain-${this.wordState.word}`);
+    example.setAttribute('id', `example-${this.wordState.word}`);
+    
+    input.dataset.word = this.wordState.word;
+    input.dataset.tryCount = 0; 
+    deleteBtn.dataset.tooltip = 'Удалить из словаря';   
+    showAnswerBtn.dataset.tooltip = 'Показать ответ'; 
+
+    deleteBtn.innerText = 'clear';
     showAnswerBtn.innerText = 'play_arrow';
-    showAnswerBtn.dataset.tooltip = 'Показать ответ';
+    translation.innerText = this.wordState.wordTranslate;
+    transcription.innerText = this.wordState.transcription;
+
+    explanation.innerHTML = this.wordState.textMeaning;
+    explanationTranslation.innerHTML = this.wordState.textMeaningTranslate;
+    exampleSent.innerHTML = this.wordState.textExample;
+    exampleTranslation.innerHTML = this.wordState.textExampleTranslate;    
+
+    hideGuessingWordInSentence(explanation);   
+    hideGuessingWordInSentence(exampleSent);
+
+    if (!settings.deleteBtnEnabled) {
+      deleteBtn.classList.add('hidden');
+    }      
     if (!settings.showAnswerBtnEnabled) {
       showAnswerBtn.classList.add('hidden');
-    }
-
-    const div = ElementGen('div', 'word', cardContent);
-
-    const translation = ElementGen('p', 'translation', div);
-    translation.innerText = this.wordState.wordTranslate;
-
+    } 
     if (!settings.cardContainsTranslation) {
       translation.classList.add('hidden');
     }
-
-    const transcription = ElementGen('p', 'transcription', div);
-    transcription.innerText = this.wordState.transcription;
-
     if (!settings.cardContainsTranscription) {
       transcription.classList.add('hidden');
     }
-
-    const cardTabs = this.createCardTabs();
-    cardContent.appendChild(cardTabs);
-
-    const tabsContent = ElementGen('div', 'card-content white', cardContent);
-
-    const explain = ElementGen('div', 'explain-container', tabsContent);
-    explain.setAttribute('id', `explain-${this.wordState.word}`);
-
-    if (!settings.cardContainsMeaning) {
-      explain.classList.add('hidden');
-    }
-
-    const explanation = ElementGen('p', 'explanation', explain);
-    explanation.innerHTML = this.wordState.textMeaning;
     if (!settings.cardContainsMeaning) {
       explanation.classList.add('hidden');
     }
-
-    hideGuessingWordInSentence(explanation);
-
-    const explanationTranslation = ElementGen('p', 'explanation-translation', explain);
-    explanationTranslation.innerHTML = this.wordState.textMeaningTranslate;
-
-    const example = ElementGen('div', 'example-container', tabsContent);
-
-    example.setAttribute('id', `example-${this.wordState.word}`);
-
-    const exampleSent = ElementGen('p', 'example', example);
-    exampleSent.innerHTML = this.wordState.textExample;
-    hideGuessingWordInSentence(exampleSent);
-
+    if (!settings.cardContainsMeaningTransl) {
+      explanationTranslation.classList.add('hidden');
+    }
     if (!settings.cardContainsExample) {
       exampleSent.classList.add('hidden');
     }
-
-    const exampleTranslation = ElementGen('p', 'example-translation', example);
-    exampleTranslation.innerHTML = this.wordState.textExampleTranslate;
-
     if (!settings.cardContainsExampleTransl) {
       exampleTranslation.classList.add('hidden');
     }
-
     if (settings.footerBtnsEnabled) {
       cardContent.appendChild(this.createCardAction());
-    }
+    }  
 
     return cardContent;
   }
@@ -151,7 +144,6 @@ export default class Card {
     const tab2 = ElementGen('li', 'tab col s3', ul);
 
     tab1.innerHTML = `<a class="active" href="#explain-${this.wordState.word}">Explain</a>`;
-
     tab2.innerHTML = `<a href="#example-${this.wordState.word}">Example</a>`;
 
     return cardTabs;
@@ -159,10 +151,12 @@ export default class Card {
 
   createCardAction() {
     const cardAction = ElementGen('div', 'card-action', this.cardElem);
+
     cardAction.appendChild(this.createFooterButton('again-btn'));
     cardAction.appendChild(this.createFooterButton('simple-btn'));
     cardAction.appendChild(this.createFooterButton('good-btn'));
     cardAction.appendChild(this.createFooterButton('hard-btn'));
+
     cardAction.addEventListener('click', this.footerBtnsHandler);
 
     return cardAction;
@@ -189,44 +183,114 @@ export default class Card {
       },
     };
     const a = ElementGen('a', `${buttonName} waves-effect waves-light btn-small tooltipped`);
+
     a.dataset.position = 'bottom';
     a.dataset.tooltip = buttonData[buttonName].tooltip;
+
     a.insertAdjacentHTML(
       'afterbegin',
       `<i class="material-icons center">${buttonData[buttonName].icon}</i>`,
     );
+
     return a;
   }
 
   footerBtnsHandler(event) {
+    const buttonsArr = [
+      mySwiper.slides[mySwiper.activeIndex].querySelector('.simple-btn'),
+      mySwiper.slides[mySwiper.activeIndex].querySelector('.good-btn'),
+      mySwiper.slides[mySwiper.activeIndex].querySelector('.hard-btn'),
+    ];
+    const progress = event.target.closest('.card').querySelector('.card-title').dataset.progress;
+    const wordId = event.target.closest('.card').querySelector('.card-title').dataset.wordId;
+    let saveOption;
+
     if (event.target.closest('.again-btn')) {
       againBtnAct();
-    }
-    if (event.target.closest('.simple-btn')) {
-      // TODO send the word to backend w difficulty 'simple'
-    }
-    if (event.target.closest('.good-btn')) {
-      // TODO send the word to backend w difficulty 'good'
-    }
-    if (event.target.closest('.hard-btn')) {
-      // TODO send the word to backend w difficulty 'hard'
-    }
+    } else {
+      if (event.target.closest('.simple-btn')) {
+        // TODO send the word to backend w progress
+        const newProgress = progress + 1;
+          saveOption = {
+            id: wordId, 
+            status: 'onLearn',
+          }
+          if (progress) {       
+          dataController.userWordsPut(saveOption).then((response) => {console.log(response);}, 
+            (report) => console.log(report));
+          } else {
+            dataController.userWordsPost(saveOption).then((response) => {console.log(response);}, 
+              (report) => console.log(report));
+          }
+      }
+
+      if (event.target.closest('.good-btn')) {
+        // TODO send the word to backend w new ptogress
+        const newProgress = progress + 0.5;
+          saveOption = {
+            id: wordId, 
+            status: 'onLearn',
+          }
+          if (progress) {       
+          dataController.userWordsPut(saveOption).then((response) => {console.log(response);}, 
+            (report) => console.log(report));
+          } else {
+            dataController.userWordsPost(saveOption).then((response) => {console.log(response);}, 
+              (report) => console.log(report));
+          }
+      }
+      if (event.target.closest('.hard-btn')) {
+        // TODO send the word to backend w difficulty 'hard'
+        const newProgress = progress - 0.5;
+          saveOption = {
+            id: wordId, 
+            status: 'onLearn',
+          }
+          if (progress) {       
+          dataController.userWordsPut(saveOption).then((response) => {console.log(response);}, 
+            (report) => console.log(report));
+          } else {
+            dataController.userWordsPost(saveOption).then((response) => {console.log(response);}, 
+              (report) => console.log(report));
+          }
+      }
+      buttonsArr.forEach((el) => el.setAttribute('disabled', 'disabled'))
+    }    
   }
 
   formBtnsHandler(event) {
     const input = event.target.closest('.form').querySelector('.input_text');
-    if (event.target.closest('.delete-btn')) {
-      // eslint-disable-next-line no-undef
-      M.toast({
-        html: `Слово ${input.dataset.word} удалено из Словаря. Вы можете восстановить его в Словаре`,
-      });
+    const progress = event.target.closest('.card').querySelector('.card-title').dataset.progress;
+    const wordId = event.target.closest('.card').querySelector('.card-title').dataset.wordId;
+    const audio = event.target.closest('.card').querySelector('.audio');    
+    let saveOption;
+
+    if (event.target.closest('.delete-btn')) {   
       // TODO send the word to backend w difficulty 'deleted'
+      saveOption = {
+        id: wordId, 
+        status: 'deleted',
+      }
+      if (progress) {       
+        dataController.userWordsPut(saveOption).then((response) => {
+          console.log(response);
+          showToastDeleted(input.dataset.word);
+          }, 
+          (report) => console.log(report));
+      } else {
+        dataController.userWordsPost(saveOption).then((response) => {
+          console.log(response);
+          showToastDeleted(input.dataset.word);
+          }, 
+          (report) => console.log(report));
+      }
     }
     if (event.target.closest('.show-answer-btn')) {
-      // TODO send the word to backend w difficulty 'hard'
-      input.value = input.dataset.word;
-      const audio = event.target.closest('.card').querySelector('.audio');
-      // audioPlay(audio);
+      // TODO send the word to backend w difficulty 'hard'??
+      input.value = input.dataset.word;      
+      if (settings.autoPlayEnabled) {
+        audioPlay(audio);
+      }
       allowNextCard();
       showTranscription();
       showExplanation();
@@ -240,8 +304,87 @@ export default class Card {
   }
 
   setAudio(audio) {
-    audio.dataset.wordPronounce = wordContentUrl + this.wordState.audio;
-    audio.dataset.explanationPronounce = wordContentUrl + this.wordState.audioMeaning;
-    audio.dataset.examplePronounce = wordContentUrl + this.wordState.audioExample;
+    dataController.getMaterials(this.wordState.audio).then((fullPath) => {
+      audio.dataset.wordPronounce = fullPath;
+    });  
+    dataController.getMaterials(this.wordState.audioMeaning).then((fullPath) => {
+      audio.dataset.explanationPronounce = fullPath;
+    });  
+    dataController.getMaterials(this.wordState.audioExample).then((fullPath) => {
+      audio.dataset.examplePronounce = fullPath;
+    });
   }
+
+  formHandler(event) {
+    event.preventDefault();
+
+    const input = event.target.querySelector('.input_text');
+    const result = event.target.querySelector('.result');
+    const audio = event.target.closest('.card').querySelector('.audio');
+    const progress = event.target.closest('.card').querySelector('.card-title').dataset.progress;
+    const wordId = event.target.closest('.card').querySelector('.card-title').dataset.wordId;
+    let k = progress ? progress : 0;
+    let isWrong;
+
+    input.blur();
+
+    input.dataset.tryCount += 1;        
+    input.dataset.word.split('').forEach((el, i) => {
+      if (el === input.value[i]) {
+        result.innerHTML += `<span class="correct">${el}</span>`;
+      } else {
+        result.innerHTML += `<span class="wrong">${el}</span>`;
+        isWrong = true;
+      }
+    });
+
+    const newK = updateProgress(k, isWrong);
+
+    if (isWrong) {
+      mySwiper.train.shortTermStat.chain = 0;
+      result.style.zIndex = 2;
+      input.value = '';
+      input.setAttribute('placeholder', input.dataset.word);
+      input.focus();
+      setTimeout(() => {
+        result.style.zIndex = -1;
+        result.innerHTML = '';
+      }, 3000);
+      againBtnAct();   
+
+    } else {
+      if (+input.dataset.tryCount === 1) {
+        mySwiper.train.shortTermStat.wrightAnswers++;      
+      }    
+      mySwiper.train.shortTermStat.chain++;
+      mySwiper.train.shortTermStat.totalCards++;
+      
+      if (settings.autoPlayEnabled) {
+        audioPlay(audio);
+      }
+      mySwiper.train.updateStat();  
+      allowNextCard();
+      showTranscription();
+      showExplanation();
+      showExample();    
+    } 
+
+    let saveOption;
+
+    // если новое слово отправляем в user words c коэф 0 вне зависимотси от правильности ответа
+// TODO установить progress поле для отправки в userWords
+    if (!progress) {
+      saveOption = {
+        id: wordId, 
+        status: 'onLearn',
+      }
+      dataController.userWordsPost(saveOption).then((response) => console.log(response), (report) => console.log(report));
+    } else {
+      saveOption = {
+        id: wordId, 
+        status: 'onLearn',
+      }
+      dataController.userWordsPut(saveOption).then((response) => console.log(response), (report) => console.log(report));
+    }
+  } 
 }
