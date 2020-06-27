@@ -53,26 +53,26 @@ export class DataController {
     return apiUserWordsGet(wordId);
   }
 
-  userWordsPut(wordData) {
+  userWordsPut({status = 'onlearn', id, progress = 0}) {
     const sendWordData = {
-      difficulty: wordData.status,
+      difficulty: status,
       optional: {
         lastDate: new Date().toDateString(),
-        progress: wordData.progress,
+        progress,
       },
     };
-    return apiUserWordsSave(wordData.id, sendWordData, 'PUT');
+    return apiUserWordsSave(id, sendWordData, 'PUT');
   }
 
-  userWordsPost(wordData) {
+  userWordsPost({status = 'onlearn', id, progress = 0}) {
     const sendWordData = {
-      difficulty: wordData.status,
+      difficulty: status,
       optional: {
         lastDate: new Date().toDateString(),
-        progress: wordData.progress,
+        progress,
       },
     };
-    return apiUserWordsSave(wordData.id, sendWordData, 'POST');
+    return apiUserWordsSave(id, sendWordData, 'POST');
   }
 
   getMaterials(file) {
