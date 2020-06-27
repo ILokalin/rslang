@@ -204,3 +204,8 @@ header, main, footer, .settings-container, .statistics-container, .vocabulary-co
   width: 100%;
 >>>>>>> feat: add vocabulary words layout
 }
+
+.vocabulary__card-footer {
+  display: flex;
+  justify-content: space-between;
+}
