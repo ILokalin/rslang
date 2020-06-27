@@ -39,7 +39,6 @@ export const whoIsGameFor = () => {
       console.log('We have user', userSettings);
       titleUser.innerText = userSettings.name;
 
-      localStorage.setItem('name', userSettings.name);
       localStorage.setItem('settings', JSON.stringify(userSettings.settings));
 
       handleSettingsView();
