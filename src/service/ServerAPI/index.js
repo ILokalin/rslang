@@ -7,4 +7,4 @@ export {
   apiUserWordsSave,
   apiUserWordsGet,
   apiUserWordsGetAll,
-} from './SereverAPI';
+} from './ServerAPI';

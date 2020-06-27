@@ -1,64 +1,24 @@
-import { DomGen } from 'Service/DomGen';
-import { closeAuthPopup, authPopupState, setUserData, authReportStore } from 'Service/AppState';
-import { AuthPopConst } from './AuthPopupConst';
+import "materialize-css";
+import { DomGen } from "Service/DomGen";
+import {
+  closeAuthPopup,
+  authPopupState,
+  setUserData,
+  authReportStore,
+} from "Service/AppState";
+import { AuthPopConst } from "./AuthPopupConst";
+import { AuthPopupForm } from "./AuthPopupForm";
 
 export class AuthPopup {
   constructor() {
     this.sendUserData = this.sendUserData.bind(this);
+    this.formToLogin = this.formToLogin.bind(this);
+    this.formToRegister = this.formToRegister.bind(this);
     this.body = document.body;
   }
 
   init() {
-    this.popup = DomGen({
-      name: 'auth-popup',
-      tag: 'div',
-      children: [
-        {
-          tag: 'div',
-          className: 'menu',
-          children: [
-            { tag: 'h2', className: 'title', innerText: 'Login/Register' },
-            { tag: 'p', className: 'describe', isAccess: 'reportLine' },
-            { tag: 'input', className: 'input', placeholder: 'email', isAccess: 'email' },
-            {
-              tag: 'input',
-              className: 'input',
-              type: 'password',
-              placeholder: 'password',
-              isAccess: 'password',
-            },
-            {
-              tag: 'p',
-              className: 'password-hint',
-              innerText:
-                'the password must contain at least one lowercase character, one uppercase, one special character, one digit',
-            },
-            {
-              tag: 'div',
-              className: 'buttons-line',
-              children: [
-                {
-                  tag: 'button',
-                  className: 'button',
-                  classAdd: ',waves-effect,waves-light,btn',
-                  innerText: 'Login',
-                  isAccess: 'login',
-                },
-                {
-                  tag: 'button',
-                  className: 'button',
-                  innerText: 'Register',
-                  value: 'register',
-                  isAccess: 'register',
-                  disabled: true,
-                },
-                { tag: 'button', className: 'button', innerText: 'Cancel', isAccess: 'cancel' },
-              ],
-            },
-          ],
-        },
-      ],
-    });
+    this.popup = DomGen(AuthPopupForm);
 
     authReportStore.watch((reportMessage) => {
       this.popup.reportLine.innerText = reportMessage;
@@ -72,12 +32,53 @@ export class AuthPopup {
       }
     });
 
-    this.popup.cancel.addEventListener('click', this.cancelAuth);
-    this.popup.login.addEventListener('click', this.sendUserData);
-    this.popup.register.addEventListener('click', this.showRegisterForm);
+    this.popup.cancel.addEventListener("click", this.cancelAuth);
+    this.popup.login.addEventListener("click", this.sendUserData);
+    this.popup.toggleLogin.addEventListener("click", this.formToLogin);
+    this.popup.toggleRegister.addEventListener("click", this.formToRegister);
+    this.popup.register.addEventListener("click", this.sendUserData);
+  }
+
+  formToLogin() {
+    const {
+      header,
+      nameLine,
+      register,
+      login,
+      toggleBlockLogin,
+      toggleBlockRegister,
+    } = this.popup;
+
+    header.innerText = "Login";
+    nameLine.style.display = "none";
+    register.style.display = "none";
+    login.style.display = "block";
+    toggleBlockLogin.style.display = "none";
+    toggleBlockRegister.style.display = "block";
+    this.isFormRegister = false;
+  }
+
+  formToRegister() {
+    const {
+      header,
+      nameLine,
+      register,
+      login,
+      toggleBlockLogin,
+      toggleBlockRegister,
+    } = this.popup;
+
+    header.innerText = "Register";
+    nameLine.style.display = "block";
+    register.style.display = "block";
+    login.style.display = "none";
+    toggleBlockLogin.style.display = "block";
+    toggleBlockRegister.style.display = "none";
+    this.isFormRegister = true;
   }
 
   openPopup() {
+    this.formToLogin();
     this.body.append(this.popup.block);
   }
 
@@ -91,26 +92,34 @@ export class AuthPopup {
 
   sendUserData() {
     const isValidate =
-      AuthPopConst.EMAIL_REGEXP.test(this.popup.email.value) &&
-      AuthPopConst.PASSWORD_REGEXP.test(this.popup.password.value);
+      AuthPopConst.emailRegexp.test(this.popup.email.value) &&
+      AuthPopConst.passwordRegexp.test(this.popup.password.value) &&
+      (!this.isFormRegister || AuthPopConst.nameRegexp.test(this.popup.name.value));
+
     const user = {
       email: this.popup.email.value,
       password: this.popup.password.value,
     };
 
+    if (this.isFormRegister) {
+      user.statusRegister = this.isFormRegister;
+      user.name = this.popup.name.value;
+    }
+
     if (isValidate) {
       setUserData(user);
     } else {
-      if (!AuthPopConst.EMAIL_REGEXP.test(this.popup.email.value)) {
-        this.popup.reportLine.innerText = 'Please input correct email address';
+      if (!AuthPopConst.emailRegexp.test(this.popup.email.value)) {
+        this.popup.reportLine.innerText = "Please input correct email address";
       }
-      if (!AuthPopConst.PASSWORD_REGEXP.test(this.popup.password.value)) {
-        this.popup.reportLine.innerText = 'Please use correct password format. See below.';
+      if (!AuthPopConst.passwordRegexp.test(this.popup.password.value)) {
+        this.popup.reportLine.innerText =
+          "Please use correct password format. See below.";
+      }
+      if (this.isFormRegister && !AuthPopConst.nameRegexp.test(this.popup.name.value)) {
+        this.popup.reportLine.innerText =
+          "Please use one or more letters for name";
       }
     }
-  }
-
-  showRegisterForm() {
-    this.popup.reportLine.innerText = 'development in progress';
   }
 }
