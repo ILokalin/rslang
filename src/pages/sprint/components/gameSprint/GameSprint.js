@@ -1,5 +1,4 @@
 import { DataController } from '../../../../service/DataController';
-// import { doc } from 'prettier';
 
 const startGameButton = document.getElementById('controls_start-btn');
 const scoreView = document.getElementById('score');
@@ -24,6 +23,7 @@ const seriesViewDefaulltBackgraundColor = 'white';
 const parrotYellow = document.getElementById('parrot-yellow');
 const parrotBrown = document.getElementById('parrot-brown');
 const parrotPink = document.getElementById('parrot-pink');
+const dataController = new DataController();
 const LevelViewInfo = {
   one: {
     color: seriesViewDefaulltBackgraundColor,
@@ -248,7 +248,6 @@ export default class GameSprint {
   }
 
   static getWordsForGame() {
-    const dataController = new DataController();
     dataController.getWords({ group: 1, page: 1, wordsPerPage: 200 }).then(
       (value) => {
         value.flat().map(({ word, wordTranslate }) => {
@@ -275,5 +274,13 @@ export default class GameSprint {
     this.startGame();
     this.answerButtonsEvent();
     GameSprint.getWordsForGame();
+    dataController.getUser().then(
+      (userSettings) => {
+        console.log(userSettings);
+      },
+      (rejectReport) => {
+        console.log(rejectReport);
+      },
+    );
   }
 }
