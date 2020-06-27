@@ -1,8 +1,4 @@
-import {
-  closeAuthPopup,
-  authPopupState,
-  setUserData,
-} from 'Service/AppState';
+import { closeAuthPopup, authPopupState, setUserData } from 'Service/AppState';
 import LocalStorageMock from './LocalStorageMock';
 import { DataController } from '../DataController';
 
@@ -161,21 +157,23 @@ describe('Test for userWords', () => {
     );
   });
 
-  test('The userWordsGetAll load array of user words', async () => {
+  test('The userWordsGetAll load array of aggregated user words', async () => {
     const wordsList = [
       {
         id: '5e9f5ee35eb9e72bc21af6f8',
         status: 'hard',
+        progress: 0.5,
       },
       {
         id: '5e9f5ee35eb9e72bc21af6fa',
         status: 'hard',
+        progress: 0.5,
       },
     ];
 
     await dataController.userWordsPut(wordsList[0]);
     await dataController.userWordsPut(wordsList[1]);
-    const result = await dataController.userWordsGetAll();
-    expect(result.length).toBeGreaterThanOrEqual(2);
+    const result = await dataController.userWordsGetAll(['hard', 'easy']);
+    expect(result[0].paginatedResults.length).toBeGreaterThanOrEqual(2);
   });
 });

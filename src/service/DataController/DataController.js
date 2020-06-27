@@ -14,7 +14,7 @@ import {
   apiUserSignIn,
   apiUserWordsSave,
   apiUserWordsGet,
-  apiUserWordsGetAll,
+  apiUserAggregatedWords,
 } from 'Service/ServerAPI';
 import { reportMessages } from './reportMessages';
 import { dataControllerConst } from './dataControllerConst';
@@ -45,8 +45,8 @@ export class DataController {
     });
   }
 
-  userWordsGetAll() {
-    return apiUserWordsGetAll();
+  userWordsGetAll(groupWords) {
+    return apiUserAggregatedWords(groupWords);
   }
 
   userWordsGet(wordId) {
@@ -58,6 +58,7 @@ export class DataController {
       difficulty: wordData.status,
       optional: {
         lastDate: new Date().toDateString(),
+        progress: wordData.progress,
       },
     };
     return apiUserWordsSave(wordData.id, sendWordData, 'PUT');
@@ -68,6 +69,7 @@ export class DataController {
       difficulty: wordData.status,
       optional: {
         lastDate: new Date().toDateString(),
+        progress: wordData.progress,
       },
     };
     return apiUserWordsSave(wordData.id, sendWordData, 'POST');
@@ -168,11 +170,11 @@ export class DataController {
     const userSettingsName = {
       optional: this.packUserSettings({
         name: userData.name,
-      })
-    }
+      }),
+    };
     apiUserCreate(userData)
       .then(() => apiUserSignIn(userData))
-      .then(() => apiUserSettingsPut((userSettingsName)))
+      .then(() => apiUserSettingsPut(userSettingsName))
       .then(() => apiUserSettingsGet())
       .then(
         (userSettings) => {
