@@ -1,25 +1,15 @@
-import LocalStorageMock from './LocalStorageMock';
-import { createEvent } from 'effector';
-import { DataController } from '../DataController';
 import {
-  openAuthPopup,
   closeAuthPopup,
   authPopupState,
-  userDataStore,
   setUserData,
-  authReportStore,
-  showAuthReport,
 } from 'Service/AppState';
+import LocalStorageMock from './LocalStorageMock';
+import { DataController } from '../DataController';
 
 global.fetch = require('node-fetch');
 
 global.localStorage = new LocalStorageMock();
 const dataController = new DataController();
-
-const testUser = {
-  email: 'checker@mail.ru',
-  password: 'checkerCH#2',
-};
 
 describe('Helpers tests', () => {
   test('unpack create normal object', () => {
