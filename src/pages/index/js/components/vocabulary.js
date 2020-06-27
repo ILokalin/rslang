@@ -1,6 +1,7 @@
 import { ElementGen } from 'Src/service/DomGen/DomGen';
 import {dataController} from '../constants';
 
+
 class VocabularyWord {
   constructor(wordState) {
     this.wordState = wordState;

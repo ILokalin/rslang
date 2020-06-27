@@ -77,6 +77,7 @@ export default class Training {
     if (this.shortTermStat.longestChain <  this.shortTermStat.chain) {
       this.shortTermStat.longestChain = this.shortTermStat.chain;
     }
+    
     document.querySelector('.statistics__new-words-num').innerText = this.shortTermStat.newWords;
     document.querySelector('.statistics__correct-answers').innerText = `${Math.round(this.shortTermStat.wrightAnswers/this.shortTermStat.totalCards*100)}%`;
     document.querySelector('.statistics__total-cards').innerText = this.shortTermStat.totalCards;

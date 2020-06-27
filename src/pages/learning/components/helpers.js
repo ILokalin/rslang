@@ -91,7 +91,10 @@ const audioPlay = (audio) => {
   ];
   let current = 0;
   // eslint-disable-next-line prefer-destructuring
+<<<<<<< HEAD
 
+=======
+>>>>>>> 93fc7d33ab3d3ceecc9886cff00839cd45e87fcb
   audio.src = tracks[0];
   audio.autoplay = true;
 
