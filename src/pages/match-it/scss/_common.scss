@@ -1,6 +1,9 @@
+$text-color: #123d39;
+
 body {
   background: linear-gradient(160deg, #02ccba 0%, #aa7ecd 100%);
   background-repeat: no-repeat;
+  color: $text-color;
   min-height: 100vh;
 }
 
@@ -21,6 +24,18 @@ body {
   pointer-events: none;
 
   opacity: 0;
+}
+
+.res {
+  justify-content: space-between;
+  height: 40px;
+  margin: 20px auto 40px;
+  align-items: baseline;
+}
+
+.res {
+  display: flex;
+  width: 100%;
 }
 
 .card .card-content .card-title.error {
