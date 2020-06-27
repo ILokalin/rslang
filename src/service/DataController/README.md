@@ -194,11 +194,15 @@ dataController.userWordsPut(option)
 }
 ```
 
+write with status 'hard' and progress 0
+
 ```
 {
   id: '5e9f5ee35eb9e72bc21af6f8',
 }
 ```
+
+write with status 'onlearn' and progress 0
 
 ```
 {
@@ -207,6 +211,8 @@ dataController.userWordsPut(option)
   progress: 0.5,
 }
 ```
+
+write with status 'hard' and progress 0.5
 
 ### userWordsGet
 
