@@ -2,10 +2,11 @@
 import Card from './Card';
 import { mySwiper, settings, dataController } from './constants';
 import 'materialize-css';
-import { updateMaterialComponents, setProgressbarToCurrentPosition} from './helpers';
+import { updateMaterialComponents, setProgressbarToCurrentPosition, getApproprateWords, } from './helpers';
 
 export default class Training {
   constructor(newWordsAmountPerDay, maxWordsPerDay) {
+    console.log(newWordsAmountPerDay, maxWordsPerDay)
     this.shortTermStat = {
       date: new Date(),
       totalCards: 0,
@@ -14,7 +15,13 @@ export default class Training {
       chain: 0,
       longestChain:0,
     }
-    const newWordsQuery = {
+
+    getApproprateWords(newWordsAmountPerDay, maxWordsPerDay).then((res)=> {
+      this.words = res;
+      console.log(this.words);
+      this.start();
+    })
+    /*const newWordsQuery = {
         group:0,
         page:5,
         wordsPerExampleSentenceLTE: '',
@@ -46,9 +53,9 @@ export default class Training {
       );
     }
     dataController.userWordsGetAll(['hard', 'onlearn','deleted']).then(
-    (response) => {console.log(response)},
+    (response) => {console.log('training ', response)},
     (rejectReport) => {console.log(rejectReport)}
-  )
+  )*/
   }
 
   start() {
