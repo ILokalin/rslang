@@ -200,7 +200,6 @@ const getApproprateWords = async (newWordsAmount, totalAmount) => {
 // получить все слова пользователя
   const userWordsReponse = await dataController.userWordsGetAll(['hard', 'onlearn', 'deleted']);  
   const userWords = userWordsReponse["0"].paginatedResults;
-  console.log('userWords', userWords);
   while (res.length < newWordsAmount) {
     // получить много слов общих 
     const query = {
@@ -210,7 +209,6 @@ const getApproprateWords = async (newWordsAmount, totalAmount) => {
         wordsPerPage: userWords.length * 3 < totalAmount ? totalAmount : userWords.length * 3,
       };
     const generalWords = await dataController.getWords(query);
-    console.log('generalWords', generalWords);
     if (generalWords.length) {   
       //выделить из общих слова неюзера       
       for (let i = 0; i < generalWords.length; i++) {
@@ -229,13 +227,9 @@ const getApproprateWords = async (newWordsAmount, totalAmount) => {
 
   userWords.filter((userWord) => {
     // посчитать дату следующего повторения юзер слов и сравнить с сегодня (<= сегодня)
-    console.log("userWord in filter", userWord)
       const lastDate = new Date(userWord.userWord.optional.lastDate);
-      console.log('lastDate',  lastDate);
       const interval = (2 * userWord.userWord.optional.progress + 1)*24*60*60*1000;
-      console.log('interval',  interval);
       const nextTime = new Date(+lastDate + interval).toDateString();
-      console.log('nextTime',  nextTime);
       return nextTime === today;
     })
     // слайс по количеству слов на повторение (тотал - новые)
