@@ -42,6 +42,8 @@ const config = {
     },
   entry: {
     'index':    PATH.source + '/pages/index/index.js',
+    'about':    PATH.source + '/pages/about/index.js',
+    'promo':    PATH.source + '/pages/promo/index.js',
     'audition': PATH.source + '/pages/audition/index.js',
     'learning': PATH.source + '/pages/learning/index.js',
     'puzzle':   PATH.source + '/pages/puzzle/index.js',
@@ -140,47 +142,57 @@ const config = {
     new HtmlWebPackPlugin({
       template: PATH.source + '/pages/index/index.html',
       chunks: ['index'],
-      filename: './index.html'
+      filename: './index.html',
+    }),
+    new HtmlWebPackPlugin({
+      template: PATH.source + '/pages/about/index.html',
+      chunks: ['about'],
+      filename: 'about/index.html',
+    }),
+    new HtmlWebPackPlugin({
+      template: PATH.source + '/pages/promo/index.html',
+      chunks: ['promo'],
+      filename: 'promo/index.html',
     }),
     new HtmlWebPackPlugin({
       template: PATH.source + '/pages/audition/index.html',
       chunks: ['audition'],
-      filename: 'audition/index.html'
+      filename: 'audition/index.html',
     }),
     new HtmlWebPackPlugin({
       template: PATH.source + '/pages/puzzle/index.html',
       chunks: ['puzzle'],
-      filename: 'puzzle/index.html'
+      filename: 'puzzle/index.html',
     }),
     new HtmlWebPackPlugin({
       template: PATH.source + '/pages/savanna/index.html',
       chunks: ['savanna'],
-      filename: 'savanna/index.html'
+      filename: 'savanna/index.html',
     }),
     new HtmlWebPackPlugin({
       template: PATH.source + '/pages/speak-it/index.html',
       chunks: ['speak-it'],
-      filename: 'speak-it/index.html'
+      filename: 'speak-it/index.html',
     }),
     new HtmlWebPackPlugin({
       template: PATH.source + '/pages/sprint/index.html',
       chunks: ['sprint'],
-      filename: 'sprint/index.html'
+      filename: 'sprint/index.html',
     }),
     new HtmlWebPackPlugin({
       template: PATH.source + '/pages/serverDemo/index.html',
       chunks: ['server-demo'],
-      filename: 'server-demo/index.html'
+      filename: 'server-demo/index.html',
     }),
     new HtmlWebPackPlugin({
       template: PATH.source + '/pages/learning/index.html',
       chunks: ['learning'],
-      filename: 'learning/index.html'
+      filename: 'learning/index.html',
     }),
     new webpack.ProvidePlugin({
       $: 'jquery',
       jQuery: 'jquery',
-      'window.jQuery': 'jquery'
+      'window.jQuery': 'jquery',
     })
   ],
 
