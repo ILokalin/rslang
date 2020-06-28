@@ -207,17 +207,17 @@ export class DataController {
 
   unpackUserSettings(userSettings) {
     const resultUserSettings = {};
-    for (const field in userSettings) {
+    Object.keys(userSettings).forEach((field) => {
       resultUserSettings[field] = JSON.parse(userSettings[field]);
-    }
+    })
     return resultUserSettings;
   }
 
   packUserSettings(userSettings) {
     const resultUserSettings = {};
-    for (const field in userSettings) {
+    Object.keys(userSettings).forEach((field) => {
       resultUserSettings[field] = JSON.stringify(userSettings[field]);
-    }
+    })
     return resultUserSettings;
   }
 }

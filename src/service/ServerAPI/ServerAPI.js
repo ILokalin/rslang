@@ -10,7 +10,7 @@ export function apiUserAggregatedWords(difficultyGroup) {
   const filter = encodeURIComponent(
     `{"$or":[${difficultyGroup.map((group) => `{"userWord.difficulty":"${group}"}`)}]}`,
   );
-  const fetchUrl = `${api.url}${api.users}/${localStorage.userId}/${api.aggregatedWords}?filter=${filter}`;
+  const fetchUrl = `${api.url}${api.users}/${localStorage.userId}/${api.aggregatedWords}?wordsPerPage=3600&filter=${filter}`;
 
   return new Promise((resolve, reject) => {
     fetch(fetchUrl, {
