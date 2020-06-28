@@ -124,7 +124,9 @@ Logout user from App and remove token from localStorage. The next call `getUser`
 add customization of user words and promise for get materials
 
 ### userWordsPost
+
 Create new record for user word with current date. Exampl for use:
+
 ```
 import { dataController } from 'Service/DataController';
 
@@ -136,19 +138,26 @@ dataController.userWordsPost(option)
     (rejectReport) => {.. reject}
   )
 ```
+
 **option**
+
 ```
 {
-  id, 
-  status
+  id,
+  status, (default 'onlearn')
+  progress (default 0)
 }
 ```
-- id - wordId
-- status - custom status... 'hard', 'easy', etc.
 
+- id - wordId
+- status - (default 'onlearn') - custom status... 'hard', 'onlearn' or 'deleted'.
+- progress - (default 0) - coefficient of learning process
+  **Use default!**
 
 ### userWordPut
+
 Update exists record for user word. Exampl for use:
+
 ```
 import { dataController } from 'Service/DataController';
 
@@ -160,17 +169,24 @@ dataController.userWordsPut(option)
     (rejectReport) => {.. reject}
   )
 ```
+
 **option**
+
 ```
 {
-  id, 
-  status
+  id,
+  status, (default 'onlearn')
+  progress (default 0)
 }
 ```
+
 - id - wordId
-- status - custom status... 'hard', 'easy', etc.
+- status - (default 'onlearn') - custom status... 'hard', 'onlearn' or 'deleted'.
+- progress - (default 0) - coefficient of learning process
+  **Use default!**
 
 **real sample option**
+
 ```
 {
   id: '5e9f5ee35eb9e72bc21af6f8',
@@ -178,9 +194,30 @@ dataController.userWordsPut(option)
 }
 ```
 
+write with status 'hard' and progress 0
+
+```
+{
+  id: '5e9f5ee35eb9e72bc21af6f8',
+}
+```
+
+write with status 'onlearn' and progress 0
+
+```
+{
+  id: '5e9f5ee35eb9e72bc21af6f8',
+  status: 'hard',
+  progress: 0.5,
+}
+```
+
+write with status 'hard' and progress 0.5
 
 ### userWordsGet
+
 Get specific word on id. Exampl:
+
 ```
 import { dataController } from 'Service/DataController';
 
@@ -192,6 +229,7 @@ dataController.userWordsPut(wordId)
     (rejectReport) => {.. reject}
   )
 ```
+
 - wordId - word id from card
 
 - response - contains object:
@@ -199,6 +237,7 @@ dataController.userWordsPut(wordId)
   - optional.date - date of create or update
 
 **sample**
+
 ```
 {
   "id": "5ef39ffd5b1916001741287d",
@@ -210,50 +249,106 @@ dataController.userWordsPut(wordId)
 }
 ```
 
-
 ### userWordsGetAll
-Get array all user words. Exampl:
+
+Get array all user words aggregated by 'or'. Exampl:
+
 ```
 import { dataController } from 'Service/DataController';
 
 const dataController = new DataController();
 
-dataController.userWordsGetAll()
+dataController.userWordsGetAll(options)
   .then(
     (response) => {... success},
     (rejectReport) => {.. reject}
   )
 ```
+
+- optional - array with selectors for aggregate by "or". Example:
+
+```
+dataController.userWordsGetAll(['hard', 'onlearn']);
+```
+
+selects all words with difficulty field equal 'hard' or 'onlearn'.
+
+```
+dataController.userWordsGetAll(['deleted']);
+```
+
+selects list with deleted words.
+
 - response - contains array of words:
-  - wordId - id of word as card
-  - id - record id
+
+  - paginatedResults - aggregated array of user words
+  - totalCount.count - count of all user words
+
+- every word have
   - difficulty - custom status
-  - optional.date - date of create/update
+  - optional.lastDate - date of create/update
+  - progress - coefficient of learning process
 
 **sample**
+
 ```
 [
   {
-    "id": "5ef39ffd5b1916001741287d",
-    "difficulty": "hard",
-    "optional": {
-      "lastDate": "Thu Jun 25 2020"
-    },
-    "wordId": "5e9f5ee35eb9e72bc21af6f8"
-  },
-  {
-    "id": "5ef3d0a95b19160017412b69",
-    "difficulty": "hard",
-    "optional": {
-      "lastDate": "Thu Jun 25 2020"
-    },
-    "wordId": "5e9f5ee35eb9e72bc21af6fa"
+    "paginatedResults": [
+      {
+        "_id": "5e9f5ee35eb9e72bc21af4a4",
+        "group": 0,
+        "page": 0,
+        "word": "August",
+        ... ---full scheme see below---
+        "userWord": {
+          "difficulty": "onlearn",
+          "optional": {
+            "lastDate": "Sat Jun 27 2020",
+            "progress": 0.5
+          }
+        }
+      },
+      {
+        "_id": "5e9f5ee35eb9e72bc21af6f8",
+        "group": 1,
+        "page": 0,
+        "word": "because",
+        ... ---full scheme see below---
+        "userWord": {
+          "difficulty": "hard",
+          "optional": {
+            "lastDate": "Sat Jun 27 2020",
+            "progress": 0.5
+          }
+        }
+      },
+      {
+        "_id": "5e9f5ee35eb9e72bc21af6fa",
+        "group": 1,
+        "page": 0,
+        "word": "expensive",
+        ... ---full scheme see below---
+        "userWord": {
+          "difficulty": "hard",
+          "optional": {
+            "lastDate": "Sat Jun 27 2020",
+            "progress": 0.5
+          }
+        }
+      }
+    ],
+    "totalCount": [
+      {
+        "count": 3
+      }
+    ]
   }
 ]
 ```
 
-
 ### getMaterials
+
 Returned full path for materails.
 
 ```
@@ -266,5 +361,96 @@ getMaterials(file)
     }
   )
 ```
+
 - fullPath - full path as `https://raw.githubusercontent.com/ilokalin/rslang-data/master/file/sound111.mp3`
-*** next version - preload material
+  \*\*\* next version - preload material
+
+## Append
+
+full scheme from **userWordsGetAll**
+
+```
+[
+  {
+    "paginatedResults": [
+      {
+        "_id": "5e9f5ee35eb9e72bc21af4a4",
+        "group": 0,
+        "page": 0,
+        "word": "August",
+        "image": "files/01_0004.jpg",
+        "audio": "files/01_0004.mp3",
+        "audioMeaning": "files/01_0004_meaning.mp3",
+        "audioExample": "files/01_0004_example.mp3",
+        "textMeaning": "<i>August</i> is the eighth month of the year.",
+        "textExample": "Is your birthday in <b>August</b>?",
+        "transcription": "[ɔ́ːgəst]",
+        "textExampleTranslate": "У тебя день рождения в августе?",
+        "textMeaningTranslate": "Август - восьмой месяц года",
+        "wordTranslate": "август",
+        "wordsPerExampleSentence": 5,
+        "userWord": {
+          "difficulty": "onlearn",
+          "optional": {
+            "lastDate": "Sat Jun 27 2020",
+            "progress": 0.5
+          }
+        }
+      },
+      {
+        "_id": "5e9f5ee35eb9e72bc21af6f8",
+        "group": 1,
+        "page": 0,
+        "word": "because",
+        "image": "files/01_0601.jpg",
+        "audio": "files/01_0601.mp3",
+        "audioMeaning": "files/01_0601_meaning.mp3",
+        "audioExample": "files/01_0601_example.mp3",
+        "textMeaning": "<i>Because</i> introduces a reason for something.",
+        "textExample": "We need to study <b>because</b> we have a test tomorrow.",
+        "transcription": "[bikɔ́ːz]",
+        "textExampleTranslate": "Нам нужно учиться, потому что завтра у нас тест",
+        "textMeaningTranslate": "Потому что вводит причину чего-то",
+        "wordTranslate": "потому что",
+        "wordsPerExampleSentence": 10,
+        "userWord": {
+          "difficulty": "hard",
+          "optional": {
+            "lastDate": "Sat Jun 27 2020",
+            "progress": 0.5
+          }
+        }
+      },
+      {
+        "_id": "5e9f5ee35eb9e72bc21af6fa",
+        "group": 1,
+        "page": 0,
+        "word": "expensive",
+        "image": "files/01_0603.jpg",
+        "audio": "files/01_0603.mp3",
+        "audioMeaning": "files/01_0603_meaning.mp3",
+        "audioExample": "files/01_0603_example.mp3",
+        "textMeaning": "<i>Expensive</i> things cost a lot of money.",
+        "textExample": "My friend drives an <b>expensive</b> sports car.",
+        "transcription": "[ikspénsiv]",
+        "textExampleTranslate": "Мой друг водит дорогой спортивный автомобиль",
+        "textMeaningTranslate": "Дорогие вещи стоят больших денег",
+        "wordTranslate": "дорогой",
+        "wordsPerExampleSentence": 7,
+        "userWord": {
+          "difficulty": "hard",
+          "optional": {
+            "lastDate": "Sat Jun 27 2020",
+            "progress": 0.5
+          }
+        }
+      }
+    ],
+    "totalCount": [
+      {
+        "count": 3
+      }
+    ]
+  }
+]
+```

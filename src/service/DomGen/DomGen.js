@@ -1,5 +1,7 @@
 /* eslint-disable guard-for-in */
 export function DomGen({ name, ...blockStruct }) {
+  let isRootElementNeedCreate = true;
+
   const bemBlock = {
     name,
     setMod(mod) {
@@ -27,10 +29,10 @@ export function DomGen({ name, ...blockStruct }) {
 
   const createTag = (element) => {
     const { tag, isAccess, classAdd, className, children, ...addData } = element;
-
     const domElement = document.createElement(tag);
 
-    if (className) {
+    if (className || isRootElementNeedCreate) {
+      isRootElementNeedCreate = false;
       classGen(className).forEach((singleClassName) => {
         domElement.classList.add(singleClassName);
       });
@@ -66,10 +68,12 @@ export function DomGen({ name, ...blockStruct }) {
       domElement.dataset[dataSet.name] = value;
     }
 
-    // eslint-disable-next-line no-restricted-syntax
-    for (const attribute in attributesList) {
+    Object.keys(attributesList).forEach((attribute) => {
       domElement[attribute] = attributesList[attribute];
-    }
+      if (!domElement.hasAttribute(attribute)) {
+        domElement.setAttribute(attribute, attributesList[attribute]);
+      }
+    });
 
     return domElement;
   };

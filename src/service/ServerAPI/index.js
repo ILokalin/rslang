@@ -7,4 +7,5 @@ export {
   apiUserWordsSave,
   apiUserWordsGet,
   apiUserWordsGetAll,
-} from './SereverAPI';
+  apiUserAggregatedWords,
+} from './ServerAPI';
