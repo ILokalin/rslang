@@ -12,6 +12,7 @@ export default class SpeechRecognitionService {
   constructor(props) {
     this.props = props;
     window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    // eslint-disable-next-line no-undef
     this.recognition = new SpeechRecognition();
     this.recognition.interimResults = true;
     this.recognition.lang = speechRecognitionLanguage;

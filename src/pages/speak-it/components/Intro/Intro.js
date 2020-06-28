@@ -1,4 +1,4 @@
-import { INTRO, START_BTN, GAME_CONTAINER } from '../../data/constants';
+import { INTRO, START_BTN, GAME_CONTAINER, sideNavTriggerEl } from '../../data/constants';
 
 export default class Intro {
   constructor() {
@@ -9,6 +9,7 @@ export default class Intro {
   static startButtonClick(e) {
     INTRO.classList.add('hidden');
     GAME_CONTAINER.classList.remove('hidden');
+    sideNavTriggerEl.classList.remove('hidden');
     e.preventDefault();
   }
 }
