@@ -185,6 +185,18 @@ const showToastDeleted = (word) => {
   });
 }
 
+const getOnlyNewWords = () => {
+  dataController.getWords(newWordsQuery).then(
+      (wordsArray) => {
+        console.log(wordsArray);
+        this.words = wordsArray;
+        this.start();
+      },
+      (rejectReport) => {
+        console.log(rejectReport);
+      })
+}
+
 export {
   measureWordWidth,
   updateMaterialComponents,

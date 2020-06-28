@@ -104,12 +104,13 @@ export function apiUserWordsSave(wordId, wordData, method) {
         if (isSuccess(rawResponse)) {
           return rawResponse.json();
         }
+        console.log(rawResponse);
         const error = new Error(rawResponse.statusText);
         error.master = 'words';
         error.code = rawResponse.status;
         throw error;
       })
-      .then((response) => {
+      .then((response) => {        
         resolve(response);
       })
       .catch((errorReport) => reject(errorReport));

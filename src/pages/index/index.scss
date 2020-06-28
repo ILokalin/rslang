@@ -173,7 +173,6 @@ header, main, footer, .settings-container, .statistics-container, .vocabulary-co
 }
 
 // vocabulary 
-<<<<<<< HEAD
 
 .collapsible-header {
   justify-content: space-between;
@@ -190,19 +189,6 @@ header, main, footer, .settings-container, .statistics-container, .vocabulary-co
 .vocabulary__card-footer {
   display: flex;
   justify-content: space-between;
-=======
-
-.collapsible-header {
-  justify-content: space-between;
-
-  & .vocabulary__word {
-    font-weight: bold;
-  }
-}
-
-.collapsible-body img{
-  width: 100%;
->>>>>>> feat: add vocabulary words layout
 }
 
 .vocabulary__card-footer {

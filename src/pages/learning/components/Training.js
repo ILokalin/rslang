@@ -16,7 +16,7 @@ export default class Training {
     }
     const newWordsQuery = {
         group:0,
-        page:1,
+        page:5,
         wordsPerExampleSentenceLTE: '',
         wordsPerPage: newWordsAmountPerDay,
       };
@@ -25,7 +25,7 @@ export default class Training {
       dataController.getWords(newWordsQuery).then(
         (wordsArray) => {
           console.log(wordsArray);
-          this.words = wordsArray.slice(0, 3);
+          this.words = wordsArray;
           this.start();
         },
         (rejectReport) => {
@@ -37,7 +37,7 @@ export default class Training {
       dataController.getWords(newWordsQuery).then(
         (wordsArray) => {
           console.log(wordsArray);
-          this.words = wordsArray.slice(0, 3);
+          this.words = wordsArray;
           this.start();
         },
         (rejectReport) => {
@@ -45,6 +45,10 @@ export default class Training {
         }
       );
     }
+    dataController.userWordsGetAll(['hard', 'onlearn','deleted']).then(
+    (response) => {console.log(response)},
+    (rejectReport) => {console.log(rejectReport)}
+  )
   }
 
   start() {

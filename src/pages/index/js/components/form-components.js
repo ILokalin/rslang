@@ -41,7 +41,7 @@ justNewWords.addEventListener('change', () => {
 
 export const handleSettingsView = () => {
   const settings = JSON.parse(localStorage.getItem('settings'));
-  settings.cardsPerDay = +cardsPerDay.value;
+  cardsPerDay.value = +settings.cardsPerDay;
   newCardsPerDay.value = +settings.newCardsPerDay;
   justNewWords.checked = !!settings.justNewWords;
   translation.checked = !!settings.cardContainsTranslation;
