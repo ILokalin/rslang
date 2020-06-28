@@ -7,8 +7,11 @@ import Game from './js/game/game';
 M.AutoInit();
 document.addEventListener('DOMContentLoaded', () => {
   const elems = document.querySelectorAll('select');
+  const elems2 = document.querySelectorAll('.sidenav');
   // eslint-disable-next-line no-unused-vars, no-undef
   const instances = M.FormSelect.init(elems);
+  // eslint-disable-next-line no-unused-vars, no-undef
+  const instances2 = M.Sidenav.init(elems2);
 });
 
 

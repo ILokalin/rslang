@@ -33,32 +33,51 @@
       </a>
     </div>
 
+
+
+
     <div class="difficult hidden">
       <p class="difficult-text">
         Select the difficult!
       </p>
-      <div class="input-field col s12">
-        <select class="level">
-          <option value="1" selected>Round 1</option>
-          <option value="2">Round 2</option>
-          <option value="3">Round 3</option>
-          <option value="4">Round 4</option>
-          <option value="5">Round 5</option>
-          <option value="6">Round 6</option>
-        </select>
-        <label>Select Round</label>
-      </div>
-      <div class="input-field col s12">
-        <select class="round">
-          <option value="1" selected>Level 1</option>
-          <option value="2">Level 2</option>
-          <option value="3">Level 3</option>
-          <option value="4">Level 4</option>
-          <option value="5">Level 5</option>
-          <option value="6">Level 6</option>
-        </select>
-        <label>Select Level</label>
-      </div>
+      <ul id="slide-out" class="sidenav">
+        <li>
+          <div class="user-view"> Choose game options </div>
+        </li>
+        <li>
+          <div class="divider"></div>
+        </li>
+        <li><a class="subheader">Difficulty</a></li>
+        <li>
+          <div class="input-field col s12">
+            <select class="level">
+              <option value="1" selected>Level 1</option>
+              <option value="2">Level 2</option>
+              <option value="3">Level 3</option>
+              <option value="4">Level 4</option>
+              <option value="5">Level 5</option>
+              <option value="6">Level 6</option>
+            </select>
+          </div>
+        </li>
+        <li>
+          <div class="input-field col s12">
+            <select class="round">
+              <option value="1" selected>Round 1</option>
+              <option value="2">Round 2</option>
+              <option value="3">Round 3</option>
+              <option value="4">Round 4</option>
+              <option value="5">Round 5</option>
+              <option value="6">Round 6</option>
+            </select>
+          </div>
+        </li>
+        <li><label>
+            <input type="checkbox" class="filled-in" checked="checked" />
+            <span>Repeat words</span>
+          </label></li>
+      </ul>
+      <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
       <a href="#" class="btn btn-large waves-effect waves-light intro-btn brown lighten-1 pulse startGame">
         <i class="material-icons right">videogame_asset</i>
         Play!
@@ -95,10 +114,10 @@
           <p class="falling-word__item text">arrive</p>
         </div>
         <div class="answer-options">
-          <p class="answer-options__item text waves-effect ">жизнь</p>
-          <p class="answer-options__item text waves-effect ">прибывать</p>
-          <p class="answer-options__item text waves-effect ">дом</p>
-          <p class="answer-options__item text waves-effect ">зарплата</p>
+          <p class="answer-options__item text">жизнь</p>
+          <p class="answer-options__item text">прибывать</p>
+          <p class="answer-options__item text">дом</p>
+          <p class="answer-options__item text">зарплата</p>
         </div>
       </div>
     </div>
