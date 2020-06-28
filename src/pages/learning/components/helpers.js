@@ -175,7 +175,7 @@ const updateProgress = (curProgress, isWrong) => {
   } else {
     res = curProgress + (6 - quantityOfSettingsEnabled) * 0.1 > 0;
   }
-  return res > 0 ? res : 0;
+  return ((res > 0) ? res : 0);
 }
 
 const showToastDeleted = (word) => {
@@ -239,7 +239,6 @@ const getApproprateWords = async (newWordsAmount, totalAmount) => {
 
   return res;    
 }
-
 export {
   measureWordWidth,
   updateMaterialComponents,

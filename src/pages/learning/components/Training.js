@@ -8,7 +8,7 @@ export default class Training {
   constructor(newWordsAmountPerDay, maxWordsPerDay) {
     console.log(newWordsAmountPerDay, maxWordsPerDay)
     this.shortTermStat = {
-      date: new Date(),
+      date: new Date().toDateString(),
       totalCards: 0,
       wrightAnswers: 0,
       newWords:0,
@@ -16,46 +16,18 @@ export default class Training {
       longestChain:0,
     }
 
+    // TODO: save last training date to statistics
+
     getApproprateWords(newWordsAmountPerDay, maxWordsPerDay).then((res)=> {
       this.words = res;
       console.log(this.words);
       this.start();
     })
-    /*const newWordsQuery = {
-        group:0,
-        page:5,
-        wordsPerExampleSentenceLTE: '',
-        wordsPerPage: newWordsAmountPerDay,
-      };
-    // TODO query 
-   if (settings.justNewWords) {
-      dataController.getWords(newWordsQuery).then(
-        (wordsArray) => {
-          console.log(wordsArray);
-          this.words = wordsArray;
-          this.start();
-        },
-        (rejectReport) => {
-          console.log(rejectReport);
-        }
-      );
-   } else {
-      // TODO get user words and new words
-      dataController.getWords(newWordsQuery).then(
-        (wordsArray) => {
-          console.log(wordsArray);
-          this.words = wordsArray;
-          this.start();
-        },
-        (rejectReport) => {
-          console.log(rejectReport);
-        }
-      );
-    }
+    //info
     dataController.userWordsGetAll(['hard', 'onlearn','deleted']).then(
-    (response) => {console.log('training ', response)},
-    (rejectReport) => {console.log(rejectReport)}
-  )*/
+      (response) => {console.log('allUserWords', response)},
+      (rejectReport) => {console.log(rejectReport)}
+    )
   }
 
   start() {
