@@ -18,8 +18,10 @@ export default class AuditionGameStatistics {
   }
 
   renderStatisticWindow(answered, error, points) {
+    gameContainer.innerHTML = '';
+
     const statisticBlock = document.createElement('div');
-    statisticBlock.classList.add('statistic-element');
+    statisticBlock.classList.add('statistic-block');
     gameContainer.append(statisticBlock);
 
     const gamePointsEl = document.createElement('span');
@@ -27,7 +29,8 @@ export default class AuditionGameStatistics {
     gamePointsEl.innerText = `У вас ${points} правильных ответов`;
     statisticBlock.append(gamePointsEl);
 
-    if(answered) {
+    if(answered.length) {
+      console.log(answered)
       const answeredBlock = document.createElement('div');
       answeredBlock.innerHTML = `Знаю <span class="answered-words-number">${answered.length}</span>`;
 
@@ -35,7 +38,7 @@ export default class AuditionGameStatistics {
       statisticBlock.append(answeredBlock);
     }
 
-    if(error) {
+    if(answered.length) {
       const errorBlock = document.createElement('div');
       errorBlock.innerHTML = `Не знаю <span class="error-words-number">${error.length}</span>`;
 

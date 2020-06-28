@@ -1,5 +1,14 @@
+.start-game-btn {
+  margin-top: 250px;;
+}
+
+.game-container {
+  text-align: center;
+}
+
 .game-wrapper {
   padding: 50px;
+  text-align: center;
 }
 
 .word-image-element {
@@ -8,6 +17,7 @@
 }
 
 .audio-element {
+  margin: 0 auto;
   width: 200px;
   height: 200px;
   background-image: url("assets/img/sound.png");
@@ -16,9 +26,9 @@
   background-repeat: no-repeat;
 }
 
-.audio-element .small {
-  width: 50px;
-  height: 50px;
+.audio-element.small {
+  width: 30px;
+  height: 30px;
   background-image: url("assets/img/sound.png");
   background-position: center;
   background-size: cover;
@@ -32,6 +42,7 @@
 }
 
 .word-image-element {
+  margin: 0 auto;
   display: none;
   background-size: cover;
   background-repeat: no-repeat;

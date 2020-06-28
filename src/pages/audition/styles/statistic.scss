@@ -1,7 +1,14 @@
+.statistic-block {
+  position: absolute;
+  border: red solid 2px;
+  width: 800px;
+}
+
 .answered {
   display: block;
 }
 
 .answered-words-element {
-  display: inline-block;
+  display: flex;
+  flex-direction: column;
 }
