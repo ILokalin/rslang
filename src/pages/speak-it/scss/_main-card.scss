@@ -30,7 +30,7 @@
   display: block;
 }
 
-input[type="text"].word-input {
+input[type='text'].word-input {
   font-size: 20px;
   font-size: 22px;
   line-height: 40px;
@@ -62,14 +62,14 @@ input[type="text"].word-input {
 }
 
 @media only screen and (max-width: 470px) {
- .img {
+  .img {
     width: 350px;
     height: auto;
   }
 }
 
 @media only screen and (max-width: 400px) {
- .img {
+  .img {
     width: 300px;
     height: auto;
     margin: 0 auto 10px auto;
@@ -78,7 +78,7 @@ input[type="text"].word-input {
 }
 
 @media only screen and (max-width: 768px) {
-  input[type="text"].word-input {
+  input[type='text'].word-input {
     width: 80%;
   }
 }

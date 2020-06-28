@@ -10,15 +10,16 @@ import {
   levelSelectEl,
   roundSelectEl,
   errorMessageEl,
+  defaultUser,
 } from '../data/constants';
 
 const Utils = {
   displayUserName: (userSettings) => {
-    userNameEl.innerText = `Hi, ${userSettings.name}!`;
+    userNameEl.innerText = userSettings.name;
   },
 
   displayEmptyUserName: () => {
-    userNameEl.innerText = '';
+    userNameEl.innerText = defaultUser;
   },
 
   getCurrentRound: () => {
@@ -30,6 +31,16 @@ const Utils = {
 
   setCurrentRound: (round) => {
     localStorage.setItem('speakItGameRound', round);
+  },
+
+  getUserWordsForRound: async (dataController) => {
+    let wordsArr;
+    try {
+      wordsArr = await dataController.userWordsGetAll(['deleted']);
+    } catch (err) {
+      Utils.openModal(`API request failed with error: ${err.message}`);
+    }
+    return wordsArr;
   },
 
   getWordsForRound: async (dataController) => {
