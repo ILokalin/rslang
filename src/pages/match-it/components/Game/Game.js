@@ -30,6 +30,21 @@ export default class Game {
       errorsArr: [],
       knowArr: [],
     };
+    this.dataController = new DataController();
+  }
+
+  start() {
+    this.dataController.getUser().then(
+      (settings) => {
+        Utils.displayUserName(settings);
+        this.authorized = true;
+        this.init();
+      },
+      (report) => {
+        Utils.displayEmptyUserName(report);
+        this.init();
+      },
+    );
   }
 
   showResults(e) {
@@ -56,12 +71,12 @@ export default class Game {
     e.preventDefault();
   }
 
-  onRestartBtnClick(e) {
+  onCheckBtnClick(e) {
     this.restartGame();
     e.preventDefault();
   }
 
-  onNewGameBtnClick(e) {
+  onNextBtnClick(e) {
     this.restartGame();
     RESULTS.classList.add('hidden');
     e.preventDefault();
@@ -70,21 +85,29 @@ export default class Game {
   async createCardPage() {
     this.props.errorsArr = [];
     this.props.errorsArr.length = 0;
-    const wordsData = await Utils.getWordsForRound(this.dataController);
+    let wordsData;
+    if (this.authorized) {
+      wordsData = await Utils.getUserWordsForRound(this.dataController);
+    }
+    if (!wordsData || (wordsData[0].totalCount.count || 0) < ERRORS_MAX_COUNT) {
+      wordsData = await Utils.getWordsForRound(this.dataController);
+    } else {
+      roundLabelEl.innerText = '';
+    }
     await wordsData.forEach(this.createCard.bind(this));
     await Utils.disableCardClick();
     Utils.resetCardMinWidth('0');
   }
 
   restartGame() {
-    Utils.clearScore();
+    /* Utils.clearScore();
     Utils.resetCards();
     this.props.errors = ERRORS_MAX_COUNT;
     this.props.know = 0;
     this.clearStatistics();
     const CARDS = document.querySelectorAll('.container .item');
     CARDS.forEach(this.prepareStatisticsContent, this);
-    Utils.resetMainCard();
+    Utils.resetMainCard();*/
   }
 
   prepareStatisticsContent(card) {
@@ -100,18 +123,18 @@ export default class Game {
   }
 
   levelOrRoundSelected() {
-    this.clearStatistics();
+    /*this.clearStatistics();
     this.restartGame();
     Utils.resetCardMinWidth();
     CARDS_ITEMS.innerHTML = '';
-    this.createCardPage();
+    this.createCardPage();*/
   }
 
-  createCard(data, index) {
+  async createCard(data, index) {
     const CARD = document.createElement('div');
     CARD.classList.add('item');
-    CARD.setAttribute('data-audio', `${DATA_PATH}/${data.audio}`);
-    CARD.setAttribute('data-img', `${DATA_PATH}/${data.image}`);
+    const image = await this.dataController.getMaterials(data.image);
+    CARD.setAttribute('data-img', image || `${DATA_PATH}/${data.image}`);
     CARD.setAttribute('index', `${index}`);
     CARD.innerHTML = Utils.getCard(data);
     CARD.onclick = () => {

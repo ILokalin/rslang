@@ -11,6 +11,7 @@ const roundSelect = document.querySelector('.round-select input');
 const roundLabel = document.querySelector('.round-label');
 const userName = document.querySelector('.user-name');
 const errorMessage = document.querySelector('.error-text');
+const userWords = document.querySelector('.user-words-checkbox');
 
 const WORD_INPUT = document.querySelector('.word-input');
 const WORD_TRANSLATION = document.querySelector('.translation');
@@ -29,4 +30,13 @@ const RESULTS_KNOW = document.querySelector('.success-item');
 const ERRORS_MAX_COUNT = 10;
 const speechRecognitionLanguage = 'en-US';
 
-export { introPage, startBtn, gamePage, gameContainer, roundSelect, roundLabel, levelSelect };
+export {
+  introPage,
+  startBtn,
+  gamePage,
+  gameContainer,
+  roundSelect,
+  roundLabel,
+  levelSelect,
+  userWords,
+};

@@ -4,12 +4,21 @@
   color: #fff;
 }
 
+.user-words {
+  padding: 0 32px;
+}
+
 .level-select,
 .range-field,
 .round-select {
   padding-left: 20px;
 }
 
-.user-name[href] {
-  text-decoration: underline;
+.sidenav .user-view {
+  padding-top: 0;
+}
+
+.home {
+  position: absolute;
+  right: 20px;
 }

@@ -1,4 +1,5 @@
 import { levelSelect, roundSelect, errorMessage } from '../data/constants';
+//import { store, setInitialStore } from '../storage.js';
 
 const Utils = {
   displayUserName: (userSettings) => {
@@ -7,6 +8,17 @@ const Utils = {
 
   displayEmptyUserName: () => {
     // userNameEl.innerText = '';
+  },
+
+  getUserWordsOption: () => {
+    if (!JSON.parse(localStorage.matchItGameUseUserWords || 'false')) {
+      localStorage.matchItGameUseUserWords = true;
+    }
+    return JSON.parse(localStorage.matchItGameUseUserWords);
+  },
+
+  setUserWordsOption: (value) => {
+    localStorage.matchItGameUseUserWords = value;
   },
 
   getCurrentRound: () => {
@@ -35,6 +47,8 @@ const Utils = {
     }
     return wordsArr;
   },
+
+  updateUserStatistics: async (userId, token, statistics) => {},
 };
 
 export default Utils;
