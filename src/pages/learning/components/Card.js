@@ -234,6 +234,7 @@ export default class Card {
 
       if (event.target.closest('.good-btn')) {
         // TODO send the word to backend w new ptogress
+<<<<<<< HEAD
         const newProgress = progress ? progress + 0.5 : 0.5;
           saveOption = {
             id: wordId, 
