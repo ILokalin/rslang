@@ -185,16 +185,56 @@ const showToastDeleted = (word) => {
   });
 }
 
-const getOnlyNewWords = () => {
-  dataController.getWords(newWordsQuery).then(
-      (wordsArray) => {
-        console.log(wordsArray);
-        this.words = wordsArray;
-        this.start();
-      },
-      (rejectReport) => {
-        console.log(rejectReport);
-      })
+const getApproprateWords = (newWordsAmount, totalAmount) => {
+  const res = [];
+  let userWords;
+  //let generalWords;
+  let pagesCount = 0;
+  let groupsCount = 0;
+  // получить все слова пользователя
+  dataController.userWordsGetAll(['hard', 'onlearn', 'deleted']).then(
+    (response) => {userWords = response[0].paginatedResults},
+    (rejectReport) => {console.log(rejectReport)})
+  .then(() => {
+    // получить много слов общих 
+    while (res.length < newWordsAmount) {
+      const query = {
+        group: groupsCount,
+        page: pagesCount,
+        wordsPerExampleSentenceLTE: '',
+        wordsPerPage: userWords.length * 3 < totalAmount ? totalAmount : userWords.length * 3,
+      };
+      dataController.getWords(query).then(
+        (wordsArray) => {
+          //выделить из общих слова неюзера
+          if (wordsArray.length) {          
+            for (let i = 0; i < wordsArray.length; i++ ) {
+              const word = wordsArray[i];
+              const isUserWord = userWords.find((userWord) => userWord._id === word.id );
+              if (!isUserWord) {
+                res.push(word);
+                if (res.length === newWordsAmount) {
+                  break;
+                }
+              }
+            } 
+          } else groupsCount++;
+        },
+        (rejectReport) => {console.log(rejectReport)});
+      pagesCount++;
+    }   
+  })
+  .then(() => {
+    userWords.filter((userWord) => {
+      const lastDate = Date.parse(userWord.userWord.optional.lastDate);
+    })
+
+
+  })  
+
+  // посчитать дату следующего повторения юзер слов и сравнить с сегодня (<= сегодня)
+  // слайс по количеству слов на повторение (тотал - новые)
+  //шафл массива   
 }
 
 export {
