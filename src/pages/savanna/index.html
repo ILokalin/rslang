@@ -73,7 +73,7 @@
           </div>
         </li>
         <li><label>
-            <input type="checkbox" class="filled-in" checked="checked" />
+            <input type="checkbox" class="filled-in" />
             <span>Repeat words</span>
           </label></li>
       </ul>
@@ -87,7 +87,7 @@
 
     <div class="game-container hidden">
       <div class="game-header">
-        <h4 class="stage">Round 1.1</h4>
+        <h4 class="stage"></h4>
         <ul class="game-info-settings">
           <li class="healt-bar">
             <img src="./assets/img/heart.svg" alt="heart">
@@ -111,16 +111,58 @@
       </div>
       <div class="game-field">
         <div class="falling-word">
-          <p class="falling-word__item text">arrive</p>
+          <p class="falling-word__item text">don't work</p>
         </div>
         <div class="answer-options">
-          <p class="answer-options__item text">жизнь</p>
-          <p class="answer-options__item text">прибывать</p>
-          <p class="answer-options__item text">дом</p>
-          <p class="answer-options__item text">зарплата</p>
+          <p class="answer-options__item text"></p>
+          <p class="answer-options__item text"></p>
+          <p class="answer-options__item text"></p>
+          <p class="answer-options__item text"></p>
         </div>
       </div>
     </div>
+
+
+    <div class="statistic hidden">
+      <div class="error-container">
+        <p class="error-stat">I don't know</p>
+        <span class="error-count left badge red">10</span>
+      </div>
+      <table class="centered responsive-table">
+        <tbody class="error-table">
+          <tr>
+            <td>Alvin</td>
+            <td>Eclair</td>
+          </tr>
+
+        </tbody>
+      </table>
+      <div class="know-container">
+        <p class="know-stat">I know</p>
+        <span class="know-count left badge green">10</span>
+      </div>
+      <table class="centered responsive-table">
+        <tbody class="know-table">
+          <tr>
+            <td>Alvin</td>
+            <td>Eclair</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="btns btns-res">
+        <a href="#" class="btn btn-large waves-effect waves-light intro-btn brown lighten-1 pulse restart">
+          <i class="material-icons right">videogame_asset</i>New Game!
+        </a>
+      </div>
+    </div>
+
+
+
+
+
+
+
+
     <div class="audio"></div>
 
 

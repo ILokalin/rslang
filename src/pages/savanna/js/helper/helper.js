@@ -1,4 +1,4 @@
-import { userNameElement, levelSelector, roundSelector } from './constants';
+import { userNameElement, roundOption } from './constants';
 
 const helper = {
   renderUserName(userSettings) {
@@ -8,23 +8,24 @@ const helper = {
   renderEmptyUserName() {
     userNameElement.innerText = '';
   },
-  getLevelFromOptions() {
-    console.log (+levelSelector.value)
-    console.log (typeof +levelSelector.value)
-    return +levelSelector.value;
-  },
-  getRoundFromOptions() {
-    console.log (+roundSelector.value)
-    console.log (typeof +roundSelector.value)
-    return +roundSelector.value;
-  },
-  async getCardsbyApi(dataController, level, round) {
+
+  async getCardsbyApi(dataController, level) {
     const dataSet = await dataController.getWords({
-      wordsPerPage: 100,
+      wordsPerPage: 600,
       group: level,
-      page: round,
     });
-    return dataSet.sort(() => Math.random() - 0.5);
+    return dataSet.sort((a, b) => a.page - b.page);
+  },
+  createStatElement(word, translate) {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${word}</td>
+                    <td>${translate}</td>`;
+    return tr;
+  },
+  changeRoundOption() {
+    roundOption.addEventListener('change', (event) => {
+      console.log('changed', event);
+    });
   },
 };
 

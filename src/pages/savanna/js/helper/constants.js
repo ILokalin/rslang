@@ -2,6 +2,7 @@ const appStartButton = document.querySelector('.app-start');
 const intro = document.querySelector('.intro');
 const difficultMenu = document.querySelector('.difficult');
 const gameStartButton = document.querySelector('.startGame');
+const restartButton = document.querySelector('.restart');
 const currentGameStage = document.querySelector('.stage');
 const healtBar = document.querySelector('.healt-bar');
 const gameContainer = document.querySelector('.game-container');
@@ -12,9 +13,14 @@ const fallingWordElement = document.querySelector('.falling-word');
 const answerElements = document.querySelectorAll('.answer-options__item');
 const answerContainer = document.querySelector('.answer-options');
 const userNameElement = document.querySelector('.user-name');
-const levelSelector = document.querySelector('.level');
-const roundSelector = document.querySelector('.round');
 const health = 5;
+const statistic = document.querySelector('.statistic');
+const errorCount = document.querySelector('.error-count ');
+const errorTable = document.querySelector('.error-table');
+const knowCount = document.querySelector('.know-count');
+const knowTable = document.querySelector('.know-table');
+const levelOption = document.querySelector('.level');
+const roundOption = document.querySelector('.round');
 
 const gameData = {
   currentCards: [],
@@ -45,6 +51,12 @@ export {
   health,
   fallingWordElement,
   userNameElement,
-  levelSelector,
-  roundSelector,
+  errorCount,
+  knowCount,
+  errorTable,
+  knowTable,
+  statistic,
+  restartButton,
+  levelOption,
+  roundOption,
 };
