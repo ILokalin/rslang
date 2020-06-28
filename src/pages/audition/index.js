@@ -8,7 +8,7 @@ const startGameBtn = document.getElementById('start-game-btn');
 
 startGameBtn.addEventListener('click', () => new AuditionGame(), M.AutoInit());
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', () => {
   const dropdown = document.querySelectorAll('.dropdown-trigger');
-  const instances = M.Dropdown.init(dropdown);
+  const dropDownInstance = M.Dropdown.init(dropdown);
 });

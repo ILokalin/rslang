@@ -4,21 +4,24 @@ import {
   DATA_URL,
   gameContainer,
   abortGameBtn,
-  userNameEl,
   navigationMenuEl,
+  logInBtn,
 } from './constants'
 
 export default class AuditionGame {
   constructor() {
     this.user = '';
+    // this.level = localStorage.getItem('auditionGameDifficulty') || 0;
+    // this.round = localStorage.getItem('auditionGameRounds') || 0;
+    // this.roundsData = localStorage.getItem('auditionGameWords') || [];
     this.level = 0;
     this.round = 0;
-    this.correctAnswers = 0;
     this.roundsData = [];
     this.dataController = new DataController();
 
     this.getUserData();
     this.addSelectDifficultyHandler();
+    this.addAbortGameHandler();
 
     this.wordClickListener = this.checkAnswer.bind(this);
     this.showAnswerListener = this.showAnswer.bind(this);
@@ -82,15 +85,15 @@ export default class AuditionGame {
     this.dataController.getUser()
       .then(
         (userSettings) => {
-          userNameEl.innerText = userSettings.name;
+          // userNameEl.innerText = userSettings.name;
+          // userNameEl.removeEventListener('click', this.logInListener);
           this.user = userSettings.name;
-          userNameEl.removeEventListener('click', this.logInListener);
           this.startGame();
         },
         (rejectReport) => {
           console.log(rejectReport);
-          userNameEl.innerText = 'Log In';
-          userNameEl.addEventListener('click', this.logInListener);
+          logInBtn.classList.remove('hidden')
+          logInBtn.addEventListener('click', this.logInListener);
           this.startGame();
         }
       )
@@ -102,7 +105,9 @@ export default class AuditionGame {
     gameContainer.innerHTML = '';
 
     if (this.user) {
-      this.getUserWords();
+      // this.getUserWords();
+      const pages = this.generatePages();
+      this.getWords(pages);
     } else {
       const pages = this.generatePages();
       this.getWords(pages);
@@ -316,6 +321,16 @@ export default class AuditionGame {
 
   endGame() {
     new AuditionGameStatistics(this.roundsData);
+  }
+
+  addAbortGameHandler() {
+    abortGameBtn.addEventListener('click', this.abortGame.bind(this));
+  }
+
+  abortGame() {
+    localStorage.setItem('auditionGameRounds', this.round);
+    localStorage.setItem('auditionGameWords', this.roundsData);
+    localStorage.setItem('auditionGameDifficulty', this.level);
   }
 }
 
