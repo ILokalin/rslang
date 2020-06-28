@@ -33,7 +33,7 @@ body {
       justify-content: center;
   }
 
-  .container {
+  .container_game {
     position: relative;
     width: 80%;
     max-width: 600px;
@@ -46,10 +46,11 @@ body {
     border-radius: 5%;
     box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
     overflow: hidden;
+    margin: 0 auto;
   }
 
   @media (max-width: 420px) {
-    .container {
+    .container_game {
       border-radius: 35px;
     }
   }
@@ -95,7 +96,8 @@ body {
     font-size: 2.0rem;
   }
 
-  .series_answer--right {
+  .series_answer--right,
+  .series_answer--right-final {
     background-color: green;
     background-image: url('../../../src/assets/img/rightAnswer.svg');
     background-repeat: no-repeat;
@@ -191,10 +193,16 @@ body {
     padding: .7rem 1.5rem;
     outline: none;
     border-radius: 5px;
+    &:focus {
+      background-color: rgb(212,75,56);
+    }
   }
 
   .answer-buttons_right-btn {
     background: #38d44b;
+    &:focus {
+      background-color: #38d44b;
+    }
   }
 
   .hide {
@@ -247,7 +255,7 @@ body {
       width: 50%;
       height: 100%;
       z-index: 3;
-      background-color: #00bf82;
+      background-color: #f57f17;
       animation: mask_right  60s steps(1, end) forwards;
     }
   }
@@ -278,7 +286,7 @@ body {
       left: 0;
       width: 50%;
       height: 100%;
-      background-color: #00bf82;
+      background-color: #f57f17;
     }
   }
 

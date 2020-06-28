@@ -23,6 +23,7 @@ const seriesViewDefaulltBackgraundColor = 'white';
 const parrotYellow = document.getElementById('parrot-yellow');
 const parrotBrown = document.getElementById('parrot-brown');
 const parrotPink = document.getElementById('parrot-pink');
+const avatarName = document.getElementById('avatar__name');
 const dataController = new DataController();
 const LevelViewInfo = {
   one: {
@@ -93,7 +94,7 @@ export default class GameSprint {
   }
 
   wrongIndexTranslateWord() {
-    const indexWrongTranslateWord = Math.floor(Math.random() * (words.length - 1 - 0 + 1)) + 0;
+    const indexWrongTranslateWord = Math.floor(Math.random() * (words.length));
     return indexWrongTranslateWord === this.currentWordIndex
       ? this.wrongIndexTranslateWord()
       : indexWrongTranslateWord;
@@ -112,6 +113,9 @@ export default class GameSprint {
 
     answerImage.classList.add('answer_img--wrong');
     setTimeout(() => answerImage.classList.remove('answer_img--wrong'), timeAnswerResultVIew);
+    seriesRightAnswerView[0].classList.remove('hide');
+    seriesRightAnswerView[2].classList.remove('hide');
+    seriesRightAnswerView[1].classList.remove('series_answer--right-final');
   }
 
   rightAnswer() {
@@ -168,6 +172,9 @@ export default class GameSprint {
         this.poinForRightAnswer = four.levelPoints;
         seriesPoinMultiplayVIew.innerText = four.seriesText;
         parrotPink.classList.remove('hide');
+        seriesRightAnswerView[0].classList.add('hide');
+        seriesRightAnswerView[2].classList.add('hide');
+        seriesRightAnswerView[1].classList.add('series_answer--right-final');
     }
     this.seriesRightAnswer = this.startSeriesPoint;
   }
@@ -276,7 +283,7 @@ export default class GameSprint {
     GameSprint.getWordsForGame();
     dataController.getUser().then(
       (userSettings) => {
-        console.log(userSettings);
+        avatarName.innerText = userSettings.name
       },
       (rejectReport) => {
         console.log(rejectReport);
