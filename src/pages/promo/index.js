@@ -2,9 +2,10 @@ import './index.scss';
 import 'materialize-css';
 
 M.AutoInit();
-var elems = document.querySelectorAll('.carousel');
-const options = {
+const elems = document.querySelectorAll('.slider');
+const sliderOptions = {
   indicators: true,
-  fullWidth: true,
+  interval: 4000,
 }
-var instances = M.Carousel.init(elems, options);
+const instances = M.Slider.init(elems, sliderOptions);
+
