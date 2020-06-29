@@ -136,23 +136,21 @@ const againBtnAct = () => {
 };
 
 const getLearnProgressString = (k) => {
-  if (k) {
-    if (k===0) {
-      return 'в начале изучения';
-    }
-    if (k>0 && k<=2) {
-      return 'недавно начали изучать';
-    }
-    if (k>2 && k<=4) {
-      return 'хорошее начало';
-    }
-    if (k>4 && k<=8) {
-      return 'хорошо знаете слово';
-    }
-    if (k>8) {
-      return 'отлично знаете слово';
-    }
-  } 
+  if (k===0) {
+    return 'в начале изучения';
+  }
+  if (k>0 && k<=2) {
+    return 'недавно начали изучать';
+  }
+  if (k>2 && k<=4) {
+    return 'хорошее начало';
+  }
+  if (k>4 && k<=8) {
+    return 'хорошо знаете слово';
+  }
+  if (k>8) {
+    return 'отлично знаете слово';
+  }
   return 'новое слово';
 }
 
@@ -187,10 +185,11 @@ const shuffle = (array) => {
 }
 
 const getApproprateWords = async (newWordsAmount, totalAmount) => {
-  const res = [];
+  let res = [];
   let pagesCount = 0;
   let groupsCount = 0;
-  const today = new Date().toDateString();
+  const todayObj = new Date();
+  const today = new Date(todayObj.getFullYear(),todayObj.getMonth(), todayObj.getDate());
 // получить все слова пользователя
   const userWordsReponse = await dataController.userWordsGetAll(['hard', 'onlearn', 'deleted']);  
   const userWords = userWordsReponse["0"].paginatedResults;
@@ -219,15 +218,21 @@ const getApproprateWords = async (newWordsAmount, totalAmount) => {
     pagesCount++;
   }
 
-  userWords.filter((userWord) => {
+  const filteredUserWords = userWords.filter((userWord) => {
     // посчитать дату следующего повторения юзер слов и сравнить с сегодня (<= сегодня)
       const lastDate = new Date(userWord.userWord.optional.lastDate);
+      console.log('lastDate', lastDate);
       const interval = (2 * userWord.userWord.optional.progress + 1)*24*60*60*1000;
-      const nextTime = new Date(+lastDate + interval).toDateString();
-      return nextTime === today;
+      console.log('interval', interval);
+      const nextTime = new Date(+lastDate + interval)
+      console.log('nextTime', nextTime);
+      console.log('today', today);
+      console.log(nextTime <= today);
+      return nextTime <= today;
     })
+    console.log('filteredUserWords', filteredUserWords);
     // слайс по количеству слов на повторение (тотал - новые)
-  res.concat(userWords.slice(0, totalAmount - newWordsAmount + 1));
+  res = res.concat(filteredUserWords.slice(0, totalAmount - newWordsAmount));
   //шафл массива 
   shuffle(res);
 
