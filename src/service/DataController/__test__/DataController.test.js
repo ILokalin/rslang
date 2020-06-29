@@ -1,25 +1,11 @@
+import { closeAuthPopup, authPopupState, setUserData } from 'Service/AppState';
 import LocalStorageMock from './LocalStorageMock';
-import { createEvent } from 'effector';
 import { DataController } from '../DataController';
-import {
-  openAuthPopup,
-  closeAuthPopup,
-  authPopupState,
-  userDataStore,
-  setUserData,
-  authReportStore,
-  showAuthReport,
-} from 'Service/AppState';
 
 global.fetch = require('node-fetch');
 
 global.localStorage = new LocalStorageMock();
 const dataController = new DataController();
-
-const testUser = {
-  email: 'checker@mail.ru',
-  password: 'checkerCH#2',
-};
 
 describe('Helpers tests', () => {
   test('unpack create normal object', () => {
@@ -171,21 +157,23 @@ describe('Test for userWords', () => {
     );
   });
 
-  test('The userWordsGetAll load array of user words', async () => {
+  test('The userWordsGetAll load array of aggregated user words', async () => {
     const wordsList = [
       {
         id: '5e9f5ee35eb9e72bc21af6f8',
         status: 'hard',
+        progress: 0.5,
       },
       {
         id: '5e9f5ee35eb9e72bc21af6fa',
         status: 'hard',
+        progress: 0.5,
       },
     ];
 
     await dataController.userWordsPut(wordsList[0]);
     await dataController.userWordsPut(wordsList[1]);
-    const result = await dataController.userWordsGetAll();
-    expect(result.length).toBeGreaterThanOrEqual(2);
+    const result = await dataController.userWordsGetAll(['hard', 'easy']);
+    expect(result[0].paginatedResults.length).toBeGreaterThanOrEqual(2);
   });
 });

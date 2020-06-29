@@ -25,6 +25,8 @@ body {
 .main {
   visibility: visible;
   transition: 0.5s;
+  width: 95vw;
+  margin: 0 auto;
 }
 
 .hidden {
@@ -56,4 +58,17 @@ body {
 
 .none {
   display: none;
+}
+
+.round-label {
+  padding-left: 10px;
+}
+
+.auth-popup__menu {
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
+  z-index: 1000;
 }

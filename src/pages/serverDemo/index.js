@@ -10,7 +10,6 @@ const loginButton = document.querySelector('.page__login-button');
 const wordsButton = document.querySelector('.page__words-button');
 
 const putDataButton = document.querySelector('.page__put-button');
-const getDataButton = document.querySelector('.page__get-button');
 const newName = document.querySelector('.page__input-name');
 const firstValue = document.querySelector('.page__input-words-example');
 const secondValue = document.querySelector('.page__input-words-ppage');
@@ -62,7 +61,7 @@ const wordsLoad = () => {
   dataController
     .getWords({
       group: 1,
-      page: wordPagesCount++,
+      page: (wordPagesCount += 1),
       wordsPerExampleSentenceLTE,
       wordsPerPage,
     })
@@ -85,4 +84,3 @@ const putUserSettings = () => {
 };
 
 putDataButton.addEventListener('click', putUserSettings);
-// getDataButton.addEventListener('click', getUserSettings);
