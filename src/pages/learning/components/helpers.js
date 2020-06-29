@@ -10,12 +10,6 @@ const measureWordWidth = (word) => {
   return ctx.measureText(word).width;
 };
 
-const simpleBtnHandler = () => {};
-
-const goodBtnHandler = () => {};
-
-const hardBtnHandler = () => {};
-
 const updateMaterialComponents = () => {
   // eslint-disable-next-line no-undef
   M.AutoInit();
