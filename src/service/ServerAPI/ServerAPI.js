@@ -7,9 +7,8 @@ function isSuccess(response) {
 }
 
 export function apiUserAggregatedWords(difficultyGroup) {
-  const filter = encodeURIComponent(
-    `{"$or":[${difficultyGroup.map((group) => `{"userWord.difficulty":"${group}"}`)}]}`,
-  );
+  const queryString = difficultyGroup.map((group) => `{"userWord.difficulty":"${group}"}`);
+  const filter = encodeURIComponent(`{"$or":[${queryString}]}`);
   const fetchUrl = `${api.url}${api.users}/${localStorage.userId}/${api.aggregatedWords}?wordsPerPage=3600&filter=${filter}`;
 
   return new Promise((resolve, reject) => {
@@ -148,9 +147,9 @@ export function apiGetWords(requestData) {
   });
 }
 
-export function apiUserSettingsPut(userSettingsUpload) {
+export function apiUserSettingsPut(userSettingsUpload, section = 'settings') {
   return new Promise((resolve, reject) => {
-    fetch(`${api.url}${api.users}/${localStorage.userId}/${api.settings}`, {
+    fetch(`${api.url}${api.users}/${localStorage.userId}/${api[section]}`, {
       method: 'PUT',
       headers: {
         Authorization: `Bearer ${localStorage.token}`,
@@ -175,9 +174,9 @@ export function apiUserSettingsPut(userSettingsUpload) {
   });
 }
 
-export function apiUserSettingsGet() {
+export function apiUserSettingsGet(section = 'settings') {
   return new Promise((resolve, reject) => {
-    fetch(`${api.url}${api.users}/${localStorage.userId}/${api.settings}`, {
+    fetch(`${api.url}${api.users}/${localStorage.userId}/${api[section]}`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${localStorage.token}`,
