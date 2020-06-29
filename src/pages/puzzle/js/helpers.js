@@ -3,7 +3,6 @@ import {
   gamePage, homePage, translateBtn, pronounceBtn, pictureBtn,
   roundsCount,  inputField, roundStatisticsPage, translation, fullStatPage,
 } from './constants';
-
 // eslint-disable-next-line
 import { startRound, hidePaintingInfo, hideBackgroundPic } from './game';
 import { setBackgroundToPuzzlePiece } from './canvas';
@@ -52,6 +51,7 @@ const checkCheckboxes = () => {
   }
 };
 
+
 const playButtonHandler = async () => {
   gamePage.classList.remove('hidden');
   homePage.classList.add('hidden');
@@ -65,7 +65,6 @@ const selectLevelHandler = (event) => {
   localStorage.setItem('level', store.level);
   document.querySelector('.round-select input').classList.remove('disabled');
   handleRoundsPerLevel();
-  // sendStatisticsToBackEnd();
 };
 
 const chooseRoundHandler = (event) => {
@@ -75,7 +74,6 @@ const chooseRoundHandler = (event) => {
   } else {
     document.querySelector('.round-select input').setAttribute('style', 'background-color: white;');
   }
-  // sendStatisticsToBackEnd();
   localStorage.setItem('round', store.round);
 };
 

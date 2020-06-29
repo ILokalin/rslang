@@ -189,6 +189,7 @@ pictureBtn.addEventListener('click', () => {
 
 // Round begin
 
+
 const startRound = async () => {
   document.querySelectorAll('.game-row').forEach((el) => {
     el.innerHTML = '';

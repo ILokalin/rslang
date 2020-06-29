@@ -5,7 +5,6 @@ const setAudioSrc = (word) => {
   dataController.getMaterials(word.audioExample).then((res)=> {
     audio.setAttribute('src', res);
   });
-  
 };
 
 const playAudio = () => {
