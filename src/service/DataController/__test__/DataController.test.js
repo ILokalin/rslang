@@ -176,4 +176,15 @@ describe('Test for userWords', () => {
     const result = await dataController.userWordsGetAll(['hard', 'easy']);
     expect(result[0].paginatedResults.length).toBeGreaterThanOrEqual(2);
   });
+
+  test('The userStatPut write statistic', async () => {
+    const testStat = {
+      learnedWords: 0,
+      optional: {
+        testString: 'stat'
+      }
+    }
+
+    await dataController.userStatPut(testStat, 'statistic');
+  })
 });
