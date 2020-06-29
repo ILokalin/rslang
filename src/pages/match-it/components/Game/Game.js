@@ -7,13 +7,11 @@ import {
   allCards,
   allWords,
   ERRORS_MAX_COUNT,
-  RESULTS,
-  ERRORS,
-  RESULTS_ERRORS,
-  KNOW,
-  RESULTS_KNOW,
-  roundLabel,
+  scoreLabel,
   userWords,
+  nextBtn,
+  checkBtn,
+  restartBtn,
 } from '../../data/constants';
 
 export default class Game {
@@ -44,46 +42,31 @@ export default class Game {
 
   init() {
     this.gameSettings = new GameSettings();
-    this.gameSettings.init(this.levelOrRoundSelected.bind(this));
+    this.gameSettings.init(this.optionSelected.bind(this));
     this.createCardPage();
-    //RESTART.addEventListener('click', this.onRestartBtnClick.bind(this));
-    //RETURN.addEventListener('click', Utils.onReturnBtnClick);
-    //NEW_GAME.addEventListener('click', this.onNewGameBtnClick.bind(this));
-    //.addEventListener('click', this.showResults.bind(this));
+    restartBtn.addEventListener('click', this.onRestartBtnClick.bind(this));
+    nextBtn.addEventListener('click', this.onNextBtnClick.bind(this));
+    checkBtn.addEventListener('click', this.showResults.bind(this));
   }
 
   showResults(e) {
-    ERRORS.innerText = this.props.errors;
-    KNOW.innerText = this.props.know;
-    RESULTS_ERRORS.innerHTML = '';
-    RESULTS_KNOW.innerHTML = '';
-    this.props.errorsArr.forEach((item) => {
-      item.classList.remove('activeItem');
-      item.addEventListener('click', () => {
-        Utils.playAudio(item.getAttribute('data-audio'));
-      });
-      RESULTS_ERRORS.appendChild(item);
-    });
-    this.props.knowArr.forEach((item) => {
-      item.classList.remove('activeItem');
-      item.addEventListener('click', () => {
-        Utils.playAudio(item.getAttribute('data-audio'));
-      });
-      RESULTS_KNOW.appendChild(item);
-    });
-    RESULTS.classList.remove('hidden');
-    Utils.goToTop();
+    Utils.disableCardsTransfer();
+    checkBtn.classList.add('activeBtn');
+    scoreLabel.children[0].innerHTML = this.props.know;
+    Utils.displayResults();
+    scoreLabel.classList.remove('hidden');
     e.preventDefault();
   }
 
-  onCheckBtnClick(e) {
+  onRestartBtnClick(e) {
     this.restartGame();
     e.preventDefault();
   }
 
   onNextBtnClick(e) {
+    Utils.goToNextRound();
     this.restartGame();
-    RESULTS.classList.add('hidden');
+    //RESULTS.classList.add('hidden');
     e.preventDefault();
   }
 
@@ -104,21 +87,22 @@ export default class Game {
     wordsData.forEach((data) => {
       words.push(data.word);
     });
+    words.sort(() => 0.5 - Math.random());
     words.forEach(this.createWordCard);
-    dataTransfer();
-    //await Utils.disableCardClick();
-    //Utils.resetCardMinWidth('0');
+    dataTransfer(this.props);
   }
 
   restartGame() {
-    /* Utils.clearScore();
-    Utils.resetCards();
-    this.props.errors = ERRORS_MAX_COUNT;
-    this.props.know = 0;
+    checkBtn.classList.remove('activeBtn');
+    allCards.innerHTML = '';
+    allWords.innerHTML = '';
+    scoreLabel.classList.add('hidden');
+    scoreLabel.children[0].innerHTML = '';
     this.clearStatistics();
+    this.createCardPage();
+    /* Utils.clearScore();
     const CARDS = document.querySelectorAll('.container .item');
-    CARDS.forEach(this.prepareStatisticsContent, this);
-    Utils.resetMainCard();*/
+    CARDS.forEach(this.prepareStatisticsContent, this);*/
   }
 
   prepareStatisticsContent(card) {
@@ -133,9 +117,10 @@ export default class Game {
     this.props.knowArr.length = 0;
   }
 
-  levelOrRoundSelected() {
+  optionSelected() {
     allCards.innerHTML = '';
     allWords.innerHTML = '';
+    this.clearStatistics();
     this.createCardPage();
     /*this.clearStatistics();
     this.restartGame();
@@ -149,6 +134,7 @@ export default class Game {
     cardWrapper.classList.add('col', 's12', 'm6', 'center-align');
     const CARD = document.createElement('div');
     CARD.id = `card-${data.id}`;
+    CARD.setAttribute('index', `${index}`);
     CARD.classList.add('card', 'draggable');
     const image = await this.dataController.getMaterials(data.image);
     CARD.innerHTML = Utils.getCard(data.id, data.word, image);

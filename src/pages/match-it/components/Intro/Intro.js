@@ -1,4 +1,4 @@
-import { introPage, startBtn, gamePage, gameContainer } from '../../data/constants';
+import { introPage, startBtn, sideNavBurger, gamePage, gameContainer } from '../../data/constants';
 
 export default class Intro {
   init() {
@@ -7,6 +7,7 @@ export default class Intro {
 
   static startButtonClick(e) {
     introPage.classList.add('hidden');
+    sideNavBurger.classList.remove('hidden');
     gamePage.classList.remove('hidden');
     gameContainer.classList.remove('hidden');
     document.body.classList.remove('bg');

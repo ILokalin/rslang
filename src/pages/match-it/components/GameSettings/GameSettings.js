@@ -12,8 +12,8 @@ export default class GameSettings {
     M.AutoInit();
   }
 
-  init(levelOrRoundSelected) {
-    this.levelOrRoundSelected = levelOrRoundSelected;
+  init(optionSelected) {
+    this.optionSelected = optionSelected;
     levelSelect.addEventListener('change', this.updateGameData.bind(this));
     roundSelect.addEventListener('change', this.updateGameData.bind(this));
     userWords.addEventListener('change', this.updateGameData.bind(this));
@@ -25,11 +25,13 @@ export default class GameSettings {
     if (!userWords.checked) {
       levelSelect.disabled = false;
       roundSelect.disabled = false;
+      userWords.disabled = true;
       M.FormSelect.init(levelSelect);
       roundLabel.innerText = `Round ${currentRound}`;
     } else {
       levelSelect.disabled = true;
       roundSelect.disabled = true;
+      userWords.disabled = false;
       M.FormSelect.init(levelSelect);
       roundLabel.innerText = '';
     }
@@ -37,7 +39,7 @@ export default class GameSettings {
   }
 
   updateGameData() {
-    this.levelOrRoundSelected();
+    this.optionSelected();
     Utils.setUserWordsOption(userWords.checked);
     Utils.setCurrentRound(GameSettings.displayRound());
   }

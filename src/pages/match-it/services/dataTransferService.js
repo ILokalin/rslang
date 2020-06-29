@@ -1,4 +1,6 @@
-const dataTransfer = () => {
+import { checkBtn, ERRORS_MAX_COUNT } from '../data/constants';
+
+const dataTransfer = (props) => {
   document.querySelectorAll('.draggable').forEach((item) => {
     item.addEventListener('dragstart', (event) => {
       event.dataTransfer.setData('text', event.target.closest('.card').id);
@@ -27,12 +29,26 @@ const dataTransfer = () => {
       image.src = copySrc;
       event.currentTarget.querySelector('.card-title').dataset.word = card.querySelector(
         '.card-title',
-      ).innerText;
+      ).innerHTML;
       event.currentTarget.querySelector('.card-content').classList.add('hidden');
       image.style.opacity = 0;
-
-      //card.classList.remove('draggable');
       card.style.pointerEvents = 'none';
+      if (
+        event.currentTarget.querySelector('.card-title').dataset.word ===
+        event.currentTarget.querySelector('.card-title').innerHTML
+      ) {
+        props.knowArr.push(props.errorsArr[card.getAttribute('index')]);
+        props.know += 1;
+        props.errors -= 1;
+        event.currentTarget.querySelector('.card-title').classList.add('success');
+        event.currentTarget.querySelector('.card-title').innerHTML = 'success';
+        if (props.knowArr.length === 2) {
+          checkBtn.click();
+        }
+      } else {
+        event.currentTarget.querySelector('.card-title').classList.add('error');
+        event.currentTarget.querySelector('.card-title').innerHTML = 'error';
+      }
     });
   });
 };

@@ -14,27 +14,19 @@ const errorMessage = document.querySelector('.error-text');
 const userWords = document.querySelector('.user-words-checkbox');
 const allCards = document.querySelector('.container__cards');
 const allWords = document.querySelector('.container__words');
+const restartBtn = document.querySelector('.restart');
+const checkBtn = document.querySelector('.result');
+const nextBtn = document.querySelector('.next');
+const scoreLabel = document.querySelector('.score');
 
-const WORD_INPUT = document.querySelector('.word-input');
-const WORD_TRANSLATION = document.querySelector('.translation');
-const LEVELS = document.querySelectorAll('.point');
-const SPEAK_BTN = document.querySelector('.user-speech');
-const SCORE = document.querySelector('.score');
-const RESTART = document.querySelector('.restart');
-const RESULTS_BTN = document.querySelector('.result');
-const RESULTS = document.querySelector('.results');
-const RETURN = document.querySelector('.return');
-const NEW_GAME = document.querySelector('.new-game');
-const ERRORS = document.querySelector('.errors-num');
-const KNOW = document.querySelector('.success-num');
-const RESULTS_ERRORS = document.querySelector('.errors-item');
-const RESULTS_KNOW = document.querySelector('.success-item');
+const LEVELS_MAX_COUNT = 6;
+const ROUNDS_MAX_COUNT = 60;
 const ERRORS_MAX_COUNT = 10;
-const speechRecognitionLanguage = 'en-US';
 
 export {
   introPage,
   startBtn,
+  sideNavBurger,
   gamePage,
   gameContainer,
   userName,
@@ -44,5 +36,11 @@ export {
   userWords,
   allCards,
   allWords,
+  LEVELS_MAX_COUNT,
+  ROUNDS_MAX_COUNT,
   ERRORS_MAX_COUNT,
+  nextBtn,
+  checkBtn,
+  restartBtn,
+  scoreLabel,
 };

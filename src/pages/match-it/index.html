@@ -8,10 +8,12 @@
   <body class="bg">
     <nav>
         <div class="nav-wrapper purple darken-2 z-depth-5">
+            <a href="#" data-target="slide-out" class="sidenav-trigger hidden"><i class="material-icons">menu</i></a>
             <a href="#" class="brand-logo center">Match It</a>
             <a href="/index" target="_blank" class="home"><i class="medium material-icons">home</i></a>
         </div>
     </nav>
+
     <main class="main">
         <div class="intro">
             <p class="intro-text">
@@ -26,10 +28,10 @@
         </div>
         <div class="game-page hidden">
             <ul id="slide-out" class="sidenav">
-                <div class="avatar center blue lighten-5">
-                    <img class="avatar__img" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/20625/avatar-bg.png" />
+                <li class="avatar center blue lighten-5">
+                    <img class="avatar__img" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/20625/avatar-bg.png" alt="avatar"/>
                     <h4 class="avatar__name">ANONIMUS</h4>
-                </div>
+                </li>
                     <li>
                         <div class="user-view"> Choose game options </div>
                     </li>
@@ -60,12 +62,11 @@
                     </label></li>
                     <li><a href="#!">Total Score <i class="material-icons right">show_chart</i></a></li>
             </ul>
-            <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
         </div>
         <div class="container cards hidden">
             <div class="res">
                 <h4 class="round-label">Round 1.1</h4>
-                <h5 class="score hidden">Matches: 0</h5>
+                <h4 class="score hidden">Matches: <span>0</span></h4>
             </div>
             <div class="row">
                 <div class="container__cards col s6">
@@ -74,9 +75,9 @@
                 </div>
             </div>
             <div class="btns">
-                <a href="#" class="btn btn-large restart waves-effect waves-light">Check</a>
-                <a href="#" class="btn btn-large waves-effect waves-light play">Save Results</a>
-                <a href="#" class="btn btn-large waves-effect waves-light result">Next</a>
+                <a href="#" class="btn btn-large restart waves-effect waves-light">Restart</a>
+                <a href="#" class="btn btn-large waves-effect waves-light result">Check</a>
+                <a href="#" class="btn btn-large waves-effect waves-light next">Next</a>
             </div>
         </div>
     </main>

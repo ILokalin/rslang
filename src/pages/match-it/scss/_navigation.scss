@@ -1,9 +1,3 @@
-.sidenav-trigger {
-  position: absolute;
-  top: 20px;
-  color: #fff;
-}
-
 .user-words {
   padding: 0 32px;
 }
@@ -25,4 +19,10 @@
 .home {
   position: absolute;
   right: 20px;
+}
+
+@media only screen and (min-width: 993px) {
+  nav a.sidenav-trigger {
+    display: block;
+  }
 }

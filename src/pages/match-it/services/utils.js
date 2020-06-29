@@ -1,4 +1,11 @@
-import { userName, levelSelect, roundSelect, ERRORS_MAX_COUNT } from '../data/constants';
+import {
+  userName,
+  levelSelect,
+  roundSelect,
+  LEVELS_MAX_COUNT,
+  ROUNDS_MAX_COUNT,
+  ERRORS_MAX_COUNT,
+} from '../data/constants';
 
 const Utils = {
   displayUserName: (userSettings) => {
@@ -36,7 +43,7 @@ const Utils = {
     try {
       wordsArr = await dataController.userWordsGetAll(['deleted']);
     } catch (err) {
-      Utils.openModal(`API request failed with error: ${err.message}`);
+      //Utils.openModal(`API request failed with error: ${err.message}`);
     }
     return wordsArr;
   },
@@ -71,28 +78,40 @@ const Utils = {
        <img src="../img/blank.jpg" alt="empty">
      </div>
      <div class="card-content">
-       <span class="card-title">${word}</span>
+       <span class="card-title">${word}</span></div>
      </div>
   `,
 
-  disableCardDragging: () => {
-    const CARDS = document.querySelectorAll('.cards draggable');
+  displayResults: () => {
+    const cardsContent = document.querySelectorAll('.card-content');
+    cardsContent.forEach((item) => {
+      const card = item;
+      card.classList.remove('hidden');
+    });
+  },
+
+  disableCardsTransfer: () => {
+    const CARDS = document.querySelectorAll('.cards .draggable');
     CARDS.forEach((item) => {
       const card = item;
-      card.classList.remove('draggable');
+      card.style.pointerEvents = 'none';
     });
-    /*if (JSON.parse(localStorage.isStart) === true) {
-        CARDS.forEach((item) => {
-          const card = item;
-          card.style.pointerEvents = 'none';
-          card.classList.remove('activeItem');
-        });
+  },
+
+  goToNextRound: () => {
+    const currentRound = Utils.getCurrentRound().split('.');
+    let [level, round] = currentRound;
+    level = parseInt(level, 10);
+    round = parseInt(round, 10);
+    if (round < ROUNDS_MAX_COUNT) {
+      roundSelect.value = round + 1;
+    } else if (level < LEVELS_MAX_COUNT) {
+        levelSelect.value = level + 1;
+        roundSelect.value = 1;
       } else {
-        CARDS.forEach((item) => {
-          const card = item;
-          card.style.pointerEvents = 'auto';
-        });
-      }*/
+        levelSelect.value = 1;
+        roundSelect.value = 1;
+      }
   },
 
   updateUserStatistics: async (userId, token, statistics) => {},
