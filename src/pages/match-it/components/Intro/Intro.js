@@ -1,4 +1,4 @@
-import { introPage, startBtn, sideNavBurger, gamePage, gameContainer } from '../../data/constants';
+import { introPage, startBtn, gamePage, gameContainer } from '../../data/constants';
 
 export default class Intro {
   init() {

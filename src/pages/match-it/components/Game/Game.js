@@ -1,28 +1,23 @@
 import { DataController } from 'Service/DataController';
 import Utils from '../../services/utils';
+import { dataTransfer } from '../../services/dataTransferService';
 import GameSettings from '../GameSettings';
 
 import {
-  CARDS_ITEMS,
+  allCards,
+  allWords,
   ERRORS_MAX_COUNT,
-  WORD_IMG,
-  WORD_TRANSLATION,
-  DATA_PATH,
-  RESTART,
-  RETURN,
   RESULTS,
-  RESULTS_BTN,
-  NEW_GAME,
   ERRORS,
   RESULTS_ERRORS,
   KNOW,
   RESULTS_KNOW,
+  roundLabel,
+  userWords,
 } from '../../data/constants';
 
 export default class Game {
   constructor() {
-    this.gameSettings = new GameSettings();
-    this.gameSettings.init(this.levelOrRoundSelected.bind(this));
     localStorage.isStart = false;
     this.props = {
       errors: ERRORS_MAX_COUNT,
@@ -45,6 +40,16 @@ export default class Game {
         this.init();
       },
     );
+  }
+
+  init() {
+    this.gameSettings = new GameSettings();
+    this.gameSettings.init(this.levelOrRoundSelected.bind(this));
+    this.createCardPage();
+    //RESTART.addEventListener('click', this.onRestartBtnClick.bind(this));
+    //RETURN.addEventListener('click', Utils.onReturnBtnClick);
+    //NEW_GAME.addEventListener('click', this.onNewGameBtnClick.bind(this));
+    //.addEventListener('click', this.showResults.bind(this));
   }
 
   showResults(e) {
@@ -86,17 +91,23 @@ export default class Game {
     this.props.errorsArr = [];
     this.props.errorsArr.length = 0;
     let wordsData;
-    if (this.authorized) {
+    if (userWords.checked && this.authorized) {
       wordsData = await Utils.getUserWordsForRound(this.dataController);
     }
-    if (!wordsData || (wordsData[0].totalCount.count || 0) < ERRORS_MAX_COUNT) {
+    if (!wordsData || (wordsData[0].totalCount[0].count || 0) < ERRORS_MAX_COUNT) {
       wordsData = await Utils.getWordsForRound(this.dataController);
-    } else {
-      roundLabelEl.innerText = '';
+      userWords.checked = false;
     }
+    GameSettings.displayRound();
     await wordsData.forEach(this.createCard.bind(this));
-    await Utils.disableCardClick();
-    Utils.resetCardMinWidth('0');
+    const words = [];
+    wordsData.forEach((data) => {
+      words.push(data.word);
+    });
+    words.forEach(this.createWordCard);
+    dataTransfer();
+    //await Utils.disableCardClick();
+    //Utils.resetCardMinWidth('0');
   }
 
   restartGame() {
@@ -123,6 +134,9 @@ export default class Game {
   }
 
   levelOrRoundSelected() {
+    allCards.innerHTML = '';
+    allWords.innerHTML = '';
+    this.createCardPage();
     /*this.clearStatistics();
     this.restartGame();
     Utils.resetCardMinWidth();
@@ -131,20 +145,28 @@ export default class Game {
   }
 
   async createCard(data, index) {
+    const cardWrapper = document.createElement('div');
+    cardWrapper.classList.add('col', 's12', 'm6', 'center-align');
     const CARD = document.createElement('div');
-    CARD.classList.add('item');
+    CARD.id = `card-${data.id}`;
+    CARD.classList.add('card', 'draggable');
     const image = await this.dataController.getMaterials(data.image);
-    CARD.setAttribute('data-img', image || `${DATA_PATH}/${data.image}`);
-    CARD.setAttribute('index', `${index}`);
-    CARD.innerHTML = Utils.getCard(data);
-    CARD.onclick = () => {
-      Utils.cardClicked(CARD);
-      Utils.playAudio(CARD.getAttribute('data-audio'));
-      WORD_IMG.src = CARD.getAttribute('data-img');
-      WORD_TRANSLATION.innerText = data.wordTranslate;
-    };
+    CARD.innerHTML = Utils.getCard(data.id, data.word, image);
+    cardWrapper.append(CARD);
     const cln = CARD.cloneNode(true);
     this.props.errorsArr.push(cln);
-    CARDS_ITEMS.appendChild(CARD);
+    allCards.appendChild(cardWrapper);
+  }
+
+  createWordCard(word) {
+    const cardWrapper = document.createElement('div');
+    cardWrapper.classList.add('col', 's12', 'm6', 'center-align');
+    const CARD = document.createElement('div');
+    CARD.classList.add('card', 'droptarget');
+    CARD.innerHTML = Utils.getWordCard(word);
+    cardWrapper.append(CARD);
+    // const cln = CARD.cloneNode(true);
+    //this.props.errorsArr.push(cln);
+    allWords.appendChild(cardWrapper);
   }
 }

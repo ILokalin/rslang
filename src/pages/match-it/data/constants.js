@@ -9,9 +9,11 @@ const sideNavTriggerEl = document.querySelector('.sidenav-trigger');
 const levelSelect = document.querySelector('.level-select select');
 const roundSelect = document.querySelector('.round-select input');
 const roundLabel = document.querySelector('.round-label');
-const userName = document.querySelector('.user-name');
+const userName = document.querySelector('.avatar__name');
 const errorMessage = document.querySelector('.error-text');
 const userWords = document.querySelector('.user-words-checkbox');
+const allCards = document.querySelector('.container__cards');
+const allWords = document.querySelector('.container__words');
 
 const WORD_INPUT = document.querySelector('.word-input');
 const WORD_TRANSLATION = document.querySelector('.translation');
@@ -35,8 +37,12 @@ export {
   startBtn,
   gamePage,
   gameContainer,
+  userName,
   roundSelect,
   roundLabel,
   levelSelect,
   userWords,
+  allCards,
+  allWords,
+  ERRORS_MAX_COUNT,
 };

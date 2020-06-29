@@ -22,6 +22,7 @@ body {
 .hidden {
   visibility: hidden;
   pointer-events: none;
+  display: none;
 
   opacity: 0;
 }
@@ -31,9 +32,6 @@ body {
   height: 40px;
   margin: 20px auto 40px;
   align-items: baseline;
-}
-
-.res {
   display: flex;
   width: 100%;
 }

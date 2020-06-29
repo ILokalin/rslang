@@ -1,3 +1,5 @@
+$empty-cards-color: color('blue', 'lighten-5') !default;
+
 .draggable,
 .droptarget {
   text-align: center;
@@ -8,6 +10,11 @@
 
 .droptarget {
   transition: border-width 0.5s linear;
+}
+
+.cards .col {
+  display: flex;
+  flex-flow: wrap;
 }
 
 .card {
@@ -24,15 +31,35 @@
   }
 }
 
+.card-content {
+  display: none;
+}
+
+.container__words .card .card-content {
+  display: block;
+  .card-title {
+    background-color: #ffffff;
+    width: 100%;
+    position: absolute;
+    top: calc(100% - 16px);
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+  }
+}
+
 .card {
-  // background-color: grey;
-  cursor: move;
+  background-color: $empty-cards-color;
 
   img {
     border-style: none;
     display: block;
-    height: 100%;
+    max-width: 100%;
     width: 100%;
+  }
+
+  &.draggable {
+    cursor: move;
   }
 
   &:active {
