@@ -4,30 +4,27 @@ import {
   DATA_URL,
   gameContainer,
   abortGameBtn,
-  navigationMenuEl,
+  difficultySelector,
   logInBtn,
+  logOutBtn,
 } from './constants'
 
 export default class AuditionGame {
   constructor() {
     this.user = '';
-    // this.level = localStorage.getItem('auditionGameDifficulty') || 0;
-    // this.round = localStorage.getItem('auditionGameRounds') || 0;
-    // this.roundsData = localStorage.getItem('auditionGameWords') || [];
     this.level = 0;
     this.round = 0;
+    this.roundsNumber = 10;
     this.roundsData = [];
     this.dataController = new DataController();
 
     this.getUserData();
     this.addSelectDifficultyHandler();
-    this.addAbortGameHandler();
 
     this.wordClickListener = this.checkAnswer.bind(this);
     this.showAnswerListener = this.showAnswer.bind(this);
     this.endRoundListener = this.endRound.bind(this);
     this.logInListener = this.getUserData.bind(this);
-    this.addKeyboardHandler();
 
   }
 
@@ -70,29 +67,24 @@ export default class AuditionGame {
 
 
   addSelectDifficultyHandler() {
-    navigationMenuEl.addEventListener('click', this.selectDifficultyHandler.bind(this))
+    difficultySelector.addEventListener('change', this.selectDifficultyHandler.bind(this))
   }
 
   selectDifficultyHandler(e) {
-    if (e.target.hasAttribute('data-id')) {
-      const itemId = parseInt(e.target.getAttribute('data-id'), 10);
-      this.level = itemId;
+      this.level = e.target.value;
       this.startGame();
-    }
   }
 
   getUserData() {
     this.dataController.getUser()
       .then(
         (userSettings) => {
-          // userNameEl.innerText = userSettings.name;
-          // userNameEl.removeEventListener('click', this.logInListener);
+          logOutBtn.classList.remove('hidden');
           this.user = userSettings.name;
           this.startGame();
         },
         (rejectReport) => {
-          console.log(rejectReport);
-          logInBtn.classList.remove('hidden')
+          logInBtn.classList.remove('hidden');
           logInBtn.addEventListener('click', this.logInListener);
           this.startGame();
         }
@@ -105,9 +97,7 @@ export default class AuditionGame {
     gameContainer.innerHTML = '';
 
     if (this.user) {
-      // this.getUserWords();
-      const pages = this.generatePages();
-      this.getWords(pages);
+      this.getUserWords();
     } else {
       const pages = this.generatePages();
       this.getWords(pages);
@@ -115,14 +105,18 @@ export default class AuditionGame {
   }
 
   getUserWords() {
-    this.dataController.userWordsGetAll()
+    this.dataController.userWordsGetAll(['onlearn'])
       .then(
         (response) => {
-          const words = response;
-          // this.createRoundsData(words);
-          // this.createCurrentRoundPage();
-          // this.createNextRoundPage();
-          // this.startRound();
+          const words = response[0].paginatedResults;
+          words.sort(() => Math.random() - Math.random());
+          this.roundsNumber = Math.floor(words.length/5);
+
+          this.createRoundsData(words);
+          this.createCurrentRoundPage();
+          this.createNextRoundPage();
+          this.addKeyboardHandler();
+          this.startRound();
         },
         (rejectReport) => {
           console.log(rejectReport);
@@ -159,6 +153,7 @@ export default class AuditionGame {
         this.createRoundsData(words);
         this.createCurrentRoundPage();
         this.createNextRoundPage();
+        this.addKeyboardHandler();
         this.startRound();
       })
       .catch(() => {
@@ -168,7 +163,7 @@ export default class AuditionGame {
   }
 
   createRoundsData(words) {
-    while (this.roundsData.length < 10) {
+    while (this.roundsData.length < this.roundsNumber) {
       const roundWords = words.splice(0, 5);
       const roundData = {};
       roundData.word = roundWords[0].word;
@@ -180,20 +175,36 @@ export default class AuditionGame {
       roundData.translations.sort(() => Math.random() - Math.random());
 
       this.roundsData.push(roundData);
+
+      // TODO get materials path
+      // const audioFile = roundWords[0].audio;
+      // const imgFile = roundWords[0].image;
+      //
+      // this.getMediaMaterials(audioFile);
+      // this.getMediaMaterials(imgFile);
+
     }
+  }
+
+  getMediaMaterials(file) {
+    this.dataController.getMaterials(file)
+      .then(
+        (fullPath) => {
+          console.log(fullPath)
+        }
+      )
   }
 
   createCurrentRoundPage () {
     const roundData = this.roundsData[this.round];
     const wrapper = this.createRoundPage(roundData);
-
     wrapper.classList.add('current-round')
   }
 
   createNextRoundPage () {
+
     const roundData = this.roundsData[this.round + 1];
     const wrapper = this.createRoundPage(roundData);
-
     wrapper.classList.add('next-round')
   }
 
@@ -256,9 +267,10 @@ export default class AuditionGame {
 
     image.classList.add('answered');
     puzzledWord.classList.add('answered');
+    debugger;
     this.roundsData[this.round].answer = false;
 
-    if (this.round === 9) {
+    if (this.round === this.roundsNumber - 1) {
       checkAnswerBtn.innerText = ('Конец игры');
     } else {
       checkAnswerBtn.innerText = ('Следующий вопрос');
@@ -303,7 +315,7 @@ export default class AuditionGame {
     nextRoundPage.classList.remove('next-round');
     nextRoundPage.classList.add('current-round');
 
-    if (this.round < 9) {
+    if (this.round < this.roundsNumber - 1) {
       this.createNextRoundPage();
     }
 
@@ -312,7 +324,8 @@ export default class AuditionGame {
   }
 
   endRound() {
-    if (this.round === 9) {
+    debugger;
+    if (this.round === this.roundsNumber - 1) {
       this.endGame();
     } else {
       this.nextRound();
@@ -321,16 +334,6 @@ export default class AuditionGame {
 
   endGame() {
     new AuditionGameStatistics(this.roundsData);
-  }
-
-  addAbortGameHandler() {
-    abortGameBtn.addEventListener('click', this.abortGame.bind(this));
-  }
-
-  abortGame() {
-    localStorage.setItem('auditionGameRounds', this.round);
-    localStorage.setItem('auditionGameWords', this.roundsData);
-    localStorage.setItem('auditionGameDifficulty', this.level);
   }
 }
 

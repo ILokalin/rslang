@@ -6,9 +6,11 @@ import AuditionGame from './js/audition'
 
 const startGameBtn = document.getElementById('start-game-btn');
 
-startGameBtn.addEventListener('click', () => new AuditionGame(), M.AutoInit());
+startGameBtn.addEventListener('click', () => new AuditionGame());
+
+M.AutoInit();
 
 document.addEventListener('DOMContentLoaded', () => {
-  const dropdown = document.querySelectorAll('.dropdown-trigger');
-  const dropDownInstance = M.Dropdown.init(dropdown);
+  const sidenav = document.querySelectorAll('.sidenav');
+  const sidenavInstance = M.Sidenav.init(sidenav);
 });
