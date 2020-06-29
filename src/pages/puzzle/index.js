@@ -43,3 +43,4 @@ const options = {
 };
 // eslint-disable-next-line
 const sideNavInstance = M.Sidenav.init(sideNav, options);
+

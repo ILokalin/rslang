@@ -2,8 +2,8 @@ export {
   openAuthPopup,
   closeAuthPopup,
   authPopupState,
-  userDateStore,
+  userDataStore,
   setUserData,
   authReportStore,
   showAuthReport,
-} from './AppState.js';
+} from './AppState';

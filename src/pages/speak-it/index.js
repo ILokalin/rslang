@@ -1,3 +1,7 @@
-import './index.scss';
+import './scss/index.scss';
+import 'materialize-css';
+import Intro from './components/Intro';
+import Game from './components/Game';
 
-require.context('Src', true, /\.(png|svg|jpg|gif|mp3)$/);
+const intro = new Intro();
+const game = new Game();

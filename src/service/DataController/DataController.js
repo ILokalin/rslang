@@ -3,7 +3,7 @@ import {
   openAuthPopup,
   closeAuthPopup,
   authPopupState,
-  userDateStore,
+  userDataStore,
   showAuthReport,
 } from 'Service/AppState';
 import {
@@ -12,14 +12,12 @@ import {
   apiUserSettingsGet,
   apiUserCreate,
   apiUserSignIn,
+  apiUserWordsSave,
+  apiUserWordsGet,
+  apiUserAggregatedWords,
 } from 'Service/ServerAPI';
 import { reportMessages } from './reportMessages';
-
-const CANCEL_USER = {
-  status: 0,
-  message: 'User refused',
-  name: 'Unknown',
-};
+import { dataControllerConst } from './dataControllerConst';
 
 const authPopup = new AuthPopup();
 
@@ -27,26 +25,64 @@ export class DataController {
   constructor() {
     authPopup.init();
 
-    userDateStore.watch((userData) => {
+    userDataStore.watch((userData) => {
       if (this.isAuthInProgress) {
+        if (userData.statusRegister) {
+          this.authChainResponsibility = this.chainCreateSignInSettingsGet;
+        }
         this.authChainResponsibility(userData);
       }
     });
 
     authPopupState.watch((state) => {
       if (state) {
-        showAuthReport('Please input email & password');
+        showAuthReport(reportMessages.default.welcome);
         this.isAuthInProgress = true;
       } else if (this.isAuthInProgress) {
         this.isAuthInProgress = false;
-        this.reject(CANCEL_USER);
+        this.reject(dataControllerConst.cancelUser);
       }
     });
   }
 
+  userWordsGetAll(groupWords) {
+    return apiUserAggregatedWords(groupWords);
+  }
+
+  userWordsGet(wordId) {
+    return apiUserWordsGet(wordId);
+  }
+
+  userWordsPut({status = 'onlearn', id, progress = 0}) {
+    const sendWordData = {
+      difficulty: status,
+      optional: {
+        lastDate: new Date().toDateString(),
+        progress,
+      },
+    };
+    return apiUserWordsSave(id, sendWordData, 'PUT');
+  }
+
+  userWordsPost({status = 'onlearn', id, progress = 0}) {
+    const sendWordData = {
+      difficulty: status,
+      optional: {
+        lastDate: new Date().toDateString(),
+        progress,
+      },
+    };
+    return apiUserWordsSave(id, sendWordData, 'POST');
+  }
+
+  getMaterials(file) {
+    return new Promise((resolve) => {
+      resolve(`${dataControllerConst.materialPath}${file}`);
+    });
+  }
+
   getWords(options) {
-    const { group = 0, page = 0 } = options;
-    return apiGetWords({ group, page });
+    return apiGetWords({ ...dataControllerConst.defaultZeroBlock, ...options });
   }
 
   logoutUser() {
@@ -60,25 +96,91 @@ export class DataController {
 
       if (this.checkToken()) {
         apiUserSettingsGet().then(
-          (userSettings) => resolve(userSettings.optional),
+          (userSettings) => resolve(this.unpackUserSettings(userSettings.optional)),
           () => {
+            this.authChainResponsibility = this.chainSignInSettingsGet;
             openAuthPopup();
           },
         );
       } else {
+        this.authChainResponsibility = this.chainSignInSettingsGet;
         openAuthPopup();
       }
     });
   }
 
-  authChainResponsibility(userData) {
+  setUserOptions(userSettingsUpload) {
+    return new Promise((resolve, reject) => {
+      this.resolve = resolve;
+      this.reject = reject;
+      this.userSettingsUpload = userSettingsUpload;
+
+      if (this.checkToken()) {
+        apiUserSettingsGet()
+          .then((userSettingsOrigin) =>
+            apiUserSettingsPut(
+              this.prepareUploadSetting(userSettingsOrigin, this.userSettingsUpload),
+            ),
+          )
+          .then(
+            (userSettings) => resolve(this.unpackUserSettings(userSettings.optional)),
+            (rejectReport) => reject(rejectReport),
+          );
+      } else {
+        this.authChainResponsibility = this.chainSignInSettingsGetSettingsPut;
+        openAuthPopup();
+      }
+    });
+  }
+
+  chainSignInSettingsGetSettingsPut(userData) {
+    apiUserSignIn(userData)
+      .then(() => apiUserSettingsGet())
+      .then((userSettingsOrigin) =>
+        apiUserSettingsPut(this.prepareUploadSetting(userSettingsOrigin, this.userSettingsUpload)),
+      )
+      .then(
+        (userSettings) => {
+          this.isAuthInProgress = false;
+          closeAuthPopup();
+          this.resolve(this.unpackUserSettings(userSettings.optional));
+        },
+        (rejectReport) => {
+          showAuthReport(reportMessages[rejectReport.master][rejectReport.code]);
+        },
+      );
+  }
+
+  chainSignInSettingsGet(userData) {
     apiUserSignIn(userData)
       .then(() => apiUserSettingsGet())
       .then(
         (userSettings) => {
           this.isAuthInProgress = false;
           closeAuthPopup();
-          this.resolve(userSettings.optional);
+          this.resolve(this.unpackUserSettings(userSettings.optional));
+        },
+        (rejectReport) => {
+          showAuthReport(reportMessages[rejectReport.master][rejectReport.code]);
+        },
+      );
+  }
+
+  chainCreateSignInSettingsGet(userData) {
+    const userSettingsName = {
+      optional: this.packUserSettings({
+        name: userData.name,
+      }),
+    };
+    apiUserCreate(userData)
+      .then(() => apiUserSignIn(userData))
+      .then(() => apiUserSettingsPut(userSettingsName))
+      .then(() => apiUserSettingsGet())
+      .then(
+        (userSettings) => {
+          this.isAuthInProgress = false;
+          closeAuthPopup();
+          this.resolve(this.unpackUserSettings(userSettings.optional));
         },
         (rejectReport) => {
           showAuthReport(reportMessages[rejectReport.master][rejectReport.code]);
@@ -92,5 +194,30 @@ export class DataController {
       return true;
     }
     return false;
+  }
+
+  prepareUploadSetting(originSettings, uploadSettings) {
+    return {
+      optional: this.packUserSettings({
+        ...this.unpackUserSettings(originSettings.optional),
+        ...uploadSettings,
+      }),
+    };
+  }
+
+  unpackUserSettings(userSettings) {
+    const resultUserSettings = {};
+    Object.keys(userSettings).forEach((field) => {
+      resultUserSettings[field] = JSON.parse(userSettings[field]);
+    })
+    return resultUserSettings;
+  }
+
+  packUserSettings(userSettings) {
+    const resultUserSettings = {};
+    Object.keys(userSettings).forEach((field) => {
+      resultUserSettings[field] = JSON.stringify(userSettings[field]);
+    })
+    return resultUserSettings;
   }
 }

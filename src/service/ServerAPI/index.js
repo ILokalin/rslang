@@ -4,4 +4,8 @@ export {
   apiUserSettingsGet,
   apiUserSettingsPut,
   apiGetWords,
-} from './SereverAPI';
+  apiUserWordsSave,
+  apiUserWordsGet,
+  apiUserWordsGetAll,
+  apiUserAggregatedWords,
+} from './ServerAPI';
