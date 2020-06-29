@@ -37,7 +37,7 @@ const helper = {
 
   makeDefeatNoise() {
     audio.src = '../sound/failure.mp3';
-  }
+  },
 };
 
 export default helper;
