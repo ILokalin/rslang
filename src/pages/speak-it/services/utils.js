@@ -1,21 +1,58 @@
-import book1 from '../data/books/book1';
-import book2 from '../data/books/book2';
-import book3 from '../data/books/book3';
-import book4 from '../data/books/book4';
-import book5 from '../data/books/book5';
-import book6 from '../data/books/book6';
-import { WORD_TRANSLATION, WORD_INPUT, WORD_IMG, SCORE, RESULTS } from '../data/constants';
+import {
+  WORD_TRANSLATION,
+  WORD_INPUT,
+  WORD_IMG,
+  SCORE,
+  RESULTS,
+  ERRORS_MAX_COUNT,
+  CARDS_ITEMS,
+  userNameEl,
+  levelSelectEl,
+  roundSelectEl,
+  errorMessageEl,
+} from '../data/constants';
 
 const Utils = {
-  getWordsCount: (sentence) => sentence.split(' ').length,
+  displayUserName: (userSettings) => {
+    userNameEl.innerText = `Hi, ${userSettings.name}!`;
+  },
 
-  getWordsForRound: (level, round) => {
-    const booksArr = [book1, book2, book3, book4, book5, book6];
-    const [start, end] = [(round - 1) * 10, (round - 1) * 10 + 10];
-    const wordsArr = booksArr[level - 1]
-      .filter((el) => Utils.getWordsCount(el.textExample) <= 10)
-      .slice(start, end);
+  displayEmptyUserName: () => {
+    userNameEl.innerText = '';
+  },
+
+  getCurrentRound: () => {
+    if (!localStorage.getItem('speakItGameRound')) {
+      localStorage.setItem('speakItGameRound', '1.1');
+    }
+    return localStorage.getItem('speakItGameRound');
+  },
+
+  setCurrentRound: (round) => {
+    localStorage.setItem('speakItGameRound', round);
+  },
+
+  getWordsForRound: async (dataController) => {
+    const level = parseInt(levelSelectEl.value, 10) - 1;
+    const round = parseInt(roundSelectEl.value, 10) - 1;
+    let wordsArr;
+    try {
+      wordsArr = await dataController.getWords({
+        wordsPerPage: ERRORS_MAX_COUNT,
+        group: level,
+        page: round,
+      });
+    } catch (err) {
+      Utils.openModal(`API request failed with error: ${err.message}`);
+    }
     return wordsArr;
+  },
+
+  openModal: (message) => {
+    // eslint-disable-next-line no-undef
+    const modal = M.Modal.getInstance(document.querySelector('.modal'));
+    errorMessageEl.innerText = message;
+    modal.open();
   },
 
   playAudio: (src) => {
@@ -33,6 +70,11 @@ const Utils = {
   cardClicked: (card) => {
     Utils.resetCards();
     card.classList.add('activeItem');
+  },
+
+  resetCardMinWidth(minHeight) {
+    const height = CARDS_ITEMS.offsetHeight.toString();
+    CARDS_ITEMS.style.minHeight = `${minHeight || height}px`;
   },
 
   resetCards: () => {

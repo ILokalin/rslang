@@ -1,4 +1,5 @@
 import './scss/index.scss';
+import 'materialize-css';
 import Intro from './components/Intro';
 import Game from './components/Game';
 

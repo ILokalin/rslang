@@ -61,7 +61,7 @@ const wordsLoad = () => {
   dataController
     .getWords({
       group: 1,
-      page: wordPagesCount += 1,
+      page: (wordPagesCount += 1),
       wordsPerExampleSentenceLTE,
       wordsPerPage,
     })

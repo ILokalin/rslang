@@ -29,7 +29,6 @@ export function DomGen({ name, ...blockStruct }) {
 
   const createTag = (element) => {
     const { tag, isAccess, classAdd, className, children, ...addData } = element;
-
     const domElement = document.createElement(tag);
 
     if (className || isRootElementNeedCreate) {
@@ -69,10 +68,12 @@ export function DomGen({ name, ...blockStruct }) {
       domElement.dataset[dataSet.name] = value;
     }
 
-    // eslint-disable-next-line no-restricted-syntax
-    for (const attribute in attributesList) {
+    Object.keys(attributesList).forEach((attribute) => {
       domElement[attribute] = attributesList[attribute];
-    }
+      if (!domElement.hasAttribute(attribute)) {
+        domElement.setAttribute(attribute, attributesList[attribute]);
+      }
+    });
 
     return domElement;
   };

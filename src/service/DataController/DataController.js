@@ -14,7 +14,7 @@ import {
   apiUserSignIn,
   apiUserWordsSave,
   apiUserWordsGet,
-  apiUserWordsGetAll,
+  apiUserAggregatedWords,
 } from 'Service/ServerAPI';
 import { reportMessages } from './reportMessages';
 import { dataControllerConst } from './dataControllerConst';
@@ -45,32 +45,34 @@ export class DataController {
     });
   }
 
-  userWordsGetAll() {
-    return apiUserWordsGetAll();
+  userWordsGetAll(groupWords) {
+    return apiUserAggregatedWords(groupWords);
   }
 
   userWordsGet(wordId) {
     return apiUserWordsGet(wordId);
   }
 
-  userWordsPut(wordData) {
+  userWordsPut({status = 'onlearn', id, progress = 0}) {
     const sendWordData = {
-      difficulty: wordData.status,
+      difficulty: status,
       optional: {
         lastDate: new Date().toDateString(),
+        progress,
       },
     };
-    return apiUserWordsSave(wordData.id, sendWordData, 'PUT');
+    return apiUserWordsSave(id, sendWordData, 'PUT');
   }
 
-  userWordsPost(wordData) {
+  userWordsPost({status = 'onlearn', id, progress = 0}) {
     const sendWordData = {
-      difficulty: wordData.status,
+      difficulty: status,
       optional: {
         lastDate: new Date().toDateString(),
+        progress,
       },
     };
-    return apiUserWordsSave(wordData.id, sendWordData, 'POST');
+    return apiUserWordsSave(id, sendWordData, 'POST');
   }
 
   getMaterials(file) {
@@ -168,11 +170,11 @@ export class DataController {
     const userSettingsName = {
       optional: this.packUserSettings({
         name: userData.name,
-      })
-    }
+      }),
+    };
     apiUserCreate(userData)
       .then(() => apiUserSignIn(userData))
-      .then(() => apiUserSettingsPut((userSettingsName)))
+      .then(() => apiUserSettingsPut(userSettingsName))
       .then(() => apiUserSettingsGet())
       .then(
         (userSettings) => {
@@ -205,17 +207,17 @@ export class DataController {
 
   unpackUserSettings(userSettings) {
     const resultUserSettings = {};
-    for (const field in userSettings) {
+    Object.keys(userSettings).forEach((field) => {
       resultUserSettings[field] = JSON.parse(userSettings[field]);
-    }
+    })
     return resultUserSettings;
   }
 
   packUserSettings(userSettings) {
     const resultUserSettings = {};
-    for (const field in userSettings) {
+    Object.keys(userSettings).forEach((field) => {
       resultUserSettings[field] = JSON.stringify(userSettings[field]);
-    }
+    })
     return resultUserSettings;
   }
 }
