@@ -18,6 +18,7 @@ import {
   statistic,
   roundOption,
   levelOption,
+  hearts,
 } from '../helper/constants';
 import helper from '../helper/helper';
 
@@ -101,7 +102,7 @@ export default class Game {
     } else {
       setTimeout(() => {
         this.createRound();
-      }, 1000);
+      }, 700);
     }
   }
 
@@ -120,13 +121,14 @@ export default class Game {
   isFallWord() {
     this.currentIntreval = setInterval(() => {
       if (this.fallingWordElement.style.top === '600px') {
+        helper.makeErrorNoise();
         this.props.dontKnowWords.push(this.currentWord);
+        this.takeHealth();
         this.health -= 1;
+        this.stop();
         if (this.health <= 0) {
-          this.stop();
-          this.renderStatistic();
+          this.showStat();
         } else {
-          this.stop();
           this.highlightAnswer();
           this.startRound();
         }
@@ -152,33 +154,33 @@ export default class Game {
       event.target.classList.contains('answer-options__item') &&
       event.target.innerText.slice(2) === this.currentWord.wordTranslate
     ) {
+      helper.makeCorrectNoise();
+      this.stop();
       this.props.knowWords.push(this.currentWord);
       if (this.level === 5 && this.round === 5) {
-        this.stop();
-        this.renderStatistic();
+        this.showStat(true);
       } else if (this.round === 5) {
         this.level += 1;
         this.round = 0;
         this.createDataSetLevel();
-        this.stop();
         this.startRound(true);
       } else {
         this.round += 1;
-        this.stop();
         this.startRound(true);
       }
     } else if (
       event.target.classList.contains('answer-options__item') &&
       event.target.innerText.slice(2) !== this.currentWord.wordTranslate
     ) {
+      helper.makeErrorNoise();
       event.target.classList.add('highlight-error');
       this.props.dontKnowWords.push(this.currentWord);
+      this.takeHealth();
+      this.stop();
       this.health -= 1;
       if (this.health <= 0) {
-        this.renderStatistic();
+        this.showStat();
       } else {
-        clearInterval(this.currentIntreval);
-        this.stopFall();
         this.highlightAnswer();
         this.startRound();
       }
@@ -189,31 +191,30 @@ export default class Game {
     event.preventDefault();
     const checker = document.querySelector(`[key="${event.key}"]`);
     if (checker.textContent.slice(2) === this.currentWord.wordTranslate) {
+      helper.makeCorrectNoise();
       this.props.knowWords.push(this.currentWord);
+      this.stop();
       if (this.level === 5 && this.round === 5) {
-        this.stop();
-        this.renderStatistic();
+        this.showStat(true);
       } else if (this.round === 5) {
         this.level += 1;
         this.round = 0;
         this.createDataSetLevel();
-        this.stop();
         this.startRound(true);
       } else {
         this.round += 1;
-        this.stop();
         this.startRound(true);
       }
     } else if (checker.textContent.slice(2) !== this.currentWord.wordTranslate) {
       checker.classList.add('highlight-error');
+      helper.makeErrorNoise();
       this.props.dontKnowWords.push(this.currentWord);
-      this.streak = 0;
+      this.takeHealth();
       this.health -= 1;
+      this.stop();
       if (this.health <= 0) {
-        this.stop();
-        this.renderStatistic();
+        this.showStat();
       } else {
-        this.stop();
         this.highlightAnswer();
         this.startRound();
       }
@@ -233,6 +234,7 @@ export default class Game {
     this.currentDataSetLevel = null;
     this.currentDataSetRound = null;
     this.health = health;
+    this.restoreHealt();
   }
 
   highlightAnswer() {
@@ -247,6 +249,20 @@ export default class Game {
     answerElements.forEach((answer) => {
       answer.classList.remove('highlight-answer', 'highlight-error');
     });
+  }
+
+  showStat(win) {
+    if (win) {
+      setTimeout(() => {
+        helper.makeWinNoise();
+        this.renderStatistic();
+      }, 1000);
+    } else {
+      setTimeout(() => {
+        helper.makeDefeatNoise();
+        this.renderStatistic();
+      }, 1000);
+    }
   }
 
   renderStatistic() {
@@ -272,5 +288,13 @@ export default class Game {
   showOptions() {
     statistic.classList.add('hidden');
     difficultMenu.classList.remove('hidden');
+  }
+
+  takeHealth() {
+    hearts[this.health - 1].classList.add('filled');
+  }
+
+  restoreHealt() {
+    hearts.forEach((heart) => heart.classList.remove('filled'));
   }
 }

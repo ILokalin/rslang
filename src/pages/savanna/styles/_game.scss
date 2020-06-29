@@ -39,6 +39,12 @@
     justify-content: space-evenly;
   }
 }
+.healt-bar {
+  display: flex;
+  justify-content: space-around;
+  flex-direction: row-reverse;
+  width: 150px;
+}
 .falling-word {
   position: absolute;
   pointer-events: none;
@@ -64,4 +70,7 @@
 }
 .highlight-error {
   background-color: rgba(89, 2, 2, 0.5);
+}
+.filled {
+  fill: black;
 }

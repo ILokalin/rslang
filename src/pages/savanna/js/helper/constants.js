@@ -4,7 +4,7 @@ const difficultMenu = document.querySelector('.difficult');
 const gameStartButton = document.querySelector('.startGame');
 const restartButton = document.querySelector('.restart');
 const currentGameStage = document.querySelector('.stage');
-const healtBar = document.querySelector('.healt-bar');
+const hearts = document.querySelectorAll('.heart');
 const gameContainer = document.querySelector('.game-container');
 const gameHeader = document.querySelector('.game-header');
 const soundSwitcher = document.querySelector('.sound-switcher');
@@ -21,18 +21,8 @@ const knowCount = document.querySelector('.know-count');
 const knowTable = document.querySelector('.know-table');
 const levelOption = document.querySelector('.level');
 const roundOption = document.querySelector('.round');
+const audio = document.querySelector('.audio');
 
-const gameData = {
-  currentCards: [],
-  count: 0,
-  wordContainer: [],
-  knowWords: [],
-  errorWords: [],
-  currentRound: 1,
-  currentLevel: 1,
-  roundStreak: 0,
-  health: 5,
-};
 
 export {
   appStartButton,
@@ -40,8 +30,7 @@ export {
   difficultMenu,
   gameStartButton,
   currentGameStage,
-  healtBar,
-  gameData,
+  hearts,
   gameContainer,
   gameHeader,
   soundSwitcher,
@@ -59,4 +48,5 @@ export {
   restartButton,
   levelOption,
   roundOption,
+  audio
 };

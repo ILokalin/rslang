@@ -1,4 +1,4 @@
-import { userNameElement, roundOption } from './constants';
+import { userNameElement, audio } from './constants';
 
 const helper = {
   renderUserName(userSettings) {
@@ -22,11 +22,22 @@ const helper = {
                     <td>${translate}</td>`;
     return tr;
   },
-  changeRoundOption() {
-    roundOption.addEventListener('change', (event) => {
-      console.log('changed', event);
-    });
+
+  makeCorrectNoise() {
+    audio.src = '../sound/correct.mp3';
   },
+
+  makeErrorNoise() {
+    audio.src = '../sound/error.mp3';
+  },
+
+  makeWinNoise() {
+    audio.src = '../sound/success.mp3';
+  },
+
+  makeDefeatNoise() {
+    audio.src = '../sound/failure.mp3';
+  }
 };
 
 export default helper;
