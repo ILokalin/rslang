@@ -1,9 +1,11 @@
 import { store } from '../storage';
-import { audio } from '../constants';
+import { audio, dataController } from '../constants';
 
 const setAudioSrc = (word) => {
-  const src = `https://raw.githubusercontent.com/jules0802/rslang-data/master/${word.audioExample}`;
-  audio.setAttribute('src', src);
+  dataController.getMaterials(word.audioExample).then((res)=> {
+    audio.setAttribute('src', res);
+  });
+  
 };
 
 const playAudio = () => {

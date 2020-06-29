@@ -1,5 +1,4 @@
 import { store } from './storage';
-import { updateUserStatistics } from './userService';
 
 const saveStatisticsToStore = (statistics) => {
   store.setHints({
@@ -26,42 +25,6 @@ const saveStatisticsToStore = (statistics) => {
   localStorage.setItem('iKnowPerRound', JSON.stringify(store.iKnowPerRound));
   localStorage.setItem('dates', JSON.stringify(store.dates));
 };
-
-/*const sendStatisticsToBackEnd = async () => {
-  const requestBody = {
-    learnedWords: 0,
-    optional: {
-      isAutoPronounceOn: String(store.isAutoPronounceOn),
-      isTranslationOn: String(store.hints.isTranslationOn),
-      isPronounceOn: String(store.hints.isPronounceOn),
-      isPictureOn: String(store.hints.isPictureOn),
-      level: String(store.level),
-      round: String(store.round),
-      passedRounds: store.passedRounds.length !== 0 ? store.passedRounds.join(';') : '0',
-      iKnowPerRound: store.iKnowPerRound.length !== 0 ? store.iKnowPerRound.join(';') : '0',
-      dates: store.dates.length !== 0 ? store.dates.join(';') : '0',
-    },
-  };
-  await updateUserStatistics(store.user.id, store.user.token, requestBody);
-};*/
-
-/*const sendInitialStatisticsToBackEnd = async () => {
-  const requestBody = {
-    learnedWords: 0,
-    optional: {
-      isAutoPronounceOn: '1',
-      isTranslationOn: '1',
-      isPronounceOn: '1',
-      isPictureOn: '0',
-      level: '1',
-      round: '1',
-      passedRounds: '0',
-      iKnowPerRound: '0',
-      dates: '0',
-    },
-  };
-  await updateUserStatistics(store.user.id, store.user.token, requestBody);
-};*/
 
 const getDateString = () => {
   const options = {

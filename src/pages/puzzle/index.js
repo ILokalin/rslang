@@ -3,30 +3,37 @@ import 'materialize-css';
 import { store } from './js/storage';
 import {
   playButtonHandler, selectLevelHandler, chooseRoundHandler, checkBoxHandler, 
-   logoutHandler, checkIfUserIsSaved,
+  checkIfUserIsSaved,
 } from './js/helpers';
 import {
- sideNav, logoutBtn,
+ sideNav, dataController
 } from './js/constants';
 import { startRound } from './js/game';
-import AuthPopup from 'Src/components/AuthPopup/AuthPopup.js';
-import { DataController } from 'Service/DataController';
 
 require.context('Src', true, /\.(png|svg|jpg|gif|mp3)$/);
 
 // eslint-disable-next-line no-undef
+const whoIsGameFor = () => {
+  dataController.getUser().then(
+    (userSettings) => {
+      console.log('We have user', userSettings);
+    },
+    (rejectReport) => {
+      console.log('User canceled');    
+      store.setInitialStore(); 
+    },
+  );
+};
+
+whoIsGameFor();
+
 M.AutoInit();
-const controller = new DataController();
-controller.getUser().then((res) => {console.log(res)})
+
 document.querySelector('.home-page__btn').addEventListener('click', playButtonHandler);
 document.querySelector('select').addEventListener('change', selectLevelHandler);
 document.querySelector('.round-select input').addEventListener('change', chooseRoundHandler);
 document.querySelector('.hints').addEventListener('click', checkBoxHandler);
 document.querySelector('.auto-pronounce-check').addEventListener('click', checkBoxHandler);
-//document.querySelector('.register-btn').addEventListener('click', registerHandler);
-// logInBtn.addEventListener('click', loginHandler);
-// signUpBtn.addEventListener('click', signupHandler);
-logoutBtn.addEventListener('click', logoutHandler);
 
 const options = {
   onOpenStart() {

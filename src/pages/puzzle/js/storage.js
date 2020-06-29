@@ -63,21 +63,6 @@ class Store {
   }
 }
 
-/*const store = {
-  user: JSON.parse(localStorage.getItem('user')),
-  level: (localStorage.getItem('level') || 1),
-  round: (localStorage.getItem('round') || 1),
-  isAutoPronounceOn: +(localStorage.getItem('isAutoPronounceOn') || 1),
-  hints: {
-    isPronounceOn: +(localStorage.getItem('isPronounceOn') || 1),
-    isTranslationOn: +(localStorage.getItem('isTranslationOn') || 1),
-    isPictureOn: +(localStorage.getItem('isPictureOn') || 0),
-  },
-  passedRounds: (JSON.parse(localStorage.getItem('passedRounds')) || []),
-  iKnowPerRound: (JSON.parse(localStorage.getItem('iKnowPerRound')) || []),
-  dates: (JSON.parse(localStorage.getItem('dates')) || []),
-};*/
-
 const store = new Store();
 
 export { store };
