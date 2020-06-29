@@ -21,6 +21,11 @@ body {
 }
 .text {
   font-size: 1.7rem;
+  border: 1px white solid;
+  padding: 1px 5px;
+}
+.text:hover {
+  cursor: pointer;
 }
 .hidden {
   visibility: hidden;
