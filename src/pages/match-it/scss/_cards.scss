@@ -4,17 +4,27 @@ $empty-cards-color: color('blue', 'lighten-5') !default;
 .droptarget {
   text-align: center;
   color: white;
-  font-size: 2rem;
+  font-size: 1.7rem;
   box-shadow: 5px 2px 20px 0 rgba(46, 61, 73, 0.5);
 }
 
+.draggable {
+  cursor: move;
+  touch-action: none;
+  -webkit-transform: translate(0px, 0px);
+  transform: translate(0px, 0px);
+  transition: background-color 0.3s;
+  box-shadow: 0 24px 38px 3px rgba(0, 0, 0, 0.14), 0 9px 46px 8px rgba(0, 0, 0, 0.12),
+    0 11px 15px -7px rgba(0, 0, 0, 0.2);
+}
 .droptarget {
   transition: border-width 0.5s linear;
 }
 
 .card {
+  display: block;
   transition: 0.5s;
-
+  background-color: transparent;
   .card-content {
     padding: 0;
     border-radius: 0 0 2px 2px;
@@ -22,61 +32,25 @@ $empty-cards-color: color('blue', 'lighten-5') !default;
 
     .card-title {
       color: $text-color;
+      background-color: #ffffff;
+      width: 100%;
+      position: absolute;
+      top: calc(100% - 16px);
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
     }
   }
 }
 
-.card-content {
-  display: none;
-}
-
-.container__words .card .card-content {
-  display: block;
-  .card-title {
-    background-color: #ffffff;
-    width: 100%;
-    position: absolute;
-    top: calc(100% - 16px);
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-
-    &.success {
-      background-color: #008000;
-    }
-    &.error {
-      background-color: #ff0000;
-    }
-  }
-}
-
-/*.container .card .card-image {
-
-	  height: 0;
-      overflow: hidden;
-      padding-top: 66.66%;
-      background: white;
-      position: relative;
-
-      img {
-         position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-      }
-
-     }
-*/
 .container .card {
-  background-color: $empty-cards-color;
-
   .card-image {
     height: 0;
     overflow: hidden;
     padding-top: 66.66%;
     background: white;
     position: relative;
+    cursor: no-drop;
 
     img {
       position: absolute;
@@ -86,14 +60,31 @@ $empty-cards-color: color('blue', 'lighten-5') !default;
       height: 100%;
     }
   }
-  &.draggable {
-    cursor: move;
-  }
 
   &:active {
-    transform: scale(1.3);
+    transform: scale(2);
     z-index: 1000;
   }
+}
+
+.card,
+.card-panel {
+  margin: 0.5rem 0 0.5rem;
+}
+
+.card-panel {
+  transition: 0.5s;
+  padding: 10px;
+}
+
+.results .card-title.error {
+  background-color: #ff0000;
+  color: #ffffff;
+}
+
+.results .card-title.success {
+  background-color: #008000;
+  color: #ffffff;
 }
 
 @media only screen and (min-width: 993px) {

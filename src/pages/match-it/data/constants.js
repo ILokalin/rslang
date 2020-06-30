@@ -20,8 +20,8 @@ const nextBtn = document.querySelector('.next');
 const scoreLabel = document.querySelector('.score');
 
 const LEVELS_MAX_COUNT = 6;
-const ROUNDS_MAX_COUNT = 60;
-const ERRORS_MAX_COUNT = 10;
+const ROUNDS_MAX_COUNT = 66;
+const ERRORS_MAX_COUNT = 9;
 
 export {
   introPage,

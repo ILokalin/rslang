@@ -64,28 +64,26 @@ const Utils = {
     return wordsArr;
   },
 
-  getCard: (id, word, image) =>
+  getCard: (id, image) =>
     `<div class="card-image">
        <img src="${image}" alt="card">
     </div>
-    <div class="card-content">
-       <span class="card-title">${word}</span>
+    <div class="card-content hidden">
+       <span class="card-title"></span>
     </div>
     `,
 
   getWordCard: (word) =>
-    `<div class="card-image">
-       <img src="../img/blank.jpg" alt="empty">
-     </div>
-     <div class="card-content">
-       <span class="card-title">${word}</span></div>
-     </div>
+    `
+       <span class="white-text">${word}</span>
+
   `,
 
   displayResults: () => {
     const cardsContent = document.querySelectorAll('.card-content');
     cardsContent.forEach((item) => {
       const card = item;
+      card.classList.add('results');
       card.classList.remove('hidden');
     });
   },
@@ -106,12 +104,12 @@ const Utils = {
     if (round < ROUNDS_MAX_COUNT) {
       roundSelect.value = round + 1;
     } else if (level < LEVELS_MAX_COUNT) {
-        levelSelect.value = level + 1;
-        roundSelect.value = 1;
-      } else {
-        levelSelect.value = 1;
-        roundSelect.value = 1;
-      }
+      levelSelect.value = level + 1;
+      roundSelect.value = 1;
+    } else {
+      levelSelect.value = 1;
+      roundSelect.value = 1;
+    }
   },
 
   updateUserStatistics: async (userId, token, statistics) => {},

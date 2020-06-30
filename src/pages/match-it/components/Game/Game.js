@@ -81,11 +81,11 @@ export default class Game {
       wordsData = await Utils.getWordsForRound(this.dataController);
       userWords.checked = false;
     }
-    GameSettings.displayRound();
+    Utils.setCurrentRound(GameSettings.displayRound());
     await wordsData.forEach(this.createCard.bind(this));
     const words = [];
     wordsData.forEach((data) => {
-      words.push(data.word);
+      words.push(data);
     });
     words.sort(() => 0.5 - Math.random());
     words.forEach(this.createWordCard);
@@ -100,9 +100,6 @@ export default class Game {
     scoreLabel.children[0].innerHTML = '';
     this.clearStatistics();
     this.createCardPage();
-    /* Utils.clearScore();
-    const CARDS = document.querySelectorAll('.container .item');
-    CARDS.forEach(this.prepareStatisticsContent, this);*/
   }
 
   prepareStatisticsContent(card) {
@@ -115,6 +112,8 @@ export default class Game {
     this.props.knowArr = [];
     this.props.errorsArr.length = 0;
     this.props.knowArr.length = 0;
+    this.props.know = 0;
+    this.props.errors = ERRORS_MAX_COUNT;
   }
 
   optionSelected() {
@@ -122,34 +121,32 @@ export default class Game {
     allWords.innerHTML = '';
     this.clearStatistics();
     this.createCardPage();
-    /*this.clearStatistics();
-    this.restartGame();
-    Utils.resetCardMinWidth();
-    CARDS_ITEMS.innerHTML = '';
-    this.createCardPage();*/
   }
 
   async createCard(data, index) {
     const cardWrapper = document.createElement('div');
-    cardWrapper.classList.add('col', 's12', 'm6', 'center-align');
+    cardWrapper.classList.add('col', 'l4', 's8', 'm6', 'center-align');
     const CARD = document.createElement('div');
     CARD.id = `card-${data.id}`;
     CARD.setAttribute('index', `${index}`);
-    CARD.classList.add('card', 'draggable');
+    CARD.classList.add('card', 'droptarget');
     const image = await this.dataController.getMaterials(data.image);
-    CARD.innerHTML = Utils.getCard(data.id, data.word, image);
+    CARD.setAttribute('data-word', `${data.word}`);
+    CARD.innerHTML = Utils.getCard(data.id, image);
     cardWrapper.append(CARD);
     const cln = CARD.cloneNode(true);
     this.props.errorsArr.push(cln);
     allCards.appendChild(cardWrapper);
   }
 
-  createWordCard(word) {
+  createWordCard(data) {
     const cardWrapper = document.createElement('div');
-    cardWrapper.classList.add('col', 's12', 'm6', 'center-align');
+    cardWrapper.classList.add('col', 'l6', 's12', 'm12', 'center-align');
     const CARD = document.createElement('div');
-    CARD.classList.add('card', 'droptarget');
-    CARD.innerHTML = Utils.getWordCard(word);
+    CARD.id = `word-${data.id}`;
+    CARD.draggable = true;
+    CARD.classList.add('card-panel', 'teal', 'draggable');
+    CARD.innerHTML = Utils.getWordCard(`${data.word}`);
     cardWrapper.append(CARD);
     // const cln = CARD.cloneNode(true);
     //this.props.errorsArr.push(cln);
