@@ -1,7 +1,7 @@
 /* eslint-disable no-plusplus */
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-param-reassign */
-import { progressBar, mySwiper, settings } from './constants';
+import { progressBar, mySwiper, settings, dataController } from './constants';
 
 const measureWordWidth = (word) => {
   const canvas = document.createElement('canvas');
@@ -9,12 +9,6 @@ const measureWordWidth = (word) => {
   ctx.font = 'bold 2rem Segoe UI';
   return ctx.measureText(word).width;
 };
-
-const simpleBtnHandler = () => {};
-
-const goodBtnHandler = () => {};
-
-const hardBtnHandler = () => {};
 
 const updateMaterialComponents = () => {
   // eslint-disable-next-line no-undef
@@ -175,7 +169,7 @@ const updateProgress = (curProgress, isWrong) => {
   } else {
     res = curProgress + (6 - quantityOfSettingsEnabled) * 0.1 > 0;
   }
-  return res > 0 ? res : 0;
+  return ((res > 0) ? res : 0);
 }
 
 const showToastDeleted = (word) => {
@@ -185,58 +179,60 @@ const showToastDeleted = (word) => {
   });
 }
 
-const getApproprateWords = (newWordsAmount, totalAmount) => {
+const shuffle = (array) => {
+  for (let i = array.length - 1; i > 0; i--) {
+    let j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
+
+const getApproprateWords = async (newWordsAmount, totalAmount) => {
   const res = [];
-  let userWords;
-  //let generalWords;
   let pagesCount = 0;
   let groupsCount = 0;
-  // получить все слова пользователя
-  dataController.userWordsGetAll(['hard', 'onlearn', 'deleted']).then(
-    (response) => {userWords = response[0].paginatedResults},
-    (rejectReport) => {console.log(rejectReport)})
-  .then(() => {
+  const today = new Date().toDateString();
+// получить все слова пользователя
+  const userWordsReponse = await dataController.userWordsGetAll(['hard', 'onlearn', 'deleted']);  
+  const userWords = userWordsReponse["0"].paginatedResults;
+  while (res.length < newWordsAmount) {
     // получить много слов общих 
-    while (res.length < newWordsAmount) {
-      const query = {
+    const query = {
         group: groupsCount,
         page: pagesCount,
         wordsPerExampleSentenceLTE: '',
         wordsPerPage: userWords.length * 3 < totalAmount ? totalAmount : userWords.length * 3,
       };
-      dataController.getWords(query).then(
-        (wordsArray) => {
-          //выделить из общих слова неюзера
-          if (wordsArray.length) {          
-            for (let i = 0; i < wordsArray.length; i++ ) {
-              const word = wordsArray[i];
-              const isUserWord = userWords.find((userWord) => userWord._id === word.id );
-              if (!isUserWord) {
-                res.push(word);
-                if (res.length === newWordsAmount) {
-                  break;
-                }
-              }
-            } 
-          } else groupsCount++;
-        },
-        (rejectReport) => {console.log(rejectReport)});
-      pagesCount++;
-    }   
-  })
-  .then(() => {
-    userWords.filter((userWord) => {
-      const lastDate = Date.parse(userWord.userWord.optional.lastDate);
+    const generalWords = await dataController.getWords(query);
+    if (generalWords.length) {   
+      //выделить из общих слова неюзера       
+      for (let i = 0; i < generalWords.length; i++) {
+        const word = generalWords[i];
+        const isUserWord = userWords.find((userWord) => userWord._id === word.id);
+        if (!isUserWord) {
+          res.push(word);
+          if (res.length === newWordsAmount) {
+            break;
+          }
+        }
+      } 
+    } else groupsCount++;
+    pagesCount++;
+  }
+
+  userWords.filter((userWord) => {
+    // посчитать дату следующего повторения юзер слов и сравнить с сегодня (<= сегодня)
+      const lastDate = new Date(userWord.userWord.optional.lastDate);
+      const interval = (2 * userWord.userWord.optional.progress + 1)*24*60*60*1000;
+      const nextTime = new Date(+lastDate + interval).toDateString();
+      return nextTime === today;
     })
+    // слайс по количеству слов на повторение (тотал - новые)
+  res.concat(userWords.slice(0, totalAmount - newWordsAmount + 1));
+  //шафл массива 
+  shuffle(res);
 
-
-  })  
-
-  // посчитать дату следующего повторения юзер слов и сравнить с сегодня (<= сегодня)
-  // слайс по количеству слов на повторение (тотал - новые)
-  //шафл массива   
+  return res;    
 }
-
 export {
   measureWordWidth,
   updateMaterialComponents,
@@ -252,4 +248,5 @@ export {
   getLearnProgressString, 
   updateProgress,
   showToastDeleted,
+  getApproprateWords,
 };

@@ -124,6 +124,6 @@ settingsSaveBtns.forEach((btn) => {
     console.log(settings);
     localStorage.setItem('settings', JSON.stringify(settings));
     // TODO send settings to backend
-    dataController.setUserOptions({name: 'Mr Anon', settings});
+    dataController.setUserOptions({name: 'Mr Checker', settings});
   });
 });
