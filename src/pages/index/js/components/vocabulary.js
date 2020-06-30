@@ -35,18 +35,18 @@ export default class VocabularyWord {
                   <div class="sentences"> 
                     <p>${
       this.wordState.textMeaning
-      } <i class="material-icons" data-source="${this.wordState.audioExample}" id="vocabulary-sound" onclick = "alert('Клик!')>volume_up</i></p>
+      } <i class="material-icons" data-source="${this.wordState.audioMeaning}" id="vocabulary-sound">volume_up</i></p>
                     <p>${this.wordState.textMeaningTranslate}</p>
-                    <p>${this.wordState.textExample} <i data-source="${this.wordState.audioMeaning}" class="material-icons" id="vocabulary-sound">volume_up</i></p>
+                    <p>${this.wordState.textExample} <i data-source="${this.wordState.audioExample}" class="material-icons" id="vocabulary-sound">volume_up</i></p>
                     <p>${this.wordState.textExampleTranslate}</p>
                   </div>
                   <div class="divider"></div>
                   <div class="vocabulary__card-footer">
                     <p>Последнее повторение было: <span class="last-itaretion-date">${
-      this.wordState.date
+      this.wordState.userWord.optional.lastDate
       }</span></p>
                     <p>Следующее повторение будет: <span class="last-itaretion-date">${
-      this.wordState.date
+      this.wordState.nextTime
       }</span></p>
                   </div>`);
     return div;
@@ -54,8 +54,14 @@ export default class VocabularyWord {
 
   renderWordsContainerColum(wordsInColum, colum) {
     const ul = ElementGen('ul', `on-learn__column${colum} collapsible col m6 l6 s12`, this.cardElem);
+
     wordsInColum.forEach(element => {
+
       const word = element;
+      const lastDate = new Date(element.userWord.optional.lastDate);
+      const interval = (2 * element.userWord.optional.progress + 1) * 24 * 60 * 60 * 1000;
+      const nextTime = new Date(+lastDate + interval).toDateString();
+
       Promise.all([dataController.getMaterials(element.image).then((fullPath) => {
         word.image = fullPath
       }),
@@ -64,6 +70,8 @@ export default class VocabularyWord {
       dataController.getMaterials(element.audioMeaning).then((fullPath) => { word.audioMeaning = fullPath })]).
         then(() => {
           this.wordState = word;
+          this.wordState.nextTime = nextTime;
+
           const li = ElementGen('li', 'vocabulary__word-container');
           li.appendChild(this.createHeader());
           li.appendChild(this.createBody());
@@ -82,31 +90,30 @@ export default class VocabularyWord {
     category.appendChild(
       this.renderWordsContainerColum(paginatedResults.slice(Math.ceil(paginatedResults.length / 2)), 2),
     );
-
     // eslint-disable-next-line no-undef
-    M.AutoInit()
+    M.AutoInit();
   }
 
   playSound() {
-    const vocabularySound = document.querySelectorAll('#vocabulary-sound');
-    vocabularySound.forEach(element => {
-      element.addEventListener('click', (e) => {
-        console.log(e);
-      });
-    });
+    const vocabularySound = document.querySelectorAll('#vocabulary-sound')
+    vocabularySound.forEach((element) => element.addEventListener('click', (e) => {
+      const sound = new Audio()
+      sound.src = e.target.dataset.source;
+      sound.play();
+    }))
   }
 
   renderVocabulary() {
     dataController.userWordsGetAll(['onlearn']).then(
       (response) => {
-        this.renderVocabularyWords(response, vocabularyOnLearn)
+        this.renderVocabularyWords(response, vocabularyOnLearn);
       },
       (rejectReport) => rejectReport
     );
 
     dataController.userWordsGetAll(['hard']).then(
       (response) => {
-        this.renderVocabularyWords(response, vocabularyDifficult)
+        this.renderVocabularyWords(response, vocabularyDifficult);
       },
       (rejectReport) => rejectReport
     );
@@ -117,5 +124,6 @@ export default class VocabularyWord {
       },
       (rejectReport) => rejectReport
     );
+    dataController.userWordsGetAll(['onlearn', 'hard', 'deleted']).then(() => { this.playSound() });
   }
 }
