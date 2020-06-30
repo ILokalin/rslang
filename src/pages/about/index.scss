@@ -28,8 +28,9 @@ $totalColumns: 6;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    justify-content:center;
     background: #FFF;
-    border: 1px solid #E2E9ED;
+   // border: 1px solid #E2E9ED;
 
     @for $i from 1 through $totalColumns {
       &[data-column="#{$i}"] {
@@ -63,7 +64,7 @@ $totalColumns: 6;
     &:hover {
       z-index: 1;
       box-shadow: 0 8px 50px rgba(#000, 0.2);
-      transform: scale(1.05);
+      transform: scale(1.20);
       transition: box-shadow 0.2s ease,
                   transform 0.2s ease,
                   z-index 0s 0s ease;
@@ -98,8 +99,8 @@ $totalColumns: 6;
     text-align: center;
     
     &__avatar {
-      width: 98px;
-      height: 98px;
+      width: 200px;
+      height: 200px;
       border-radius: 100%;
       margin: 0 auto 20px;
       overflow: hidden;
@@ -137,20 +138,9 @@ $totalColumns: 6;
       display: inline-block;
       margin: 0 10px;
       
-      a {
+      span {
         display: block;
-      }
-      
-      svg {
-        fill: #515F65;
-        display: block;
-        height: 18px;
-        transition: fill 0.2s ease;
-        
-        &:hover {
-          fill: #788D96;
-        }
-      }
+      }    
     }
   }
 }
@@ -166,7 +156,7 @@ body {
 .team-container {
   max-width: 1170px;
   width: 100%;
-  margin: 50px auto;
+  margin: 10px auto;
   padding: 0 20px;
   box-sizing: border-box;
   transform-origin: top center;
