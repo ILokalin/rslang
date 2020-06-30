@@ -1,4 +1,5 @@
 import { userNameElement, audio } from './constants';
+import '../../assets/img/savanna-heart.svg'
 
 const helper = {
   renderUserName(userSettings) {
@@ -24,19 +25,19 @@ const helper = {
   },
 
   makeCorrectNoise() {
-    audio.src = '../sound/correct.mp3';
+    audio.src = '../sound/savanna-correct.mp3';
   },
 
   makeErrorNoise() {
-    audio.src = '../sound/error.mp3';
+    audio.src = '../sound/savanna-error.mp3';
   },
 
   makeWinNoise() {
-    audio.src = '../sound/success.mp3';
+    audio.src = '../sound/savanna-win.mp3';
   },
 
   makeDefeatNoise() {
-    audio.src = '../sound/failure.mp3';
+    audio.src = '../sound/savanna-defeat.mp3';
   },
 };
 

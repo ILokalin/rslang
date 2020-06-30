@@ -50,6 +50,7 @@ export default class Game {
     answerContainer.addEventListener('click', this.mouseCheckAnswer.bind(this));
     roundOption.addEventListener('change', this.changeRound.bind(this));
     levelOption.addEventListener('change', this.changeLevel.bind(this));
+    this.dataController.getUser().then((data) => console.log(data));
   }
 
   startGame(e) {
