@@ -118,6 +118,10 @@
 
 .card-image{
   max-height: 45%!important;
+
+  & .card-title {
+    z-index: 3;
+  }
 }
 
 .img-placeholder {
