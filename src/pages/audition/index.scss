@@ -1,55 +1,13 @@
 @import 'Src/scss/normalize';
+@import "materialize-css";
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+@import "styles/navbar";
+@import "styles/game";
+@import "styles/statistic";
+@import 'Src/scss/components';
 
-.game-wrapper {
-  padding: 50px;
-}
-
-.word-image-element {
-  width: 200px;
-  height: 200px;
-}
-
-.audio-element {
-  width: 200px;
-  height: 200px;
-  background-image: url("assets/img/sound.png");
-  background-position: center;
-  background-size: 100px;
-  background-repeat: no-repeat;
-}
-
-.words-translations-block {
-  display: flex;
-  justify-content: space-between;
-  padding: 10px 30px;
-}
-
-.word-image-element {
-  display: none;
-}
-
-.puzzled-word-element {
-  display: none;
-}
-
-.correct {
-  border: green solid 1px;
-}
-
-.wrong {
-  border: red solid 1px;
-}
-
-.previous-round {
-  display: none;
-}
-
-.next-round {
-  display: none;
-}
-
-.answered {
-  display: block;
+.hidden {
+  visibility: hidden;
 }
 
 
