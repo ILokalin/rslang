@@ -1,6 +1,97 @@
 ## DataController
 
+### getUserStatistics
+
+Returns full statistics for every single game.
+Statistics for each game contains fields `longTime` and `top`. Exampl:
+
+```
+import { DataController } from 'Service/DataController';
+
+const dataController = new DataController;
+
+dataController.userStatisticGet()
+  .then(
+    (statistics) => {...},
+    (rejectReport) => {...Bad request}
+  )
+```
+
+**statistics**
+
+- learnedWords - learned words at all period
+- gameName - fields of games name: 'savanna', 'card', etc.
+  - longTime - array of object `{result, date}`. Index 0 contains the oldest record.
+  - top - array of top 5 results. Index 0 contains the best result.
+
+**real sample statistics**
+
+```
+{
+  savanna: {
+    longTime: [
+      {result: 70, date: 'Thu Jul 02 2020'},
+      {result: 100, date: 'Thu Jul 02 2020'}
+    ],
+    top: [
+      {result: 100, date: 'Thu Jul 02 2020'},
+      {result: 70, date: 'Thu Jul 02 2020'},
+    ]
+  },
+  card: {
+    longTime: [
+      {result: 70, learnedWords: 25, date: 'Thu Jul 02 2020'},
+      {result: 100, learnedWords: 27, date: 'Thu Jul 02 2020'}
+    ],
+    top: [
+      {result: 100, learnedWords: 27, date: 'Thu Jul 02 2020'},
+      {result: 70, learnedWords: 25, date: 'Thu Jul 02 2020'},
+    ]
+  },
+  learnedWords: 52
+}
+```
+
+### setUserStatistics
+
+Writes the result of game to statistics.
+
+```
+import { DataController } from 'Service/DataController';
+
+const dataController = new DataController;
+
+dataController.setUserStatistics(options)
+  .then(
+    (statisticsAnswer) => {...},
+    (rejectReport) => {...Bad request}
+  )
+```
+
+**options**
+
+- gameName - field named as game ('savanna', 'card', etc)
+  - result - result of game - percent usually or best sequence for card game
+  - learnedWords - now for `card` only
+
+date of record attached automatically
+Top 5 checked and sort automatically (fields `result`)
+
+**real sample of option**
+
+```
+{
+  savanna: {result: 60}
+}
+```
+
+**statisticsAnswer**
+results of records - see above at `setUserStatistics`
+This possibility take top 5 when saved current result game.
+
 ### getWords
+
+Get words from group and page
 
 ```
 import { DataController } from 'Service/DataController';
@@ -43,7 +134,7 @@ status 400 - 'Bad Request'
 
 WARN: for bad page/group range, `getWords` returned an empty array and status 200 'Ok'!
 
-## getUser
+### getUser
 
 Returns a Promise.
 Resolve - user login and have iser settings.
@@ -80,7 +171,7 @@ dataController.getUser()
 }
 ```
 
-## setUserOptions
+### setUserOptions
 
 The method for saving users settings (**NOT STATISTIC!**) data. If token expired - open login form. Example:
 
@@ -113,15 +204,11 @@ dataController.setUserOptions(userSettings)
 email: 'checker@mail.ru',
 password: 'checkerCH#2',
 
-## logOut
+### logOut
 
 **I recommend not to use in games. Maybe for test only**
 
 Logout user from App and remove token from localStorage. The next call `getUser` shall open the window for authorization.
-
-## DataController
-
-add customization of user words and promise for get materials
 
 ### userWordsPost
 
@@ -365,7 +452,7 @@ getMaterials(file)
 - fullPath - full path as `https://raw.githubusercontent.com/ilokalin/rslang-data/master/file/sound111.mp3`
   \*\*\* next version - preload material
 
-## Append
+### Append
 
 full scheme from **userWordsGetAll**
 
