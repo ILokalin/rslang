@@ -1,7 +1,7 @@
 import { INTRO, START_BTN, GAME_CONTAINER, sideNavTriggerEl } from '../../data/constants';
 
 export default class Intro {
-  constructor() {
+  init() {
     this.el = START_BTN;
     this.el.addEventListener('click', Intro.startButtonClick);
   }
