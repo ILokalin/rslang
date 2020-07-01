@@ -1,34 +1,106 @@
-
 class Store {
   constructor() {
-    this.user = JSON.parse(localStorage.getItem('user'));
-    this. level= (localStorage.getItem('level') || 1);
-    this.round= (localStorage.getItem('round') || 1);
-    this.isAutoPronounceOn= +(localStorage.getItem('isAutoPronounceOn') || 1);
-    this.hints= {
-      isPronounceOn: +(localStorage.getItem('isPronounceOn') || 1),
-      isTranslationOn: +(localStorage.getItem('isTranslationOn') || 1),
-      isPictureOn: +(localStorage.getItem('isPictureOn') || 0),
+    this.level = 1;
+    this.round = 1;
+    this.isAutoPronounceOn = 1;
+    this.hints = {
+      isPronounceOn: 1,
+      isTranslationOn: 1,
+      isPictureOn: 0,
     };
-    this.passedRounds= (JSON.parse(localStorage.getItem('passedRounds')) || []);
-    this.iKnowPerRound= (JSON.parse(localStorage.getItem('iKnowPerRound')) || []);
-    this.dates = (JSON.parse(localStorage.getItem('dates')) || []);
+    this.passedRounds = [];
+    this.iKnowPerRound = [];
+    this.dates = [];
   }
 
-  setUser(user) {
-    this.user = user;
+  setUserSettings(settings) {
+    const arr = settings.split(',');
+    arr.forEach((element, index) => {
+     switch(index) {
+      case 0: {
+        this.setLevel(element);
+        break;
+      }
+      case 1: {
+        this.setRound(element);
+        break;
+      }
+      case 2: {
+        this.setIsAutoPronounceOn(element);
+        break;
+      }
+      case 3: {
+        this.hints.isPronounceOn = +element;
+        break;
+      } 
+      case 4: {
+        this.hints.isTranslationOn = +element;
+        break;
+      }
+      case 5: {
+        this.hints.isPictureOn = +element;
+        break;
+      }    
+     }
+    });
+    console.log(this);
+  }
+
+  setUserStat(stat) {
+    const arr = stat.split('|');
+    arr.forEach((element, index) => {
+      const elemArr = element.split(',');
+      switch (index) {
+        case 0: {
+          this.setPassedRounds(elemArr);
+          break;
+        }
+        case 1: {
+          this.setIKnowPerRound(elemArr);
+          break;
+        }
+        case 2: {
+          this.setDates(elemArr);
+          break;
+        }
+      }
+    });
+    console.log(this);
+  }
+
+  stringifySettings() {
+    const resArr = [
+      this.level,
+      this.round,
+      this.isAutoPronounceOn,
+      this.hints.isPronounceOn,
+      this.hints.isTranslationOn,
+      this.hints.isPictureOn,
+    ];
+    return resArr.join(',');
+  }
+
+  stringifyStatistics() {
+    const resArr = [
+      this.passedRounds,
+      this.iKnowPerRound,
+      this.dates,
+    ];
+    resArr.map((el) => el.join(','));
+
+    return resArr.join('|');
   }
 
   setLevel(value) {
-    this.level = value;
+    this.level = +value;
   }
 
   setRound(value) {
-    this.round = value;
+    this.round = +value;
   }
 
   setIsAutoPronounceOn(value) {
-    this.isAutoPronounceOn = value;
+    this.isAutoPronounceOn = +value;
   }
 
   setHints (hintsObj) {
@@ -45,21 +117,6 @@ class Store {
 
   setDates(arrayOfValues) {
     this.dates = arrayOfValues;
-  }
-
-  setInitialStore(user) {
-  this.setUser(user);
-  this.setLevel(1);
-  this.setRound(1);
-  this.setIsAutoPronounceOn(1);
-  this.setHints({
-    isPronounceOn: 1,
-    isTranslationOn: 1,
-    isPictureOn: 0,
-  });
-  this.setPassedRounds([]);
-  this.setIKnowPerRound([]);
-  this.setDates([]);
   }
 }
 

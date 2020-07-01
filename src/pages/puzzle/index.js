@@ -3,7 +3,7 @@ import 'materialize-css';
 import { store } from './js/storage';
 import {
   playButtonHandler, selectLevelHandler, chooseRoundHandler, checkBoxHandler, 
-  checkIfUserIsSaved,
+  checkIfUserIsSaved, checkCheckboxes,
 } from './js/helpers';
 import {
  sideNav, dataController
@@ -17,10 +17,13 @@ const whoIsGameFor = () => {
   dataController.getUser().then(
     (userSettings) => {
       console.log('We have user', userSettings);
+      if (userSettings.puzzle) {
+        store.setUserSettings(userSettings.puzzle);
+        checkCheckboxes();
+      } 
     },
     (rejectReport) => {
       console.log('User canceled');    
-      store.setInitialStore(); 
     },
   );
 };

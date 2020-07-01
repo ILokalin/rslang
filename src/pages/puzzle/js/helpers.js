@@ -1,20 +1,11 @@
 import { store } from './storage';
 import {
   gamePage, homePage, translateBtn, pronounceBtn, pictureBtn,
-  roundsCount,  inputField, roundStatisticsPage, translation, fullStatPage,
+  roundsCount,  inputField, roundStatisticsPage, translation, fullStatPage, dataController,
 } from './constants';
 // eslint-disable-next-line
 import { startRound, hidePaintingInfo, hideBackgroundPic } from './game';
 import { setBackgroundToPuzzlePiece } from './canvas';
-
-
-const checkIfUserIsSaved = () => {
-  if (store.user) {
-    // authorization.classList.add('hidden');
-    homePage.classList.remove('hidden');
-    logoutBtn.classList.remove('hidden');
-  }
-};
 
 const handleRoundsPerLevel = () => {
   document.querySelector('.round-select input').setAttribute('max', roundsCount[store.level - 1]);
@@ -51,7 +42,6 @@ const checkCheckboxes = () => {
   }
 };
 
-
 const playButtonHandler = async () => {
   gamePage.classList.remove('hidden');
   homePage.classList.add('hidden');
@@ -60,21 +50,21 @@ const playButtonHandler = async () => {
   await startRound();
 };
 
-const selectLevelHandler = (event) => {
+const selectLevelHandler = async (event) => {
   store.level = event.target.value;
-  localStorage.setItem('level', store.level);
+  await dataController.setUserOptions({puzzle: store.stringifySettings()});
   document.querySelector('.round-select input').classList.remove('disabled');
   handleRoundsPerLevel();
 };
 
-const chooseRoundHandler = (event) => {
+const chooseRoundHandler = async (event) => {
   store.round = event.target.value;
   if (store.passedRounds.includes(`${store.level}.${store.round}`)) {
     document.querySelector('.round-select input').setAttribute('style', 'background-color: grey;');
   } else {
     document.querySelector('.round-select input').setAttribute('style', 'background-color: white;');
   }
-  localStorage.setItem('round', store.round);
+  await dataController.setUserOptions({puzzle: store.stringifySettings()});
 };
 
 const toggleBtn = (el, isEnabled) => {
@@ -93,7 +83,7 @@ const checkBoxHandler = async (event) => {
     switch (checkboxName) {
       case 'Translate': {
         store.hints.isTranslationOn = isChecked;
-        localStorage.setItem('isTranslationOn', +isChecked);
+        // TODO send to settings;
         toggleBtn(translateBtn, isChecked);
         if (isChecked) {
           translation.classList.remove('hidden');
@@ -104,13 +94,13 @@ const checkBoxHandler = async (event) => {
       }
       case 'Pronounce': {
         store.hints.isPronounceOn = isChecked;
-        localStorage.setItem('isPronounceOn', +isChecked);
+        // TODO send to settings;
         toggleBtn(pronounceBtn, isChecked);
         break;
       }
       case 'Picture': {
         store.hints.isPictureOn = isChecked;
-        localStorage.setItem('isPictureOn', +isChecked);
+        // TODO send to settings;
         toggleBtn(pictureBtn, isChecked);
         inputField.querySelector('.game-row').children.forEach((canvas) => {
           setBackgroundToPuzzlePiece(canvas, canvas.dataset.sx,
@@ -120,10 +110,11 @@ const checkBoxHandler = async (event) => {
       }
       default: {
         store.isAutoPronounceOn = isChecked;
-        localStorage.setItem('isAutoPronounceOn', +isChecked);
+        // TODO send to settings;
         break;
       }
     }
+    await dataController.setUserOptions({puzzle: store.stringifySettings()});
   }
 };
 
@@ -131,5 +122,4 @@ const checkBoxHandler = async (event) => {
 export {
   playButtonHandler, selectLevelHandler, chooseRoundHandler, checkBoxHandler, 
   checkCheckboxes, handleRoundsPerLevel, 
-  checkIfUserIsSaved,
 };

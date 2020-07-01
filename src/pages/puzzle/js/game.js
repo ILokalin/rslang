@@ -1,6 +1,4 @@
 /* eslint-disable no-param-reassign */
-
-
 import { store } from './storage';
 // eslint-disable-next-line import/no-cycle
 import { checkCheckboxes } from './helpers';
@@ -14,7 +12,7 @@ import {
 import {
   inputField, dontKnowBtn, checkBtn, continueBtn, resultsBtn, painting, audio, translation,
   translateBtn, pronounceBtn, pictureBtn, roundStatisticsPage, gamePage, fullStatPage, statBtn,
-  puzzleGrooveWidth,
+  puzzleGrooveWidth, dataController,
 } from './constants';
 import {
   drawPuzzlePiece, drawFirstPuzzlePiece, drawLastPuzzlePiece, drawCorrect,
@@ -220,16 +218,17 @@ const startRound = async () => {
   resultsBtn.classList.add('hidden');
 };
 
-const goToNextRound = () => {
+const goToNextRound = async () => {
   hideBackgroundPic();
   hidePaintingInfo();
   roundStatisticsPage.classList.add('hidden');
   fullStatPage.classList.add('hidden');
   gamePage.classList.remove('hidden');
   setRound();
-  localStorage.setItem('level', store.level);
-  localStorage.setItem('round', store.round);
-  startRound();
+// TODO send to settings round and level;
+  dataController.setUserOptions({puzzle: store.stringifySettings()}).then(() => { 
+    startRound();
+  });  
 };
 
 // Footer buttons
