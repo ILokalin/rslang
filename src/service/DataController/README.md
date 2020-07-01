@@ -86,7 +86,7 @@ Top 5 checked and sort automatically (fields `result`)
 ```
 
 **statisticsAnswer**
-results of records - see above at `setUserStatistics`
+results of records - see above at `getUserStatistics`
 This possibility take top 5 when saved current result game.
 
 ### getWords
