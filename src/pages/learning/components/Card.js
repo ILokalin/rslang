@@ -15,6 +15,7 @@ import {
   getLearnProgressString,
   updateProgress,
   showToastDeleted,
+  showToastHard,
 } from './helpers';
 import { mySwiper, settings, dataController } from './constants';
 import 'materialize-css';
@@ -33,9 +34,10 @@ export default class Card {
     const cardTitle = ElementGen('span', 'card-title', imageContainer);
     const image = ElementGen('img', 'image-association', imageContainer);
     const imagePlaceholder = ElementGen('div', 'img-placeholder', imageContainer);
-    const progress = this.wordState.userWord ? this.wordState.userWord.optional.progress : 0;     
+    const progress = (this.wordState.userWord ? this.wordState.userWord.optional.progress : undefined);     
 
     cardTitle.innerText = getLearnProgressString(progress);
+
     if (this.wordState.userWord) {
       cardTitle.dataset.progress = progress;
       cardTitle.dataset.difficulty = this.wordState.userWord.difficulty;
@@ -197,165 +199,6 @@ export default class Card {
     return a;
   }
 
-  footerBtnsHandler(event) {
-    const buttonsArr = [
-      mySwiper.slides[mySwiper.activeIndex].querySelector('.simple-btn'),
-      mySwiper.slides[mySwiper.activeIndex].querySelector('.good-btn'),
-      mySwiper.slides[mySwiper.activeIndex].querySelector('.hard-btn'),
-    ];
-    const cardTitle = event.target.closest('.card').querySelector('.card-title');
-    const progress = cardTitle.dataset.progress;
-    const wordId = cardTitle.dataset.wordId;
-    const wordDifficulty = cardTitle.dataset.difficulty;
-    let saveOption;
-
-    if (event.target.closest('.again-btn')) {
-      againBtnAct();
-    } else {
-      if (event.target.closest('.simple-btn')) {
-        const newProgress = progress ? progress + 1 : 1;
-          saveOption = {
-            id: wordId, 
-            status: 'onlearn',
-            progress: newProgress,
-          }
-          if (progress) {       
-          dataController.userWordsPut(saveOption).then((response) => {
-            console.log(response);
-            cardTitle.dataset.progress = newProgress;
-            cardTitle.dataset.difficulty = 'onlearn';
-            }, 
-            (report) => console.log(report));
-          } else {
-            dataController.userWordsPost(saveOption).then((response) => {
-              console.log(response);
-              cardTitle.dataset.progress = newProgress;
-              cardTitle.dataset.difficulty = 'onlearn';
-              }, 
-              (report) => console.log(report));
-          }
-      }
-
-      if (event.target.closest('.good-btn')) {
-        // TODO send the word to backend w new ptogress
-        const newProgress = progress ? progress + 0.5 : 0.5;
-          saveOption = {
-            id: wordId, 
-            status: 'onlearn',
-            progress: newProgress,
-          }
-          if (progress) {       
-          dataController.userWordsPut(saveOption).then((response) => {
-            console.log(response);
-            cardTitle.dataset.progress = newProgress;
-            cardTitle.dataset.wordDifficulty = 'onlearn';
-            }, 
-            (report) => console.log(report));
-          } else {
-            dataController.userWordsPost(saveOption).then((response) => {
-              console.log(response);
-              cardTitle.dataset.progress = newProgress;
-              cardTitle.dataset.wordDifficulty = 'onlearn';
-              }, 
-              (report) => console.log(report));
-          }
-      }
-      if (event.target.closest('.hard-btn')) {
-        // TODO send the word to backend w difficulty 'hard'
-        const newProgress = progress ? progress - 0.5 : 0;
-          saveOption = {
-            id: wordId, 
-            status: 'hard',
-            progress: (newProgress >= 0) ? newProgress : 0,
-          }
-          if (progress) {       
-          dataController.userWordsPut(saveOption).then((response) => {
-            console.log(response);
-            cardTitle.dataset.progress = (newProgress >= 0) ? newProgress : 0;
-            cardTitle.dataset.wordDifficulty = 'hard';
-            }, 
-            (report) => console.log(report));
-          } else {
-            dataController.userWordsPost(saveOption).then((response) => {
-              console.log(response);
-              cardTitle.dataset.progress = (newProgress >= 0) ? newProgress : 0;
-              cardTitle.dataset.wordDifficulty = 'hard';
-              }, 
-              (report) => console.log(report));
-          }
-      }
-      buttonsArr.forEach((el) => el.setAttribute('disabled', 'disabled'))
-    }    
-  }
-
-  formBtnsHandler(event) {
-    const input = event.target.closest('.form').querySelector('.input_text');
-    const cardTitle = event.target.closest('.card').querySelector('.card-title');
-    const progress = cardTitle.dataset.progress;
-    const wordId = cardTitle.dataset.wordId;    
-    const wordDifficulty = cardTitle.dataset.difficulty; 
-    const audio = event.target.closest('.card').querySelector('.audio');
-    const buttonsArr = [
-      mySwiper.slides[mySwiper.activeIndex].querySelector('.simple-btn'),
-      mySwiper.slides[mySwiper.activeIndex].querySelector('.good-btn'),
-      mySwiper.slides[mySwiper.activeIndex].querySelector('.hard-btn'),
-    ];   
-    let saveOption;
-
-    if (event.target.closest('.delete-btn')) {   
-      // TODO send the word to backend w difficulty 'deleted'
-      saveOption = {
-        id: wordId, 
-        status: 'deleted',
-      }
-      if (progress) {       
-        dataController.userWordsPut(saveOption).then((response) => {
-          showToastDeleted(input.dataset.word);
-          cardTitle.dataset.difficulty = 'deleted';
-          buttonsArr.forEach((el) => el.setAttribute('disabled', 'disabled'))
-          }, 
-          (report) => {console.log(report)});
-      } else {
-        dataController.userWordsPost(saveOption).then((response) => {
-          showToastDeleted(input.dataset.word);
-          cardTitle.dataset.difficulty = 'deleted';
-          buttonsArr.forEach((el) => el.setAttribute('disabled', 'disabled'))
-          }, 
-          (report) => {console.log(report)});
-      }
-    }
-    if (event.target.closest('.show-answer-btn')) {
-      const newProgress = progress ? progress - 0.5 : 0;
-      saveOption = {
-        id: wordId, 
-        status: wordDifficulty ? wordDifficulty : 'onlearn',
-        progress: (newProgress >= 0) ? newProgress : 0,
-      }
-
-      if (progress) {       
-        dataController.userWordsPut(saveOption).then((response) => { 
-          cardTitle.dataset.progress = (newProgress >= 0) ? newProgress : 0;
-          cardTitle.dataset.difficulty = wordDifficulty ? wordDifficulty : 'onlearn';
-        }, 
-          (report) => {console.log(report)});
-      } else {
-        dataController.userWordsPost(saveOption).then((response) => {
-          cardTitle.dataset.progress = (newProgress >= 0) ? newProgress : 0;
-          cardTitle.dataset.difficulty = 'onlearn';
-        }, 
-          (report) => {console.log(report)});
-      }
-      input.value = input.dataset.word;      
-      if (settings.autoPlayEnabled) {
-        audioPlay(audio);
-      }
-      allowNextCard();
-      showTranscription();
-      showExplanation();
-      showExample();
-    }
-  }
-
   createAudio() {
     const audio = ElementGen('audio', `audio`, this.cardElem);
     this.setAudio(audio);
@@ -373,16 +216,144 @@ export default class Card {
     });
   }
 
-  formHandler(event) {
+  async footerBtnsHandler(event) {
+    const buttonsArr = [
+      mySwiper.slides[mySwiper.activeIndex].querySelector('.simple-btn'),
+      mySwiper.slides[mySwiper.activeIndex].querySelector('.good-btn'),
+      mySwiper.slides[mySwiper.activeIndex].querySelector('.hard-btn'),
+    ];
+    const cardTitle = event.target.closest('.card').querySelector('.card-title');
+    const progress = cardTitle.dataset.progress;
+    const wordId = cardTitle.dataset.wordId;
+    const wordDifficulty = cardTitle.dataset.difficulty;
+    let saveOption;
+
+    if (event.target.closest('.again-btn')) {
+      await againBtnAct();
+    } else {
+      if (event.target.closest('.simple-btn')) {
+        const newProgress = progress ? +progress + 1 : 1;
+          saveOption = {
+            id: wordId, 
+            status: 'onlearn',
+            progress: newProgress,
+          }
+          console.log(saveOption);
+          if (progress) {       
+            await dataController.userWordsPut(saveOption);
+          } else {
+            await dataController.userWordsPost(saveOption);           
+          }
+          cardTitle.dataset.progress = newProgress;
+          cardTitle.dataset.difficulty = 'onlearn';
+      }
+      if (event.target.closest('.good-btn')) {
+        const newProgress = progress ? +progress + 0.5 : 0.5;
+          saveOption = {
+            id: wordId, 
+            status: 'onlearn',
+            progress: newProgress,
+          }
+          console.log(saveOption);
+          if (progress) {       
+            await dataController.userWordsPut(saveOption);
+          } else {
+            await dataController.userWordsPost(saveOption);            
+          }
+          cardTitle.dataset.progress = newProgress;
+          cardTitle.dataset.difficulty = 'onlearn';
+      }
+      if (event.target.closest('.hard-btn')) {
+        const newProgress = progress ? +progress - 0.5 : 0;
+          saveOption = {
+            id: wordId, 
+            status: 'hard',
+            progress: (newProgress >= 0 ? newProgress : 0),
+          }
+          console.log(saveOption);
+          if (progress) {       
+            await dataController.userWordsPut(saveOption);
+          } else {
+            await dataController.userWordsPost(saveOption);
+          }
+          cardTitle.dataset.progress = (newProgress >= 0 ? newProgress : 0);
+          cardTitle.dataset.difficulty = 'hard';
+          showToastHard()
+      }
+      buttonsArr.forEach((el) => el.setAttribute('disabled', 'disabled'))
+    }    
+  }
+
+  async formBtnsHandler(event) {
+    const input = event.target.closest('.form').querySelector('.input_text');
+    const cardTitle = event.target.closest('.card').querySelector('.card-title');
+    const progress = cardTitle.dataset.progress;
+    const wordId = cardTitle.dataset.wordId;    
+    const wordDifficulty = cardTitle.dataset.difficulty; 
+    const audio = event.target.closest('.card').querySelector('.audio');
+    const buttonsArr = [
+      mySwiper.slides[mySwiper.activeIndex].querySelector('.simple-btn'),
+      mySwiper.slides[mySwiper.activeIndex].querySelector('.good-btn'),
+      mySwiper.slides[mySwiper.activeIndex].querySelector('.hard-btn'),
+    ];   
+    let saveOption;
+    if (event.target.closest('.delete-btn')) {   
+      saveOption = {
+        id: wordId, 
+        status: 'deleted',
+        progress: (progress ? progress : 0),
+      }
+      console.log(saveOption);
+      if (progress) {       
+        await dataController.userWordsPut(saveOption);       
+      } else {
+        await dataController.userWordsPost(saveOption);            
+      }
+      showToastDeleted(input.dataset.word);
+      cardTitle.dataset.progress = (progress ? progress : 0);
+      cardTitle.dataset.difficulty = 'deleted';
+      buttonsArr.forEach((el) => el.setAttribute('disabled', 'disabled'));
+    }
+    if (event.target.closest('.show-answer-btn')) {
+      const newProgress = progress ? +progress - 0.5 : 0;
+      saveOption = {
+        id: wordId, 
+        status: (wordDifficulty ? wordDifficulty : 'onlearn'),
+        progress: (newProgress >= 0 ? newProgress : 0),
+      }
+      console.log(saveOption);
+      if (progress) {       
+        await dataController.userWordsPut(saveOption);        
+      } else {
+        await dataController.userWordsPost(saveOption);
+        mySwiper.train.shortTermStat.newWords++;
+      }
+      cardTitle.dataset.progress = (newProgress >= 0 ? newProgress : 0);
+      cardTitle.dataset.difficulty = (wordDifficulty ? wordDifficulty : 'onlearn');
+      input.value = input.dataset.word;
+      mySwiper.train/shortTermStat.newWords++;      
+      if (settings.autoPlayEnabled) {
+       // audioPlay(audio);
+      }
+      mySwiper.train.shortTermStat.totalCards++;
+      allowNextCard();
+      showTranscription();
+      showExplanation();
+      showExample();
+      event.target.closest('.show-answer-btn').classList.add('hidden');
+    }
+  }  
+
+  async formHandler(event) {
     event.preventDefault();
 
     const input = event.target.querySelector('.input_text');
     const result = event.target.querySelector('.result');
     const audio = event.target.closest('.card').querySelector('.audio');
     const cardTitle = event.target.closest('.card').querySelector('.card-title');
-    const progress = event.target.closest('.card').querySelector('.card-title').dataset.progress;
-    const wordId = event.target.closest('.card').querySelector('.card-title').dataset.wordId;
-    const wordDifficulty = event.target.closest('.card').querySelector('.card-title').dataset.difficulty;
+    const progress = cardTitle.dataset.progress;
+    const wordId = cardTitle.dataset.wordId;
+    const wordDifficulty = cardTitle.dataset.difficulty;
     let isWrong;
 
     input.blur();
@@ -397,7 +368,39 @@ export default class Card {
       }
     });
 
-    const newProgress = updateProgress(progress, isWrong);
+    mySwiper.train.shortTermStat.totalCards++;
+
+    const newProgress = updateProgress(+progress, isWrong);
+
+    let saveOption;
+
+    console.log('progress', progress);
+    console.log(typeof progress);
+    console.log('!!progress', !!progress);
+
+    // если новое слово отправляем в user words c коэф 0 вне зависимотси от правильности ответа
+    if (progress) {
+      mySwiper.train.shortTermStat.newWords++;  
+      saveOption = {
+        id: wordId, 
+        status: 'onlearn',
+        progress: 0,
+      }  
+      console.log(saveOption)
+      await dataController.userWordsPut(saveOption);    
+      cardTitle.dataset.progress = 0;
+      cardTitle.dataset.difficulty = 'onlearn';
+    } else {
+      saveOption = {
+        id: wordId, 
+        status: (wordDifficulty ? wordDifficulty : 'onlearn'),
+        progress: newProgress,
+      }
+      console.log(saveOption)
+      await dataController.userWordsPost(saveOption);
+      cardTitle.dataset.progress = newProgress;
+      cardTitle.dataset.difficulty = wordDifficulty ? wordDifficulty : 'onlearn';
+    }
 
     if (isWrong) {
       mySwiper.train.shortTermStat.chain = 0;
@@ -409,14 +412,13 @@ export default class Card {
         result.style.zIndex = -1;
         result.innerHTML = '';
       }, 3000);
-      againBtnAct();   
+      await againBtnAct();  
 
     } else {
       if (+input.dataset.tryCount === 1) {
         mySwiper.train.shortTermStat.wrightAnswers++;      
       }    
-      mySwiper.train.shortTermStat.chain++;
-      mySwiper.train.shortTermStat.totalCards++;
+      mySwiper.train.shortTermStat.chain++;     
       
       if (settings.autoPlayEnabled) {
         //audioPlay(audio);
@@ -427,35 +429,5 @@ export default class Card {
       showExplanation();
       showExample();    
     } 
-
-    let saveOption;
-
-    // если новое слово отправляем в user words c коэф 0 вне зависимотси от правильности ответа
-// TODO установить progress поле для отправки в userWords
-    if (!progress) {
-      saveOption = {
-        id: wordId, 
-        status: 'onlearn',
-        progress: 0,
-      }  
-      dataController.userWordsPost(saveOption).then((response) => {
-        console.log(response);
-        cardTitle.dataset.progress = 0;
-        cardTitle.dataset.wordDifficulty = 'onlearn';
-      },      
-      (report) => {console.log(report)});
-    } else {
-      saveOption = {
-        id: wordId, 
-        status: wordDifficulty ? wordDifficulty : 'onlearn',
-        progress: newProgress,
-      }
-      dataController.userWordsPut(saveOption).then((response) => {
-        console.log(response);
-        cardTitle.dataset.progress = newProgress;
-        cardTitle.dataset.wordDifficulty = wordDifficulty ? wordDifficulty : 'onlearn';
-        }, 
-        (report) => {console.log(report)});
-    }
   } 
 }

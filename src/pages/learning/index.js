@@ -7,7 +7,21 @@ import Training from './components/Training';
 M.AutoInit();
 console.log(settings);
 if (settings.lastTrain !== new Date().toDateString()) {
+  console.log(settings.lastTrain !== new Date().toDateString());
   const train = new Training(settings.newCardsPerDay, settings.cardsPerDay);
   mySwiper.train = train;
+} else {
+  const modal = M.Modal.getInstance(document.querySelector('.modal-done-for-today'));
+  modal.open();
 }
+
+
+document.querySelector('.modal-more-btn').addEventListener('click', () => {
+ mySwiper.train.continueTraining();
+})
+
+document.querySelector('.modal-done-more').addEventListener('click', () => {
+  const train = new Training(settings.newCardsPerDay, settings.cardsPerDay);
+  mySwiper.train = train;
+})
 

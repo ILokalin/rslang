@@ -1,4 +1,3 @@
-//@import 'Src/scss/normalize';
 @import 'materialize-css';
 @import 'swiper/css/swiper';
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
@@ -82,6 +81,7 @@
 }
 
 .word {
+  width: 100%;
   display: flex;
   justify-content: space-between;
   padding: 5px;
@@ -95,15 +95,10 @@
 
 .card-content {
   padding: 10px!important;
-  //height: fit-content!important;
- // overflow: scroll!important;
 
   & p {
     display: block;    
     line-height: 20px;
-   // overflow: hidden;
-   // white-space: nowrap;
-   // text-overflow: ellipsis;
   }
 
   & .translation {
@@ -121,6 +116,8 @@
 
   & .card-title {
     z-index: 3;
+    @extend .blue-grey-text, .text-darken-2;
+    font-weight: 400;
   }
 }
 
@@ -146,10 +143,9 @@
 
 .result{
   position: absolute;
-  //top: 235px;
   left:0;
- z-index: -2;
- margin-bottom: 8px;
+  z-index: -2;
+  margin-bottom: 8px;
 }
 
 .correct {

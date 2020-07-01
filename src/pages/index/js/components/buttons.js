@@ -26,8 +26,8 @@ import {
   showAnswerBtn,
   autoPlay,
 } from '../constants';
-
 import {handleSettingsView} from './form-components';
+import {renderShortTermStat} from './mainPageStat';
 
 export const whoIsGameFor = () => {
   main.classList.add('hidden');
@@ -40,6 +40,7 @@ export const whoIsGameFor = () => {
       titleUser.innerText = userSettings.name;
 
       localStorage.setItem('settings', JSON.stringify(userSettings.settings));
+      renderShortTermStat(userSettings.settings);
 
       handleSettingsView();
 
@@ -91,7 +92,8 @@ loginButton.addEventListener('click', whoIsGameFor);
 logoutButtons.forEach((btn) => {
   btn.addEventListener('click', userLogout);
 });
-// TODO get settings from backend
+
+
 settingsSaveBtns.forEach((btn) => {
   const settings = JSON.parse(localStorage.getItem('settings'));
   btn.addEventListener('click', (event) => {

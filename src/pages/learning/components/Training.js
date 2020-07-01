@@ -15,19 +15,14 @@ export default class Training {
       chain: 0,
       longestChain:0,
     }
-
-    // TODO: save last training date to statistics
+    settings.lastTrain = new Date().toDateString();
+    dataController.setUserOptions({name: 'Mr Checker', settings});
 
     getApproprateWords(newWordsAmountPerDay, maxWordsPerDay).then((res)=> {
       this.words = res;
-      console.log(this.words);
+      console.log(res);
       this.start();
     })
-    //info
-    dataController.userWordsGetAll(['hard', 'onlearn','deleted']).then(
-      (response) => {console.log('allUserWords', response)},
-      (rejectReport) => {console.log(rejectReport)}
-    )
   }
 
   start() {
@@ -59,8 +54,7 @@ export default class Training {
   updateStat() {
     if (this.shortTermStat.longestChain <  this.shortTermStat.chain) {
       this.shortTermStat.longestChain = this.shortTermStat.chain;
-    }
-    
+    }    
     document.querySelector('.statistics__new-words-num').innerText = this.shortTermStat.newWords;
     document.querySelector('.statistics__correct-answers').innerText = `${Math.round(this.shortTermStat.wrightAnswers/this.shortTermStat.totalCards*100)}%`;
     document.querySelector('.statistics__total-cards').innerText = this.shortTermStat.totalCards;
@@ -68,4 +62,18 @@ export default class Training {
     localStorage.setItem('stat', JSON.stringify(this.shortTermStat));
     console.log(this.shortTermStat);
   }
+
+  continueTraining() {
+    getApproprateWords(5, 10).then((res)=>{
+      res.forEach((word) => {
+        const card = new Card(word);
+        mySwiper.appendSlide(card.cardElem);
+      });
+      mySwiper.update();      
+      updateMaterialComponents();
+      mySwiper.allowSlideNext = true;
+      mySwiper.slideNext();
+      this.playNextCard();
+    })
+  }   
 }

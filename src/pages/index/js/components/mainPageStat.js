@@ -1,4 +1,4 @@
-export const renderShortTermStat = () => {  
+export const renderShortTermStat = (settings) => {  
   const shortTermStat = JSON.parse(localStorage.getItem('stat'));
   console.log(shortTermStat);
   if (shortTermStat) {
@@ -11,8 +11,6 @@ export const renderShortTermStat = () => {
     const angle =  Math.round((180 * (shortTermStat.totalCards || 0) / settings.cardsPerDay * 100) / 100) ;
     document.querySelector('.sc-percentage').setAttribute('style', `transform: rotate(${angle}deg);`);
   }
-  const settings = JSON.parse(localStorage.getItem('settings'));
-  console.log(settings);
   if (settings) {
     document.querySelector('.plan__new').innerText = settings.newCardsPerDay;
     document.querySelector('.plan_repeat').innerText = settings.cardsPerDay - settings.newCardsPerDay;
