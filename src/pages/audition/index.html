@@ -6,7 +6,53 @@
   <title>Аудиовызов</title>
 </head>
 <body>
-  <h1>Аудиовызов</h1>
-  <button id="start-game-btn">Начать игру</button>
+  <nav class="navigation-block teal">
+
+
+
+    <ul id='dropdown' class="navigation-menu dropdown-content">
+
+      <li class="selector-header">Select difficulty</li>
+      <li class="select-level-el" data-id="0">Level 1</li>
+      <li class="select-level-el" data-id="1">Level 2</li>
+      <li class="select-level-el" data-id="2">Level 3</li>
+      <li class="select-level-el" data-id="3">Level 4</li>
+      <li class="select-level-el" data-id="4">Level 5</li>
+      <li class="select-level-el" data-id="5">Level 6</li>
+    </ul>
+    <h3>Аудиовызов</h3>
+    <a href="/">
+      <button class="btn abort-game-btn">
+        <i class="material-icons">home</i>
+      </button>
+    </a>
+  </nav>
+  <ul id="slide-out" class="sidenav">
+    <div class="avatar">
+      <h4 class="avatar__name"></h4>
+      <a class="login-btn hidden" href="#">LOGIN</a>
+      <a class="logout-btn hidden" href="#">LOGOUT</a>
+    </div>
+    <li>
+      <div class="divider"></div>
+    </li>
+    <li><a class="subheader">Select Difficulty</a></li>
+    <li>
+      <div class="input-field col s12">
+        <select class="select-difficulty">
+          <option value="0" selected>Level 1</option>
+          <option value="1">Level 2</option>
+          <option value="2">Level 3</option>
+          <option value="3">Level 4</option>
+          <option value="4">Level 5</option>
+          <option value="5">Level 6</option>
+        </select>
+      </div>
+    </li>
+  </ul>
+  <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+  <div class="game-container">
+    <button class="btn start-game-btn" id="start-game-btn">Начать игру</button>
+  </div>
 </body>
 </html>
