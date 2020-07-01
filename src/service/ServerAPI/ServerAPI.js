@@ -89,8 +89,9 @@ export function apiUserWordsGet(wordId) {
 }
 
 export function apiUserWordsSave(wordId, wordData, method) {
+  const fetchUrl = `${api.url}${api.users}/${localStorage.userId}/${api.words}/${wordId}`;
   return new Promise((resolve, reject) => {
-    fetch(`${api.url}${api.users}/${localStorage.userId}/${api.words}/${wordId}`, {
+    fetch(fetchUrl, {
       method,
       headers: {
         Authorization: `Bearer ${localStorage.token}`,
