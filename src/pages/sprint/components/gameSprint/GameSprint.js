@@ -1,4 +1,4 @@
-import { DataController } from '../../../../service/DataController';
+import { DataController } from 'Service/DataController';
 
 const startGameButton = document.getElementById('controls_start-btn');
 const scoreView = document.getElementById('score');
@@ -203,7 +203,7 @@ export default class GameSprint {
 
   stratButtonEvents() {
     startGameButton.addEventListener('click', () => {
-      GameSprint.keyboardEvents();
+      this.keyboardEvents();
       this.defaultGameValue();
       this.gameScore = defaultGameScoreValue;
 
@@ -254,6 +254,18 @@ export default class GameSprint {
     });
   }
 
+  keyboardEvents() {
+    document.addEventListener('keydown', (e) => {
+      if (this.currentGameTime > this.stopGameTime) {
+        if (e.keyCode === 37) {
+          buttonWrong.click();
+        } else if (e.keyCode === 39) {
+          buttonRight.click();
+        }
+      }
+    });
+  }
+
   static getWordsForGame() {
     dataController.getWords({ group: 1, page: 1, wordsPerPage: 200 }).then(
       (value) => {
@@ -267,26 +279,19 @@ export default class GameSprint {
     );
   }
 
-  static keyboardEvents() {
-    document.addEventListener('keydown', (e) => {
-      if (e.keyCode === 37) {
-        buttonWrong.click();
-      } else if (e.keyCode === 39) {
-        buttonRight.click();
-      }
-    });
-  }
-
   init() {
-    this.startGame();
-    this.answerButtonsEvent();
-    GameSprint.getWordsForGame();
     dataController.getUser().then(
       (userSettings) => {
         avatarName.innerText = userSettings.name
+        this.startGame();
+        this.answerButtonsEvent();
+        GameSprint.getWordsForGame();
       },
       (rejectReport) => {
         console.log(rejectReport);
+        this.startGame();
+        this.answerButtonsEvent();
+        GameSprint.getWordsForGame();
       },
     );
   }
