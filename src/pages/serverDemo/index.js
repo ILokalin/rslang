@@ -47,11 +47,11 @@ const whoIsGameFor = () => {
 dataController.getWordMaterials('5e9f5ee35eb9e72bc21af4a0').then((materialOfCard) => {
   imageMaterial.src = materialOfCard.image;
   audio.src = materialOfCard.audio;
-})
+});
 
 const playAudio = () => {
   audio.play();
-}
+};
 
 getDataButton.addEventListener('click', playAudio);
 

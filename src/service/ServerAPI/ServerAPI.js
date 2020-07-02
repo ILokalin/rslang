@@ -14,13 +14,13 @@ export function apiWordMaterialsGet(wordId) {
         if (isSuccess(rawResponse)) {
           return rawResponse.json();
         }
-        const error = new Error(rawResponse.statusText)
+        const error = new Error(rawResponse.statusText);
         error.master = 'words';
         error.code = rawResponse.status;
         throw error;
       })
       .then((response) => resolve(response))
-      .catch((errorReport) => reject(errorReport))
+      .catch((errorReport) => reject(errorReport));
   });
 }
 

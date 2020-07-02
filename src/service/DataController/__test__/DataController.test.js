@@ -253,6 +253,5 @@ describe('Test for userWords', () => {
 
   test('The getWordMaterials retuned all materias from server', async () => {
     const materials = await dataController.getWordMaterials('5e9f5ee35eb9e72bc21af4a0');
-
-  })
+  });
 });
