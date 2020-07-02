@@ -76,11 +76,15 @@ const Utils = {
   getWordCard: (word) => `<span class="white-text truncate">${word}</span>`,
 
   displayResults: () => {
-    const cardsContent = document.querySelectorAll('.card-content');
+    const cardsContent = document.querySelectorAll('.container__cards .draggable');
     cardsContent.forEach((item) => {
       const card = item;
       card.classList.add('results');
-      card.classList.remove('hidden');
+      if (card.success) {
+        card.classList.add('success');
+      } else {
+        card.classList.add('error');
+      }
     });
   },
 

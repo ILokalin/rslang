@@ -66,7 +66,6 @@ export default class Game {
   onNextBtnClick(e) {
     Utils.goToNextRound();
     this.restartGame();
-    //RESULTS.classList.add('hidden');
     e.preventDefault();
   }
 
@@ -88,7 +87,7 @@ export default class Game {
       words.push(data);
     });
     words.sort(() => 0.5 - Math.random());
-    words.forEach(this.createWordCard);
+    words.forEach(this.createWordCard, this);
     dataTransfer(this.props);
   }
 
@@ -134,8 +133,6 @@ export default class Game {
     CARD.setAttribute('data-word', `${data.word}`);
     CARD.innerHTML = Utils.getCard(data.id, image);
     cardWrapper.append(CARD);
-    const cln = CARD.cloneNode(true);
-    this.props.errorsArr.push(cln);
     allCards.appendChild(cardWrapper);
   }
 
@@ -148,8 +145,8 @@ export default class Game {
     CARD.classList.add('card-panel', 'teal', 'draggable');
     CARD.innerHTML = Utils.getWordCard(`${data.word}`);
     cardWrapper.append(CARD);
-    // const cln = CARD.cloneNode(true);
-    //this.props.errorsArr.push(cln);
+    const cln = CARD.cloneNode(true);
+    this.props.errorsArr.push(cln);
     allWords.appendChild(cardWrapper);
   }
 }

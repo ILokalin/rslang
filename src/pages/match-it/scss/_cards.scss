@@ -93,7 +93,7 @@ $empty-cards-color: color('blue', 'lighten-5') !default;
   color: #ffffff;
 }
 
-.container__cards .draggable {
+.container__cards .card-panel.draggable {
   position: absolute;
   top: 0;
   z-index: 1000;
@@ -103,6 +103,14 @@ $empty-cards-color: color('blue', 'lighten-5') !default;
   background-color: transparent !important;
   border: solid 1px;
   width: 80%;
+}
+
+.container__cards .draggable.error {
+  background-color: #ff0000 !important;
+}
+
+.container__cards .draggable.success {
+  background-color: #008000 !important;
 }
 
 @media only screen and (min-width: 993px) {
