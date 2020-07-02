@@ -8,4 +8,5 @@ export {
   apiUserWordsGet,
   apiUserWordsGetAll,
   apiUserAggregatedWords,
+  apiWordMaterialsGet,
 } from './ServerAPI';

@@ -250,4 +250,9 @@ describe('Test for userWords', () => {
     const statistics = await dataController.getUserStatistics();
     expect(statistics.savanna.longTime.length).toBeGreaterThanOrEqual(1);
   });
+
+  test('The getWordMaterials retuned all materias from server', async () => {
+    const materials = await dataController.getWordMaterials('5e9f5ee35eb9e72bc21af4a0');
+
+  })
 });

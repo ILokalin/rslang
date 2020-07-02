@@ -15,9 +15,11 @@ import {
   apiUserWordsSave,
   apiUserWordsGet,
   apiUserAggregatedWords,
+  apiWordMaterialsGet,
 } from 'Service/ServerAPI';
 import { reportMessages } from './reportMessages';
 import { dataControllerConst } from './dataControllerConst';
+import { concat } from 'core-js/fn/array';
 
 const authPopup = new AuthPopup();
 
@@ -43,6 +45,17 @@ export class DataController {
         this.reject(dataControllerConst.cancelUser);
       }
     });
+  }
+
+  getWordMaterials(wordId) {
+    return apiWordMaterialsGet(wordId)
+      .then((wordMaterials) => {
+        wordMaterials.image = concat('data:image/jpg;base64,', wordMaterials.image);
+        wordMaterials.audio = concat('data:audio/mpeg;base64,', wordMaterials.audio);
+        wordMaterials.audioExample = concat('data:audio/mpeg;base64,', wordMaterials.audioExample);
+        wordMaterials.audioMeaning = concat('data:audio/mpeg;base64,', wordMaterials.audioMeaning);
+        return wordMaterials;
+      })
   }
 
   userWordsGetAll(groupWords) {
