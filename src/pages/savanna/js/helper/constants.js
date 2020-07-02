@@ -1,26 +1,52 @@
-const startButton = document.querySelector('.start');
+const appStartButton = document.querySelector('.app-start');
+const intro = document.querySelector('.intro');
+const difficultMenu = document.querySelector('.difficult');
+const gameStartButton = document.querySelector('.startGame');
 const restartButton = document.querySelector('.restart');
-const backButton = document.querySelector('.back');
-const guessWord = document.querySelector('.game-savanna__question-word');
-const guessContainer = document.querySelector('.game-savanna__question-container');
-const answerContsainer = document.querySelector('.game-savanna__answer-container');
-const appContainer = document.querySelector('.app-savanna');
-const header = document.querySelector('.header-savanna');
-const startMenu = document.querySelector('.start-menu-container');
-const gameContainer = document.querySelector('.game-savanna');
-const resultContainer = document.querySelector('.results-container');
-const stat = document.querySelector('.result');
+const currentGameStage = document.querySelector('.stage');
+const hearts = document.querySelectorAll('.heart');
+const gameContainer = document.querySelector('.game-container');
+const gameHeader = document.querySelector('.game-header');
+const soundSwitcher = document.querySelector('.sound-switcher');
+const fallingWordText = document.querySelector('.falling-word__item');
+const fallingWordElement = document.querySelector('.falling-word');
+const answerElements = document.querySelectorAll('.answer-options__item');
+const answerContainer = document.querySelector('.answer-options');
+const userNameElement = document.querySelector('.user-name');
+const health = 5;
+const statistic = document.querySelector('.statistic');
+const errorCount = document.querySelector('.error-count ');
+const errorTable = document.querySelector('.error-table');
+const knowCount = document.querySelector('.know-count');
+const knowTable = document.querySelector('.know-table');
+const levelOption = document.querySelector('.level');
+const roundOption = document.querySelector('.round');
 const audio = document.querySelector('.audio');
-const gameData = {
-    currentCards: [],
-    count: 0,
-    wordContainer: [],
-    knowWords: [],
-    errorWords: [],
-    currentRound: 5,
-    currentLevel: 6,
-    roundStreak: 0,
-    health: 5,
-}
 
-export { startButton, restartButton, backButton, guessWord, guessContainer, answerContsainer, appContainer, header, startMenu, gameContainer, resultContainer, stat, audio, gameData };
+
+export {
+  appStartButton,
+  intro,
+  difficultMenu,
+  gameStartButton,
+  currentGameStage,
+  hearts,
+  gameContainer,
+  gameHeader,
+  soundSwitcher,
+  fallingWordText,
+  answerElements,
+  answerContainer,
+  health,
+  fallingWordElement,
+  userNameElement,
+  errorCount,
+  knowCount,
+  errorTable,
+  knowTable,
+  statistic,
+  restartButton,
+  levelOption,
+  roundOption,
+  audio
+};

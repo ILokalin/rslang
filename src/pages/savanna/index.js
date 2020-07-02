@@ -1,18 +1,16 @@
 import './index.scss';
-import startGame from './js/game/game';
-import { startButton, restartButton, gameData } from './js/helper/constants';
+import 'materialize-css';
+import Intro from './js/intro/intro';
+import Game from './js/game/game';
+
+// eslint-disable-next-line no-undef
+M.AutoInit();
 
 
-startButton.addEventListener('click', () => startGame());
-restartButton.addEventListener('click', () => {
-    gameData.currentLevel = 1;
-    gameData.currentRound = 1;
-    gameData.health = 5;
-    gameData.currentCards = [];
-    gameData.wordContainer = [];
-    startGame();
-});
-
+// eslint-disable-next-line no-unused-vars
+const intro = new Intro();
+// eslint-disable-next-line no-unused-vars
+const game = new Game();
 
 
 
