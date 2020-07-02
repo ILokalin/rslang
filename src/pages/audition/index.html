@@ -7,19 +7,6 @@
 </head>
 <body>
   <nav class="navigation-block teal">
-
-
-
-    <ul id='dropdown' class="navigation-menu dropdown-content">
-
-      <li class="selector-header">Select difficulty</li>
-      <li class="select-level-el" data-id="0">Level 1</li>
-      <li class="select-level-el" data-id="1">Level 2</li>
-      <li class="select-level-el" data-id="2">Level 3</li>
-      <li class="select-level-el" data-id="3">Level 4</li>
-      <li class="select-level-el" data-id="4">Level 5</li>
-      <li class="select-level-el" data-id="5">Level 6</li>
-    </ul>
     <h3>Аудиовызов</h3>
     <a href="/">
       <button class="btn abort-game-btn">
@@ -53,6 +40,19 @@
   <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
   <div class="game-container">
     <button class="btn start-game-btn" id="start-game-btn">Начать игру</button>
+  </div>
+  <div id="modal-warning" class="modal">
+    <div class="modal-content">
+        <p class="warning-text"></p>
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat">Ok</a>
+    </div>
+  </div>
+  <div class="select-words-window hidden">
+    <p class="select-words-description">Выберите какие слова вы хотите использовать в игры</p>
+    <button id="own-words" class="btn select-words-btn">Свои слова</button>
+    <button id="all-words" class="btn select-words-btn">Все слова</button>
   </div>
 </body>
 </html>

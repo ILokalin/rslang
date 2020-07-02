@@ -4,9 +4,14 @@ import {
   DATA_URL,
   gameContainer,
   abortGameBtn,
+  userNameEl,
   difficultySelector,
   logInBtn,
   logOutBtn,
+  errorMessageEl,
+  selectWordsWindow,
+  ownWordsBtn,
+  allWordsBtn,
 } from './constants'
 
 export default class AuditionGame {
@@ -26,6 +31,12 @@ export default class AuditionGame {
     this.endRoundListener = this.endRound.bind(this);
     this.logInListener = this.getUserData.bind(this);
 
+  }
+
+  static openModal(message)  {
+    const modal = M.Modal.getInstance(document.querySelector('.modal'));
+    errorMessageEl.innerText = message;
+    modal.open();
   }
 
   static getRandomNumber (max) {
@@ -81,6 +92,7 @@ export default class AuditionGame {
         (userSettings) => {
           logOutBtn.classList.remove('hidden');
           this.user = userSettings.name;
+          userNameEl.innerText = this.user;
           this.startGame();
         },
         (rejectReport) => {
@@ -99,8 +111,7 @@ export default class AuditionGame {
     if (this.user) {
       this.getUserWords();
     } else {
-      const pages = this.generatePages();
-      this.getWords(pages);
+      this.playWithAllWords();
     }
   }
 
@@ -109,19 +120,48 @@ export default class AuditionGame {
       .then(
         (response) => {
           const words = response[0].paginatedResults;
-          words.sort(() => Math.random() - Math.random());
-          this.roundsNumber = Math.floor(words.length/5);
-
-          this.createRoundsData(words);
-          this.createCurrentRoundPage();
-          this.createNextRoundPage();
-          this.addKeyboardHandler();
-          this.startRound();
+          if (words.length < 10) {
+            const message = 'You haven`t learned enough words to use them in the game. Game will start with all words.'
+            AuditionGame.openModal(message);
+            this.playWithAllWords();
+          } else {
+            this.showSelectWordsWindow(words);
+          }
         },
         (rejectReport) => {
-          console.log(rejectReport);
+          const message = `API request failed with error: ${rejectReport.message}`
+          AuditionGame.openModal(message);
         }
       )
+  }
+
+  showSelectWordsWindow(words) {
+    selectWordsWindow.classList.remove('hidden');
+    ownWordsBtn.addEventListener('click', () => {
+      this.playWithOwnWords(words);
+      selectWordsWindow.classList.add('hidden');
+    });
+    allWordsBtn.addEventListener('click', () => {
+      this.playWithAllWords();
+      selectWordsWindow.classList.add('hidden');
+    })
+  }
+
+  playWithOwnWords(words) {
+    words.sort(() => Math.random() - Math.random());
+    this.roundsNumber = Math.floor(words.length/5);
+    const selector =  document.querySelectorAll('select');
+    selector.disabled = true;
+    this.createRoundsData(words);
+    this.createCurrentRoundPage();
+    this.createNextRoundPage();
+    this.addKeyboardHandler();
+    this.startRound();
+  }
+
+  playWithAllWords() {
+      const pages = this.generatePages();
+      this.getWords(pages);
   }
 
   generatePages() {
@@ -156,9 +196,9 @@ export default class AuditionGame {
         this.addKeyboardHandler();
         this.startRound();
       })
-      .catch(() => {
-        // TODO redirect to err page or display err message
-        alert('Something went wrong. Try later');
+      .catch((err) => {
+        const message = `API request failed with error: ${err.message}`
+        AuditionGame.openModal(message);
       })
   }
 
