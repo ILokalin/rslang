@@ -19,6 +19,7 @@ const stepToNextWordIndex = 1;
 const defaultGameScoreValue = 0;
 const timeAnswerResultVIew = 200;
 const poinForNextLevel = 4;
+const minWordsForGameValue = 100;
 const seriesViewDefaulltBackgraundColor = 'white';
 const parrotYellow = document.getElementById('parrot-yellow');
 const parrotBrown = document.getElementById('parrot-brown');
@@ -49,6 +50,7 @@ const LevelViewInfo = {
 };
 const clearTextValue = '';
 const words = [];
+const wordsDefault = [];
 
 export default class GameSprint {
   constructor(score) {
@@ -266,32 +268,65 @@ export default class GameSprint {
     });
   }
 
-  static getWordsForGame() {
-    dataController.getWords({ group: 1, page: 1, wordsPerPage: 200 }).then(
-      (value) => {
-        value.flat().map(({ word, wordTranslate }) => {
-          return words.push({ word, wordTranslate });
-        });
-      },
-      (reason) => {
-        answerImage.innerText = `${reason}`;
-      },
-    );
+  static getWordsForGame(userLogin) {
+    if (userLogin) {
+      dataController.userWordsGetAll(['onlearn'])
+        .then(
+          (value) => {
+            const { paginatedResults } = value[0];
+            paginatedResults.flat().map(({ word, wordTranslate }) => {
+              return words.push({ word, wordTranslate });
+            });
+          },
+          (reason) => {
+            answerImage.innerText = `${reason}`;
+          },
+        ).then(() => {
+          if (words.length < minWordsForGameValue) {
+            Array.prototype.push.apply(words, wordsDefault);
+          }
+        })
+    } else {
+      dataController.getWords({ group: 1, page: 1, wordsPerPage: 200 })
+        .then(
+          (value) => {
+            value.flat().map(({ word, wordTranslate }) => {
+              return words.push({ word, wordTranslate });
+            });
+          },
+          (reason) => {
+            answerImage.innerText = `${reason}`;
+          },
+        );
+    }
+
   }
 
   init() {
+    dataController.getWords({ group: 1, page: 1, wordsPerPage: 200 })
+      .then(
+        (value) => {
+          value.flat().map(({ word, wordTranslate }) => {
+            return wordsDefault.push({ word, wordTranslate });
+          });
+        },
+        (reason) => {
+          answerImage.innerText = `${reason}`;
+        },
+      );
+
     dataController.getUser().then(
       (userSettings) => {
         avatarName.innerText = userSettings.name
+        GameSprint.getWordsForGame('userLogin');
         this.startGame();
         this.answerButtonsEvent();
-        GameSprint.getWordsForGame();
       },
       (rejectReport) => {
         console.log(rejectReport);
+        GameSprint.getWordsForGame();
         this.startGame();
         this.answerButtonsEvent();
-        GameSprint.getWordsForGame();
       },
     );
   }
