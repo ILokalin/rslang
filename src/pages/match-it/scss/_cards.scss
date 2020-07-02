@@ -1,7 +1,7 @@
 $empty-cards-color: color('blue', 'lighten-5') !default;
 
 .draggable,
-.droptarget {
+.container__cards .droptarget {
   text-align: center;
   color: white;
   font-size: 1.7rem;
@@ -51,6 +51,12 @@ $empty-cards-color: color('blue', 'lighten-5') !default;
     background: white;
     position: relative;
     cursor: no-drop;
+    &.overlayed {
+      background: black;
+      img {
+        opacity: 0.4;
+      }
+    }
 
     img {
       position: absolute;
@@ -87,8 +93,41 @@ $empty-cards-color: color('blue', 'lighten-5') !default;
   color: #ffffff;
 }
 
+.container__cards .draggable {
+  position: absolute;
+  top: 0;
+  z-index: 1000;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  top: calc(50% - 0.25rem);
+  background-color: transparent !important;
+  border: solid 1px;
+  width: 80%;
+}
+
 @media only screen and (min-width: 993px) {
   .container {
-    width: 80%;
+    width: 90%;
+  }
+}
+
+.row .container__words .col {
+  &.l6,
+  &.s12,
+  &.m12,
+  &.m4 {
+    width: auto;
+  }
+}
+
+@media only screen and (min-width: 601px) {
+  .row .container__words .col.m12 {
+    width: auto;
+  }
+}
+
+@media only screen and (min-width: 993px) {
+  .row .container__words .col.l6 {
+    width: auto;
   }
 }

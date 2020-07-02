@@ -73,11 +73,7 @@ const Utils = {
     </div>
     `,
 
-  getWordCard: (word) =>
-    `
-       <span class="white-text">${word}</span>
-
-  `,
+  getWordCard: (word) => `<span class="white-text truncate">${word}</span>`,
 
   displayResults: () => {
     const cardsContent = document.querySelectorAll('.card-content');
