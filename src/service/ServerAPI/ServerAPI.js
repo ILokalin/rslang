@@ -110,7 +110,7 @@ export function apiUserWordsSave(wordId, wordData, method) {
         error.code = rawResponse.status;
         throw error;
       })
-      .then((response) => {        
+      .then((response) => {
         resolve(response);
       })
       .catch((errorReport) => reject(errorReport));

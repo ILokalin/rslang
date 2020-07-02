@@ -99,7 +99,11 @@ describe('Helpers tests', () => {
       savanna: { result: 25 },
     };
 
-    expect(JSON.parse(dataController.prepareUploadStatistics(originStatistics, uploadStatistics).optional.savanna).longTime.length).toBe(6);
+    expect(
+      JSON.parse(
+        dataController.prepareUploadStatistics(originStatistics, uploadStatistics).optional.savanna,
+      ).longTime.length,
+    ).toBe(6);
   });
 
   test('The findTopStatistics insert better results in middle array', () => {
@@ -245,5 +249,5 @@ describe('Test for userWords', () => {
   test('The userStatisticsGet returned combination of statistics object', async () => {
     const statistics = await dataController.getUserStatistics();
     expect(statistics.savanna.longTime.length).toBeGreaterThanOrEqual(1);
-  } )
+  });
 });

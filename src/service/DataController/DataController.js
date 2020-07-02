@@ -165,13 +165,12 @@ export class DataController {
       this.reject = reject;
 
       if (this.checkToken()) {
-        apiUserSettingsGet('statistics')
-          .then(
-            (userStatistics) => {
-              resolve(this.orderingStatResult(userStatistics))
-            },
-            (rejectReport) => reject(rejectReport),
-          )
+        apiUserSettingsGet('statistics').then(
+          (userStatistics) => {
+            resolve(this.orderingStatResult(userStatistics));
+          },
+          (rejectReport) => reject(rejectReport),
+        );
       } else {
         // temp cover - TODO algorithm for auth
         // eslint-disable-next-line prefer-promise-reject-errors
@@ -221,7 +220,7 @@ export class DataController {
     };
     apiUserCreate(userData)
       .then(() => apiUserSignIn(userData))
-      .then(() => apiUserSettingsPut({learnedWords: 0}, 'statistics'))
+      .then(() => apiUserSettingsPut({ learnedWords: 0 }, 'statistics'))
       .then(() => apiUserSettingsPut(userSettingsName))
       .then(() => apiUserSettingsGet())
       .then(
@@ -247,7 +246,7 @@ export class DataController {
   orderingStatResult(userStatistics) {
     const { learnedWords = 0, optional = {} } = userStatistics;
     const originStatistics = {
-      ...this.unpackUserSettings(optional)
+      ...this.unpackUserSettings(optional),
     };
     originStatistics.learnedWords = learnedWords;
 
