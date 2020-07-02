@@ -1,5 +1,4 @@
 import { ElementGen } from 'Src/service/DomGen/DomGen';
-// import { dataController } from '../constants';
 
 const vocabularyDifficult = document.getElementById('vocabulary__difficult');
 const vocabularyOnLearn = document.getElementById('vocabulary__on-learn');
@@ -9,6 +8,7 @@ export default class VocabularyWord {
   constructor(dataController) {
     this.dataController = dataController;
     this.wordState = undefined;
+    this.curentCloum = 1;
   }
 
   createHeader(wordState) {
@@ -17,7 +17,8 @@ export default class VocabularyWord {
       'afterbegin',
       `<i data-source="${wordState.audio}" class="material-icons vocabulary-sound">volume_up</i>
                                         <span class="vocabulary__word">${wordState.word}</span>
-                                        <span class="new badge" data-badge-caption="progress">${wordState.difficulty}</span>`,
+                                        <i class="material-icons restore-icon" title="Восстановить в категорию на изучении">restore_page</i>
+                                        <span class="new badge" data-badge-caption="${wordState.progress}"></span>`,
     );
     return div;
   }
@@ -39,7 +40,7 @@ export default class VocabularyWord {
                   </div>
                   <div class="divider"></div>
                   <div class="vocabulary__card-footer">
-                    <p>Последнее повторение было: <span class="last-itaretion-date">${wordState.userWord.optional.lastDate}</span></p>
+                    <p>Последнее повторение было: <span class="last-itaretion-date">${wordState.lastDate}</span></p>
                     <p>Следующее повторение будет: <span class="last-itaretion-date">${wordState.nextTime}</span></p>
                   </div>`,
     );
@@ -57,7 +58,7 @@ export default class VocabularyWord {
       const word = element;
       const lastDate = new Date(element.userWord.optional.lastDate);
       const interval = (2 * element.userWord.optional.progress + 1) * 24 * 60 * 60 * 1000;
-      const nextTime = new Date(+lastDate + interval).toDateString();
+      const nextTime = new Date(+lastDate + interval);
 
       Promise.all([
         this.dataController.getMaterials(element.image).then((fullPath) => {
@@ -74,14 +75,23 @@ export default class VocabularyWord {
         }),
       ]).then(() => {
         const wordState = word;
-        wordState.nextTime = nextTime;
-
+        wordState.lastDate = lastDate.toLocaleString("ru", {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        });
+        wordState.nextTime = nextTime.toLocaleString("ru", {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        });
+        wordState.progress = this.getLearnProgressString(word.userWord.optional.progress);
         const li = ElementGen('li', 'vocabulary__word-container');
-        // word
         li.appendChild(this.createHeader(wordState));
         li.appendChild(this.createBody(wordState));
         ul.appendChild(li);
         this.playSound(li);
+        this.restoreWordInLerningCategory(li, word);
       });
     });
     return ul;
@@ -109,6 +119,7 @@ export default class VocabularyWord {
     const vocabularySound = el.querySelectorAll('.vocabulary-sound');
     vocabularySound.forEach((element) =>
       element.addEventListener('click', (e) => {
+        e.stopPropagation();
         const sound = new Audio();
         sound.src = e.target.dataset.source;
         sound.play();
@@ -116,25 +127,51 @@ export default class VocabularyWord {
     );
   }
 
-  renderVocabulary() {
-    // Promise.all([
-    //   dataController.userWordsGetAll(['onlearn']),
-    //   dataController.userWordsGetAll(['hard']),
-    //   dataController.userWordsGetAll(['deleted']),
-    // ]).then(
-    //   (response) => {
-    //     this.renderVocabularyWords(response[0], vocabularyOnLearn);
-    //     this.renderVocabularyWords(response[1], vocabularyDifficult);
-    //     this.renderVocabularyWords(response[2], vocabularyDeleted);
-    //   },
-    //   (rejectReport) => rejectReport,
-    // );
+  restoreWordInLerningCategory(li, wordState) {
+    const vocabularyRestorIcon = li.querySelectorAll('.restore-icon');
+    const vocabularyOnLearnColumn = vocabularyOnLearn.getElementsByClassName(`on-learn__column${this.curentCloum}`);
+    if (this.curentCloum === 1) { this.curentCloum = 2 }
+    else { this.curentCloum = 1 }
+    vocabularyRestorIcon.forEach((element) =>
+      element.addEventListener('click', () => {
+        vocabularyOnLearnColumn[0].appendChild(li);
+        const saveOption = {
+          // eslint-disable-next-line no-underscore-dangle
+          id: wordState._id,
+          status: 'onlearn',
+          progress: wordState.userWord.optional.progress,
+        }
+        this.dataController.userWordsPut(saveOption).then((response) => response,
+          (report) => console.log(report));
+      }),
+    );
+  }
 
+  getLearnProgressString(coefficient) {
+    if (coefficient === 0) {
+      return 'в начале изучения';
+    }
+    if (coefficient > 0 && coefficient <= 2) {
+      return 'недавно начали изучать';
+    }
+    if (coefficient > 2 && coefficient <= 4) {
+      return 'хорошее начало';
+    }
+    if (coefficient > 4 && coefficient <= 8) {
+      return 'хорошо знаете слово';
+    }
+    if (coefficient > 8) {
+      return 'отлично знаете слово';
+    }
+    return 'новое слово';
+  }
+
+  renderVocabulary() {
     this.dataController.userWordsGetAll(['onlearn']).then(
       (response) => {
         this.renderVocabularyWords(response, vocabularyOnLearn);
       },
-      (rejectReport) => rejectReport,
+      (rejectReport) => console.log(rejectReport),
     );
 
     this.dataController.userWordsGetAll(['hard']).then(
@@ -150,9 +187,5 @@ export default class VocabularyWord {
       },
       (rejectReport) => rejectReport,
     );
-
-    // dataController.userWordsGetAll(['onlearn', 'hard', 'deleted']).then(() => {
-    //   this.playSound();
-    // });
   }
 }
