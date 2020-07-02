@@ -1,0 +1,30 @@
+.intro,
+.difficult {
+  width: 100%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  transition: 0.5s;
+  text-align: center;
+}
+.intro-text,
+.difficult-text {
+  padding: 10px;
+  font-size: 1.5em;
+  font-weight: 400;
+  max-width: 1000px;
+}
+.intro-btn {
+  margin-top: 20px;
+}
+.input-field.col label {
+  left: 0;
+  color: black;
+  font-size: 1rem;
+}

@@ -1,30 +1,127 @@
 import AuditionGameStatistics from './game-statistics'
+import { DataController } from 'Service/DataController';
+import {
+  DATA_URL,
+  gameContainer,
+  abortGameBtn,
+  difficultySelector,
+  logInBtn,
+  logOutBtn,
+} from './constants'
 
 export default class AuditionGame {
   constructor() {
-    this.user = localStorage.getItem('user') || 'Dick McDickennson';
+    this.user = '';
     this.level = 0;
     this.round = 0;
-    this.correctAnswers = 0;
+    this.roundsNumber = 10;
     this.roundsData = [];
+    this.dataController = new DataController();
 
-    this.startGame();
+    this.getUserData();
+    this.addSelectDifficultyHandler();
 
     this.wordClickListener = this.checkAnswer.bind(this);
     this.showAnswerListener = this.showAnswer.bind(this);
     this.endRoundListener = this.endRound.bind(this);
+    this.logInListener = this.getUserData.bind(this);
+
   }
 
   static getRandomNumber (max) {
       return Math.floor(Math.random() * Math.floor(max));
   }
 
+  addKeyboardHandler() {
+    document.addEventListener('keydown', this.keyboardHandler.bind(this));
+  }
+
+  keyboardHandler(e) {
+    const { key } = e;
+    if(key >= 1 && key <= 5) {
+      const word = this.roundsData[this.round].wordTranslate;
+      const selectedEl = document.querySelector (`.current-round [data-order="${key}"]`);
+      const selectedAnswer = selectedEl.innerText.slice(3);
+
+        if (selectedAnswer === word) {
+          selectedEl.classList.add('correct');
+          this.showAnswer();
+          this.roundsData[this.round].answer = true;
+
+        } else {
+          selectedEl.classList.add('wrong');
+          this.showAnswer();
+          this.roundsData[this.round].answer = false;
+        }
+      }
+
+      if(key === `Enter`) {
+        const puzzledWord = document.querySelector('.current-round > .puzzled-word-element');
+        if(puzzledWord.classList.contains ('answered')) {
+          this.endRound();
+        } else {
+          this.showAnswer();
+        }
+      }
+    }
+
+
+  addSelectDifficultyHandler() {
+    difficultySelector.addEventListener('change', this.selectDifficultyHandler.bind(this))
+  }
+
+  selectDifficultyHandler(e) {
+      this.level = e.target.value;
+      this.startGame();
+  }
+
+  getUserData() {
+    this.dataController.getUser()
+      .then(
+        (userSettings) => {
+          logOutBtn.classList.remove('hidden');
+          this.user = userSettings.name;
+          this.startGame();
+        },
+        (rejectReport) => {
+          logInBtn.classList.remove('hidden');
+          logInBtn.addEventListener('click', this.logInListener);
+          this.startGame();
+        }
+      )
+  }
+
   startGame() {
     this.round = 0;
-    document.body.innerHTML = '';
+    this.roundsData = [];
+    gameContainer.innerHTML = '';
 
-    const pages = this.generatePages();
-    this.getWords(pages);
+    if (this.user) {
+      this.getUserWords();
+    } else {
+      const pages = this.generatePages();
+      this.getWords(pages);
+    }
+  }
+
+  getUserWords() {
+    this.dataController.userWordsGetAll(['onlearn'])
+      .then(
+        (response) => {
+          const words = response[0].paginatedResults;
+          words.sort(() => Math.random() - Math.random());
+          this.roundsNumber = Math.floor(words.length/5);
+
+          this.createRoundsData(words);
+          this.createCurrentRoundPage();
+          this.createNextRoundPage();
+          this.addKeyboardHandler();
+          this.startRound();
+        },
+        (rejectReport) => {
+          console.log(rejectReport);
+        }
+      )
   }
 
   generatePages() {
@@ -43,7 +140,6 @@ export default class AuditionGame {
 
   fetchWords(pageNumber) {
     const url = `https://afternoon-falls-25894.herokuapp.com/words?group=${this.level}&page=${pageNumber}`;
-
     return fetch(url);
   }
 
@@ -57,6 +153,7 @@ export default class AuditionGame {
         this.createRoundsData(words);
         this.createCurrentRoundPage();
         this.createNextRoundPage();
+        this.addKeyboardHandler();
         this.startRound();
       })
       .catch(() => {
@@ -66,33 +163,48 @@ export default class AuditionGame {
   }
 
   createRoundsData(words) {
-    while (this.roundsData.length < 10) {
+    while (this.roundsData.length < this.roundsNumber) {
       const roundWords = words.splice(0, 5);
       const roundData = {};
-
       roundData.word = roundWords[0].word;
       roundData.wordTranslate = roundWords[0].wordTranslate;
-      roundData.audio = new Audio(roundWords[0].audio.replace('files', 'sound'));
-      roundData.image = roundWords[0].image.replace('files', 'img');
+      roundData.audio = new Audio(`${DATA_URL}/${roundWords[0].audio}`);
+      roundData.image = `${DATA_URL}/${roundWords[0].image}`;
       roundData.translations = roundWords.map((word) => word.wordTranslate);
 
       roundData.translations.sort(() => Math.random() - Math.random());
 
       this.roundsData.push(roundData);
+
+      // TODO get materials path
+      // const audioFile = roundWords[0].audio;
+      // const imgFile = roundWords[0].image;
+      //
+      // this.getMediaMaterials(audioFile);
+      // this.getMediaMaterials(imgFile);
+
     }
+  }
+
+  getMediaMaterials(file) {
+    this.dataController.getMaterials(file)
+      .then(
+        (fullPath) => {
+          console.log(fullPath)
+        }
+      )
   }
 
   createCurrentRoundPage () {
     const roundData = this.roundsData[this.round];
     const wrapper = this.createRoundPage(roundData);
-
     wrapper.classList.add('current-round')
   }
 
   createNextRoundPage () {
+
     const roundData = this.roundsData[this.round + 1];
     const wrapper = this.createRoundPage(roundData);
-
     wrapper.classList.add('next-round')
   }
 
@@ -100,7 +212,7 @@ export default class AuditionGame {
 
     const gameWrapper = document.createElement('div');
     gameWrapper.classList.add('game-wrapper');
-    document.body.append(gameWrapper);
+    gameContainer.append(gameWrapper);
 
     const wordImageEl = document.createElement('div');
     wordImageEl.classList.add('word-image-element');
@@ -121,12 +233,13 @@ export default class AuditionGame {
 
     const wordTranslationBlock = document.createElement('div');
     wordTranslationBlock.classList.add('words-translations-block');
-    data.translations.forEach((el) => this.writeWordsTranslations(el, wordTranslationBlock));
+    data.translations.forEach((el, index) => this.writeWordsTranslations(el, index + 1, wordTranslationBlock));
     wordTranslationBlock.addEventListener('click', this.wordClickListener);
     gameWrapper.append(wordTranslationBlock);
 
     const checkAnswerBtn = document.createElement('button');
     checkAnswerBtn.classList.add('check-answer-btn');
+    checkAnswerBtn.classList.add('btn');
     checkAnswerBtn.innerText = ('Я не знаю');
     checkAnswerBtn.addEventListener('click', this.showAnswerListener);
     gameWrapper.append(checkAnswerBtn);
@@ -134,11 +247,12 @@ export default class AuditionGame {
     return gameWrapper;
   }
 
-  writeWordsTranslations(el, block) {
+  writeWordsTranslations(el, order, block) {
     const wordTranslationEl = document.createElement('div');
     wordTranslationEl.classList.add('words-translations-element');
-    wordTranslationEl.innerText = el;
+    wordTranslationEl.innerText = `${order}. ${el}`;
     wordTranslationEl.id = el;
+    wordTranslationEl.setAttribute('data-order', order)
     block.append(wordTranslationEl);
   }
 
@@ -153,9 +267,10 @@ export default class AuditionGame {
 
     image.classList.add('answered');
     puzzledWord.classList.add('answered');
+    debugger;
     this.roundsData[this.round].answer = false;
 
-    if (this.round === 9) {
+    if (this.round === this.roundsNumber - 1) {
       checkAnswerBtn.innerText = ('Конец игры');
     } else {
       checkAnswerBtn.innerText = ('Следующий вопрос');
@@ -200,7 +315,7 @@ export default class AuditionGame {
     nextRoundPage.classList.remove('next-round');
     nextRoundPage.classList.add('current-round');
 
-    if (this.round < 9) {
+    if (this.round < this.roundsNumber - 1) {
       this.createNextRoundPage();
     }
 
@@ -209,7 +324,8 @@ export default class AuditionGame {
   }
 
   endRound() {
-    if (this.round === 9) {
+    debugger;
+    if (this.round === this.roundsNumber - 1) {
       this.endGame();
     } else {
       this.nextRound();

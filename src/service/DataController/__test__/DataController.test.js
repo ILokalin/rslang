@@ -38,6 +38,7 @@ describe('Helpers tests', () => {
 
     expect(dataController.unpackUserSettings(optionalTest)).toEqual(expectResult);
   });
+
   test('pack converts object fields to strings', () => {
     const optionalTest = {
       name: 'Tester Testovich',
@@ -67,6 +68,57 @@ describe('Helpers tests', () => {
     };
 
     expect(dataController.packUserSettings(optionalTest)).toEqual(expectResult);
+  });
+
+  test('The prepareUploadStatistic add game statistic and pack object', () => {
+    const originStatistics = {
+      learnedWords: 5,
+      optional: dataController.packUserSettings({
+        card: {
+          learnedWords: 20,
+          series: 10,
+        },
+        savanna: {
+          top: [
+            { date: '', result: 100 },
+            { date: '', result: 80 },
+            { date: '', result: 75 },
+          ],
+          longTime: [
+            { date: '', result: 50 },
+            { date: '', result: 50 },
+            { date: '', result: 100 },
+            { date: '', result: 80 },
+            { date: '', result: 75 },
+          ],
+        },
+      }),
+    };
+
+    const uploadStatistics = {
+      savanna: { result: 25 },
+    };
+
+    expect(
+      JSON.parse(
+        dataController.prepareUploadStatistics(originStatistics, uploadStatistics).optional.savanna,
+      ).longTime.length,
+    ).toBe(6);
+  });
+
+  test('The findTopStatistics insert better results in middle array', () => {
+    expect(
+      dataController.findTopStatistics([{ result: 50 }, { result: 25 }], { result: 30 })[1].result,
+    ).toBe(30);
+  });
+
+  test('The findTopStatistics cut top list of 5 positions ', () => {
+    expect(
+      dataController.findTopStatistics(
+        [{ result: 50 }, { result: 25 }, { result: 10 }, { result: 6 }, { result: 4 }],
+        { result: 30 },
+      ).length,
+    ).toBe(5);
   });
 });
 
@@ -107,8 +159,8 @@ describe('The getWords', () => {
       if (winState) {
         setTimeout(() => {
           setUserData({
-            email: 'checker@mail.ru',
-            password: 'checkerCH#2',
+            email: 'tocka-test@test.ru',
+            password: 'tockaTest#1',
           });
         }, 200);
       }
@@ -175,5 +227,27 @@ describe('Test for userWords', () => {
     await dataController.userWordsPut(wordsList[1]);
     const result = await dataController.userWordsGetAll(['hard', 'easy']);
     expect(result[0].paginatedResults.length).toBeGreaterThanOrEqual(2);
+  });
+
+  test('The setUserStatistics write statistic', async () => {
+    const testStat = {
+      savanna: { result: 90 },
+    };
+
+    const statistics = await dataController.setUserStatistics(testStat);
+    expect(statistics.savanna.longTime.length).toBeGreaterThanOrEqual(1);
+  });
+
+  test('The setUserStatistics write statistic', async () => {
+    const testStat = {
+      card: { result: 90, learnedWords: 4 },
+    };
+    const statistics = await dataController.setUserStatistics(testStat);
+    expect(statistics.learnedWords).toBeGreaterThanOrEqual(4);
+  });
+
+  test('The userStatisticsGet returned combination of statistics object', async () => {
+    const statistics = await dataController.getUserStatistics();
+    expect(statistics.savanna.longTime.length).toBeGreaterThanOrEqual(1);
   });
 });
