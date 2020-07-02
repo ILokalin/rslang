@@ -1,3 +1,5 @@
+/* eslint-disable no-plusplus */
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable no-param-reassign */
 /* eslint-disable class-methods-use-this */
 import { ElementGen } from 'Src/service/DomGen/DomGen';
@@ -223,9 +225,8 @@ export default class Card {
       mySwiper.slides[mySwiper.activeIndex].querySelector('.hard-btn'),
     ];
     const cardTitle = event.target.closest('.card').querySelector('.card-title');
-    const progress = cardTitle.dataset.progress;
-    const wordId = cardTitle.dataset.wordId;
-    const wordDifficulty = cardTitle.dataset.difficulty;
+    const {progress} = cardTitle.dataset;
+    const {wordId} = cardTitle.dataset;
     let saveOption;
 
     if (event.target.closest('.again-btn')) {
@@ -287,8 +288,8 @@ export default class Card {
   async formBtnsHandler(event) {
     const input = event.target.closest('.form').querySelector('.input_text');
     const cardTitle = event.target.closest('.card').querySelector('.card-title');
-    const progress = cardTitle.dataset.progress;
-    const wordId = cardTitle.dataset.wordId;    
+    const {progress} = cardTitle.dataset;
+    const {wordId} = cardTitle.dataset;    
     const wordDifficulty = cardTitle.dataset.difficulty; 
     const audio = event.target.closest('.card').querySelector('.audio');
     const buttonsArr = [
@@ -301,7 +302,7 @@ export default class Card {
       saveOption = {
         id: wordId, 
         status: 'deleted',
-        progress: (progress ? progress : 0),
+        progress: (progress || 0),
       }
       console.log(saveOption);
       if (progress) {       
@@ -310,7 +311,7 @@ export default class Card {
         await dataController.userWordsPost(saveOption);            
       }
       showToastDeleted(input.dataset.word);
-      cardTitle.dataset.progress = (progress ? progress : 0);
+      cardTitle.dataset.progress = (progress || 0);
       cardTitle.dataset.difficulty = 'deleted';
       buttonsArr.forEach((el) => el.setAttribute('disabled', 'disabled'));
     }
@@ -318,7 +319,7 @@ export default class Card {
       const newProgress = progress ? +progress - 0.5 : 0;
       saveOption = {
         id: wordId, 
-        status: (wordDifficulty ? wordDifficulty : 'onlearn'),
+        status: (wordDifficulty || 'onlearn'),
         progress: (newProgress >= 0 ? newProgress : 0),
       }
       console.log(saveOption);
@@ -329,9 +330,8 @@ export default class Card {
         mySwiper.train.shortTermStat.newWords++;
       }
       cardTitle.dataset.progress = (newProgress >= 0 ? newProgress : 0);
-      cardTitle.dataset.difficulty = (wordDifficulty ? wordDifficulty : 'onlearn');
-      input.value = input.dataset.word;
-      mySwiper.train/shortTermStat.newWords++;      
+      cardTitle.dataset.difficulty = (wordDifficulty || 'onlearn');
+      input.value = input.dataset.word;     
       if (settings.autoPlayEnabled) {
        // audioPlay(audio);
       }
@@ -351,9 +351,10 @@ export default class Card {
     const result = event.target.querySelector('.result');
     const audio = event.target.closest('.card').querySelector('.audio');
     const cardTitle = event.target.closest('.card').querySelector('.card-title');
-    const progress = cardTitle.dataset.progress;
-    const wordId = cardTitle.dataset.wordId;
+    const {progress} = cardTitle.dataset;
+    const {wordId} = cardTitle.dataset;
     const wordDifficulty = cardTitle.dataset.difficulty;
+    const showAnswerBtn = event.target.closest('.card').querySelector('.show-answer-btn');
     let isWrong;
 
     input.blur();
@@ -368,19 +369,12 @@ export default class Card {
       }
     });
 
-    mySwiper.train.shortTermStat.totalCards++;
-
     const newProgress = updateProgress(+progress, isWrong);
 
     let saveOption;
 
-    console.log('progress', progress);
-    console.log(typeof progress);
-    console.log('!!progress', !!progress);
-
     // если новое слово отправляем в user words c коэф 0 вне зависимотси от правильности ответа
-    if (progress) {
-      mySwiper.train.shortTermStat.newWords++;  
+    if (progress) {      
       saveOption = {
         id: wordId, 
         status: 'onlearn',
@@ -391,15 +385,16 @@ export default class Card {
       cardTitle.dataset.progress = 0;
       cardTitle.dataset.difficulty = 'onlearn';
     } else {
+      mySwiper.train.shortTermStat.newWords++;  
       saveOption = {
         id: wordId, 
-        status: (wordDifficulty ? wordDifficulty : 'onlearn'),
+        status: (wordDifficulty || 'onlearn'),
         progress: newProgress,
       }
       console.log(saveOption)
       await dataController.userWordsPost(saveOption);
       cardTitle.dataset.progress = newProgress;
-      cardTitle.dataset.difficulty = wordDifficulty ? wordDifficulty : 'onlearn';
+      cardTitle.dataset.difficulty = wordDifficulty || 'onlearn';
     }
 
     if (isWrong) {
@@ -416,12 +411,14 @@ export default class Card {
 
     } else {
       if (+input.dataset.tryCount === 1) {
-        mySwiper.train.shortTermStat.wrightAnswers++;      
-      }    
-      mySwiper.train.shortTermStat.chain++;     
+        mySwiper.train.shortTermStat.wrightAnswers++; 
+        mySwiper.train.shortTermStat.chain++;     
+      }          
+      mySwiper.train.shortTermStat.totalCards++;
+      showAnswerBtn.classList.add('hidden');
       
       if (settings.autoPlayEnabled) {
-        //audioPlay(audio);
+        // audioPlay(audio);
       }
       mySwiper.train.updateStat();  
       allowNextCard();

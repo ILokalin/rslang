@@ -5,7 +5,7 @@
 @import 'Src/scss/components';
 
 .hidden {
-  display: none;
+  display: none!important;
 }
 
 header, main, footer, .settings-container, .statistics-container, .vocabulary-container {
@@ -194,3 +194,4 @@ header, main, footer, .settings-container, .statistics-container, .vocabulary-co
   display: flex;
   justify-content: space-between;
 }
+

@@ -126,16 +126,17 @@ const showExample = () => {
 
 const againBtnAct = async () => {
   const cardTitle = mySwiper.slides[mySwiper.activeIndex].querySelector('.card-title');
-  const wordId = cardTitle.dataset.wordId;
-  const difficulty = cardTitle.dataset.difficulty;
-  const progress = cardTitle.dataset.progress;
+  const {wordId} = cardTitle.dataset;
+  const {difficulty} = cardTitle.dataset;
+  const {progress} = cardTitle.dataset;
+  // eslint-disable-next-line no-underscore-dangle
   const wordState = mySwiper.train.words.find((el) => ((el._id || el.id) === wordId));
   console.log(wordState)
   const dupl = new Card(wordState);
   
   const duplTitle = dupl.cardElem.querySelector('.card-title');
-  duplTitle.dataset.difficulty = (difficulty ? difficulty : 'onlearn');
-  duplTitle.dataset.progress = (progress ? progress : 0);
+  duplTitle.dataset.difficulty = (difficulty || 'onlearn');
+  duplTitle.dataset.progress = (progress || 0);
 
   mySwiper.appendSlide(dupl.cardElem);
   mySwiper.update();
@@ -195,7 +196,7 @@ const showToastHard = (word) => {
 
 const shuffle = (array) => {
   for (let i = array.length - 1; i > 0; i--) {
-    let j = Math.floor(Math.random() * (i + 1));
+    const j = Math.floor(Math.random() * (i + 1));
     [array[i], array[j]] = [array[j], array[i]];
   }
 }
@@ -207,8 +208,7 @@ const getApproprateWords = async (newWordsAmount, totalAmount) => {
   const todayObj = new Date();
   const today = new Date(todayObj.getFullYear(), todayObj.getMonth(), todayObj.getDate());
 // получить все слова пользователя
-  const userWordsReponse = await dataController.userWordsGetAll(['hard', 'onlearn', 'deleted']);  
-  console.log(userWordsReponse);
+  const userWordsReponse = await dataController.userWordsGetAll(['hard', 'onlearn', 'deleted']);
   const userWords = userWordsReponse["0"].paginatedResults;
   console.log(userWords);
   while (res.length < newWordsAmount) {
@@ -219,11 +219,13 @@ const getApproprateWords = async (newWordsAmount, totalAmount) => {
         wordsPerExampleSentenceLTE: '',
         wordsPerPage: userWords.length * 3 < totalAmount ? totalAmount : userWords.length * 3,
       };
+    // eslint-disable-next-line no-await-in-loop
     const generalWords = await dataController.getWords(query);
     if (generalWords.length) {   
-      //выделить из общих слова неюзера       
+      // выделить из общих слова неюзера       
       for (let i = 0; i < generalWords.length; i++) {
         const word = generalWords[i];
+        // eslint-disable-next-line no-underscore-dangle
         const isUserWord = userWords.find((userWord) => userWord._id === word.id);
         if (!isUserWord) {
           res.push(word);
@@ -245,7 +247,7 @@ const getApproprateWords = async (newWordsAmount, totalAmount) => {
     })
     // слайс по количеству слов на повторение (тотал - новые)
   res = res.concat(filteredUserWords.slice(0, totalAmount - newWordsAmount));
-  //шафл массива 
+  // шафл массива 
   shuffle(res);
 
   return res;    

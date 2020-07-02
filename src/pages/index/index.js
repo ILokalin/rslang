@@ -11,3 +11,5 @@ require.context('Src', true, /\.(png|svg|jpg|gif|mp3)$/);
 // eslint-disable-next-line no-undef
 M.AutoInit();
 renderStatChart();
+
+

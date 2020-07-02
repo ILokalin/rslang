@@ -11,6 +11,10 @@ if (settings.lastTrain !== new Date().toDateString()) {
   const train = new Training(settings.newCardsPerDay, settings.cardsPerDay);
   mySwiper.train = train;
 } else {
+  // если тернировка на сегодня еще не закончена (total cards в настройках > чем тотал кардс в краткосрочной статистике)
+  // то нужно создать тренировку const train = new Training( посчитать сколько осталось, посчитать сколько осталось);
+  // если закончена - открываем модалку. 
+  // eslint-disable-next-line no-undef
   const modal = M.Modal.getInstance(document.querySelector('.modal-done-for-today'));
   modal.open();
 }

@@ -8,7 +8,6 @@ import {
   loginButton,
   logoutButtons,
   settingsSaveBtns,
-  modal,
   translation,
   meaning,
   example,
