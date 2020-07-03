@@ -24,8 +24,9 @@ const sideNavTriggerEl = document.querySelector('.sidenav-trigger');
 const levelSelectEl = document.querySelector('.level-select select');
 const roundSelectEl = document.querySelector('.round-select input');
 const roundLabelEl = document.querySelector('.round-label');
-const userNameEl = document.querySelector('.user-name');
+const userNameEl = document.querySelector('.avatar__name');
 const errorMessageEl = document.querySelector('.error-text');
+const defaultUser = 'ANONIMUS';
 
 export {
   INTRO,
@@ -54,4 +55,5 @@ export {
   roundLabelEl,
   userNameEl,
   errorMessageEl,
+  defaultUser,
 };
