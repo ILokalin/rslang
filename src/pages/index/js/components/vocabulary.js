@@ -59,21 +59,13 @@ export default class VocabularyWord {
       const lastDate = new Date(element.userWord.optional.lastDate);
       const interval = (2 * element.userWord.optional.progress + 1) * 24 * 60 * 60 * 1000;
       const nextTime = new Date(+lastDate + interval);
-
-      Promise.all([
-        this.dataController.getMaterials(element.image).then((fullPath) => {
-          word.image = fullPath;
-        }),
-        this.dataController.getMaterials(element.audio).then((fullPath) => {
-          word.audio = fullPath;
-        }),
-        this.dataController.getMaterials(element.audioExample).then((fullPath) => {
-          word.audioExample = fullPath;
-        }),
-        this.dataController.getMaterials(element.audioMeaning).then((fullPath) => {
-          word.audioMeaning = fullPath;
-        }),
-      ]).then(() => {
+      // eslint-disable-next-line no-underscore-dangle
+      this.dataController.getWordMaterials(element._id).then((materialOfCard) => {
+        word.image = materialOfCard.image;
+        word.audio = materialOfCard.audio;
+        word.audioExample = materialOfCard.audioExample;
+        word.audioMeaning = materialOfCard.audioMeaning;
+      }).then(() => {
         const wordState = word;
         wordState.lastDate = lastDate.toLocaleString("ru", {
           year: 'numeric',
