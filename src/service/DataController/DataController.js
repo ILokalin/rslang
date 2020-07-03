@@ -15,6 +15,7 @@ import {
   apiUserWordsSave,
   apiUserWordsGet,
   apiUserAggregatedWords,
+  apiWordMaterialsGet,
 } from 'Service/ServerAPI';
 import { reportMessages } from './reportMessages';
 import { dataControllerConst } from './dataControllerConst';
@@ -45,6 +46,19 @@ export class DataController {
     });
   }
 
+  getWordMaterials(wordId) {
+    return apiWordMaterialsGet(wordId).then((wordMaterials) => {
+      const materials = {
+        image: dataControllerConst.imageBase64Prifex.concat(wordMaterials.image),
+        audio: dataControllerConst.audioBase64Prifex.concat(wordMaterials.audio),
+        audioExample: dataControllerConst.audioBase64Prifex.concat(wordMaterials.audioExample),
+        audioMeaning: dataControllerConst.audioBase64Prifex.concat(wordMaterials.audioMeaning),
+      };
+
+      return { ...wordMaterials, ...materials };
+    });
+  }
+
   userWordsGetAll(groupWords) {
     return apiUserAggregatedWords(groupWords);
   }
@@ -53,7 +67,7 @@ export class DataController {
     return apiUserWordsGet(wordId);
   }
 
-  userWordsPut({status = 'onlearn', id, progress = 0}) {
+  userWordsPut({ status = 'onlearn', id, progress = 0 }) {
     const sendWordData = {
       difficulty: status,
       optional: {
@@ -64,7 +78,7 @@ export class DataController {
     return apiUserWordsSave(id, sendWordData, 'PUT');
   }
 
-  userWordsPost({status = 'onlearn', id, progress = 0}) {
+  userWordsPost({ status = 'onlearn', id, progress = 0 }) {
     const sendWordData = {
       difficulty: status,
       optional: {
@@ -133,6 +147,52 @@ export class DataController {
     });
   }
 
+  setUserStatistics(statisticsData) {
+    return new Promise((resolve, reject) => {
+      this.resolve = resolve;
+      this.reject = reject;
+      this.userStatisticUpload = statisticsData;
+
+      if (this.checkToken()) {
+        apiUserSettingsGet('statistics')
+          .then((currentStatistics) =>
+            apiUserSettingsPut(
+              this.prepareUploadStatistics(currentStatistics, statisticsData),
+              'statistics',
+            ),
+          )
+          .then(
+            (data) => resolve(this.orderingStatResult(data)),
+            (rejectReport) => reject(rejectReport),
+          );
+      } else {
+        // temp cover - TODO algorithm for auth
+        // eslint-disable-next-line prefer-promise-reject-errors
+        reject({ message: 'user not defined' });
+      }
+    });
+  }
+
+  getUserStatistics() {
+    return new Promise((resolve, reject) => {
+      this.resolve = resolve;
+      this.reject = reject;
+
+      if (this.checkToken()) {
+        apiUserSettingsGet('statistics').then(
+          (userStatistics) => {
+            resolve(this.orderingStatResult(userStatistics));
+          },
+          (rejectReport) => reject(rejectReport),
+        );
+      } else {
+        // temp cover - TODO algorithm for auth
+        // eslint-disable-next-line prefer-promise-reject-errors
+        reject({ message: 'user not defined' });
+      }
+    });
+  }
+
   chainSignInSettingsGetSettingsPut(userData) {
     apiUserSignIn(userData)
       .then(() => apiUserSettingsGet())
@@ -174,6 +234,7 @@ export class DataController {
     };
     apiUserCreate(userData)
       .then(() => apiUserSignIn(userData))
+      .then(() => apiUserSettingsPut({ learnedWords: 0 }, 'statistics'))
       .then(() => apiUserSettingsPut(userSettingsName))
       .then(() => apiUserSettingsGet())
       .then(
@@ -196,6 +257,67 @@ export class DataController {
     return false;
   }
 
+  orderingStatResult(userStatistics) {
+    const { learnedWords = 0, optional = {} } = userStatistics;
+    const originStatistics = {
+      ...this.unpackUserSettings(optional),
+    };
+    originStatistics.learnedWords = learnedWords;
+
+    return originStatistics;
+  }
+
+  findTopStatistics(topList, currentResult) {
+    let nextFindPosition = currentResult;
+
+    const topResult = topList.map((topPosition) => {
+      if (nextFindPosition.result >= topPosition.result) {
+        const returnItem = nextFindPosition;
+        nextFindPosition = topPosition;
+        return returnItem;
+      }
+      return topPosition;
+    });
+
+    if (topResult.length < 5) {
+      topResult.push(nextFindPosition);
+    }
+
+    return topResult;
+  }
+
+  prepareUploadStatistics(originStatistics, uploadStatistics) {
+    const { learnedWords = 0, optional = {} } = originStatistics;
+    const today = { date: new Date().toDateString() };
+    const tempStatisticsObject = {
+      optional: this.unpackUserSettings(optional),
+    };
+
+    tempStatisticsObject.learnedWords = uploadStatistics.card
+      ? learnedWords + uploadStatistics.card.learnedWords
+      : learnedWords;
+
+    Object.keys(uploadStatistics).forEach((key) => {
+      const statisticsItem = { ...uploadStatistics[key], ...today };
+      if (optional[key]) {
+        tempStatisticsObject.optional[key].longTime.push(statisticsItem);
+        tempStatisticsObject.optional[key].top = this.findTopStatistics(
+          tempStatisticsObject.optional[key].top,
+          statisticsItem,
+        );
+      } else {
+        tempStatisticsObject.optional[key] = {
+          longTime: [statisticsItem],
+          top: [statisticsItem],
+        };
+      }
+    });
+
+    tempStatisticsObject.optional = this.packUserSettings(tempStatisticsObject.optional);
+
+    return tempStatisticsObject;
+  }
+
   prepareUploadSetting(originSettings, uploadSettings) {
     return {
       optional: this.packUserSettings({
@@ -209,7 +331,7 @@ export class DataController {
     const resultUserSettings = {};
     Object.keys(userSettings).forEach((field) => {
       resultUserSettings[field] = JSON.parse(userSettings[field]);
-    })
+    });
     return resultUserSettings;
   }
 
@@ -217,7 +339,7 @@ export class DataController {
     const resultUserSettings = {};
     Object.keys(userSettings).forEach((field) => {
       resultUserSettings[field] = JSON.stringify(userSettings[field]);
-    })
+    });
     return resultUserSettings;
   }
 }

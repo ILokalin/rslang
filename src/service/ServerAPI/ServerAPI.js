@@ -6,10 +6,27 @@ function isSuccess(response) {
   return response.status >= 200 && response.status < 300;
 }
 
+export function apiWordMaterialsGet(wordId) {
+  const fetchUrl = `${api.url}${api.words}/${wordId}`;
+  return new Promise((resolve) => {
+    fetch(fetchUrl)
+      .then((rawResponse) => {
+        if (isSuccess(rawResponse)) {
+          return rawResponse.json();
+        }
+        const error = new Error(rawResponse.statusText);
+        error.master = 'words';
+        error.code = rawResponse.status;
+        throw error;
+      })
+      .then((response) => resolve(response))
+      .catch((errorReport) => reject(errorReport));
+  });
+}
+
 export function apiUserAggregatedWords(difficultyGroup) {
-  const filter = encodeURIComponent(
-    `{"$or":[${difficultyGroup.map((group) => `{"userWord.difficulty":"${group}"}`)}]}`,
-  );
+  const queryString = difficultyGroup.map((group) => `{"userWord.difficulty":"${group}"}`);
+  const filter = encodeURIComponent(`{"$or":[${queryString}]}`);
   const fetchUrl = `${api.url}${api.users}/${localStorage.userId}/${api.aggregatedWords}?wordsPerPage=3600&filter=${filter}`;
 
   return new Promise((resolve, reject) => {
@@ -90,8 +107,9 @@ export function apiUserWordsGet(wordId) {
 }
 
 export function apiUserWordsSave(wordId, wordData, method) {
+  const fetchUrl = `${api.url}${api.users}/${localStorage.userId}/${api.words}/${wordId}`;
   return new Promise((resolve, reject) => {
-    fetch(`${api.url}${api.users}/${localStorage.userId}/${api.words}/${wordId}`, {
+    fetch(fetchUrl, {
       method,
       headers: {
         Authorization: `Bearer ${localStorage.token}`,
@@ -104,6 +122,7 @@ export function apiUserWordsSave(wordId, wordData, method) {
         if (isSuccess(rawResponse)) {
           return rawResponse.json();
         }
+        console.log(rawResponse);
         const error = new Error(rawResponse.statusText);
         error.master = 'words';
         error.code = rawResponse.status;
@@ -148,9 +167,9 @@ export function apiGetWords(requestData) {
   });
 }
 
-export function apiUserSettingsPut(userSettingsUpload) {
+export function apiUserSettingsPut(userSettingsUpload, section = 'settings') {
   return new Promise((resolve, reject) => {
-    fetch(`${api.url}${api.users}/${localStorage.userId}/${api.settings}`, {
+    fetch(`${api.url}${api.users}/${localStorage.userId}/${api[section]}`, {
       method: 'PUT',
       headers: {
         Authorization: `Bearer ${localStorage.token}`,
@@ -175,9 +194,9 @@ export function apiUserSettingsPut(userSettingsUpload) {
   });
 }
 
-export function apiUserSettingsGet() {
+export function apiUserSettingsGet(section = 'settings') {
   return new Promise((resolve, reject) => {
-    fetch(`${api.url}${api.users}/${localStorage.userId}/${api.settings}`, {
+    fetch(`${api.url}${api.users}/${localStorage.userId}/${api[section]}`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${localStorage.token}`,
