@@ -23,10 +23,6 @@ const Utils = {
     return JSON.parse(localStorage.matchItGameUseUserWords);
   },
 
-  setUserWordsOption: (value) => {
-    localStorage.matchItGameUseUserWords = value;
-  },
-
   getCurrentRound: () => {
     if (!localStorage.getItem('matchItGameRound')) {
       localStorage.setItem('matchItGameRound', '1.1');
@@ -41,16 +37,27 @@ const Utils = {
   getUserWordsForRound: async (dataController) => {
     let wordsArr;
     try {
-      wordsArr = await dataController.userWordsGetAll(['deleted']);
+      wordsArr = await dataController.userWordsGetAll(['onlearn']);
     } catch (err) {
       //Utils.openModal(`API request failed with error: ${err.message}`);
     }
     return wordsArr;
   },
 
-  getWordsForRound: async (dataController) => {
+  getWordsForRound: async (dataController, userService) => {
     const level = parseInt(levelSelect.value, 10) - 1;
     const round = parseInt(roundSelect.value, 10) - 1;
+    if (level === -1) {
+      const myWords = userService.getMyWords();
+      if (myWords.size > 0) {
+        roundSelect.max = myWords.size;
+        roundSelect.value = String(round + 1);
+      }
+      const myWordsArr = myWords.get(roundSelect.value);
+      if (myWordsArr) {
+        return myWordsArr;
+      }
+    }
     let wordsArr;
     try {
       wordsArr = await dataController.getWords({

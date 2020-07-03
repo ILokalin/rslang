@@ -1,6 +1,4 @@
-import { DataController } from 'Service/DataController';
 import Utils from '../../services/utils';
-import { dataTransfer } from '../../services/dataTransferService';
 import GameSettings from '../GameSettings';
 
 import {
@@ -8,14 +6,13 @@ import {
   allWords,
   ERRORS_MAX_COUNT,
   scoreLabel,
-  userWords,
   nextBtn,
   checkBtn,
   restartBtn,
 } from '../../data/constants';
 
 export default class Game {
-  constructor() {
+  constructor(dataController, userService, dataTransferService) {
     localStorage.isStart = false;
     this.props = {
       errors: ERRORS_MAX_COUNT,
@@ -23,14 +20,16 @@ export default class Game {
       errorsArr: [],
       knowArr: [],
     };
-    this.dataController = new DataController();
+    this.dataController = dataController;
+    this.userService = userService;
+    this.dataTransfer = dataTransferService;
   }
 
   start() {
     this.dataController.getUser().then(
-      (settings) => {
+      async (settings) => {
         Utils.displayUserName(settings);
-        this.authorized = true;
+        await this.userService.init();
         this.init();
       },
       (report) => {
@@ -55,6 +54,8 @@ export default class Game {
     scoreLabel.children[0].innerHTML = this.props.know;
     Utils.displayResults();
     scoreLabel.classList.remove('hidden');
+    console.log(this.props);
+    // await dataController.setUserOptions({"match-it": store.stringifySettings()});
     e.preventDefault();
   }
 
@@ -72,23 +73,14 @@ export default class Game {
   async createCardPage() {
     this.props.errorsArr = [];
     this.props.errorsArr.length = 0;
-    let wordsData;
-    if (userWords.checked && this.authorized) {
-      wordsData = await Utils.getUserWordsForRound(this.dataController);
-    }
-    if (!wordsData || (wordsData[0].totalCount[0].count || 0) < ERRORS_MAX_COUNT) {
-      wordsData = await Utils.getWordsForRound(this.dataController);
-      userWords.checked = false;
-    }
+    const words = [];
+    const wordsData = await Utils.getWordsForRound(this.dataController, this.userService);
     Utils.setCurrentRound(GameSettings.displayRound());
     await wordsData.forEach(this.createCard.bind(this));
-    const words = [];
-    wordsData.forEach((data) => {
-      words.push(data);
-    });
+    wordsData.forEach((data) => words.push(data));
     words.sort(() => 0.5 - Math.random());
     words.forEach(this.createWordCard, this);
-    dataTransfer(this.props);
+    this.dataTransfer.start(this.props);
   }
 
   restartGame() {
@@ -126,7 +118,8 @@ export default class Game {
     const cardWrapper = document.createElement('div');
     cardWrapper.classList.add('col', 'l4', 's8', 'm6', 'center-align');
     const CARD = document.createElement('div');
-    CARD.id = `card-${data.id}`;
+    // eslint-disable-next-line no-underscore-dangle
+    CARD.id = `card-${data.id || data._id}`;
     CARD.setAttribute('index', `${index}`);
     CARD.classList.add('card', 'droptarget');
     const image = await this.dataController.getMaterials(data.image);
@@ -140,7 +133,8 @@ export default class Game {
     const cardWrapper = document.createElement('div');
     cardWrapper.classList.add('col', 'l6', 's12', 'm12', 'center-align');
     const CARD = document.createElement('div');
-    CARD.id = `word-${data.id}`;
+    // eslint-disable-next-line no-underscore-dangle
+    CARD.id = `word-${data.id || data._id}`;
     CARD.draggable = true;
     CARD.classList.add('card-panel', 'teal', 'draggable');
     CARD.innerHTML = Utils.getWordCard(`${data.word}`);

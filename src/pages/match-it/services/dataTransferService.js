@@ -1,87 +1,86 @@
 import { checkBtn, ERRORS_MAX_COUNT } from '../data/constants';
 
-const dataTransfer = (props) => {
-  document.querySelectorAll('.draggable').forEach((item) => {
-    item.addEventListener('dragstart', (event) => {
-      const itemDataTransfer = event.dataTransfer;
-      itemDataTransfer.dropEffect = 'move';
-      itemDataTransfer.setData('text', event.target.closest('.card-panel').id);
+export default class DataTransferService {
+  start(props) {
+    this.props = props;
+    this.cardTransfer = this.cardTransferEvent.bind(this);
+    this.wordTransfer = this.wordTransferEvent.bind(this);
+    document.querySelectorAll('.draggable').forEach((item) => {
+      item.addEventListener('dragstart', this.dragStart);
     });
-  });
+    document.querySelectorAll('.container__cards .droptarget').forEach((item) => {
+      item.addEventListener('dragover', (event) => event.preventDefault());
+      item.addEventListener('dragleave', (event) => event.preventDefault());
+      item.addEventListener('dragenter', (event) => event.preventDefault());
+      item.addEventListener('drop', this.wordTransfer);
+    });
+    document.querySelectorAll('.container__words.droptarget').forEach((item) => {
+      item.addEventListener('dragover', (event) => event.preventDefault());
+      item.addEventListener('dragleave', (event) => event.preventDefault());
+      item.addEventListener('dragenter', (event) => event.preventDefault());
+      item.addEventListener('drop', this.cardTransfer);
+    });
+  }
 
-  document.querySelectorAll('.container__cards .droptarget').forEach((item) => {
-    item.addEventListener('dragover', (event) => {
-      event.preventDefault();
-    });
-    item.addEventListener('dragleave', (event) => {
-      event.preventDefault();
-    });
-    item.addEventListener('dragenter', (event) => {
-      event.preventDefault();
-    });
+  dragStart(event) {
+    const itemDataTransfer = event.dataTransfer;
+    itemDataTransfer.dropEffect = 'move';
+    itemDataTransfer.setData('text', event.target.closest('.card-panel').id);
+  }
 
-    item.addEventListener('drop', (event) => {
-      event.preventDefault();
-      const id = event.dataTransfer.getData('text');
-      const card = document.getElementById(id);
-      if (card) {
-        const targetCard = event.currentTarget.closest('.col');
-        targetCard.append(card);
-        document.querySelectorAll('.container__cards .col').forEach((child) => {
-          if (child.children.length === 1) {
-            child.querySelector('.card-image').classList.remove('overlayed');
-          }
-        });
-        const targetCardImage = event.currentTarget.querySelector('.card-image');
-        targetCardImage.classList.add('overlayed');
-        if (id === `word-${event.currentTarget.id.split('-')[1]}`) {
-          const currentWord = props.errorsArr.find((word) => word.id === id);
-          props.errorsArr.splice(props.errorsArr.indexOf(currentWord), 1);
-          props.knowArr.push(currentWord);
-          card.success = true;
-          props.know += 1;
-          props.errors -= 1;
+  cardTransferEvent(event) {
+    event.preventDefault();
+    const id = event.dataTransfer.getData('text');
+    const card = document.getElementById(id);
+    if (card) {
+      const currentCardImage = card.parentNode.querySelector('.card-image');
+      event.currentTarget.children.forEach((child) => {
+        if (child.innerHTML.length === 0) {
+          child.append(card);
         }
+      });
+      if (card.success) {
+        this.props.know -= 1;
+        this.props.errors += 1;
+      } else {
+        this.props.errors -= 1;
       }
-      if (props.know === ERRORS_MAX_COUNT) {
-        checkBtn.click();
-      }
-    });
-  });
+      card.success = false;
+      currentCardImage.classList.remove('overlayed');
+    }
+  }
 
-  document.querySelectorAll('.container__words.droptarget').forEach((item) => {
-    item.addEventListener('dragover', (event) => {
-      event.preventDefault();
-    });
-    item.addEventListener('dragleave', (event) => {
-      event.preventDefault();
-    });
-    item.addEventListener('dragenter', (event) => {
-      event.preventDefault();
-    });
+  iKnowWord(id, card) {
+    const currentWord = this.props.errorsArr.find((word) => word.id === id);
+    this.props.errorsArr.splice(this.props.errorsArr.indexOf(currentWord), 1);
+    this.props.knowArr.push(currentWord);
 
-    item.addEventListener('drop', (event) => {
-      event.preventDefault();
-      const id = event.dataTransfer.getData('text');
-      const card = document.getElementById(id);
-      if (card) {
-        const currentCardImage = card.parentNode.querySelector('.card-image');
-        event.currentTarget.children.forEach((child) => {
-          if (child.innerHTML.length === 0) {
-            child.append(card);
-          }
-        });
-        if (card.success) {
-          props.know -= 1;
-          props.errors += 1;
-        } else {
-          props.errors -= 1;
+    this.props.know += 1;
+    this.props.errors -= 1;
+    card.success = true;
+  }
+
+  wordTransferEvent(event) {
+    event.preventDefault();
+    const id = event.dataTransfer.getData('text');
+    const card = document.getElementById(id);
+    if (card) {
+      const { currentTarget } = event;
+      const targetCard = currentTarget.closest('.col');
+      targetCard.append(card);
+      document.querySelectorAll('.container__cards .col').forEach((child) => {
+        if (child.children.length === 1) {
+          child.querySelector('.card-image').classList.remove('overlayed');
         }
-        card.success = false;
-        currentCardImage.classList.remove('overlayed');
+      });
+      const targetCardImage = currentTarget.querySelector('.card-image');
+      targetCardImage.classList.add('overlayed');
+      if (id === `word-${currentTarget.id.split('-')[1]}`) {
+        this.iKnowWord(id, card);
       }
-    });
-  });
-};
-
-export { dataTransfer };
+    }
+    if (this.props.know === ERRORS_MAX_COUNT) {
+      checkBtn.click();
+    }
+  }
+}
