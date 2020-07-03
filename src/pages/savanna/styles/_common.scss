@@ -22,11 +22,11 @@ body {
 .text {
   font-size: 1.7rem;
   padding: 1px 5px;
-  color: #2B92E0;
+  color: #2b92e0;
 }
 .text-answer {
   font-size: 2.3rem;
-  color: #2B92E0;
+  color: #2b92e0;
 }
 .text:hover {
   cursor: pointer;
@@ -36,4 +36,17 @@ body {
   visibility: hidden;
   pointer-events: none;
   opacity: 0;
+}
+.preloader-background {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.3);
+
+  position: fixed;
+  z-index: 100;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }

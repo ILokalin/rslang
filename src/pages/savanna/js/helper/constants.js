@@ -22,7 +22,8 @@ const knowTable = document.querySelector('.know-table');
 const levelOption = document.querySelector('.level');
 const roundOption = document.querySelector('.round');
 const audio = document.querySelector('.audio');
-
+const repeatOption = document.querySelector('.repeat');
+const preloader = document.querySelector('.preloader-background');
 
 export {
   appStartButton,
@@ -48,5 +49,7 @@ export {
   restartButton,
   levelOption,
   roundOption,
-  audio
+  audio,
+  repeatOption,
+  preloader,
 };

@@ -1,21 +1,89 @@
-import { userNameElement, audio } from './constants';
-import '../../assets/img/savanna-heart.svg'
+import { userNameElement, audio, preloader } from './constants';
+import '../../assets/img/savanna-heart.svg';
 
 const helper = {
-  renderUserName(userSettings) {
-    userNameElement.innerText = `Hi, ${userSettings.name}!`;
+  renderUserName(user) {
+    userNameElement.innerText = `Hi, ${user.name}!`;
   },
 
   renderEmptyUserName() {
     userNameElement.innerText = '';
   },
 
-  async getCardsbyApi(dataController, level) {
-    const dataSet = await dataController.getWords({
-      wordsPerPage: 600,
-      group: level,
+  async getWordsByApi(dataController) {
+    preloader.classList.remove('hidden');
+    const dataSetForGame = [];
+    const round1 = dataController.getWords({ group: 0, wordsPerPage: 600 }).then((data) => data);
+    const round2 = dataController.getWords({ group: 1, wordsPerPage: 600 }).then((data) => data);
+    const round3 = dataController.getWords({ group: 2, wordsPerPage: 600 }).then((data) => data);
+    const round4 = dataController.getWords({ group: 3, wordsPerPage: 600 }).then((data) => data);
+    const round5 = dataController.getWords({ group: 4, wordsPerPage: 600 }).then((data) => data);
+    const round6 = dataController.getWords({ group: 5, wordsPerPage: 600 }).then((data) => data);
+    const dataSet = Promise.all([round1, round2, round3, round4, round5, round6]).then(
+      (data) => data,
+    );
+    (await dataSet).forEach((element) => {
+      const round = [];
+      round.push(
+        element
+          .slice(0, 100)
+          .sort(() => Math.random() - 0.5)
+          .splice(0, 5),
+      );
+      round.push(
+        element
+          .slice(100, 200)
+          .sort(() => Math.random() - 0.5)
+          .splice(0, 5),
+      );
+      round.push(
+        element
+          .slice(200, 300)
+          .sort(() => Math.random() - 0.5)
+          .splice(0, 5),
+      );
+      round.push(
+        element
+          .slice(300, 400)
+          .sort(() => Math.random() - 0.5)
+          .splice(0, 5),
+      );
+      round.push(
+        element
+          .slice(400, 500)
+          .sort(() => Math.random() - 0.5)
+          .splice(0, 5),
+      );
+      round.push(
+        element
+          .slice(500, 600)
+          .sort(() => Math.random() - 0.5)
+          .splice(0, 5),
+      );
+      dataSetForGame.push(round);
     });
-    return dataSet.sort((a, b) => a.page - b.page);
+    preloader.classList.add('hidden');
+    return dataSetForGame;
+  },
+
+  async getTranslatesByApi(dataController) {
+    preloader.classList.remove('hidden');
+    const transtales = [];
+    const dataSet = dataController
+      .getWords({ group: 0, wordsPerPage: 600 })
+      .then((data) => data.sort(() => Math.random() - 0.5));
+    (await dataSet).forEach((element) => transtales.push(element.wordTranslate));
+    preloader.classList.add('hidden');
+    return transtales;
+  },
+
+  async getWordsRepeatByApi(dataController) {
+    preloader.classList.remove('hidden');
+    const repeatWords = dataController
+      .userWordsGetAll(['onlearn', 'hard', 'deleted'])
+      .then((data) => data[0].paginatedResults.sort(() => Math.random() - 0.5).slice(0, 36));
+    preloader.classList.add('hidden');
+    return repeatWords;
   },
   createStatElement(word, translate) {
     const tr = document.createElement('tr');
