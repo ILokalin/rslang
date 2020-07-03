@@ -144,6 +144,7 @@ function dragHandler(mousedownEvent) {
 
 const playNextSentence = async () => {
   checkCheckboxes();
+  console.log(gameState.words);
   const word = gameState.words[gameState.currentSentence];
   const sentence = word.textExample;
   renderPuzzlesInInputField(sentence);
@@ -201,6 +202,8 @@ const startRound = async () => {
     know: [],
     dontknow: [],
   };
+
+  
   setGameRound();
  
   setRoundPainting(getRoundPainting());
@@ -218,7 +221,7 @@ const startRound = async () => {
   resultsBtn.classList.add('hidden');
 };
 
-const goToNextRound = async () => {
+const goToNextRound = () => {
   hideBackgroundPic();
   hidePaintingInfo();
   roundStatisticsPage.classList.add('hidden');
@@ -226,8 +229,8 @@ const goToNextRound = async () => {
   gamePage.classList.remove('hidden');
   setRound();
 // TODO send to settings round and level;
-  dataController.setUserOptions({puzzle: store.stringifySettings()}).then(() => { 
-    startRound();
+  dataController.setUserOptions({puzzle: store.stringifySettings()}).then(async () => { 
+    await startRound();
   });  
 };
 
@@ -238,6 +241,7 @@ const dontKnowHandler = () => {
   const word = gameState.words[gameState.currentSentence];
   const array = Array.from(inputField.querySelector('.game-row').children);
   const gameResults = document.querySelector(`.game-result .game-row:nth-child(${currentRow})`);
+
   gameResults.children.forEach((child) => { array.push(child); });
   array.sort((a, b) => a.dataset.targetOrder - b.dataset.targetOrder);
   array.forEach((el) => {
@@ -269,7 +273,7 @@ continueBtn.addEventListener('click', async () => {
     continueBtn.classList.add('hidden');
     dontKnowBtn.classList.remove('hidden');
   } else {
-    saveGlobalStatistics(gameState);
+    await saveGlobalStatistics(gameState);
     if (isPaintingOpen()) {
       goToNextRound();
     } else {
@@ -325,11 +329,11 @@ document.querySelector('.full-statistic-continue-btn').addEventListener('click',
   goToNextRound();
 });
 
-statBtn.addEventListener('click', () => {
+statBtn.addEventListener('click', async () => {
   fullStatPage.classList.remove('hidden');
   roundStatisticsPage.classList.add('hidden');
   clearStatistics();
-  fillStatistics();
+  await fillStatistics();
 });
 
 

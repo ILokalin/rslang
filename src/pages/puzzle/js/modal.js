@@ -1,10 +1,6 @@
-const openModal = (res) => {
+export const openModal = (message) => {
   // eslint-disable-next-line no-undef
   const modal = M.Modal.getInstance(document.querySelector('.modal'));
-  document.querySelector('.error-text').innerText = `API request failed with error ${res.status}. 
-    ${res.status === 403 ? 'Request limit reached.' : ''}`;
+  document.querySelector('.error-text').innerText = message;
   modal.open();
 };
-
-// eslint-disable-next-line import/prefer-default-export
-export { openModal }

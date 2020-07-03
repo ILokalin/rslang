@@ -1,18 +1,20 @@
 import { fullStatPage } from './constants';
-import { store } from './storage';
+import { getStatistics } from './statisticsService';
 
 // GLOBAL STATISTICS
 
-const createRow = (round, index) => {
+const createRow = (roundStat) => {
   const tr = document.createElement('tr');
   const td1 = document.createElement('td');
-  td1.insertAdjacentText('afterbegin', round);
   const td2 = document.createElement('td');
-  td2.insertAdjacentText('afterbegin', store.dates[index]);
   const td3 = document.createElement('td');
-  td3.insertAdjacentText('afterbegin', store.iKnowPerRound[index]);
   const td4 = document.createElement('td');
-  td4.insertAdjacentText('afterbegin', 10 - +store.iKnowPerRound[index]);
+
+  td1.insertAdjacentText('afterbegin', roundStat.round);  
+  td2.insertAdjacentText('afterbegin', roundStat.date);  
+  td3.insertAdjacentText('afterbegin', roundStat.knownWords.length); 
+  td4.insertAdjacentText('afterbegin', roundStat.mistakeWords.length);
+
   tr.appendChild(td1);
   tr.appendChild(td2);
   tr.appendChild(td3);
@@ -20,10 +22,13 @@ const createRow = (round, index) => {
   return tr;
 };
 
-const fillStatistics = () => {
+
+
+const fillStatistics = async () => {
   const tableBody = fullStatPage.querySelector('tbody');
-  store.passedRounds.forEach((round, index) => {
-    tableBody.appendChild(createRow(round, index));
+  const longTermStatistics = await getStatistics();
+  longTermStatistics.forEach((roundStat) => {
+    tableBody.appendChild(createRow(roundStat));
   });
 };
 
@@ -36,21 +41,27 @@ const clearStatistics = () => {
 const createStatisticRow = (word) => {
   const tr = document.createElement('tr');
   const td1 = document.createElement('td');
-  td1.className = 'col s1';
-  td1.insertAdjacentHTML('afterbegin', `<i class="material-icons sound-icon" data-audio-src="https://raw.githubusercontent.com/jules0802/rslang-data/master/${word.audioExample}">volume_up</i>`);
   const td2 = document.createElement('td');
+
+  td1.className = 'col s1';
   td2.className = 'col s11';
+
+  td1.insertAdjacentHTML('afterbegin', `<i class="material-icons sound-icon" data-audio-src="https://raw.githubusercontent.com/jules0802/rslang-data/master/${word.audioExample}">volume_up</i>`);
   td2.insertAdjacentText('afterbegin', word.textExample);
+
   tr.appendChild(td1);
   tr.appendChild(td2);
+
   return tr;
 };
 
 const setRoundStatistics = (gameState) => {
-  document.querySelector('.round-statistics-dontknow-number').innerText = gameState.dontknow.length;
-  document.querySelector('.round-statistics-know-number').innerText = gameState.know.length;
   const dontKnowTable = document.querySelector('.dontknow-table tbody');
   const knowTable = document.querySelector('.know-table tbody');
+
+  document.querySelector('.round-statistics-dontknow-number').innerText = gameState.dontknow.length;
+  document.querySelector('.round-statistics-know-number').innerText = gameState.know.length;
+  
   gameState.dontknow.forEach((word) => {
     dontKnowTable.appendChild(createStatisticRow(word));
   });
@@ -58,7 +69,6 @@ const setRoundStatistics = (gameState) => {
     knowTable.appendChild(createStatisticRow(word));
   });
 };
-
 
 const clearRoundStatistics = () => {
   document.querySelector('.dontknow-table tbody').innerHTML = '';

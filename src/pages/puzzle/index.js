@@ -45,9 +45,9 @@ const options = {
       round: store.round,
     };
   },
-  onCloseEnd() {
+  async onCloseEnd() {
     if (store.round !== store.prevRound.round || store.level !== store.prevRound.level) {
-      startRound();
+      await startRound();
     }
   },
 };

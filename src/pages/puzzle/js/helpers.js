@@ -11,6 +11,11 @@ const handleRoundsPerLevel = () => {
   document.querySelector('.round-select input').setAttribute('max', roundsCount[store.level - 1]);
 };
 
+const getRandomInteger = (min, max) => {
+  let rand = min - 0.5 + Math.random() * (max - min + 1);
+  return Math.round(rand);
+}
+
 const checkCheckboxes = () => {
   const autoPronounceCheckbox = document.querySelector('.auto-pronounce-check input');
   const translateCheckbox = document.querySelector('.translate-checkbox');
@@ -59,11 +64,6 @@ const selectLevelHandler = async (event) => {
 
 const chooseRoundHandler = async (event) => {
   store.round = event.target.value;
-  if (store.passedRounds.includes(`${store.level}.${store.round}`)) {
-    document.querySelector('.round-select input').setAttribute('style', 'background-color: grey;');
-  } else {
-    document.querySelector('.round-select input').setAttribute('style', 'background-color: white;');
-  }
   await dataController.setUserOptions({puzzle: store.stringifySettings()});
 };
 
@@ -83,7 +83,6 @@ const checkBoxHandler = async (event) => {
     switch (checkboxName) {
       case 'Translate': {
         store.hints.isTranslationOn = isChecked;
-        // TODO send to settings;
         toggleBtn(translateBtn, isChecked);
         if (isChecked) {
           translation.classList.remove('hidden');
@@ -94,13 +93,11 @@ const checkBoxHandler = async (event) => {
       }
       case 'Pronounce': {
         store.hints.isPronounceOn = isChecked;
-        // TODO send to settings;
         toggleBtn(pronounceBtn, isChecked);
         break;
       }
       case 'Picture': {
         store.hints.isPictureOn = isChecked;
-        // TODO send to settings;
         toggleBtn(pictureBtn, isChecked);
         inputField.querySelector('.game-row').children.forEach((canvas) => {
           setBackgroundToPuzzlePiece(canvas, canvas.dataset.sx,
@@ -110,7 +107,6 @@ const checkBoxHandler = async (event) => {
       }
       default: {
         store.isAutoPronounceOn = isChecked;
-        // TODO send to settings;
         break;
       }
     }
@@ -121,5 +117,5 @@ const checkBoxHandler = async (event) => {
 
 export {
   playButtonHandler, selectLevelHandler, chooseRoundHandler, checkBoxHandler, 
-  checkCheckboxes, handleRoundsPerLevel, 
+  checkCheckboxes, handleRoundsPerLevel, getRandomInteger,
 };

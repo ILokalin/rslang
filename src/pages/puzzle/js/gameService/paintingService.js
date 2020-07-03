@@ -6,8 +6,9 @@ import paintings5 from '../data/paintings/level5';
 import paintings6 from '../data/paintings/level6';
 import { store } from '../storage';
 import {
-  inputField, paintingInfo, miniature, miniatureInfo, linkToPainting, painting,
+  inputField, paintingInfo, miniature, miniatureInfo, linkToPainting, painting, roundsCount,
 } from '../constants';
+import {getRandomInteger} from '../helpers';
 
 const getLevelPaintingsCollection = () => [
   paintings1,
@@ -22,6 +23,21 @@ const getRoundPainting = () => {
   const id = `${store.level}_${String(store.round).length > 1 ? '' : '0'}${store.round}`;
   return getLevelPaintingsCollection().find((el) => el.id === id);
 };
+
+const getRandomPainting = () => {
+  const collectionsArray = [
+    paintings1,
+    paintings2,
+    paintings3,
+    paintings4,
+    paintings5,
+    paintings6,
+  ];
+  const randomLevel = getRandomInteger(1, 6);
+  const randomRound = getRandomInteger(1, roundsCount[randomLevel-1]);
+  const id = `${randomLevel}_${String(randomRound).length > 1 ? '' : '0'}${randomRound}`;
+  return collectionsArray[randomLevel-1].find((el) => el.id === id);
+}
 
 const getPaintingCutSrc = () => `https://raw.githubusercontent.com/jules0802/rslang_data_paintings/master/${getRoundPainting().cutSrc}`;
 const getPaintingImageSrc = () => `https://raw.githubusercontent.com/jules0802/rslang_data_paintings/master/${getRoundPainting().imageSrc}`;
@@ -56,4 +72,5 @@ export {
   isPaintingOpen, hidePaintingInfo, getLevelPaintingsCollection,
   showPaintingInfo, setPaintingInfo, hideBackgroundPic, showBackgroundPic,
   setRoundPainting, getPaintingCutSrc, getPaintingImageSrc, getRoundPainting,
+  getRandomPainting,
 };
