@@ -24,11 +24,11 @@ import { mySwiper, settings, dataController } from './constants';
 import 'materialize-css';
 
 export default class Card {
-  constructor(wordState) {
+  constructor(wordState, isRepeat = false) {
     this.wordState = wordState;
     this.cardElem = ElementGen('div', 'swiper-slide card large col s12 m6');
     this.cardElem.appendChild(this.createCardImage());
-    this.cardElem.appendChild(this.createCardContent());
+    this.cardElem.appendChild(this.createCardContent(isRepeat));
     this.createAudio();
   }
 
@@ -58,7 +58,7 @@ export default class Card {
     return imageContainer;
   }
 
-  createCardContent() {
+  createCardContent(isRepeat) {
     const cardContent = ElementGen('div', 'card-content', this.cardElem);
     const form = ElementGen('form', 'form', cardContent);
     const input = ElementGen('input', 'input_text', form);
@@ -76,7 +76,8 @@ export default class Card {
     const div = ElementGen('div', 'word', cardContent);
     const translation = ElementGen('p', 'translation', div);
     const transcription = ElementGen('p', 'transcription', div);
-    const cardTabs = this.createCardTabs();
+    const repeatId = Math.round(Math.random()*10000);
+    const cardTabs = this.createCardTabs(isRepeat, repeatId);    
     cardContent.appendChild(cardTabs);
     const tabsContent = ElementGen('div', 'card-content white', cardContent);
     const explain = ElementGen('div', 'explain-container', tabsContent);
@@ -92,8 +93,8 @@ export default class Card {
     input.setAttribute('type', 'text');
     input.setAttribute('style', `width: ${measureWordWidth(this.wordState.word) + 2}px;`);
     result.setAttribute('style', `width: ${measureWordWidth(this.wordState.word) + 2}px;`);
-    explain.setAttribute('id', `explain-${this.wordState.word}`);
-    example.setAttribute('id', `example-${this.wordState.word}`);
+    explain.setAttribute('id', `explain-${this.wordState.word}${isRepeat ? repeatId : ''}`);
+    example.setAttribute('id', `example-${this.wordState.word}${isRepeat ? repeatId : ''}`);
     
     input.dataset.word = this.wordState.word;
     input.dataset.tryCount = 0; 
@@ -144,14 +145,14 @@ export default class Card {
     return cardContent;
   }
 
-  createCardTabs() {
+  createCardTabs(isRepeat, repeatId) {
     const cardTabs = ElementGen('div', 'card-tabs');
     const ul = ElementGen('ul', 'tabs', cardTabs);
     const tab1 = ElementGen('li', 'tab col s3', ul);
     const tab2 = ElementGen('li', 'tab col s3', ul);
 
-    tab1.innerHTML = `<a class="active" href="#explain-${this.wordState.word}">Explain</a>`;
-    tab2.innerHTML = `<a href="#example-${this.wordState.word}">Example</a>`;
+    tab1.innerHTML = `<a class="active" href="#explain-${this.wordState.word}${isRepeat ? repeatId : ''}">Explain</a>`;
+    tab2.innerHTML = `<a href="#example-${this.wordState.word}${isRepeat ? repeatId : ''}">Example</a>`;
 
     return cardTabs;
   }

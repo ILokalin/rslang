@@ -130,13 +130,20 @@ const showExample = () => {
 
 const againBtnAct = async () => {
   const cardTitle = mySwiper.slides[mySwiper.activeIndex].querySelector('.card-title');
+  console.log(cardTitle);
   const {wordId} = cardTitle.dataset;
+  console.log(wordId);
   const {difficulty} = cardTitle.dataset;
+  console.log(difficulty);
   const {progress} = cardTitle.dataset;
+  console.log(progress);
   // eslint-disable-next-line no-underscore-dangle
   const wordState = mySwiper.train.words.find((el) => ((el._id || el.id) === wordId));
+  console.log(mySwiper.train.words);
   console.log(wordState)
-  const dupl = new Card(wordState);
+  const dupl = new Card(wordState, true);
+
+  M.AutoInit();
   
   const duplTitle = dupl.cardElem.querySelector('.card-title');
   duplTitle.dataset.difficulty = (difficulty || 'onlearn');
