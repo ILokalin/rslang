@@ -144,6 +144,7 @@ export default class VocabularyWord {
   restoreWordInLerningCategory(li, wordState) {
     const vocabularyRestorIcon = li.querySelectorAll('.restore-icon');
     const vocabularyOnLearnColumn = vocabularyOnLearn.getElementsByClassName(`on-learn__column${this.curentCloum}`);
+
     if (this.curentCloum === 1) { this.curentCloum = 2 }
     else { this.curentCloum = 1 }
     vocabularyRestorIcon.forEach((element) =>
