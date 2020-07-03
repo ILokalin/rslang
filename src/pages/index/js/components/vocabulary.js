@@ -97,17 +97,31 @@ export default class VocabularyWord {
     return ul;
   }
 
+  static sortWords(arrayWords) {
+    return arrayWords.sort((a, b) => {
+      const wordA = a.word.toLowerCase();
+      const wordB = b.word.toLowerCase();
+      if (wordA < wordB)
+        return -1
+      if (wordA > wordB)
+        return 1
+      return 0
+    })
+  }
+
+
   renderVocabularyWords(words, category) {
     const { paginatedResults } = words[0];
+    const sortArrayWords = VocabularyWord.sortWords(paginatedResults);
     category.appendChild(
       this.renderWordsContainerColum(
-        paginatedResults.slice(0, Math.ceil(paginatedResults.length / 2)),
+        sortArrayWords.slice(0, Math.ceil(sortArrayWords.length / 2)),
         1,
       ),
     );
     category.appendChild(
       this.renderWordsContainerColum(
-        paginatedResults.slice(Math.ceil(paginatedResults.length / 2)),
+        sortArrayWords.slice(Math.ceil(sortArrayWords.length / 2)),
         2,
       ),
     );
