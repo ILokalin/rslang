@@ -6,4 +6,6 @@ export const dataControllerConst = {
     message: 'User refused',
     name: 'Unknown',
   },
+  imageBase64Prifex: 'data:image/jpg;base64,',
+  audioBase64Prifex: 'data:audio/mpeg;base64,',
 };

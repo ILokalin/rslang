@@ -9,10 +9,13 @@ const reportLine = document.querySelector('.page__report');
 const loginButton = document.querySelector('.page__login-button');
 const wordsButton = document.querySelector('.page__words-button');
 
+const getDataButton = document.querySelector('.page__get-button');
 const putDataButton = document.querySelector('.page__put-button');
 const newName = document.querySelector('.page__input-name');
 const firstValue = document.querySelector('.page__input-words-example');
 const secondValue = document.querySelector('.page__input-words-ppage');
+const imageMaterial = document.querySelector('.page__la-pic');
+const audio = new Audio();
 
 let wordPagesCount = 0;
 
@@ -40,6 +43,17 @@ const whoIsGameFor = () => {
     },
   );
 };
+
+dataController.getWordMaterials('5e9f5ee35eb9e72bc21af4a0').then((materialOfCard) => {
+  imageMaterial.src = materialOfCard.image;
+  audio.src = materialOfCard.audio;
+});
+
+const playAudio = () => {
+  audio.play();
+};
+
+getDataButton.addEventListener('click', playAudio);
 
 const userLogout = () => {
   dataController.logoutUser();
