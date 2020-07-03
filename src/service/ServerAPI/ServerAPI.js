@@ -6,6 +6,24 @@ function isSuccess(response) {
   return response.status >= 200 && response.status < 300;
 }
 
+export function apiWordMaterialsGet(wordId) {
+  const fetchUrl = `${api.url}${api.words}/${wordId}`;
+  return new Promise((resolve) => {
+    fetch(fetchUrl)
+      .then((rawResponse) => {
+        if (isSuccess(rawResponse)) {
+          return rawResponse.json();
+        }
+        const error = new Error(rawResponse.statusText);
+        error.master = 'words';
+        error.code = rawResponse.status;
+        throw error;
+      })
+      .then((response) => resolve(response))
+      .catch((errorReport) => reject(errorReport));
+  });
+}
+
 export function apiUserAggregatedWords(difficultyGroup) {
   const queryString = difficultyGroup.map((group) => `{"userWord.difficulty":"${group}"}`);
   const filter = encodeURIComponent(`{"$or":[${queryString}]}`);
