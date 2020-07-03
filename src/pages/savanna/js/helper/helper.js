@@ -1,60 +1,44 @@
-import book1 from '../data/book1';
-import book2 from '../data/book2';
-import book3 from '../data/book3';
-import book4 from '../data/book4';
-import book5 from '../data/book5';
-import book6 from '../data/book6';
-import { guessWord, answerContsainer, header, gameContainer, resultContainer, stat, gameData, audio } from './constants';
+import { userNameElement, audio } from './constants';
+import '../../assets/img/savanna-heart.svg'
 
-require.context('Src', true, /\.(png|svg|jpg|gif|mp3|wav)$/);
+const helper = {
+  renderUserName(userSettings) {
+    userNameElement.innerText = `Hi, ${userSettings.name}!`;
+  },
 
-// eslint-disable-next-line no-unused-vars
-function makeRandomArr(a, b) {
-    return Math.random() - 0.5;
-}
+  renderEmptyUserName() {
+    userNameElement.innerText = '';
+  },
 
+  async getCardsbyApi(dataController, level) {
+    const dataSet = await dataController.getWords({
+      wordsPerPage: 600,
+      group: level,
+    });
+    return dataSet.sort((a, b) => a.page - b.page);
+  },
+  createStatElement(word, translate) {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${word}</td>
+                    <td>${translate}</td>`;
+    return tr;
+  },
 
-const Helper = {
+  makeCorrectNoise() {
+    audio.src = '../sound/savanna-correct.mp3';
+  },
 
-    getRandomRoundCards: (level, round) => {
-        const dataSet = [book1, book2, book3, book4, book5, book6];
-        const result = dataSet[level - 1].slice((round - 1) * 100, (round - 1) * 100 + 99);
-        return result.sort(makeRandomArr);
-    },
+  makeErrorNoise() {
+    audio.src = '../sound/savanna-error.mp3';
+  },
 
-    renderRoundGame: (dataSet) => {
-        const answers = []
-        const сardToGuess = dataSet.pop();
-        gameData.wordContainer = сardToGuess;
-        const wordToGuess = сardToGuess.wordTranslate;
-        for (let i = 0; i < 3; i += 1) {
-            answers.push(dataSet.pop().wordTranslate)
-        }
+  makeWinNoise() {
+    audio.src = '../sound/savanna-win.mp3';
+  },
 
-        answers.push(wordToGuess);
-        answers.sort(makeRandomArr);
-        guessWord.innerHTML = сardToGuess.word;
-        answerContsainer.innerHTML = '';
-        answers.forEach((word, index) => {
-            const p = document.createElement('p');
-            p.classList.add('game-savanna__answer-word');
-            p.innerText = `${index + 1} ${word}`;
-            answerContsainer.appendChild(p);
-        })
-    },
+  makeDefeatNoise() {
+    audio.src = '../sound/savanna-defeat.mp3';
+  },
+};
 
-    renderStat: () => {
-        header.classList.add('hidden');
-        gameContainer.classList.add('hidden');
-        resultContainer.classList.remove('hidden');
-        stat.innerHTML = `<p class="result-text">Выучено слов: ${gameData.knowWords.length}</p>
-                        <p class="result-text">На повторение: ${gameData.errorWords.length}</p>`;
-    },
-
-    playSuccess: () => {
-        audio.src = './assets/sound/success.wav';
-    }
-
-}
-
-export default Helper;
+export default helper;

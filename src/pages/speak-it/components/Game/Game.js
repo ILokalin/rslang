@@ -18,6 +18,7 @@ import {
   RESULTS_ERRORS,
   KNOW,
   RESULTS_KNOW,
+  roundLabelEl,
 } from '../../data/constants';
 
 export default class Game {
@@ -25,6 +26,7 @@ export default class Game {
     this.gameSettings = new GameSettings();
     this.gameSettings.init(this.levelOrRoundSelected.bind(this));
     localStorage.isStart = false;
+    this.authorized = false;
     this.props = {
       errors: ERRORS_MAX_COUNT,
       know: 0,
@@ -33,7 +35,23 @@ export default class Game {
     };
     Utils.resetMainCard();
     this.dataController = new DataController();
-    this.dataController.getUser().then(Utils.displayUserName, Utils.displayEmptyUserName);
+  }
+
+  start() {
+    this.dataController.getUser().then(
+      (settings) => {
+        Utils.displayUserName(settings);
+        this.authorized = true;
+        this.init();
+      },
+      (report) => {
+        Utils.displayEmptyUserName(report);
+        this.init();
+      },
+    );
+  }
+
+  init() {
     this.createCardPage();
     RESTART.addEventListener('click', this.onRestartBtnClick.bind(this));
     RETURN.addEventListener('click', Utils.onReturnBtnClick);
@@ -80,7 +98,15 @@ export default class Game {
   async createCardPage() {
     this.props.errorsArr = [];
     this.props.errorsArr.length = 0;
-    const wordsData = await Utils.getWordsForRound(this.dataController);
+    let wordsData;
+    if (this.authorized) {
+      wordsData = await Utils.getUserWordsForRound(this.dataController);
+    }
+    if (!wordsData || (wordsData[0].totalCount.count || 0) < ERRORS_MAX_COUNT) {
+      wordsData = await Utils.getWordsForRound(this.dataController);
+    } else {
+      roundLabelEl.innerText = '';
+    }
     await wordsData.forEach(this.createCard.bind(this));
     await Utils.disableCardClick();
     Utils.resetCardMinWidth('0');
@@ -117,11 +143,13 @@ export default class Game {
     this.createCardPage();
   }
 
-  createCard(data, index) {
+  async createCard(data, index) {
     const CARD = document.createElement('div');
     CARD.classList.add('item');
-    CARD.setAttribute('data-audio', `${DATA_PATH}/${data.audio}`);
-    CARD.setAttribute('data-img', `${DATA_PATH}/${data.image}`);
+    const audio = await this.dataController.getMaterials(data.audio);
+    const image = await this.dataController.getMaterials(data.image);
+    CARD.setAttribute('data-audio', audio || `${DATA_PATH}/${data.audio}`);
+    CARD.setAttribute('data-img', image || `${DATA_PATH}/${data.image}`);
     CARD.setAttribute('index', `${index}`);
     CARD.innerHTML = Utils.getCard(data);
     CARD.onclick = () => {
