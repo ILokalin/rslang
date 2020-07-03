@@ -64,6 +64,10 @@ const hideTranscription = () => {
   mySwiper.slides[mySwiper.activeIndex].querySelector('.transcription').classList.add('.hidden');
 };
 
+const showPicture = () => {
+  mySwiper.slides[mySwiper.activeIndex].querySelector('.image-association').style.zIndex = 3;
+}
+
 const allowNextCard = () => {
   console.log(mySwiper);
   if (mySwiper.activeIndex === mySwiper.slides.length - 1) {
@@ -269,4 +273,5 @@ export {
   showToastDeleted,
   getApproprateWords,
   showToastHard,
+  showPicture,
 };

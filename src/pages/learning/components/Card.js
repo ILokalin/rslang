@@ -18,6 +18,7 @@ import {
   updateProgress,
   showToastDeleted,
   showToastHard,
+  showPicture,
 } from './helpers';
 import { mySwiper, settings, dataController } from './constants';
 import 'materialize-css';
@@ -337,6 +338,7 @@ export default class Card {
       }
       mySwiper.train.shortTermStat.totalCards++;
       allowNextCard();
+      showPicture();
       showTranscription();
       showExplanation();
       showExample();
@@ -422,6 +424,7 @@ export default class Card {
       }
       mySwiper.train.updateStat();  
       allowNextCard();
+      showPicture();
       showTranscription();
       showExplanation();
       showExample();    

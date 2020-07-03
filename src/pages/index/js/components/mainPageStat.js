@@ -9,7 +9,7 @@ export const renderShortTermStat = (settings) => {
     document.querySelector('.sc-max').innerText = settings.cardsPerDay;
     document.querySelector('.sc-value').innerText = shortTermStat.totalCards;
     const angle =  Math.round((180 * (shortTermStat.totalCards || 0) / settings.cardsPerDay * 100) / 100) ;
-    document.querySelector('.sc-percentage').setAttribute('style', `transform: rotate(${angle}deg);`);
+    document.querySelector('.sc-percentage').setAttribute('style', `transform: rotate(${angle > 180 ? 180 : angle}deg);`);
   }
   if (settings) {
     document.querySelector('.plan__new').innerText = settings.newCardsPerDay;
