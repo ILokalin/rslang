@@ -15,6 +15,7 @@ import {
   apiUserWordsSave,
   apiUserWordsGet,
   apiUserAggregatedWords,
+  apiWordMaterialsGet,
 } from 'Service/ServerAPI';
 import { reportMessages } from './reportMessages';
 import { dataControllerConst } from './dataControllerConst';
@@ -42,6 +43,19 @@ export class DataController {
         this.isAuthInProgress = false;
         this.reject(dataControllerConst.cancelUser);
       }
+    });
+  }
+
+  getWordMaterials(wordId) {
+    return apiWordMaterialsGet(wordId).then((wordMaterials) => {
+      const materials = {
+        image: dataControllerConst.imageBase64Prifex.concat(wordMaterials.image),
+        audio: dataControllerConst.audioBase64Prifex.concat(wordMaterials.audio),
+        audioExample: dataControllerConst.audioBase64Prifex.concat(wordMaterials.audioExample),
+        audioMeaning: dataControllerConst.audioBase64Prifex.concat(wordMaterials.audioMeaning),
+      };
+
+      return { ...wordMaterials, ...materials };
     });
   }
 

@@ -1,5 +1,56 @@
 ## DataController
 
+### getWordMaterials
+
+Implementation for the method of get words materials. Example of use:
+
+```
+const imageMaterial = new Img();
+audio = new Audio();
+audioExample = new Audio();
+audioMeaning = new Audio();
+
+dataController.getWordMaterials('5e9f5ee35eb9e72bc21af4a0')
+  .then((materialOfCard) => {
+    imageMaterial.src = materialOfCard.image;
+    audio.src = materialOfCard.audio;
+    audioExample.src = materialOfCard.audioExample;
+    audioMeaning.src = materals.audioMeaning;
+  });
+```
+
+The image and sounds is ready to attach and already have specified parameters for base64. All fields of word card returned also.
+
+**sample of materialOfCard**
+
+```
+    {
+      id: '5e9f5ee35eb9e72bc21af4a0',
+      group: 0,
+      page: 0,
+      word: 'alcohol',
+      image: 'data:image/jpg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA0JCgsKCA0LCgsODg0PEyAVExISEyccHhcgLikxMC4pLSwzOko+MzZGNywtQFdBRkxOUlNSMj5aYVpQYEpRUk//2wBDAQ4ODhMREyYVFSZPNS01T09PT09PT09PT09PT09PT09PT09PT09PT09PT
+...
+AEkkkgBJJJIASSSSAEkkkgBJJJIASSSSAEkkkgBKQPdlOqSShgJ+trqNJJSAkkkkAJJJJACSSSQAkkkkAJJJJACSSSQB//2Q==',
+      audio: 'data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4LjE3LjEwMQAAAAAAAAAAAAAA//OAYAAAAAAAAAAAAAAAAAAAAAAAWGluZwAAAA8AAAAxAAATZgAICAwMDQ0PDxAQEhITExcXHh4oKDIyPDxFRU5OWFhdXWNjbm54eH19g4OJiY6
+...
+ABpAAAAAAAAANIAAAAAKqqqqqq//MQYDMAAAGkAAAAAAAAA0gAAAAAqqqqqqr/8xBgOAAAAaQAAAAAAAADSAAAAACqqqqqqg==',
+      audioMeaning: 'data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4LjE3LjEwMQAAAAAAAAAAAAAA//OAYAAAAAAAAAAA
+...
+gAAAAAqqqqqqr/8xBgJgAAAaQAAAAAAAADSAAAAACqqqqqqv/zEGArAAABpAAAAAAAAANIAAAAAKqqqqqq//MQYDAAAAGkAAAAAAAAA0gAAAAAqqqqqqo=',
+      audioExample: 'data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4LjE3LjEwMQAAAAAAAAAAAAAA//OAYAAAAAAAAAAA
+...
+AAAAAAA0gAAAAAVVVVVVX/8xBgLAAAAaQAAAAAAAADSAAAAABVVVVVVf/zEGAxAAABpAAAAAAAAANIAAAAAFVVVVVV',
+      textMeaning: '<i>Alcohol</i> is a type of drink that can make people drunk.',
+      textExample: 'A person should not drive a car after he or she has been drinking <b>alcohol</b>.',
+      transcription: '[ǽlkəhɔ̀ːl]',
+      textExampleTranslate: 'Человек не должен водить машину после того, как он выпил алкоголь',
+      textMeaningTranslate: 'Алкоголь - это тип напитка, который может сделать людей пьяными',
+      wordTranslate: 'алкоголь',
+      wordsPerExampleSentence: 15
+    }
+```
+
 ### getUserStatistics
 
 Returns full statistics for every single game.
