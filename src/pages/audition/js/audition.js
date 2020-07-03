@@ -1,13 +1,11 @@
 import AuditionGameStatistics from './game-statistics'
 import { DataController } from 'Service/DataController';
 import {
-  DATA_URL,
   gameContainer,
   abortGameBtn,
   userNameEl,
   difficultySelector,
   logInBtn,
-  logOutBtn,
   errorMessageEl,
   selectWordsWindow,
   ownWordsBtn,
@@ -90,7 +88,6 @@ export default class AuditionGame {
     this.dataController.getUser()
       .then(
         (userSettings) => {
-          logOutBtn.classList.remove('hidden');
           this.user = userSettings.name;
           userNameEl.innerText = this.user;
           this.startGame();
@@ -150,8 +147,8 @@ export default class AuditionGame {
   playWithOwnWords(words) {
     words.sort(() => Math.random() - Math.random());
     this.roundsNumber = Math.floor(words.length/5);
-    const selector =  document.querySelectorAll('select');
-    selector.disabled = true;
+    const trigger= document.querySelector('.dropdown-trigger');
+    trigger.disabled = true;
     this.createRoundsData(words);
     this.createCurrentRoundPage();
     this.createNextRoundPage();
@@ -208,32 +205,27 @@ export default class AuditionGame {
       const roundData = {};
       roundData.word = roundWords[0].word;
       roundData.wordTranslate = roundWords[0].wordTranslate;
-      roundData.audio = new Audio(`${DATA_URL}/${roundWords[0].audio}`);
-      roundData.image = `${DATA_URL}/${roundWords[0].image}`;
-      roundData.translations = roundWords.map((word) => word.wordTranslate);
+      
+      // roundData.audio = new Audio(`${DATA_URL}/${roundWords[0].audio}`);
+      // roundData.image = `${DATA_URL}/${roundWords[0].image}`;
+      
+      const id = roundWords[0].id;
+      roundData.audio = new Audio();
+      roundData.image = new Image();
 
+      this.dataController.getWordMaterials(id)
+      .then((materialOfCard) => {
+        roundData.image.src = materialOfCard.image;
+        roundData.audio.src = materialOfCard.audio
+        });
+      
+      roundData.translations = roundWords.map((word) => word.wordTranslate);
       roundData.translations.sort(() => Math.random() - Math.random());
 
       this.roundsData.push(roundData);
-
-      // TODO get materials path
-      // const audioFile = roundWords[0].audio;
-      // const imgFile = roundWords[0].image;
-      //
-      // this.getMediaMaterials(audioFile);
-      // this.getMediaMaterials(imgFile);
-
     }
   }
 
-  getMediaMaterials(file) {
-    this.dataController.getMaterials(file)
-      .then(
-        (fullPath) => {
-          console.log(fullPath)
-        }
-      )
-  }
 
   createCurrentRoundPage () {
     const roundData = this.roundsData[this.round];
@@ -249,14 +241,15 @@ export default class AuditionGame {
   }
 
   createRoundPage(data) {
-
     const gameWrapper = document.createElement('div');
     gameWrapper.classList.add('game-wrapper');
     gameContainer.append(gameWrapper);
 
     const wordImageEl = document.createElement('div');
     wordImageEl.classList.add('word-image-element');
-    wordImageEl.style.backgroundImage = `url(${data.image})`;
+    data.image.classList.add('word-image');
+    wordImageEl.appendChild(data.image);
+    // wordImageEl.style.backgroundImage = `url(${data.image.src})`;
     gameWrapper.append(wordImageEl);
 
     const audioEl = document.createElement('div');
@@ -307,7 +300,6 @@ export default class AuditionGame {
 
     image.classList.add('answered');
     puzzledWord.classList.add('answered');
-    debugger;
     this.roundsData[this.round].answer = false;
 
     if (this.round === this.roundsNumber - 1) {
@@ -364,7 +356,6 @@ export default class AuditionGame {
   }
 
   endRound() {
-    debugger;
     if (this.round === this.roundsNumber - 1) {
       this.endGame();
     } else {
@@ -373,7 +364,7 @@ export default class AuditionGame {
   }
 
   endGame() {
-    new AuditionGameStatistics(this.roundsData);
+    new AuditionGameStatistics(this.roundsData, this.user);
   }
 }
 

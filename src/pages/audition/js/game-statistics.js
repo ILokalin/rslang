@@ -1,20 +1,47 @@
+import { DataController } from 'Service/DataController';
 import AuditionGame from './audition';
 import {
   gameContainer,
 } from './constants'
 
 export default class AuditionGameStatistics {
-  constructor (words) {
+  constructor (words, user) {
+    this.dataController = new DataController();
     this.gameWords = words;
+    this.user = user;
     this.getGameStatistics();
   }
 
   getGameStatistics() {
-    debugger;
     const answeredWords = this.gameWords.filter((word) => word.answer);
     const errorWords = this.gameWords.filter((word) => !word.answer);
-    const gamePoints = answeredWords.length;
-    this.renderStatisticWindow(answeredWords, errorWords, gamePoints);
+    const points = (answeredWords.length / 10) * 100;
+    this.renderStatisticWindow(answeredWords, errorWords, points);
+    if (this.user) {
+      this.saveGameStatistic(points);
+    }
+  }
+
+  saveGameStatistic(points) {
+    const options = {
+      audition: {result: points}
+    }
+
+    this.dataController.setUserStatistics(options)
+    .then(
+    (statisticsAnswer) => {
+      const longGameStatistic = statisticsAnswer.audition.longTime;
+      console.log(longGameStatistic);
+      // const currentResult = longGameStatistic[longGameStatistic.length].result;
+      // const previousResult = longGameStatistic[longGameStatistic.length - 1].result;
+
+      if (currentResult > previousResult) {
+        console.log('better');
+      } else if (currentResult < previousResult) {
+        console.log('worse');
+      }
+    },
+  )
   }
 
   renderStatisticWindow(answered, error, points) {
@@ -26,9 +53,8 @@ export default class AuditionGameStatistics {
 
     const gamePointsEl = document.createElement('span');
     gamePointsEl.classList.add('game-points-element');
-    gamePointsEl.innerText = `У вас ${points} правильных ответов`;
+    gamePointsEl.innerText = `У вас ${points}% правильных ответов`;
     statisticBlock.append(gamePointsEl);
-    debugger
 
     if(answered.length) {
       const answeredBlock = document.createElement('div');

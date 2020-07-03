@@ -4,7 +4,6 @@ const abortGameBtn = document.querySelector('.abort-game-btn');
 const userNameEl = document.querySelector('.avatar__name');
 const difficultySelector = document.querySelector('.select-difficulty');
 const logInBtn = document.querySelector('.login-btn');
-const logOutBtn = document.querySelector('.logout-btn');
 const errorMessageEl = document.querySelector('.warning-text');
 const selectWordsWindow = document.querySelector('.select-words-window');
 const ownWordsBtn = document.getElementById('own-words');
@@ -17,7 +16,6 @@ export {
   userNameEl,
   difficultySelector,
   logInBtn,
-  logOutBtn,
   errorMessageEl,
   selectWordsWindow,
   ownWordsBtn,
