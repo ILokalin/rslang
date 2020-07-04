@@ -195,3 +195,20 @@ header, main, footer, .settings-container, .statistics-container, .vocabulary-co
   justify-content: space-between;
 }
 
+.restore-icon {
+  margin-left: auto !important;
+}
+
+.collapsible span.badge {
+  margin-left: 5px !important;
+  min-width: 140px;
+}
+
+#vocabulary__on-learn .restore-icon {
+  display: none !important;
+}
+
+#vocabulary__on-learn span.badge {
+  margin-left: auto !important;
+}
+
