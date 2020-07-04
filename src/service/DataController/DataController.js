@@ -361,7 +361,6 @@ export class DataController {
     }
 
     tempStatisticsObject.optional = this.packUserSettings(tempStatisticsObject.optional);
-    console.log(tempStatisticsObject);
     return tempStatisticsObject;
   }
 
