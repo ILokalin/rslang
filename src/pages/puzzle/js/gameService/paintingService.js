@@ -6,7 +6,7 @@ import paintings5 from '../data/paintings/level5';
 import paintings6 from '../data/paintings/level6';
 import { store } from '../storage';
 import {
-  inputField, paintingInfo, miniature, miniatureInfo, linkToPainting, painting, roundsCount,
+  inputField, paintingInfo, miniature, miniatureInfo, linkToPainting, painting, roundsCount, paintingUrl,
 } from '../constants';
 import {getRandomInteger} from '../helpers';
 
@@ -39,8 +39,8 @@ const getRandomPainting = () => {
   return collectionsArray[randomLevel-1].find((el) => el.id === id);
 }
 
-const getPaintingCutSrc = () => `https://raw.githubusercontent.com/jules0802/rslang_data_paintings/master/${getRoundPainting().cutSrc}`;
-const getPaintingImageSrc = () => `https://raw.githubusercontent.com/jules0802/rslang_data_paintings/master/${getRoundPainting().imageSrc}`;
+const getPaintingCutSrc = () => `${paintingUrl}${store.playUserWords ? getRandomPainting().cutSrc : getRoundPainting().cutSrc}`;
+const getPaintingImageSrc = () => `${paintingUrl}${store.playUserWords ? getRandomPainting().imageSrc : getRoundPainting().imageSrc}`;
 
 const setRoundPainting = () => {
   const cutSrc = getPaintingCutSrc();
@@ -53,7 +53,7 @@ const setRoundPainting = () => {
 const showBackgroundPic = () => { painting.style.zIndex = 1; };
 const hideBackgroundPic = () => { painting.style.zIndex = -2000; };
 const setPaintingInfo = () => {
-  const paintingDetails = getRoundPainting();
+  const paintingDetails = store.playUserWords ? getRandomPainting() : getRoundPainting();
   const text = `${paintingDetails.author} - ${paintingDetails.name} (${paintingDetails.year})`;
   paintingInfo.innerText = text;
   miniatureInfo.innerText = text;

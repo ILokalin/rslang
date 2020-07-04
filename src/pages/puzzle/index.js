@@ -37,16 +37,20 @@ document.querySelector('select').addEventListener('change', selectLevelHandler);
 document.querySelector('.round-select input').addEventListener('change', chooseRoundHandler);
 document.querySelector('.hints').addEventListener('click', checkBoxHandler);
 document.querySelector('.auto-pronounce-check').addEventListener('click', checkBoxHandler);
+document.querySelector('.user-words-checkbox').addEventListener('click', checkBoxHandler);
 
 const options = {
   onOpenStart() {
     store.prevRound = {
       level: store.level,
       round: store.round,
+      playUserWords: store.playUserWords,
     };
   },
   async onCloseEnd() {
-    if (store.round !== store.prevRound.round || store.level !== store.prevRound.level) {
+    if (store.round !== store.prevRound.round 
+    || store.level !== store.prevRound.level 
+    || store.playUserWords !== store.prevRound.playUserWords) {
       await startRound();
     }
   },

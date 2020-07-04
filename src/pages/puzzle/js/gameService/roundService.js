@@ -3,7 +3,12 @@ import { roundsCount } from '../constants';
 
 const getGameRound = () => `Round ${store.level}.${store.round}`;
 const setGameRound = () => {
-  document.querySelector('.game-header h4').innerText = getGameRound();
+  const roundTitle = document.querySelector('.game-header h4');
+  if (store.playUserWords) {
+    roundTitle.innerText = 'Your words'
+  } else {
+    roundTitle.innerText = getGameRound();
+  }
 };
 const setRound = () => {
   if (+store.round > roundsCount[store.level - 1]) {

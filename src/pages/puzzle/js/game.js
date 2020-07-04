@@ -8,7 +8,7 @@ import {
   shuffleArray, getSymbolsCount, getGameRowWidth, getGameRowHeight, getRoundPainting,
   setRoundPainting, setGameRound, getWordsForRound, roundStatisticAudioHandler, autopronounce,
   connectSentenceWithHints, showTranslation, hideTranslation, getSizeOfPiece,
-  setRound, } from './gameService/gameService';
+  setRound, getUserWordsForGame } from './gameService/gameService';
 import {
   inputField, dontKnowBtn, checkBtn, continueBtn, resultsBtn, painting, audio, translation,
   translateBtn, pronounceBtn, pictureBtn, roundStatisticsPage, gamePage, fullStatPage, statBtn,
@@ -197,16 +197,15 @@ const startRound = async () => {
   });
   clearRoundStatistics();
   gameState = {
-    words: await getWordsForRound(store.level, store.round),
+    words: store.playUserWords ? await getUserWordsForGame() : await getWordsForRound(store.level, store.round),
     currentSentence: 0,
     know: [],
     dontknow: [],
   };
-
   
-  setGameRound();
- 
-  setRoundPainting(getRoundPainting());
+  setGameRound(); 
+
+  setRoundPainting();
   setPaintingInfo();
   
   painting.onload = async () => {
@@ -227,8 +226,11 @@ const goToNextRound = () => {
   roundStatisticsPage.classList.add('hidden');
   fullStatPage.classList.add('hidden');
   gamePage.classList.remove('hidden');
-  setRound();
+  if (!store.playUserWords) {
+    setRound();
+  }  
 // TODO send to settings round and level;
+console.log(store.stringifySettings());
   dataController.setUserOptions({puzzle: store.stringifySettings()}).then(async () => { 
     await startRound();
   });  

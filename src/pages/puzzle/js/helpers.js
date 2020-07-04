@@ -1,3 +1,4 @@
+/* eslint-disable no-plusplus */
 import { store } from './storage';
 import {
   gamePage, homePage, translateBtn, pronounceBtn, pictureBtn,
@@ -12,18 +13,32 @@ const handleRoundsPerLevel = () => {
 };
 
 const getRandomInteger = (min, max) => {
-  let rand = min - 0.5 + Math.random() * (max - min + 1);
+  const rand = min - 0.5 + Math.random() * (max - min + 1);
   return Math.round(rand);
+}
+
+const shuffle = (array) => {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    // eslint-disable-next-line no-param-reassign
+    [array[i], array[j]] = [array[j], array[i]];
+  }
 }
 
 const checkCheckboxes = () => {
   const autoPronounceCheckbox = document.querySelector('.auto-pronounce-check input');
+  const playUserWords = document.querySelector('.user-words-checkbox');
   const translateCheckbox = document.querySelector('.translate-checkbox');
   const pronounceCheckbox = document.querySelector('.pronounce-checkbox');
   const pictureCheckbox = document.querySelector('.picture-checkbox');
 
   if (store.isAutoPronounceOn) {
     autoPronounceCheckbox.setAttribute('checked', 'checked');
+  }
+  if (store.playUserWords) {
+    playUserWords.setAttribute('checked', 'checked');
+    document.querySelector('.level-select input').setAttribute('disabled', 'disabled');
+    document.querySelector('.round-select input').setAttribute('disabled', 'disabled');
   }
   if (store.hints.isTranslationOn) {
     translateCheckbox.setAttribute('checked', 'checked');
@@ -105,8 +120,19 @@ const checkBoxHandler = async (event) => {
         });
         break;
       }
-      default: {
+      case 'Auto pronounce': {
         store.isAutoPronounceOn = isChecked;
+        break;
+      }
+      default: {
+        store.playUserWords = isChecked;
+        if (isChecked) {
+          document.querySelector('.level-select input').setAttribute('disabled', 'disabled');
+          document.querySelector('.round-select input').setAttribute('disabled', 'disabled');
+        } else {
+          document.querySelector('.level-select input').removeAttribute('disabled');
+          document.querySelector('.round-select input').removeAttribute('disabled');
+        }
         break;
       }
     }
@@ -117,5 +143,5 @@ const checkBoxHandler = async (event) => {
 
 export {
   playButtonHandler, selectLevelHandler, chooseRoundHandler, checkBoxHandler, 
-  checkCheckboxes, handleRoundsPerLevel, getRandomInteger,
+  checkCheckboxes, handleRoundsPerLevel, getRandomInteger, shuffle,
 };

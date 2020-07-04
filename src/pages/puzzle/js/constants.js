@@ -25,11 +25,12 @@ const fullStatPage = document.querySelector('.full-stat-page');
 const statBtn = document.querySelector('.statistic-btn');
 const puzzleGrooveWidth = 17;
 const dataController = new DataController();
+const paintingUrl = 'https://raw.githubusercontent.com/jules0802/rslang_data_paintings/master/';
 
 export {
   gamePage, homePage, translateBtn, pronounceBtn,
   pictureBtn, inputField, dontKnowBtn, checkBtn, continueBtn, resultsBtn, painting,
   audio, translation, paintingInfo, sideNav, roundsCount, errorMsg, 
   miniature, miniatureInfo, linkToPainting, roundStatisticsPage, fullStatPage, statBtn, puzzleGrooveWidth, 
-  dataController,
+  dataController, paintingUrl,
 };

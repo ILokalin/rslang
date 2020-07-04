@@ -12,8 +12,8 @@ const createRow = (roundStat) => {
 
   td1.insertAdjacentText('afterbegin', roundStat.round);  
   td2.insertAdjacentText('afterbegin', roundStat.date);  
-  td3.insertAdjacentText('afterbegin', roundStat.knownWords.length); 
-  td4.insertAdjacentText('afterbegin', roundStat.mistakeWords.length);
+  td3.insertAdjacentText('afterbegin', roundStat.knownWords); 
+  td4.insertAdjacentText('afterbegin', roundStat.mistakeWords);
 
   tr.appendChild(td1);
   tr.appendChild(td2);

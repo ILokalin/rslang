@@ -16,7 +16,7 @@ import {
 import {
   setSentenceTranslation, showTranslation, hideTranslation, connectSentenceWithHints,
 } from './translationService';
-import { getWordsForRound, getSymbolsCount } from './textService';
+import { getWordsForRound, getSymbolsCount, getUserWordsForGame } from './textService';
 
 const shuffleArray = (array) => {
   // eslint-disable-next-line no-plusplus
@@ -40,4 +40,5 @@ export {
   setGameRound, getWordsForRound, roundStatisticAudioHandler, autopronounce,
   connectSentenceWithHints, setSentenceTranslation, showTranslation, hideTranslation,
   getSizeOfPiece, setRound, getRoundPainting, getPaintingCutSrc, getPaintingImageSrc,
+  getUserWordsForGame,
 };

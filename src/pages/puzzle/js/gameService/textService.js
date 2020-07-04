@@ -1,5 +1,7 @@
 import {dataController} from '../constants';
-import {openModal} from '../modal';
+import { openModal } from '../modal';
+import { shuffle } from '../helpers';
+import { store } from '../storage';
 
 const getWordsCount = (sentence) => sentence.split(' ').length;
 
@@ -16,13 +18,16 @@ const getWordsForRound = async (level, round) => {
 
 const getUserWordsForGame = async () => {
   const wordsArr = await dataController.userWordsGetAll(['onlearn', 'hard', 'deleted']);  
-  const res = wordsArr.filter((el) => el.wordsPerExampleSentence <= 10);
+  let res = wordsArr['0'].paginatedResults.filter((el) => el.wordsPerExampleSentence <= 10);
   console.log('wordsArr', wordsArr);
   console.log('res', res);
   if (res.length < 10) {
-    openModal('Для игры со словами пользователя недостаточно слов. Выберите уровень и раунд или нажмите Оk для игры со всеми словами. Так же вы можете вернуться на главную страницу и потренироваться, чтобы пополнить свой словарь.')
+    openModal('Для игры со словами пользователя недостаточно слов. Выберите уровень и раунд или нажмите Оk для игры со всеми словами. Так же вы можете вернуться на главную страницу и потренироваться, чтобы пополнить свой словарь.');
+    store.playUserWords = 0;
   } 
   else {
+    shuffle(res);
+    res = res.slice(0, 10);    
     return res;
   }
 }

@@ -65,7 +65,8 @@ main {
   align-items: flex-start;
 }
 
-.hints li, .level-select, .range-field, .round-select  {
+.hints li, .level-select, .range-field, .round-select,
+#slide-out > li:nth-child(7)  {
   padding-left: 20px;
 }
 
