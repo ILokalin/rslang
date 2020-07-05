@@ -1,4 +1,5 @@
 import { AuthPopup } from 'Components/AuthPopup';
+import moment from 'moment';
 import {
   openAuthPopup,
   closeAuthPopup,
@@ -15,6 +16,7 @@ import {
   apiUserWordsSave,
   apiUserWordsGet,
   apiUserAggregatedWords,
+  apiWordMaterialsGet,
 } from 'Service/ServerAPI';
 import { reportMessages } from './reportMessages';
 import { dataControllerConst } from './dataControllerConst';
@@ -45,6 +47,19 @@ export class DataController {
     });
   }
 
+  getWordMaterials(wordId) {
+    return apiWordMaterialsGet(wordId).then((wordMaterials) => {
+      const materials = {
+        image: dataControllerConst.imageBase64Prifex.concat(wordMaterials.image),
+        audio: dataControllerConst.audioBase64Prifex.concat(wordMaterials.audio),
+        audioExample: dataControllerConst.audioBase64Prifex.concat(wordMaterials.audioExample),
+        audioMeaning: dataControllerConst.audioBase64Prifex.concat(wordMaterials.audioMeaning),
+      };
+
+      return { ...wordMaterials, ...materials };
+    });
+  }
+
   userWordsGetAll(groupWords) {
     return apiUserAggregatedWords(groupWords);
   }
@@ -53,7 +68,7 @@ export class DataController {
     return apiUserWordsGet(wordId);
   }
 
-  userWordsPut({status = 'onlearn', id, progress = 0}) {
+  userWordsPut({ status = 'onlearn', id, progress = 0 }) {
     const sendWordData = {
       difficulty: status,
       optional: {
@@ -64,7 +79,7 @@ export class DataController {
     return apiUserWordsSave(id, sendWordData, 'PUT');
   }
 
-  userWordsPost({status = 'onlearn', id, progress = 0}) {
+  userWordsPost({ status = 'onlearn', id, progress = 0 }) {
     const sendWordData = {
       difficulty: status,
       optional: {
@@ -133,6 +148,52 @@ export class DataController {
     });
   }
 
+  setUserStatistics(statisticsData) {
+    return new Promise((resolve, reject) => {
+      this.resolve = resolve;
+      this.reject = reject;
+      this.userStatisticUpload = statisticsData;
+
+      if (this.checkToken()) {
+        apiUserSettingsGet('statistics')
+          .then((currentStatistics) =>
+            apiUserSettingsPut(
+              this.prepareUploadStatistics(currentStatistics, statisticsData),
+              'statistics',
+            ),
+          )
+          .then(
+            (data) => resolve(this.orderingStatResult(data)),
+            (rejectReport) => reject(rejectReport),
+          );
+      } else {
+        // temp cover - TODO algorithm for auth
+        // eslint-disable-next-line prefer-promise-reject-errors
+        reject({ message: 'user not defined' });
+      }
+    });
+  }
+
+  getUserStatistics() {
+    return new Promise((resolve, reject) => {
+      this.resolve = resolve;
+      this.reject = reject;
+
+      if (this.checkToken()) {
+        apiUserSettingsGet('statistics').then(
+          (userStatistics) => {
+            resolve(this.orderingStatResult(userStatistics));
+          },
+          (rejectReport) => reject(rejectReport),
+        );
+      } else {
+        // temp cover - TODO algorithm for auth
+        // eslint-disable-next-line prefer-promise-reject-errors
+        reject({ message: 'user not defined' });
+      }
+    });
+  }
+
   chainSignInSettingsGetSettingsPut(userData) {
     apiUserSignIn(userData)
       .then(() => apiUserSettingsGet())
@@ -174,6 +235,7 @@ export class DataController {
     };
     apiUserCreate(userData)
       .then(() => apiUserSignIn(userData))
+      .then(() => apiUserSettingsPut({ learnedWords: 0 }, 'statistics'))
       .then(() => apiUserSettingsPut(userSettingsName))
       .then(() => apiUserSettingsGet())
       .then(
@@ -196,6 +258,112 @@ export class DataController {
     return false;
   }
 
+  orderingStatResult(userStatistics) {
+    const { learnedWords = 0, optional = {} } = userStatistics;
+    const originStatistics = {
+      ...this.unpackUserSettings(optional),
+    };
+    originStatistics.learnedWords = learnedWords;
+
+    return originStatistics;
+  }
+
+  findTopStatistics(topList, currentResult) {
+    let nextFindPosition = currentResult;
+
+    const topResult = topList.map((topPosition) => {
+      if (nextFindPosition.result >= topPosition.result) {
+        const returnItem = nextFindPosition;
+        nextFindPosition = topPosition;
+        return returnItem;
+      }
+      return topPosition;
+    });
+
+    if (topResult.length < 5) {
+      topResult.push(nextFindPosition);
+    }
+
+    return topResult;
+  }
+
+  // this.shortTermStat = {
+  //     date: new Date().toDateString(),
+  //     totalCards: 0, //суммируется
+  //     wrightAnswers: 0,//суммируется
+  //     newWords:0,//суммируется и отправляется в долгосруочную
+  //     chain: 0,//суммируется
+  //     longestChain:0, // НЕ суммируется
+  //   }
+
+  cardStatisticsAggregate(originStatOptionalCard, shortTimeStat, today) {
+    const shortStatTemplate = {
+      date: today,
+      totalCards: 0,
+      wrightAnswers: 0,
+      newWords: 0,
+      chain: 0,
+      longestChain: 0,
+    };
+    const { longTime = [], shortTime = shortStatTemplate } = originStatOptionalCard;
+    const { totalCards, wrightAnswers, newWords, chain, longestChain } = shortTimeStat;
+    const resultOptionalCard = {
+      longTime,
+      shortTime,
+    };
+
+    if (shortTime.date === today) {
+      resultOptionalCard.shortTime.totalCards += totalCards;
+      resultOptionalCard.shortTime.wrightAnswers += wrightAnswers;
+      resultOptionalCard.shortTime.newWords += newWords;
+      resultOptionalCard.shortTime.chain = chain;
+      resultOptionalCard.shortTime.longestChain = longestChain;
+    } else {
+      const longTimeStatItem = [shortTime.date, shortTime.newWords];
+      resultOptionalCard.longTime.push(longTimeStatItem);
+      resultOptionalCard.shortTime = { ...shortStatTemplate, ...shortTimeStat };
+    }
+
+    return resultOptionalCard;
+  }
+
+  prepareUploadStatistics(originStatistics, uploadStatistics) {
+    const today = moment().format('DD-MMM-YYYY');
+    const { learnedWords = 0, optional = {} } = originStatistics;
+    const tempStatisticsObject = {
+      optional: this.unpackUserSettings(optional),
+    };
+
+    if (uploadStatistics.card) {
+      tempStatisticsObject.learnedWords = learnedWords + uploadStatistics.card.newWords;
+      tempStatisticsObject.optional.card = this.cardStatisticsAggregate(
+        optional,
+        uploadStatistics.card,
+        today,
+      );
+    } else {
+      Object.keys(uploadStatistics).forEach((key) => {
+        const todayAsObj = { date: today };
+        const statisticsItem = { ...uploadStatistics[key], ...todayAsObj };
+        if (optional[key]) {
+          tempStatisticsObject.optional[key].longTime.push(statisticsItem);
+          tempStatisticsObject.optional[key].top = this.findTopStatistics(
+            tempStatisticsObject.optional[key].top,
+            statisticsItem,
+          );
+        } else {
+          tempStatisticsObject.optional[key] = {
+            longTime: [statisticsItem],
+            top: [statisticsItem],
+          };
+        }
+      });
+    }
+
+    tempStatisticsObject.optional = this.packUserSettings(tempStatisticsObject.optional);
+    return tempStatisticsObject;
+  }
+
   prepareUploadSetting(originSettings, uploadSettings) {
     return {
       optional: this.packUserSettings({
@@ -209,7 +377,7 @@ export class DataController {
     const resultUserSettings = {};
     Object.keys(userSettings).forEach((field) => {
       resultUserSettings[field] = JSON.parse(userSettings[field]);
-    })
+    });
     return resultUserSettings;
   }
 
@@ -217,7 +385,7 @@ export class DataController {
     const resultUserSettings = {};
     Object.keys(userSettings).forEach((field) => {
       resultUserSettings[field] = JSON.stringify(userSettings[field]);
-    })
+    });
     return resultUserSettings;
   }
 }

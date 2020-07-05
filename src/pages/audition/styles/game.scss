@@ -1,0 +1,71 @@
+.start-game-btn {
+  margin-top: 250px;;
+}
+
+.game-container {
+  text-align: center;
+}
+
+.game-wrapper {
+  padding: 50px;
+  text-align: center;
+}
+
+.word-image-element {
+  width: 200px;
+  height: 200px;
+}
+
+.audio-element {
+  margin: 0 auto;
+  width: 200px;
+  height: 200px;
+  background-image: url("assets/img/sound.png");
+  background-position: center;
+  background-size: 100px;
+  background-repeat: no-repeat;
+}
+
+.audio-element.small {
+  width: 30px;
+  height: 30px;
+  background-image: url("assets/img/sound.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.words-translations-block {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 30px;
+}
+
+.word-image-element {
+  margin: 0 auto;
+  display: none;
+  background-size: cover;
+  background-repeat: no-repeat;
+  border: white 1px solid;
+  border-radius: 50%;
+}
+
+.puzzled-word-element {
+  display: none;
+}
+
+.correct {
+  border: green solid 1px;
+}
+
+.wrong {
+  border: red solid 1px;
+}
+
+.previous-round {
+  display: none;
+}
+
+.next-round {
+  display: none;
+}

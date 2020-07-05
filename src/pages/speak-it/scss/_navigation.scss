@@ -4,10 +4,26 @@
   color: #fff;
 }
 
-.level-select, .range-field, .round-select {
+.level-select,
+.range-field,
+.round-select {
   padding-left: 20px;
 }
 
-.user-name[href] {
-  text-decoration: underline;
+.sidenav .user-view {
+  padding-top: 0;
+}
+
+.home {
+  position: absolute;
+  right: 20px;
+}
+
+.avatar img {
+  margin-top: 10px;
+  width: 100px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 4px solid #80cbc4;
+  box-shadow: 0 0 0 4px hsla(0, 0%, 100%, 0.2);
 }
