@@ -145,6 +145,7 @@ export default class AuditionGame {
   }
 
   playWithOwnWords(words) {
+    debugger;
     words.sort(() => Math.random() - Math.random());
     this.roundsNumber = Math.floor(words.length/5);
     const trigger= document.querySelector('.dropdown-trigger');
@@ -157,6 +158,7 @@ export default class AuditionGame {
   }
 
   playWithAllWords() {
+    debugger;
       const pages = this.generatePages();
       this.getWords(pages);
   }
@@ -186,7 +188,6 @@ export default class AuditionGame {
       .then(responses => Promise.all(responses.map(r => r.json())))
       .then(result => {
         const words = [].concat(...result).sort(() => Math.random() - Math.random());
-
         this.createRoundsData(words);
         this.createCurrentRoundPage();
         this.createNextRoundPage();
@@ -205,9 +206,6 @@ export default class AuditionGame {
       const roundData = {};
       roundData.word = roundWords[0].word;
       roundData.wordTranslate = roundWords[0].wordTranslate;
-      
-      // roundData.audio = new Audio(`${DATA_URL}/${roundWords[0].audio}`);
-      // roundData.image = `${DATA_URL}/${roundWords[0].image}`;
       
       const id = roundWords[0].id;
       roundData.audio = new Audio();

@@ -32,8 +32,8 @@ export default class AuditionGameStatistics {
     (statisticsAnswer) => {
       const longGameStatistic = statisticsAnswer.audition.longTime;
       console.log(longGameStatistic);
-      // const currentResult = longGameStatistic[longGameStatistic.length].result;
-      // const previousResult = longGameStatistic[longGameStatistic.length - 1].result;
+      const currentResult = longGameStatistic[longGameStatistic.length - 1].result;
+      const previousResult = longGameStatistic[longGameStatistic.length - 2].result;
 
       if (currentResult > previousResult) {
         console.log('better');
