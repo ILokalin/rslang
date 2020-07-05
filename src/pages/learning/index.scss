@@ -26,6 +26,14 @@
   position: absolute;
   top: 20px;
   right: 20px;
+  @extend .teal-text, .text-lighten-2;  
+}
+
+.save-settings-button {
+  position: absolute;
+  top: 20px;
+  right: 80px;
+  cursor: pointer;
   @extend .teal-text, .text-lighten-2;
 }
 

@@ -5,18 +5,18 @@ import 'materialize-css';
 import { updateMaterialComponents, setProgressbarToCurrentPosition, getApproprateWords, saveTrainingStatistics, } from './helpers';
 
 export default class Training {
-  constructor(newWordsAmountPerDay, maxWordsPerDay) {
+  constructor(newWordsAmountPerDay, maxWordsPerDay, shortTermStat) {
     console.log(newWordsAmountPerDay, maxWordsPerDay)
-    this.shortTermStat = {
+    this.shortTermStat = shortTermStat || {
       date: new Date().toDateString(),
       totalCards: 0,
       wrightAnswers: 0,
       newWords:0,
       chain: 0,
       longestChain:0,
-    }
+    };
     settings.lastTrain = new Date().toDateString();
-    dataController.setUserOptions({name: 'Mr Checker', settings});
+    dataController.setUserOptions({name: 'Mr Checker', settings});   
 
     getApproprateWords(newWordsAmountPerDay, maxWordsPerDay).then((res)=> {
       this.words = res;
@@ -24,7 +24,7 @@ export default class Training {
       this.start();
     })
 
-    window.addEventListener('unload', saveTrainingStatistics);
+    window.addEventListener('beforeunload', saveTrainingStatistics);
   }
 
   start() {
@@ -54,11 +54,12 @@ export default class Training {
   }
 
   updateStat() {
+    const rightAnswersPersent = Math.round(this.shortTermStat.wrightAnswers / this.shortTermStat.totalCards * 100);
     if (this.shortTermStat.longestChain <  this.shortTermStat.chain) {
       this.shortTermStat.longestChain = this.shortTermStat.chain;
     }    
     document.querySelector('.statistics__new-words-num').innerText = this.shortTermStat.newWords;
-    document.querySelector('.statistics__correct-answers').innerText = `${Math.round(this.shortTermStat.wrightAnswers/this.shortTermStat.totalCards*100)}%`;
+    document.querySelector('.statistics__correct-answers').innerText = isNaN(rightAnswersPersent) ? '0%' : rightAnswersPersent+ '%';
     document.querySelector('.statistics__total-cards').innerText = this.shortTermStat.totalCards;
     document.querySelector('.statistics__correct-in-row').innerText = this.shortTermStat.longestChain;
     localStorage.setItem('stat', JSON.stringify(this.shortTermStat));

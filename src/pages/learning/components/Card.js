@@ -19,6 +19,7 @@ import {
   showToastDeleted,
   showToastHard,
   showPicture,
+  saveTrainingStatistics,
 } from './helpers';
 import { mySwiper, settings, dataController } from './constants';
 import 'materialize-css';
@@ -338,6 +339,7 @@ export default class Card {
        // audioPlay(audio);
       }
       mySwiper.train.shortTermStat.totalCards++;
+      mySwiper.train.updateStat();  
       allowNextCard();
       showPicture();
       showTranscription();
@@ -364,7 +366,7 @@ export default class Card {
 
     input.dataset.tryCount += 1;        
     input.dataset.word.toLowerCase().split('').forEach((el, i) => {
-      if (el === input.value[i].toLowerCase()) {
+      if (input.value[i] && el === input.value[i].toLowerCase()) {
         result.innerHTML += `<span class="correct">${el}</span>`;
       } else {
         result.innerHTML += `<span class="wrong">${el}</span>`;
@@ -405,13 +407,14 @@ export default class Card {
       result.style.zIndex = 2;
       input.value = '';
       input.setAttribute('placeholder', input.dataset.word);
-      input.focus();
+      
       setTimeout(() => {
         result.style.zIndex = -1;
         result.innerHTML = '';
+        input.focus();
       }, 3000);
-      await againBtnAct();  
 
+      await againBtnAct();  
     } else {
       if (+input.dataset.tryCount === 1) {
         mySwiper.train.shortTermStat.wrightAnswers++; 

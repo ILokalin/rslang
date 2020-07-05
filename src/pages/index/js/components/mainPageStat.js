@@ -1,7 +1,5 @@
-export const renderShortTermStat = (settings) => {  
-  const shortTermStat = JSON.parse(localStorage.getItem('stat'));
-  console.log(shortTermStat);
-  if (shortTermStat) {
+export const renderShortTermStat = (settings, shortTermStat) => {
+   if (shortTermStat) {
     document.querySelector('.statistics__new-words-num').innerText = shortTermStat.newWords;
     document.querySelector('.statistics__repeated-words').innerText = shortTermStat.totalCards - shortTermStat.newWords;
     document.querySelector('.statistics__total-cards').innerText = shortTermStat.totalCards;

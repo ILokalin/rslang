@@ -68,15 +68,15 @@ const showPicture = () => {
   mySwiper.slides[mySwiper.activeIndex].querySelector('.image-association').style.zIndex = 3;
 }
 
-const allowNextCard = () => {
+const allowNextCard = async () => {
   console.log(mySwiper);
   if (mySwiper.activeIndex === mySwiper.slides.length - 1) {
+    await saveTrainingStatistics();
     // eslint-disable-next-line no-undef
     const modal = M.Modal.getInstance(document.querySelector('.modal-end'));
     modal.open();
     progressBar.querySelector('.determinate').style.width = '100%';
     progressBar.dataset.tooltip = '100%';
-    saveTrainingStatistics();
   } else {
     mySwiper.allowSlideNext = true;
     mySwiper.navigation.nextEl.classList.remove('swiper-button-disabled');
@@ -267,7 +267,7 @@ const getApproprateWords = async (newWordsAmount, totalAmount) => {
 
 const saveTrainingStatistics = async () => {
   const saveOptions = {
-    card: {result: mySwiper.train.shortTermStat.newWords}
+    card: mySwiper.train.shortTermStat,
   }
   console.log(saveOptions);
   await dataController.setUserStatistics(saveOptions);
