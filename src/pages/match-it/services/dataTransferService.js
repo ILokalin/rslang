@@ -50,24 +50,22 @@ export default class DataTransferService {
     }
   }
 
-  iKnowWord(id, card) {
+  iKnowWord(id) {
     const currentWord = this.props.errorsArr.find((word) => word.id === id);
     this.props.errorsArr.splice(this.props.errorsArr.indexOf(currentWord), 1);
     this.props.knowArr.push(currentWord);
 
     this.props.know += 1;
     this.props.errors -= 1;
-    card.success = true;
   }
 
-  iDoNotKnowWord(id, card) {
+  iDoNotKnowWord(id) {
     const currentWord = this.props.knowArr.find((word) => word.id === id);
     this.props.knowArr.splice(this.props.knowArr.indexOf(currentWord), 1);
     this.props.errorsArr.push(currentWord);
 
     this.props.know -= 1;
     this.props.errors += 1;
-    card.success = false;
   }
 
   wordTransferEvent(event) {
@@ -87,10 +85,10 @@ export default class DataTransferService {
       targetCardImage.classList.add('overlayed');
       if (id === `word-${currentTarget.id.split('-')[1]}`) {
         this.iKnowWord(id, card);
-      } else {
-        if (card.success) {
-          this.iDoNotKnowWord(id, card);
-        }
+        card.success = true;
+      } else if (card.success) {
+        this.iDoNotKnowWord(id, card);
+        card.success = false;
       }
     }
     if (this.props.know === ERRORS_MAX_COUNT) {

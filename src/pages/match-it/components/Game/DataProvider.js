@@ -14,7 +14,7 @@ export default class DataProvider {
     return this.dataController.getUser().then(
       async (settings) => {
         Utils.displayUserName(settings);
-        let gameSettings = settings['match-it'];
+        const gameSettings = settings['match-it'];
         if (!gameSettings) {
           await this.dataController.setUserOptions({ 'match-it': { gameRound: this.gameRound } });
         } else {
