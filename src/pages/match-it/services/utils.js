@@ -16,13 +16,6 @@ const Utils = {
     //userNameEl.innerText = '';
   },
 
-  getUserWordsOption: () => {
-    if (!JSON.parse(localStorage.matchItGameUseUserWords || 'false')) {
-      localStorage.matchItGameUseUserWords = true;
-    }
-    return JSON.parse(localStorage.matchItGameUseUserWords);
-  },
-
   getCurrentRound: () => {
     if (!localStorage.getItem('matchItGameRound')) {
       localStorage.setItem('matchItGameRound', '1.1');
@@ -44,10 +37,10 @@ const Utils = {
     return wordsArr;
   },
 
-  getWordsForRound: async (dataController, userService) => {
-    const level = parseInt(levelSelect.value, 10) - 1;
-    const round = parseInt(roundSelect.value, 10) - 1;
-    if (level === -1) {
+  getWordsForRound: async (dataController) => {
+    let level = parseInt(levelSelect.value, 10) - 1;
+    let round = parseInt(roundSelect.value, 10) - 1;
+    /*if (level === -1) {
       const myWords = userService.getMyWords();
       if (myWords.size > 0) {
         roundSelect.max = myWords.size;
@@ -56,8 +49,11 @@ const Utils = {
       const myWordsArr = myWords.get(roundSelect.value);
       if (myWordsArr) {
         return myWordsArr;
+      } else {
+        level = 0;
+        round = 0;
       }
-    }
+    }*/
     let wordsArr;
     try {
       wordsArr = await dataController.getWords({
@@ -104,10 +100,8 @@ const Utils = {
   },
 
   goToNextRound: () => {
-    const currentRound = Utils.getCurrentRound().split('.');
-    let [level, round] = currentRound;
-    level = parseInt(level, 10);
-    round = parseInt(round, 10);
+    const level = parseInt(levelSelect.value, 10);
+    const round = parseInt(roundSelect.value, 10);
     if (round < ROUNDS_MAX_COUNT) {
       roundSelect.value = round + 1;
     } else if (level < LEVELS_MAX_COUNT) {

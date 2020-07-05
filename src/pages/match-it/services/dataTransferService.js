@@ -34,6 +34,9 @@ export default class DataTransferService {
     const card = document.getElementById(id);
     if (card) {
       const currentCardImage = card.parentNode.querySelector('.card-image');
+      if (currentCardImage) {
+        currentCardImage.classList.remove('overlayed');
+      }
       event.currentTarget.children.forEach((child) => {
         if (child.innerHTML.length === 0) {
           child.append(card);
@@ -42,11 +45,8 @@ export default class DataTransferService {
       if (card.success) {
         this.props.know -= 1;
         this.props.errors += 1;
-      } else {
-        this.props.errors -= 1;
       }
       card.success = false;
-      currentCardImage.classList.remove('overlayed');
     }
   }
 

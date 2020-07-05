@@ -8,6 +8,7 @@ export default class UserService {
   }
 
   async init() {
+    this.authorized = true;
     const userWordsForRound = await Utils.getUserWordsForRound(this.dataController);
     if (userWordsForRound) {
       this.userWordsArr = userWordsForRound[0].paginatedResults;
@@ -25,5 +26,9 @@ export default class UserService {
 
   getMyWords() {
     return this.myWords;
+  }
+
+  isAuthorized() {
+    return this.authorized;
   }
 }

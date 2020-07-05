@@ -1,5 +1,6 @@
 import Utils from '../../services/utils';
 import GameSettings from '../GameSettings';
+import DataProvider from './DataProvider';
 
 import {
   allCards,
@@ -9,6 +10,7 @@ import {
   nextBtn,
   checkBtn,
   restartBtn,
+  roundLabel,
 } from '../../data/constants';
 
 export default class Game {
@@ -22,25 +24,17 @@ export default class Game {
     };
     this.dataController = dataController;
     this.userService = userService;
+    this.dataProvider = new DataProvider(this.dataController, this.userService);
     this.dataTransfer = dataTransferService;
   }
 
-  start() {
-    this.dataController.getUser().then(
-      async (settings) => {
-        Utils.displayUserName(settings);
-        await this.userService.init();
-        this.init();
-      },
-      (report) => {
-        Utils.displayEmptyUserName(report);
-        this.init();
-      },
-    );
+  async start() {
+    await this.dataProvider.start();
+    this.init();
   }
 
   init() {
-    this.gameSettings = new GameSettings();
+    this.gameSettings = new GameSettings(this.dataProvider.getGameRound());
     this.gameSettings.init(this.optionSelected.bind(this));
     this.createCardPage();
     restartBtn.addEventListener('click', this.onRestartBtnClick.bind(this));
@@ -48,15 +42,29 @@ export default class Game {
     checkBtn.addEventListener('click', this.showResults.bind(this));
   }
 
-  showResults(e) {
+  async showResults(e) {
     Utils.disableCardsTransfer();
     checkBtn.classList.add('activeBtn');
     scoreLabel.children[0].innerHTML = this.props.know;
     Utils.displayResults();
     scoreLabel.classList.remove('hidden');
-    console.log(this.props);
-    // await dataController.setUserOptions({"match-it": store.stringifySettings()});
+    if (this.userService.isAuthorized()) {
+      await this.sendStatisticsToBackEnd();
+    }
     e.preventDefault();
+  }
+
+  async sendStatisticsToBackEnd() {
+    const results = Math.floor((this.props.know / this.props.errors) * 100);
+    const requestBody = {
+      'match-it': {
+        result: results,
+        round: roundLabel.innerHTML,
+        knownWords: this.props.know,
+        mistakeWords: this.props.errors,
+      },
+    };
+    //await this.dataController.setUserStatistics(requestBody);
   }
 
   onRestartBtnClick(e) {
@@ -74,8 +82,11 @@ export default class Game {
     this.props.errorsArr = [];
     this.props.errorsArr.length = 0;
     const words = [];
-    const wordsData = await Utils.getWordsForRound(this.dataController, this.userService);
-    Utils.setCurrentRound(GameSettings.displayRound());
+    let wordsData = this.dataProvider.getData().get(roundLabel.innerHTML);
+    if (!wordsData || wordsData.length === 0) {
+      wordsData = await Utils.getWordsForRound(this.dataController);
+    }
+    GameSettings.displayRound();
     await wordsData.forEach(this.createCard.bind(this));
     wordsData.forEach((data) => words.push(data));
     words.sort(() => 0.5 - Math.random());
@@ -107,11 +118,14 @@ export default class Game {
     this.props.errors = ERRORS_MAX_COUNT;
   }
 
-  optionSelected() {
+  async optionSelected() {
     allCards.innerHTML = '';
     allWords.innerHTML = '';
     this.clearStatistics();
-    this.createCardPage();
+    const round = GameSettings.displayRound();
+    this.dataController.setUserOptions({ 'match-it': { gameRound: round } }).then(() => {
+      this.createCardPage();
+    });
   }
 
   async createCard(data, index) {
