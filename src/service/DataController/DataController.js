@@ -287,15 +287,6 @@ export class DataController {
     return topResult;
   }
 
-  // this.shortTermStat = {
-  //     date: new Date().toDateString(),
-  //     totalCards: 0, //суммируется
-  //     wrightAnswers: 0,//суммируется
-  //     newWords:0,//суммируется и отправляется в долгосруочную
-  //     chain: 0,//суммируется
-  //     longestChain:0, // НЕ суммируется
-  //   }
-
   cardStatisticsAggregate(originStatOptionalCard, shortTimeStat, today) {
     const shortStatTemplate = {
       date: today,
@@ -306,41 +297,34 @@ export class DataController {
       longestChain: 0,
     };
     const { longTime = [], shortTime = shortStatTemplate } = originStatOptionalCard;
-    const { totalCards, wrightAnswers, newWords, chain, longestChain } = shortTimeStat;
     const resultOptionalCard = {
       longTime,
       shortTime,
     };
 
-    if (shortTime.date === today) {
-      resultOptionalCard.shortTime.totalCards += totalCards;
-      resultOptionalCard.shortTime.wrightAnswers += wrightAnswers;
-      resultOptionalCard.shortTime.newWords += newWords;
-      resultOptionalCard.shortTime.chain = chain;
-      resultOptionalCard.shortTime.longestChain = longestChain;
-    } else {
+    if (shortTime.date !== today) {
       const longTimeStatItem = [shortTime.date, shortTime.newWords];
       resultOptionalCard.longTime.push(longTimeStatItem);
       resultOptionalCard.shortTime = { ...shortStatTemplate, ...shortTimeStat };
     }
-
     return resultOptionalCard;
   }
 
   prepareUploadStatistics(originStatistics, uploadStatistics) {
     const today = moment().format('DD-MMM-YYYY');
-    const { learnedWords = 0, optional = {} } = originStatistics;
+    const { optional = {} } = originStatistics;
     const tempStatisticsObject = {
       optional: this.unpackUserSettings(optional),
     };
 
     if (uploadStatistics.card) {
-      tempStatisticsObject.learnedWords = learnedWords + uploadStatistics.card.newWords;
       tempStatisticsObject.optional.card = this.cardStatisticsAggregate(
-        optional,
+        tempStatisticsObject.optional.card,
         uploadStatistics.card,
         today,
       );
+      const { longTime } = tempStatisticsObject.optional.card;
+      tempStatisticsObject.learnedWords = longTime.reduce((summ, value) => summ + value[1], 0);
     } else {
       Object.keys(uploadStatistics).forEach((key) => {
         const todayAsObj = { date: today };
