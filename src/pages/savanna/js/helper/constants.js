@@ -24,6 +24,7 @@ const roundOption = document.querySelector('.round');
 const audio = document.querySelector('.audio');
 const repeatOption = document.querySelector('.repeat');
 const preloader = document.querySelector('.preloader-background');
+const levelAndRoundselectors = document.querySelectorAll('.game-option');
 
 export {
   appStartButton,
@@ -52,4 +53,5 @@ export {
   audio,
   repeatOption,
   preloader,
+  levelAndRoundselectors,
 };

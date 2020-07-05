@@ -92,6 +92,24 @@ const helper = {
     return tr;
   },
 
+  sendStatistic(dataController, wordsObject) {
+    const winRate = Math.round(
+      (wordsObject.knowWords.length /
+        (wordsObject.dontKnowWords.length + wordsObject.knowWords.length)) *
+        100,
+    );
+
+    dataController
+      .setUserStatistics({
+        savanna: {
+          result: winRate,
+          knownWords: wordsObject.knowWords.length,
+          mistakeWords: wordsObject.dontKnowWords.length,
+        },
+      })
+      .then((dataStat) => console.log(dataStat));
+  },
+
   makeCorrectNoise() {
     audio.src = '../sound/savanna-correct.mp3';
   },

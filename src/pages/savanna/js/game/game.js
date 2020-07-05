@@ -20,6 +20,7 @@ import {
   levelOption,
   hearts,
   repeatOption,
+  levelAndRoundselectors,
 } from '../helper/constants';
 import helper from '../helper/helper';
 
@@ -66,6 +67,7 @@ export default class Game {
     this.repeat = true;
     repeatOption.checked = true;
     helper.renderUserName(data);
+    this.switchOption();
     console.log(data);
   }
 
@@ -88,12 +90,20 @@ export default class Game {
   async changeRepeatOption() {
     this.login = repeatOption.checked;
     if (repeatOption.checked) {
+      this.switchOption();
       await this.createRepeatWordsDataSet();
       this.repeat = true;
     } else {
+      this.switchOption();
       await this.createNewWordsDataSet();
       this.repeat = false;
     }
+  }
+
+  switchOption() {
+    levelAndRoundselectors.forEach((element) => {
+      element.classList.toggle('disabled');
+    });
   }
 
   async createRepeatWordsDataSet() {
@@ -309,7 +319,7 @@ export default class Game {
       knowTable.appendChild(helper.createStatElement(element.word, element.wordTranslate));
     });
     this.resetGame(this.repeat);
-    await this.sendStatistic();
+    this.sendStatistic();
   }
 
   async resetGame(repeat) {
@@ -338,21 +348,6 @@ export default class Game {
   }
 
   sendStatistic() {
-    const errors = [];
-    const success = [];
-    this.props.knowWords.forEach((element) => success.push(element.word));
-    this.props.dontKnowWords.forEach((element) => errors.push(element.word));
-    const winRate = Math.round((success.length / (errors.length + success.length)) * 100);
-
-    console.log(winRate, errors, success);
-    this.dataController
-      .setUserStatistics({
-        savanna: {
-          result: winRate,
-          knownWords: success,
-          mistakeWords: errors,
-        },
-      })
-      .then((dataStat) => console.log(dataStat));
+    helper.sendStatistic(this.dataController, this.props)
   }
 }
