@@ -2,7 +2,7 @@
 import Card from './Card';
 import { mySwiper, settings, dataController } from './constants';
 import 'materialize-css';
-import { updateMaterialComponents, setProgressbarToCurrentPosition, getApproprateWords, } from './helpers';
+import { updateMaterialComponents, setProgressbarToCurrentPosition, getApproprateWords, saveTrainingStatistics, } from './helpers';
 
 export default class Training {
   constructor(newWordsAmountPerDay, maxWordsPerDay) {
@@ -23,6 +23,8 @@ export default class Training {
       console.log(res);
       this.start();
     })
+
+    window.addEventListener('unload', saveTrainingStatistics);
   }
 
   start() {

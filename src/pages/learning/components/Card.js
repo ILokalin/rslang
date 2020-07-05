@@ -363,8 +363,8 @@ export default class Card {
     input.blur();
 
     input.dataset.tryCount += 1;        
-    input.dataset.word.split('').forEach((el, i) => {
-      if (el === input.value[i]) {
+    input.dataset.word.toLowerCase().split('').forEach((el, i) => {
+      if (el === input.value[i].toLowerCase()) {
         result.innerHTML += `<span class="correct">${el}</span>`;
       } else {
         result.innerHTML += `<span class="wrong">${el}</span>`;

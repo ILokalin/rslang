@@ -381,87 +381,69 @@
         </form>
       </div>
     </div>
-    <div class="statistics-container hidden">
-      <h4 class="center">Статистика</h4>
-      <h5 class="center">Статистика изучения слов</h5> 
-      <div class="chart-container">        
-        <canvas id="chart"></canvas>
-        <div id="chartjs-tooltip">
-          <div id="chartjs-tooltip__text"></div>
-        </div>
-      </div>
-      <div class="table-container">
-        <h5 class="center">Статистика миниигр</h5>
-        <div class="col s12">
-          <ul class="tabs">
-            <li class="tab col s2"><a class="active" href="#stat-audiochallenge">Аудиовызов</a></li>
-            <li class="tab col s2"><a href="#stat-puzzle">Puzzle</a></li>
-            <li class="tab col s2"><a href="#stat-savanna">Саванна</a></li>
-            <li class="tab col s2"><a href="#stat-speakit">Speak It!</a></li>
-            <li class="tab col s2"><a href="#stat-sprint">Спринт</a></li>
-            <li class="tab col s2"><a href="#stat-matchit">Match It!</a></li>
-          </ul>
-        </div>
-        <div id="stat-audiochallenge" class="col s12">
-          <table class="responsive-table">
-            <thead>
-              <tr>
-                <th>Раунд</th>
-                <th>Дата</th>
-                <th>Счет игры</th>
-                <th>Детали</th>
-              </tr>
-            </thead> 
-            <tbody>
-              <tr>
-                <td>Alvin</td>
-                <td>Eclair</td>
-                <td>$0.87</td>
-                <td><a href="#details" class="btn modal-trigger">Детали игры</a></td>
-              </tr>            
-              <tr>
-                <td>Alan</td>
-                <td>Jellybean</td>
-                <td>$3.76</td>
-                <td>$0.87</td>
-              </tr>
-              <tr>
-                <td>Jonathan</td>
-                <td>Lollipop</td>
-                <td>$0.87</td>
-                <td>$0.87</td>
-              </tr>
-            </tbody> 
-          </table>   
-
-        </div>
-        <div id="stat-puzzle" class="col s12">Test 2
-
-        </div>
-        <div id="stat-savanna" class="col s12">Test 3
-
-        </div>
-        <div id="stat-speakit" class="col s12">Test 4
-
-        </div>
-        <div id="stat-sprint" class="col s12">Test 4
-
-        </div>
-        <div id="stat-matchit" class="col s12">Test 4
-        </div>
-        <div id="details" class="modal details">
-      <div class="modal-content">
-        <h4>детали игры такого - то раунда</h4>
-        <div>
-          знаю / не знаю (стили из краткосрочной статистики)
-        </div>        
-      </div>
-      <div class="modal-footer">
-        <a href="#!" class="modal-close waves-effect waves-green btn-flat">ОК</a>
+  </div>
+  <div class="statistics-container hidden">
+    <h4 class="center">Статистика</h4>
+    <h5 class="center">Статистика изучения слов</h5> 
+    <div class="chart-container">        
+      <canvas id="chart"></canvas>
+      <div id="chartjs-tooltip">
+        <div id="chartjs-tooltip__text"></div>
       </div>
     </div>
+    <div class="table-container">
+      <h5 class="center">Статистика миниигр</h5>
+      <div class="col s12">
+        <ul class="tabs">
+          <li class="tab col s2"><a class="active" href="#stat-audiochallenge">Аудиовызов</a></li>
+          <li class="tab col s2"><a href="#stat-puzzle">Puzzle</a></li>
+          <li class="tab col s2"><a href="#stat-savanna">Саванна</a></li>
+          <li class="tab col s2"><a href="#stat-speakit">Speak It!</a></li>
+          <li class="tab col s2"><a href="#stat-sprint">Спринт</a></li>
+          <li class="tab col s2"><a href="#stat-matchit">Match It!</a></li>
+        </ul>
       </div>
+      <div id="stat-audiochallenge" class="col s12">
+        <table class="responsive-table">
+          <thead>
+            <tr>
+              <th>Раунд</th>
+              <th>Дата</th>
+              <th>Счет игры</th>
+            </tr>
+          </thead> 
+          <tbody>
+            <tr>
+              <td>Alvin</td>
+              <td>Eclair</td>
+              <td>$0.87</td>
+            </tr>            
+            <tr>
+              <td>Alan</td>
+              <td>Jellybean</td>
+              <td>$3.76</td>
+            </tr>
+            <tr>
+              <td>Jonathan</td>
+              <td>Lollipop</td>
+              <td>$0.87</td>
+            </tr>
+          </tbody> 
+        </table>   
+
+      </div>
+      <div id="stat-puzzle" class="col s12">Test 2
+      </div>
+      <div id="stat-savanna" class="col s12">Test 3
+      </div>
+      <div id="stat-speakit" class="col s12">Test 4
+      </div>
+      <div id="stat-sprint" class="col s12">Test 4
+      </div>
+      <div id="stat-matchit" class="col s12">Test 4
+      </div>   
     </div>
+  </div> 
   </div>
   <div class="vocabulary-container hidden">
     <h4 class="center">Словарь</h4>
@@ -485,18 +467,19 @@
         </div>
       </div>
     </div>
-    <div class="modal greeting">
-      <div class="modal-content">
-        <h4>Добро пожаловать!</h4>
-        <p>Для заучивания слов в нашем приложении применяется метод интервальных повторений. <br>
-          Интервальные повторения — это метод эффективного запоминания, его суть в том, чтобы повторять заученную
-          информацию через определенные промежутки времени (без повторений она быстро забудется)<br>
-          Для того, чтобы мы могли подобрать индивидуальные интервалы для каждого изучаемого слова, предлагаем Вам для
-          начала выбрать подходящие Вам настройки. </p>
-      </div>
-      <div class="modal-footer">
-        <a href="#!" class="modal-close waves-effect waves-green btn-flat">Начать!</a>
-      </div>
+  </div>
+  <div class="modal greeting">
+    <div class="modal-content">
+      <h4>Добро пожаловать!</h4>
+      <p>Для заучивания слов в нашем приложении применяется метод интервальных повторений. <br>
+        Интервальные повторения — это метод эффективного запоминания, его суть в том, чтобы повторять заученную
+        информацию через определенные промежутки времени (без повторений она быстро забудется)<br>
+        Для того, чтобы мы могли подобрать индивидуальные интервалы для каждого изучаемого слова, предлагаем Вам для
+        начала выбрать подходящие Вам настройки. </p>
     </div>
+    <div class="modal-footer">
+      <a href="#!" class="modal-close waves-effect waves-green btn-flat">Начать!</a>
+    </div>
+  </div>
   </body>
 </html>

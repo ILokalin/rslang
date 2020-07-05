@@ -27,6 +27,7 @@ import {
 } from '../constants';
 import {handleSettingsView} from './form-components';
 import {renderShortTermStat} from './mainPageStat';
+import VocabularyWord from './vocabulary';
 
 export const whoIsGameFor = () => {
   main.classList.add('hidden');
@@ -39,6 +40,8 @@ export const whoIsGameFor = () => {
       titleUser.innerText = userSettings.name;
 
       localStorage.setItem('settings', JSON.stringify(userSettings.settings));
+      const vocabulary = new VocabularyWord(dataController);
+      vocabulary.renderVocabulary();
       renderShortTermStat(userSettings.settings);
 
       handleSettingsView();

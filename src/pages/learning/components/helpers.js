@@ -76,6 +76,7 @@ const allowNextCard = () => {
     modal.open();
     progressBar.querySelector('.determinate').style.width = '100%';
     progressBar.dataset.tooltip = '100%';
+    saveTrainingStatistics();
   } else {
     mySwiper.allowSlideNext = true;
     mySwiper.navigation.nextEl.classList.remove('swiper-button-disabled');
@@ -263,6 +264,15 @@ const getApproprateWords = async (newWordsAmount, totalAmount) => {
 
   return res;    
 }
+
+const saveTrainingStatistics = async () => {
+  const saveOptions = {
+    card: {result: mySwiper.train.shortTermStat.newWords}
+  }
+  console.log(saveOptions);
+  await dataController.setUserStatistics(saveOptions);
+}
+
 export {
   measureWordWidth,
   updateMaterialComponents,
@@ -281,4 +291,5 @@ export {
   getApproprateWords,
   showToastHard,
   showPicture,
+  saveTrainingStatistics,
 };
