@@ -8,7 +8,7 @@ function isSuccess(response) {
 
 export function apiWordMaterialsGet(wordId) {
   const fetchUrl = `${api.url}${api.words}/${wordId}`;
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     fetch(fetchUrl)
       .then((rawResponse) => {
         if (isSuccess(rawResponse)) {
@@ -122,7 +122,6 @@ export function apiUserWordsSave(wordId, wordData, method) {
         if (isSuccess(rawResponse)) {
           return rawResponse.json();
         }
-        console.log(rawResponse);
         const error = new Error(rawResponse.statusText);
         error.master = 'words';
         error.code = rawResponse.status;
