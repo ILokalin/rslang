@@ -1,5 +1,5 @@
 @import 'Src/scss/normalize';
-@import "AuthPopup";
+@import "../../components/AuthPopup/AuthPopup.scss";
 
 body {
     width: 100%;
@@ -368,6 +368,17 @@ body {
     top: 20px;
     color: white;
   }
+
+  .priload-wrraper-main {
+    position: fixed;
+    top: 0;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
 
 
 

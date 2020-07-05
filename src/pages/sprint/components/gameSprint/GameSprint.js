@@ -1,4 +1,6 @@
 import { DataController } from 'Service/DataController';
+// eslint-disable-next-line no-undef
+M.AutoInit();
 
 const startGameButton = document.getElementById('controls_start-btn');
 const scoreView = document.getElementById('score');
@@ -11,6 +13,7 @@ const seriesRightAnswerView = document.querySelectorAll('#corect-answer');
 const answerImage = document.getElementById('answer_img');
 const buttonWrong = document.getElementById('wrong-btn');
 const buttonRight = document.getElementById('right-btn');
+const preload = document.getElementById('preload');
 const blockSeries = document.getElementById('series');
 const timetVIew = document.getElementById('timer');
 const timerWrap = document.getElementById('timer-wrap');
@@ -25,6 +28,8 @@ const parrotYellow = document.getElementById('parrot-yellow');
 const parrotBrown = document.getElementById('parrot-brown');
 const parrotPink = document.getElementById('parrot-pink');
 const avatarName = document.getElementById('avatar__name');
+const dropDownMenu = document.querySelectorAll('.dropdown-content');
+const dropDownMenuElement = dropDownMenu[0].querySelectorAll('span');
 const dataController = new DataController();
 const LevelViewInfo = {
   one: {
@@ -49,8 +54,7 @@ const LevelViewInfo = {
   },
 };
 const clearTextValue = '';
-const words = [];
-const wordsDefault = [];
+let words = [];
 
 export default class GameSprint {
   constructor(score) {
@@ -65,12 +69,13 @@ export default class GameSprint {
     this.levelPointScore = 1;
     this.poinForRightAnswer = 10;
     this.gameScore = score;
+    this.gameLevel = 1;
   }
 
   updateTime(gameTime) {
     timetVIew.innerText = this.currentGameTime;
     if (this.currentGameTime > this.stopGameTime) {
-      setTimeout(() => {
+      this.timer = setTimeout(() => {
         this.updateTime(this.currentGameTime);
       }, 1000);
     } else {
@@ -205,10 +210,11 @@ export default class GameSprint {
 
   stratButtonEvents() {
     startGameButton.addEventListener('click', () => {
+      clearTimeout(this.timer);
       this.keyboardEvents();
       this.defaultGameValue();
       this.gameScore = defaultGameScoreValue;
-
+      console.log(words);
       words.sort(() => Math.random() - 0.5);
 
       blockSeries.style.background = seriesViewDefaulltBackgraundColor;
@@ -268,13 +274,15 @@ export default class GameSprint {
     });
   }
 
-  static getWordsForGame(userLogin) {
-    if (userLogin) {
+  getWordsForGame(userLogin) {
+    preload.classList.remove('hide');
+    if (userLogin === 0) {
       dataController.userWordsGetAll(['onlearn'])
         .then(
           (value) => {
             const { paginatedResults } = value[0];
             paginatedResults.flat().map(({ word, wordTranslate }) => {
+              preload.classList.add('hide');
               return words.push({ word, wordTranslate });
             });
           },
@@ -283,14 +291,16 @@ export default class GameSprint {
           },
         ).then(() => {
           if (words.length < minWordsForGameValue) {
-            Array.prototype.push.apply(words, wordsDefault);
+            console.log('недостаточно слов');
           }
         })
     } else {
-      dataController.getWords({ group: 1, page: 1, wordsPerPage: 200 })
+      console.log(this.gameLevel);
+      dataController.getWords({ group: this.gameLevel - 1, page: 1, wordsPerPage: 200 })
         .then(
           (value) => {
             value.flat().map(({ word, wordTranslate }) => {
+              preload.classList.add('hide');
               return words.push({ word, wordTranslate });
             });
           },
@@ -299,34 +309,45 @@ export default class GameSprint {
           },
         );
     }
+  }
 
+  choiceLevel() {
+    dropDownMenuElement.forEach((el, index) => {
+      el.setAttribute('data-id', index);
+      el.addEventListener('click', (e) => {
+        words = [];
+        this.gameLevel = e.target.dataset.id;
+        this.getWordsForGame(this.gameLevel);
+        startGameButton.classList.remove('hide');
+        gameView.classList.add('hide');
+        timerWrap.classList.remove('timer_line');
+        timerWrap.remove();
+        this.defaultGameValue();
+      })
+    })
   }
 
   init() {
-    dataController.getWords({ group: 1, page: 1, wordsPerPage: 200 })
-      .then(
-        (value) => {
-          value.flat().map(({ word, wordTranslate }) => {
-            return wordsDefault.push({ word, wordTranslate });
-          });
-        },
-        (reason) => {
-          answerImage.innerText = `${reason}`;
-        },
-      );
-
+    timerWrap.remove();
     dataController.getUser().then(
       (userSettings) => {
-        avatarName.innerText = userSettings.name
-        GameSprint.getWordsForGame('userLogin');
+        avatarName.innerText = userSettings.name;
+        this.level = 0;
+        preload.classList.remove('hide');
+        this.getWordsForGame(this.level);
         this.startGame();
         this.answerButtonsEvent();
+        this.choiceLevel();
+        dropDownMenu[0].childNodes[0].classList.remove('hide');
       },
       (rejectReport) => {
         console.log(rejectReport);
-        GameSprint.getWordsForGame();
+        this.getWordsForGame(this.level);
         this.startGame();
         this.answerButtonsEvent();
+        this.choiceLevel();
+        dropDownMenu[0].childNodes[0].classList.add('hide');
+        dropDownMenu[0].childNodes[this.gameLevel].click();
       },
     );
   }
