@@ -5,6 +5,8 @@ import {
   LEVELS_MAX_COUNT,
   ROUNDS_MAX_COUNT,
   ERRORS_MAX_COUNT,
+  errorMessage,
+  defaultUser,
 } from '../data/constants';
 
 const Utils = {
@@ -13,7 +15,7 @@ const Utils = {
   },
 
   displayEmptyUserName: () => {
-    //userNameEl.innerText = '';
+    userName.innerText = defaultUser;
   },
 
   getCurrentRound: () => {
@@ -32,28 +34,14 @@ const Utils = {
     try {
       wordsArr = await dataController.userWordsGetAll(['onlearn']);
     } catch (err) {
-      //Utils.openModal(`API request failed with error: ${err.message}`);
+      Utils.openModal(`API request failed with error: ${err.message}`);
     }
     return wordsArr;
   },
 
   getWordsForRound: async (dataController) => {
-    let level = parseInt(levelSelect.value, 10) - 1;
-    let round = parseInt(roundSelect.value, 10) - 1;
-    /*if (level === -1) {
-      const myWords = userService.getMyWords();
-      if (myWords.size > 0) {
-        roundSelect.max = myWords.size;
-        roundSelect.value = String(round + 1);
-      }
-      const myWordsArr = myWords.get(roundSelect.value);
-      if (myWordsArr) {
-        return myWordsArr;
-      } else {
-        level = 0;
-        round = 0;
-      }
-    }*/
+    const level = parseInt(levelSelect.value, 10) - 1;
+    const round = parseInt(roundSelect.value, 10) - 1;
     let wordsArr;
     try {
       wordsArr = await dataController.getWords({
@@ -62,9 +50,16 @@ const Utils = {
         page: round,
       });
     } catch (err) {
-      //Utils.openModal(`API request failed with error: ${err.message}`);
+      Utils.openModal(`API request failed with error: ${err.message}`);
     }
     return wordsArr;
+  },
+
+  openModal: (message) => {
+    // eslint-disable-next-line no-undef
+    const modal = M.Modal.getInstance(document.querySelector('.modal'));
+    errorMessage.innerText = message;
+    modal.open();
   },
 
   getCard: (id, image) =>
@@ -112,8 +107,6 @@ const Utils = {
       roundSelect.value = 1;
     }
   },
-
-  updateUserStatistics: async (userId, token, statistics) => {},
 };
 
 export default Utils;

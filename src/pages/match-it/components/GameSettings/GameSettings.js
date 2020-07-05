@@ -19,6 +19,7 @@ export default class GameSettings {
   static displayRound() {
     const currentRound = `${levelSelect.value}.${roundSelect.value}`;
     roundLabel.innerText = `Round ${currentRound}`;
+    roundLabel.classList.remove('hidden');
     return currentRound;
   }
 

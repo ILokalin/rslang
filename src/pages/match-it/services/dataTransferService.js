@@ -60,6 +60,16 @@ export default class DataTransferService {
     card.success = true;
   }
 
+  iDoNotKnowWord(id, card) {
+    const currentWord = this.props.knowArr.find((word) => word.id === id);
+    this.props.knowArr.splice(this.props.knowArr.indexOf(currentWord), 1);
+    this.props.errorsArr.push(currentWord);
+
+    this.props.know -= 1;
+    this.props.errors += 1;
+    card.success = false;
+  }
+
   wordTransferEvent(event) {
     event.preventDefault();
     const id = event.dataTransfer.getData('text');
@@ -77,6 +87,10 @@ export default class DataTransferService {
       targetCardImage.classList.add('overlayed');
       if (id === `word-${currentTarget.id.split('-')[1]}`) {
         this.iKnowWord(id, card);
+      } else {
+        if (card.success) {
+          this.iDoNotKnowWord(id, card);
+        }
       }
     }
     if (this.props.know === ERRORS_MAX_COUNT) {

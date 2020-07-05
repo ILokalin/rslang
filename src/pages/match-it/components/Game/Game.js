@@ -43,6 +43,9 @@ export default class Game {
   }
 
   async showResults(e) {
+    if (checkBtn.classList.contains('activeBtn')) {
+      return;
+    }
     Utils.disableCardsTransfer();
     checkBtn.classList.add('activeBtn');
     scoreLabel.children[0].innerHTML = this.props.know;
@@ -55,7 +58,7 @@ export default class Game {
   }
 
   async sendStatisticsToBackEnd() {
-    const results = Math.floor((this.props.know / this.props.errors) * 100);
+    const results = Math.floor((this.props.know / this.props.errors) * 100) || 0;
     const requestBody = {
       'match-it': {
         result: results,
@@ -64,7 +67,7 @@ export default class Game {
         mistakeWords: this.props.errors,
       },
     };
-    //await this.dataController.setUserStatistics(requestBody);
+    await this.dataController.setUserStatistics(requestBody);
   }
 
   onRestartBtnClick(e) {
@@ -82,11 +85,11 @@ export default class Game {
     this.props.errorsArr = [];
     this.props.errorsArr.length = 0;
     const words = [];
-    let wordsData = this.dataProvider.getData().get(roundLabel.innerHTML);
+    const round = GameSettings.displayRound();
+    let wordsData = this.dataProvider.getData().get(round);
     if (!wordsData || wordsData.length === 0) {
       wordsData = await Utils.getWordsForRound(this.dataController);
     }
-    GameSettings.displayRound();
     await wordsData.forEach(this.createCard.bind(this));
     wordsData.forEach((data) => words.push(data));
     words.sort(() => 0.5 - Math.random());

@@ -15,6 +15,8 @@ const restartBtn = document.querySelector('.restart');
 const checkBtn = document.querySelector('.result');
 const nextBtn = document.querySelector('.next');
 const scoreLabel = document.querySelector('.score');
+const errorMessage = document.querySelector('.error-text');
+const defaultUser = 'Unknown';
 
 const LEVELS_MAX_COUNT = 6;
 const ROUNDS_MAX_COUNT = 66;
@@ -39,4 +41,6 @@ export {
   checkBtn,
   restartBtn,
   scoreLabel,
+  errorMessage,
+  defaultUser,
 };
