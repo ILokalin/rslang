@@ -51,22 +51,24 @@ export default class AuditionGameStatistics {
     statisticBlock.classList.add('statistic-block');
     gameContainer.append(statisticBlock);
 
-    const gamePointsEl = document.createElement('span');
+    const gamePointsEl = document.createElement('p');
     gamePointsEl.classList.add('game-points-element');
     gamePointsEl.innerText = `У вас ${points}% правильных ответов`;
     statisticBlock.append(gamePointsEl);
 
-    if(answered.length) {
+    if (answered.length) {
       const answeredBlock = document.createElement('div');
-      answeredBlock.innerHTML = `Знаю <span class="answered-words-number">${answered.length}</span>`;
+      answeredBlock.innerHTML = `<p class="answered-words-label">Знаю <span class="answered-words-number">${answered.length}</span></p>`;
+      answeredBlock.classList = 'answered-words-correct';
 
       answered.forEach((el) => this.createGameWords(el, answeredBlock));
       statisticBlock.append(answeredBlock);
     }
 
-    if(error.length) {
+    if (error.length) {
       const errorBlock = document.createElement('div');
-      errorBlock.innerHTML = `Не знаю <span class="error-words-number">${error.length}</span>`;
+      errorBlock.innerHTML = `<p class="answered-words-label">Не знаю <span class="error-words-number">${error.length}</span></p>`;
+      errorBlock.classList = 'answered-words-error';
 
       error.forEach((el) => this.createGameWords(el, errorBlock));
       statisticBlock.append(errorBlock);
@@ -99,7 +101,7 @@ export default class AuditionGameStatistics {
     });
     answeredWordEl.append(audioEl);
 
-    const answeredWord = document.createElement('span');
+    const answeredWord = document.createElement('p');
     answeredWord.classList.add('answered-word');
     answeredWord.innerText = word.word;
     answeredWord.addEventListener('click', () => {
@@ -107,7 +109,7 @@ export default class AuditionGameStatistics {
     });
     answeredWordEl.append(answeredWord);
 
-    const answeredWordTranslation =  document.createElement('span');
+    const answeredWordTranslation =  document.createElement('p');
     answeredWordTranslation.classList.add('word-translation');
     answeredWordTranslation.innerText = word.wordTranslate;
     answeredWordEl.append(answeredWordTranslation);

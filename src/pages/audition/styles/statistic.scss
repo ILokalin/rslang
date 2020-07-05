@@ -1,14 +1,63 @@
 .statistic-block {
-  position: absolute;
-  border: red solid 2px;
-  width: 800px;
+  margin: 0 auto;
+  font-size: 18px;
 }
 
-.answered {
-  display: block;
+.game-points-element {
+  margin: 0 0 10px;
+  font-size: 22px;
+  font-weight: bold;
 }
 
 .answered-words-element {
-  display: flex;
-  flex-direction: column;
+  display: inline-block;
+  margin: 10px;
+  padding: 15px 10px 10px;
+  width: 220px;
+  border-radius: 10px;
+  border: 2px solid #fff;
+  font-size: 16px;
+}
+
+.answered-words-correct,
+.answered-words-error {
+  margin-bottom: 30px;
+}
+
+.answered-words-correct .answered-words-element {
+  background-color: #e1f3f1;
+  border-color: #26a69a;
+}
+
+.answered-words-error .answered-words-element {
+  background-color: #f1e5e5;
+  border-color: #b94646;
+}
+
+.answered-words-label {
+  margin: 0;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.answered-words-correct .answered-words-number {
+  color: #26a69a;
+}
+
+.answered-words-error .answered-words-number {
+  color: #b94646;
+}
+
+.answered-word {
+  margin: 0 0 2px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.word-translation {
+  margin: 0;
+}
+
+.statistic-block .new-game-btn {
+  margin-right: 15px;
 }

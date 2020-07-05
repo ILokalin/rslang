@@ -249,8 +249,12 @@ export default class AuditionGame {
     wordImageEl.classList.add('word-image-element');
     data.image.classList.add('word-image');
     wordImageEl.appendChild(data.image);
-    // wordImageEl.style.backgroundImage = `url(${data.image.src})`;
     gameWrapper.append(wordImageEl);
+
+    const puzzledWordEl = document.createElement('div');
+    puzzledWordEl.classList.add('puzzled-word-element');
+    puzzledWordEl.innerText = data.word;
+    gameWrapper.append(puzzledWordEl);
 
     const audioEl = document.createElement('div');
     audioEl.classList.add('audio-element');
@@ -258,11 +262,6 @@ export default class AuditionGame {
       data.audio.play();
     });
     gameWrapper.append(audioEl);
-
-    const puzzledWordEl = document.createElement('div');
-    puzzledWordEl.classList.add('puzzled-word-element');
-    puzzledWordEl.innerText = data.word;
-    gameWrapper.append(puzzledWordEl);
 
     const wordTranslationBlock = document.createElement('div');
     wordTranslationBlock.classList.add('words-translations-block');
