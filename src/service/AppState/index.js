@@ -6,4 +6,7 @@ export {
   setUserData,
   authReportStore,
   showAuthReport,
+  openPreloader, 
+  closePreloader,
+  preloaderState,
 } from './AppState';
