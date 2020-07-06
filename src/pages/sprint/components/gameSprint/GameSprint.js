@@ -22,7 +22,7 @@ const stepToNextWordIndex = 1;
 const defaultGameScoreValue = 0;
 const timeAnswerResultVIew = 200;
 const poinForNextLevel = 4;
-const minWordsForGameValue = 100;
+const minWordsForGameValue = 150;
 const seriesViewDefaulltBackgraundColor = 'white';
 const parrotYellow = document.getElementById('parrot-yellow');
 const parrotBrown = document.getElementById('parrot-brown');
@@ -274,9 +274,9 @@ export default class GameSprint {
     });
   }
 
-  getWordsForGame(userLogin) {
+  getWordsForGame(level) {
     preload.classList.remove('hide');
-    if (userLogin === 0) {
+    if (level === '0') {
       dataController.userWordsGetAll(['onlearn'])
         .then(
           (value) => {
@@ -291,10 +291,18 @@ export default class GameSprint {
           },
         ).then(() => {
           if (words.length < minWordsForGameValue) {
-            console.log('недостаточно слов');
+            dropDownMenu[0].childNodes[0].style.pointerEvents = 'none';
+            dropDownMenu[0].childNodes[1].click();
+            dropDownMenu[0].childNodes[0].setAttribute('title', 'Недост изученных слов')
+            dropDownMenuElement[0].innerHTML = 'Слова пользователя (недостаточно слов)'
+          } else {
+            dropDownMenu[0].childNodes[0].style.pointerEvents = 'auto';
+            dropDownMenu[0].childNodes[0].removeAttribute('title')
+            dropDownMenuElement[0].innerHTML = 'Слова пользователя'
           }
         })
-    } else {
+    }
+    else {
       console.log(this.gameLevel);
       dataController.getWords({ group: this.gameLevel - 1, page: 1, wordsPerPage: 200 })
         .then(
@@ -317,14 +325,22 @@ export default class GameSprint {
       el.addEventListener('click', (e) => {
         words = [];
         this.gameLevel = e.target.dataset.id;
+        console.log(this.gameLevel);
         this.getWordsForGame(this.gameLevel);
         startGameButton.classList.remove('hide');
         gameView.classList.add('hide');
         timerWrap.classList.remove('timer_line');
         timerWrap.remove();
         this.defaultGameValue();
+        localStorage.setItem('level', this.gameLevel);
       })
     })
+  }
+
+  constrolLevelAfterReload() {
+    if (localStorage.getItem('level') && localStorage.getItem('level')) {
+      this.gameLevel = localStorage.getItem('level');
+    }
   }
 
   init() {
@@ -332,17 +348,20 @@ export default class GameSprint {
     dataController.getUser().then(
       (userSettings) => {
         avatarName.innerText = userSettings.name;
-        this.level = 0;
+        this.gameLevel = 0;
+        this.constrolLevelAfterReload();
         preload.classList.remove('hide');
-        this.getWordsForGame(this.level);
+        this.getWordsForGame(this.gameLevel);
         this.startGame();
         this.answerButtonsEvent();
         this.choiceLevel();
         dropDownMenu[0].childNodes[0].classList.remove('hide');
+        dropDownMenu[0].childNodes[this.gameLevel].click();
       },
       (rejectReport) => {
         console.log(rejectReport);
-        this.getWordsForGame(this.level);
+        this.constrolLevelAfterReload();
+        this.getWordsForGame(this.gameLevel);
         this.startGame();
         this.answerButtonsEvent();
         this.choiceLevel();
@@ -351,4 +370,5 @@ export default class GameSprint {
       },
     );
   }
+
 }
