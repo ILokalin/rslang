@@ -1,4 +1,4 @@
-import { userNameElement, audio, preloader } from './constants';
+import { userNameElement, audio, preloader, levelOption } from './constants';
 import '../../assets/img/savanna-heart.svg';
 
 const helper = {
@@ -108,6 +108,12 @@ const helper = {
         },
       })
       .then((dataStat) => console.log(dataStat));
+  },
+
+  setUserOption(dataController, level, round) {
+    dataController
+      .setUserOptions({ savanna: { lastLevel: level, lastRound: round } })
+      .then((data) => console.log(data));
   },
 
   makeCorrectNoise() {

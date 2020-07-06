@@ -318,7 +318,8 @@ export default class Game {
     this.props.knowWords.forEach((element) => {
       knowTable.appendChild(helper.createStatElement(element.word, element.wordTranslate));
     });
-    this.resetGame(this.repeat);
+    helper.setUserOption(this.dataController, this.level, this.round);
+    // this.resetGame(this.repeat);
     this.sendStatistic();
   }
 
@@ -348,6 +349,6 @@ export default class Game {
   }
 
   sendStatistic() {
-    helper.sendStatistic(this.dataController, this.props)
+    helper.sendStatistic(this.dataController, this.props);
   }
 }
