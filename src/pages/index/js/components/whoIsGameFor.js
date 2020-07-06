@@ -29,6 +29,7 @@ import {handleSettingsView} from './form-components';
 import {renderShortTermStat} from './mainPageStat';
 import {renderStatChart} from './statChart';
 import VocabularyWord from './vocabulary';
+import {renderTable} from './statTable';
 
 export const whoIsGameFor = () => {
   main.classList.add('hidden');
@@ -51,7 +52,8 @@ export const whoIsGameFor = () => {
       const shortTermStat = statistics.card.shortTime;
       renderShortTermStat(userSettings.settings, shortTermStat); 
 
-      renderStatChart(statistics);     
+      renderStatChart(statistics); 
+      renderTable(statistics);    
 
       loginButton.classList.add('hidden');
       main.classList.remove('hidden');

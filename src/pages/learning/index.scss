@@ -2,6 +2,15 @@
 @import 'swiper/css/swiper';
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 
+html {
+  font-size: 14px;
+
+  @media screen and (max-width: 500px) {
+    font-size: 10px;
+  }
+  
+}
+
 .hidden {
   display: none!important;
 }
@@ -12,7 +21,6 @@
 
 .header__description {
   @extend .teal-text;
-
 }
 
 .home {
@@ -80,12 +88,23 @@
   width: 50%;
   max-width: 400px;
   border: 2px solid #bdbdbd;
-  border-radius: 2px
+  border-radius: 2px;
+
+  @media screen and (max-width: 500px) {
+    width: 80%;
+  }
 }
 
 .swiper-slide {
   margin: 0;
   background-color: #f1f8e9;
+}
+
+.swiper-button-next {
+ left: calc(75% + 10px);
+ @media screen and (max-width: 500px) {
+    left: calc(90% + 5px);
+  }
 }
 
 .word {
@@ -126,6 +145,7 @@
     z-index: 4;
     @extend .blue-grey-text, .text-darken-2;
     font-weight: 400;
+    font-size: 1.5rem;
   }
 }
 
@@ -145,6 +165,12 @@
 
 .form {
   position: relative;
+}
+
+.card.large {
+  @media screen and (max-width: 500px) {
+    height: 430px;
+  }
 }
 
 

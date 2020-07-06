@@ -5,7 +5,14 @@ import Chart from 'chart.js';
 const getDummyData = (fullStatisticsObject) => {
   const { longTime } = fullStatisticsObject.card;
   console.log(longTime);
-  const dummyData = ['0'].concat(longTime.map((item) => item[1]));
+  let sum = 0;
+  const dummyData = ['0'].concat(longTime.map((item) => {
+    sum += item[1];
+    return sum;
+  }));
+  if (fullStatisticsObject.card.shortTime) {
+    dummyData.push(sum + fullStatisticsObject.card.shortTime.newWords);
+  }
   console.log(dummyData);
   return dummyData
 }
@@ -14,6 +21,9 @@ const getLabels = (fullStatisticsObject) => {
   const { longTime } = fullStatisticsObject.card;
   console.log(longTime);
   const labels = [''].concat(longTime.map((item) => item[0]));
+  if (fullStatisticsObject.card.shortTime) {
+    labels.push(fullStatisticsObject.card.shortTime.date);
+  }
   console.log(labels);
   return labels;
 }

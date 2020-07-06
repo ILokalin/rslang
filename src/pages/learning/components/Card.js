@@ -102,15 +102,15 @@ export default class Card {
     deleteBtn.dataset.tooltip = 'Удалить из словаря';   
     showAnswerBtn.dataset.tooltip = 'Показать ответ'; 
 
-    deleteBtn.innerText = 'clear';
-    showAnswerBtn.innerText = 'play_arrow';
+    deleteBtn.innerText = 'delete_forever';
+    showAnswerBtn.innerText = 'help_outline';
     translation.innerText = this.wordState.wordTranslate;
     transcription.innerText = this.wordState.transcription;
 
     explanation.innerHTML = this.wordState.textMeaning;
     explanationTranslation.innerHTML = this.wordState.textMeaningTranslate;
     exampleSent.innerHTML = this.wordState.textExample;
-    exampleTranslation.innerHTML = this.wordState.textExampleTranslate;    
+    exampleTranslation.innerHTML = this.wordState.textExampleTranslate;
 
     hideGuessingWordInSentence(explanation);   
     hideGuessingWordInSentence(exampleSent);
