@@ -2,7 +2,6 @@ import AuditionGameStatistics from './game-statistics'
 import { DataController } from 'Service/DataController';
 import {
   gameContainer,
-  abortGameBtn,
   userNameEl,
   difficultySelector,
   logInBtn,
@@ -10,7 +9,7 @@ import {
   selectWordsWindow,
   ownWordsBtn,
   allWordsBtn,
-} from './constants'
+} from './constants';
 
 export default class AuditionGame {
   constructor() {
@@ -28,7 +27,6 @@ export default class AuditionGame {
     this.showAnswerListener = this.showAnswer.bind(this);
     this.endRoundListener = this.endRound.bind(this);
     this.logInListener = this.getUserData.bind(this);
-
   }
 
   static openModal(message)  {
@@ -47,7 +45,8 @@ export default class AuditionGame {
 
   keyboardHandler(e) {
     const { key } = e;
-    if(key >= 1 && key <= 5) {
+
+    if (key >= 1 && key <= 5) {
       const word = this.roundsData[this.round].wordTranslate;
       const selectedEl = document.querySelector (`.current-round [data-order="${key}"]`);
       const selectedAnswer = selectedEl.innerText.slice(3);
@@ -64,9 +63,10 @@ export default class AuditionGame {
         }
       }
 
-      if(key === `Enter`) {
+      if (key === `Enter`) {
         const puzzledWord = document.querySelector('.current-round > .puzzled-word-element');
-        if(puzzledWord.classList.contains ('answered')) {
+        
+        if (puzzledWord.classList.contains ('answered')) {
           this.endRound();
         } else {
           this.showAnswer();
@@ -80,8 +80,8 @@ export default class AuditionGame {
   }
 
   selectDifficultyHandler(e) {
-      this.level = e.target.value;
-      this.startGame();
+    this.level = e.target.value;
+    this.startGame();
   }
 
   getUserData() {
@@ -104,7 +104,6 @@ export default class AuditionGame {
     this.round = 0;
     this.roundsData = [];
     gameContainer.innerHTML = '';
-
     if (this.user) {
       this.getUserWords();
     } else {
@@ -117,8 +116,10 @@ export default class AuditionGame {
       .then(
         (response) => {
           const words = response[0].paginatedResults;
+
           if (words.length < 10) {
-            const message = 'You haven`t learned enough words to use them in the game. Game will start with all words.'
+            const message = 'Вы не выучили достаточное количество слов для игры. Игра начнется со всеми словами.'
+            
             AuditionGame.openModal(message);
             this.playWithAllWords();
           } else {
@@ -126,7 +127,8 @@ export default class AuditionGame {
           }
         },
         (rejectReport) => {
-          const message = `API request failed with error: ${rejectReport.message}`
+          const message = `API request failed with error: ${rejectReport.message}`;
+
           AuditionGame.openModal(message);
         }
       )
@@ -145,9 +147,12 @@ export default class AuditionGame {
   }
 
   playWithOwnWords(words) {
-    debugger;
     words.sort(() => Math.random() - Math.random());
-    this.roundsNumber = Math.floor(words.length/5);
+
+    if (words.length < 10) {
+      this.roundsNumber = Math.floor(words.length/5);
+    }
+
     const trigger= document.querySelector('.dropdown-trigger');
     trigger.disabled = true;
     this.createRoundsData(words);
@@ -158,15 +163,15 @@ export default class AuditionGame {
   }
 
   playWithAllWords() {
-    debugger;
-      const pages = this.generatePages();
-      this.getWords(pages);
+    const pages = this.generatePages();
+
+    this.getWords(pages);
   }
 
   generatePages() {
     const pages = [];
 
-    while(pages.length < 3) {
+    while (pages.length < 3) {
       const page = AuditionGame.getRandomNumber(29);
 
       if (!pages.includes(page)) {
@@ -179,9 +184,9 @@ export default class AuditionGame {
 
   fetchWords(pageNumber) {
     const url = `https://afternoon-falls-25894.herokuapp.com/words?group=${this.level}&page=${pageNumber}`;
+    
     return fetch(url);
   }
-
 
   getWords(pages) {
     Promise.all(pages.map(page => this.fetchWords(page)))
@@ -206,16 +211,22 @@ export default class AuditionGame {
       const roundData = {};
       roundData.word = roundWords[0].word;
       roundData.wordTranslate = roundWords[0].wordTranslate;
+      roundData.id = '';
       
-      const id = roundWords[0].id;
+      if (roundWords[0].id) {
+        roundData.id = roundWords[0].id;
+      } else if (roundWords[0]._id) {
+        roundData.id = roundWords[0]._id;
+      }
+  
       roundData.audio = new Audio();
       roundData.image = new Image();
 
-      this.dataController.getWordMaterials(id)
-      .then((materialOfCard) => {
-        roundData.image.src = materialOfCard.image;
-        roundData.audio.src = materialOfCard.audio
-        });
+      this.dataController.getWordMaterials(roundData.id)
+        .then((materialOfCard) => {
+          roundData.image.src = materialOfCard.image;
+          roundData.audio.src = materialOfCard.audio
+          });
       
       roundData.translations = roundWords.map((word) => word.wordTranslate);
       roundData.translations.sort(() => Math.random() - Math.random());
@@ -228,13 +239,14 @@ export default class AuditionGame {
   createCurrentRoundPage () {
     const roundData = this.roundsData[this.round];
     const wrapper = this.createRoundPage(roundData);
+
     wrapper.classList.add('current-round')
   }
 
   createNextRoundPage () {
-
     const roundData = this.roundsData[this.round + 1];
     const wrapper = this.createRoundPage(roundData);
+    
     wrapper.classList.add('next-round')
   }
 
@@ -313,15 +325,13 @@ export default class AuditionGame {
     const word = this.roundsData[this.round].wordTranslate;
     const wordTranslationBlock = document.querySelector('.current-round > .words-translations-block');
 
-
     if (event.target.id) {
       wordTranslationBlock.removeEventListener('click', this.wordClickListener);
 
-      if(event.target.id === word) {
+      if (event.target.id === word) {
         event.target.classList.add('correct');
         this.showAnswer();
         this.roundsData[this.round].answer = true;
-
       } else {
         event.target.classList.add('wrong');
         this.showAnswer();
@@ -332,6 +342,8 @@ export default class AuditionGame {
 
   startRound() {
     setTimeout(() => this.roundsData[this.round].audio.play(), 500);
+    
+    this.changeBackground();
   }
 
   nextRound() {
@@ -349,7 +361,6 @@ export default class AuditionGame {
     }
 
     this.startRound();
-
   }
 
   endRound() {
@@ -361,7 +372,14 @@ export default class AuditionGame {
   }
 
   endGame() {
-    new AuditionGameStatistics(this.roundsData, this.user);
+    new AuditionGameStatistics(this.roundsData, this.user, this.startGame.bind(this));
+  }
+
+  changeBackground() {
+    const percent = (this.round + 1) / this.roundsNumber * 100;
+    const gradient = `linear-gradient(90deg,#3fccbf,#e0f2f1 ${percent}%)`;
+
+    document.body.style.background = gradient;
   }
 }
 

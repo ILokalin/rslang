@@ -5,10 +5,12 @@ import {
 } from './constants'
 
 export default class AuditionGameStatistics {
-  constructor (words, user) {
+  constructor (words, user, startNewGame) {
     this.dataController = new DataController();
     this.gameWords = words;
+    this.resultMessage;
     this.user = user;
+    this.startNewGame = startNewGame;
     this.getGameStatistics();
   }
 
@@ -16,30 +18,38 @@ export default class AuditionGameStatistics {
     const answeredWords = this.gameWords.filter((word) => word.answer);
     const errorWords = this.gameWords.filter((word) => !word.answer);
     const points = (answeredWords.length / 10) * 100;
-    this.renderStatisticWindow(answeredWords, errorWords, points);
     if (this.user) {
-      this.saveGameStatistic(points);
+      this.saveGameStatistic(points, answeredWords, errorWords);
+    } else {
+      this.renderStatisticWindow(answeredWords, errorWords, points);
     }
   }
 
-  saveGameStatistic(points) {
+  saveGameStatistic(points, correct, error) {
     const options = {
-      audition: {result: points}
+      audition: {
+        result: points,
+        knownWords: correct.length, 
+        mistakeWords: error.length,
+      }
     }
 
     this.dataController.setUserStatistics(options)
     .then(
     (statisticsAnswer) => {
       const longGameStatistic = statisticsAnswer.audition.longTime;
-      console.log(longGameStatistic);
       const currentResult = longGameStatistic[longGameStatistic.length - 1].result;
       const previousResult = longGameStatistic[longGameStatistic.length - 2].result;
 
       if (currentResult > previousResult) {
-        console.log('better');
+        const result = currentResult - previousResult;
+        this.resultMessage = `Ваш результат на ${result}% лучше, чем в предыдущую игру. Так держать!`
       } else if (currentResult < previousResult) {
-        console.log('worse');
+        const result = previousResult - currentResult;
+        this.resultMessage = `Ваш результат на ${result}% хуже, чем в предыдущую игру. Попробуйте сыграть ещё раз!`
       }
+
+      this.renderStatisticWindow(correct, error, points);
     },
   )
   }
@@ -53,7 +63,11 @@ export default class AuditionGameStatistics {
 
     const gamePointsEl = document.createElement('p');
     gamePointsEl.classList.add('game-points-element');
-    gamePointsEl.innerText = `У вас ${points}% правильных ответов`;
+    if (this.resultMessage) {
+      gamePointsEl.innerText = `У вас ${points}% правильных ответов. ${this.resultMessage}`;
+    } else {
+      gamePointsEl.innerText = `У вас ${points}% правильных ответов.`;
+    }
     statisticBlock.append(gamePointsEl);
 
     if (answered.length) {
@@ -77,10 +91,7 @@ export default class AuditionGameStatistics {
     const newGameBtn = document.createElement('button');
     newGameBtn.classList.add('btn', 'new-game-btn');
     newGameBtn.innerText = 'Новая игра';
-    newGameBtn.addEventListener('click', () => {
-      gameContainer.innerHTML = '';
-      new AuditionGame();
-    });
+    newGameBtn.addEventListener('click', this.startNewGame);
     statisticBlock.append(newGameBtn);
 
     const exitGameBtn = document.createElement('button');
