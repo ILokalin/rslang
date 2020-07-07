@@ -1,4 +1,3 @@
-
 import './index.scss';
 import { DataController } from 'Service/DataController';
 import { PreloaderController } from 'Service/PreloaderController';

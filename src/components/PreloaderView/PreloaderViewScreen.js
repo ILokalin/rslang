@@ -29,8 +29,8 @@ export const preloaderViewScreen = {
               tag: 'div',
               className: 'square',
               innerHTML: '<span></span><span></span><span></span>',
-            }
-          ]
+            },
+          ],
         },
         {
           tag: 'header',
@@ -39,11 +39,11 @@ export const preloaderViewScreen = {
             {
               tag: 'p',
               className: 'discribe',
-              isAccess: 'discribeLine'
-            }
-          ]
-        }
-      ]
-    }
-  ]
-}
+              isAccess: 'discribeLine',
+            },
+          ],
+        },
+      ],
+    },
+  ],
+};
