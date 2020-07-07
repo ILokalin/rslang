@@ -2,6 +2,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-param-reassign */
 import { progressBar, mySwiper, settings, dataController } from './constants';
+import Card from './Card';
 
 const measureWordWidth = (word) => {
   const canvas = document.createElement('canvas');
@@ -19,9 +20,9 @@ const updateMaterialComponents = () => {
   // eslint-disable-next-line no-undef
   const sideNav = M.Sidenav.init(document.querySelector('.sidenav'), sideNavOptions);
 
-  const modal = document.querySelector('.modal');
+  const modals = document.querySelectorAll('.modal');
   // eslint-disable-next-line no-undef
-  const modalInstance = M.Modal.init(modal);
+  const modalInstances = M.Modal.init(modals);
 };
 
 const setProgressbarToCurrentPosition = () => {
@@ -63,11 +64,16 @@ const hideTranscription = () => {
   mySwiper.slides[mySwiper.activeIndex].querySelector('.transcription').classList.add('.hidden');
 };
 
-const allowNextCard = () => {
+const showPicture = () => {
+  mySwiper.slides[mySwiper.activeIndex].querySelector('.image-association').style.zIndex = 3;
+}
+
+const allowNextCard = async () => {
   console.log(mySwiper);
   if (mySwiper.activeIndex === mySwiper.slides.length - 1) {
+    await saveTrainingStatistics();
     // eslint-disable-next-line no-undef
-    const modal = M.Modal.getInstance(document.querySelector('.modal'));
+    const modal = M.Modal.getInstance(document.querySelector('.modal-end'));
     modal.open();
     progressBar.querySelector('.determinate').style.width = '100%';
     progressBar.dataset.tooltip = '100%';
@@ -123,36 +129,50 @@ const showExample = () => {
   exampleTranslation.classList.remove('hidden');
 };
 
-const againBtnAct = () => {
-  const dupl = mySwiper.slides[mySwiper.activeIndex].cloneNode(true);
+const againBtnAct = async () => {
+  const cardTitle = mySwiper.slides[mySwiper.activeIndex].querySelector('.card-title');
+  console.log(cardTitle);
+  const {wordId} = cardTitle.dataset;
+  console.log(wordId);
+  const {difficulty} = cardTitle.dataset;
+  console.log(difficulty);
+  const {progress} = cardTitle.dataset;
+  console.log(progress);
+  // eslint-disable-next-line no-underscore-dangle
+  const wordState = mySwiper.train.words.find((el) => ((el._id || el.id) === wordId));
+  console.log(mySwiper.train.words);
+  console.log(wordState)
+  const dupl = new Card(wordState, true);
 
-  dupl.querySelector('.input_text').value = '';
-  dupl.querySelector('.result').innerText = '';
+  M.AutoInit();
+  
+  const duplTitle = dupl.cardElem.querySelector('.card-title');
+  duplTitle.dataset.difficulty = (difficulty || 'onlearn');
+  duplTitle.dataset.progress = (progress || 0);
 
-  mySwiper.appendSlide(dupl);
+  mySwiper.appendSlide(dupl.cardElem);
   mySwiper.update();
+  updateMaterialComponents();
 
   setProgressbarToCurrentPosition();
 };
 
 const getLearnProgressString = (k) => {
-  if (k) {
-    if (k===0) {
-      return 'в начале изучения';
-    }
-    if (k>0 && k<=2) {
-      return 'недавно начали изучать';
-    }
-    if (k>2 && k<=4) {
-      return 'хорошее начало';
-    }
-    if (k>4 && k<=8) {
-      return 'хорошо знаете слово';
-    }
-    if (k>8) {
-      return 'отлично знаете слово';
-    }
-  } 
+  if (k===0) {
+    return 'в начале изучения';
+  }
+  if (k>0 && k<=2) {
+    return 'недавно начали изучать';
+  }
+  if (k>2 && k<=4) {
+    return 'хорошее начало';
+  }
+  if (k>4 && k<=8) {
+    return 'хорошо знаете слово';
+  }
+  if (k>8) {
+    return 'отлично знаете слово';
+  }
   return 'новое слово';
 }
 
@@ -167,7 +187,7 @@ const updateProgress = (curProgress, isWrong) => {
   if (isWrong) {
     res = curProgress - quantityOfSettingsEnabled * 0.1;
   } else {
-    res = curProgress + (6 - quantityOfSettingsEnabled) * 0.1 > 0;
+    res = curProgress + (6 - quantityOfSettingsEnabled) * 0.1;
   }
   return ((res > 0) ? res : 0);
 }
@@ -179,21 +199,30 @@ const showToastDeleted = (word) => {
   });
 }
 
+const showToastHard = (word) => {
+  // eslint-disable-next-line no-undef  
+  M.toast({
+    html: `Слово ${word} помещено в раздел "Сложные". Вы можете изменить это в Словаре`,
+  });
+}
+
 const shuffle = (array) => {
   for (let i = array.length - 1; i > 0; i--) {
-    let j = Math.floor(Math.random() * (i + 1));
+    const j = Math.floor(Math.random() * (i + 1));
     [array[i], array[j]] = [array[j], array[i]];
   }
 }
 
 const getApproprateWords = async (newWordsAmount, totalAmount) => {
-  const res = [];
+  let res = [];
   let pagesCount = 0;
   let groupsCount = 0;
-  const today = new Date().toDateString();
+  const todayObj = new Date();
+  const today = new Date(todayObj.getFullYear(), todayObj.getMonth(), todayObj.getDate());
 // получить все слова пользователя
-  const userWordsReponse = await dataController.userWordsGetAll(['hard', 'onlearn', 'deleted']);  
+  const userWordsReponse = await dataController.userWordsGetAll(['hard', 'onlearn', 'deleted']);
   const userWords = userWordsReponse["0"].paginatedResults;
+  console.log(userWords);
   while (res.length < newWordsAmount) {
     // получить много слов общих 
     const query = {
@@ -202,11 +231,13 @@ const getApproprateWords = async (newWordsAmount, totalAmount) => {
         wordsPerExampleSentenceLTE: '',
         wordsPerPage: userWords.length * 3 < totalAmount ? totalAmount : userWords.length * 3,
       };
+    // eslint-disable-next-line no-await-in-loop
     const generalWords = await dataController.getWords(query);
     if (generalWords.length) {   
-      //выделить из общих слова неюзера       
+      // выделить из общих слова неюзера       
       for (let i = 0; i < generalWords.length; i++) {
         const word = generalWords[i];
+        // eslint-disable-next-line no-underscore-dangle
         const isUserWord = userWords.find((userWord) => userWord._id === word.id);
         if (!isUserWord) {
           res.push(word);
@@ -219,20 +250,29 @@ const getApproprateWords = async (newWordsAmount, totalAmount) => {
     pagesCount++;
   }
 
-  userWords.filter((userWord) => {
+  const filteredUserWords = userWords.filter((userWord) => {
     // посчитать дату следующего повторения юзер слов и сравнить с сегодня (<= сегодня)
       const lastDate = new Date(userWord.userWord.optional.lastDate);
       const interval = (2 * userWord.userWord.optional.progress + 1)*24*60*60*1000;
-      const nextTime = new Date(+lastDate + interval).toDateString();
-      return nextTime === today;
+      const nextTime = new Date(+lastDate + interval)
+      return nextTime <= today;
     })
     // слайс по количеству слов на повторение (тотал - новые)
-  res.concat(userWords.slice(0, totalAmount - newWordsAmount + 1));
-  //шафл массива 
+  res = res.concat(filteredUserWords.slice(0, totalAmount - newWordsAmount));
+  // шафл массива 
   shuffle(res);
 
   return res;    
 }
+
+const saveTrainingStatistics = async () => {
+  const saveOptions = {
+    card: mySwiper.train.shortTermStat,
+  }
+  console.log(saveOptions);
+  await dataController.setUserStatistics(saveOptions);
+}
+
 export {
   measureWordWidth,
   updateMaterialComponents,
@@ -249,4 +289,7 @@ export {
   updateProgress,
   showToastDeleted,
   getApproprateWords,
+  showToastHard,
+  showPicture,
+  saveTrainingStatistics,
 };

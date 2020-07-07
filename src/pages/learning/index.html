@@ -7,8 +7,8 @@
 </head>
 <body>
   <header>
-    <h1 class="header__title center">Cards</h1> 
-    <p class="header__description center">Learn new words and repeat difficult!</p>  
+    <h1 class="header__title center">Карточки</h1> 
+    <p class="header__description center">Учите новые слова и повторяйте уже изученные!</p>  
     <ul id="slide-out" class="sidenav">
       <li>
         <a class="sidenav-close" href="#!">
@@ -18,9 +18,6 @@
       </li>
       <li>
         <div class="divider"></div>
-      </li>
-      <li>
-        <a href="#!">Словарь</a>
       </li>
       <li>
         <div class="statistics">
@@ -43,8 +40,9 @@
         </div>
       </li>
     </ul>
-    <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="medium material-icons">insert_chart</i></a>
-    <a href="/index" target="_blank" class="home" ><i class="medium material-icons">home</i></a>
+    <a href="#" data-target="slide-out" class="sidenav-trigger tooltipped" data-position="bottom" data-tooltip="Статистика"><i class="medium material-icons">insert_chart</i></a>
+    <a class="save-settings-button tooltipped" data-position="bottom" data-tooltip="Сохранить прогресс"><i class="medium material-icons">save</i></a>
+    <a href="/index" target="_blank" class="home tooltipped" data-position="bottom" data-tooltip="Домой" ><i class="medium material-icons">home</i></a>
     
   </header>
   <main>
@@ -58,7 +56,7 @@
       <div class="swiper-pagination"></div>
       <!-- <div class="swiper-button-prev"></div> -->
     <div class="swiper-button-next"></div>
-    <div class="modal">
+    <div class="modal modal-end">
       <div class="modal-content">
         <h4>Ура! На сегодня все.</h4>
         <p>Есть еще новые карточки, но дневной лимит исчерпан. 
@@ -70,6 +68,20 @@
       <div class="modal-footer">
         <a href="/index" class="modal-settings-btn modal-close waves-effect waves-green btn-flat"><i class="material-icons">home</i>Главная страница</a>
         <a href="#!" class="modal-more-btn modal-close waves-effect waves-green btn-flat">Учить еще</a>
+      </div>
+    </div>
+    <div class="modal modal-done-for-today">
+      <div class="modal-content">
+        <h4>Сегодня вы уже тренировались</h4>
+        <p>Есть еще новые карточки, но дневной лимит исчерпан. 
+        Вы можете увеличить лимит в настройках, но, пожалуйста, имейте ввиду, что чем больше новых карточек вы посмотрите, 
+        тем больше Вам надо будет повторять в ближайшее время. <br>
+        Настройки вы можете найти на главной странице в Меню.<br>
+        Для обучения сверх обычного расписания нажмите кнопку "Учить еще" ниже.</p>
+      </div>
+      <div class="modal-footer">
+        <a href="/index" class="modal-settings-btn modal-close waves-effect waves-green btn-flat"><i class="material-icons">home</i>Главная страница</a>
+        <a href="#!" class="modal-done-more modal-close waves-effect waves-green btn-flat">Учить еще</a>
       </div>
     </div>
   </main>

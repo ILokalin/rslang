@@ -8,7 +8,6 @@ import {
   loginButton,
   logoutButtons,
   settingsSaveBtns,
-  modal,
   translation,
   meaning,
   example,
@@ -26,57 +25,7 @@ import {
   showAnswerBtn,
   autoPlay,
 } from '../constants';
-
-import {handleSettingsView} from './form-components';
-
-export const whoIsGameFor = () => {
-  main.classList.add('hidden');
-  settings.classList.add('hidden');
-  statistcs.classList.add('hidden');
-  vocabulary.classList.add('hidden');
-  dataController.getUser().then(
-    (userSettings) => {
-      console.log('We have user', userSettings);
-      titleUser.innerText = userSettings.name;
-
-      localStorage.setItem('settings', JSON.stringify(userSettings.settings));
-
-      handleSettingsView();
-
-      loginButton.classList.add('hidden');
-      main.classList.remove('hidden');
-      logoutButtons.forEach((btn) => {
-        btn.classList.remove('hidden');
-      });
-    },
-    (rejectReport) => {
-      console.log('User canceled');
-      titleUser.innerText = `${rejectReport.name}`;
-      const settings = {
-        lastTrain: 'date',
-        cardsPerDay: 30,
-        newCardsPerDay: 15,
-        justNewWords: 0,
-        cardContainsTranslation: 1,
-        cardContainsMeaning: 0,
-        cardContainsMeaningTransl: 0,
-        cardContainsExample: 0,
-        cardContainsExampleTransl: 0,
-        cardContainsPicture: 1,
-        cardContainsTranscription: 1,
-        footerBtnsEnabled: 1,
-        deleteBtnEnabled: 1,
-        showAnswerBtnEnabled: 0,
-        autoPlayEnabled: 1,
-      };      
-      localStorage.setItem('settings', JSON.stringify(settings));
-      handleSettingsView();
-      main.classList.remove('hidden');
-    },
-  );
-};
-
-whoIsGameFor();
+import {whoIsGameFor} from './whoIsGameFor';
 
 const userLogout = () => {
   dataController.logoutUser();
@@ -88,10 +37,12 @@ const userLogout = () => {
 };
 
 loginButton.addEventListener('click', whoIsGameFor);
+
 logoutButtons.forEach((btn) => {
   btn.addEventListener('click', userLogout);
 });
-// TODO get settings from backend
+
+
 settingsSaveBtns.forEach((btn) => {
   const settings = JSON.parse(localStorage.getItem('settings'));
   btn.addEventListener('click', (event) => {
