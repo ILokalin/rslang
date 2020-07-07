@@ -34,7 +34,7 @@ export default class Game {
   }
 
   init() {
-    this.gameSettings = new GameSettings(this.dataProvider.getGameRound());
+    this.gameSettings = new GameSettings(this.dataProvider);
     this.gameSettings.init(this.optionSelected.bind(this));
     this.createCardPage();
     restartBtn.addEventListener('click', this.onRestartBtnClick.bind(this));
@@ -57,8 +57,16 @@ export default class Game {
     e.preventDefault();
   }
 
+  async sendSettingsToBackEnd() {
+    if (this.userService.isAuthorized()) {
+      await this.dataController.setUserOptions({
+        'match-it': { gameRound: this.dataProvider.getCurrentGameRound() },
+      });
+    }
+  }
+
   async sendStatisticsToBackEnd() {
-    const results = Math.floor((this.props.know / this.props.errors) * 100) || 0;
+    const results = Math.floor((this.props.know / ERRORS_MAX_COUNT) * 100) || 0;
     const requestBody = {
       'match-it': {
         result: results,
@@ -85,11 +93,9 @@ export default class Game {
     this.props.errorsArr = [];
     this.props.errorsArr.length = 0;
     const words = [];
-    const round = GameSettings.displayRound();
-    let wordsData = this.dataProvider.getData().get(round);
-    if (!wordsData || wordsData.length === 0) {
-      wordsData = await Utils.getWordsForRound(this.dataController);
-    }
+    this.gameSettings.displayRound();
+    this.sendSettingsToBackEnd();
+    const wordsData = await this.dataProvider.getData();
     await wordsData.forEach(this.createCard.bind(this));
     wordsData.forEach((data) => words.push(data));
     words.sort(() => 0.5 - Math.random());
@@ -97,12 +103,16 @@ export default class Game {
     this.dataTransfer.start(this.props);
   }
 
-  restartGame() {
+  clearGameResults() {
     checkBtn.classList.remove('activeBtn');
     allCards.innerHTML = '';
     allWords.innerHTML = '';
     scoreLabel.classList.add('hidden');
     scoreLabel.children[0].innerHTML = '';
+  }
+
+  restartGame() {
+    this.clearGameResults();
     this.clearStatistics();
     this.createCardPage();
   }
@@ -122,13 +132,11 @@ export default class Game {
   }
 
   async optionSelected() {
-    allCards.innerHTML = '';
-    allWords.innerHTML = '';
+    this.clearGameResults();
     this.clearStatistics();
-    const round = GameSettings.displayRound();
-    this.dataController.setUserOptions({ 'match-it': { gameRound: round } }).then(() => {
-      await this.createCardPage();
-    });
+    this.gameSettings.displayRound();
+    this.sendSettingsToBackEnd();
+    await this.createCardPage();
   }
 
   async createCard(data, index) {
