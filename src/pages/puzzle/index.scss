@@ -173,6 +173,10 @@ $inset-shadow:
   margin: 0 auto;
   background-color:rgba(256, 256, 256, 0.8);
   width: 60%;
+
+  & td {
+    padding: 5px;
+  }
 }
 
 .badge {

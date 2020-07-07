@@ -274,8 +274,7 @@ continueBtn.addEventListener('click', async () => {
     await playNextSentence();
     continueBtn.classList.add('hidden');
     dontKnowBtn.classList.remove('hidden');
-  } else {
-    await saveGlobalStatistics(gameState);
+  } else {    
     if (isPaintingOpen()) {
       goToNextRound();
     } else {
@@ -284,6 +283,7 @@ continueBtn.addEventListener('click', async () => {
       resultsBtn.classList.remove('hidden');
       setRoundStatistics(gameState);
     }
+    await saveGlobalStatistics(gameState);
   }
 });
 
