@@ -14,3 +14,9 @@ export const authReportStore = createStore('').on(
   showAuthReport,
   (_, rejectReport) => rejectReport,
 );
+
+export const openPreloader = createEvent();
+export const closePreloader = createEvent();
+export const preloaderState = createStore(false)
+  .on(openPreloader, () => true)
+  .on(closePreloader, () => false);
