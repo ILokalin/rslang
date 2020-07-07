@@ -7,6 +7,17 @@ body {
   background-attachment: fixed;
 }
 
+.game-description{
+  margin: 160px 20px 0 20px;
+  font-size: 18px;
+  font-weight: 500;
+  text-align: justify;
+}
+
+.sidenav-trigger {
+  margin-left: 20px;
+}
+
 .game-container {
   margin: 0 auto;
   text-align: center;
@@ -14,7 +25,7 @@ body {
 }
 
 .start-game-btn {
-  margin-top: 250px;;
+  margin-top: 100px;;
 }
 
 .game-wrapper {
@@ -134,4 +145,36 @@ body {
 
 .hidden {
   visibility: hidden;
+}
+
+
+@media (max-width: 1200px) {
+  .game-container {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 800px) {
+  .words-translations-block {
+    flex-direction: column;
+  }
+
+  .word-image {
+    transform: scale(0.5);
+  }
+
+  .word-image-element {
+    width: 130px;
+    height: 130px;
+  }
+
+  .words-translations-element {
+    font-size: 14px;
+}
+
+  .puzzled-word-element {
+    font-size: 21px;
+}
+
+
 }

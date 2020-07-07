@@ -27,6 +27,8 @@ export default class AuditionGame {
     this.showAnswerListener = this.showAnswer.bind(this);
     this.endRoundListener = this.endRound.bind(this);
     this.logInListener = this.getUserData.bind(this);
+    this.keyboardNumbersListener = this.keyboardNumbersHandler.bind(this);
+    this.keyboardEnterListener = this.keyboardEnterHandler.bind(this);
   }
 
   static openModal(message)  {
@@ -40,10 +42,11 @@ export default class AuditionGame {
   }
 
   addKeyboardHandler() {
-    document.addEventListener('keydown', this.keyboardHandler.bind(this));
+    document.addEventListener('keydown', this.keyboardNumbersListener);
+    document.addEventListener('keydown', this.keyboardEnterListener);
   }
 
-  keyboardHandler(e) {
+  keyboardNumbersHandler(e) {
     const { key } = e;
 
     if (key >= 1 && key <= 5) {
@@ -62,17 +65,21 @@ export default class AuditionGame {
           this.roundsData[this.round].answer = false;
         }
       }
+    }
 
-      if (key === `Enter`) {
-        const puzzledWord = document.querySelector('.current-round > .puzzled-word-element');
-        
-        if (puzzledWord.classList.contains ('answered')) {
-          this.endRound();
-        } else {
-          this.showAnswer();
-        }
+  keyboardEnterHandler(e) {
+    const { key } = e;
+
+    if (key === `Enter`) {
+      const puzzledWord = document.querySelector('.current-round > .puzzled-word-element');
+      
+      if (puzzledWord.classList.contains ('answered')) {
+        this.endRound();
+      } else {
+        this.showAnswer();
       }
     }
+  }
 
 
   addSelectDifficultyHandler() {
@@ -104,6 +111,7 @@ export default class AuditionGame {
     this.round = 0;
     this.roundsData = [];
     gameContainer.innerHTML = '';
+
     if (this.user) {
       this.getUserWords();
     } else {
@@ -136,14 +144,16 @@ export default class AuditionGame {
 
   showSelectWordsWindow(words) {
     selectWordsWindow.classList.remove('hidden');
-    ownWordsBtn.addEventListener('click', () => {
+    
+    ownWordsBtn.onclick = () => {
       this.playWithOwnWords(words);
       selectWordsWindow.classList.add('hidden');
-    });
-    allWordsBtn.addEventListener('click', () => {
+    };
+
+    allWordsBtn.onclick = () => {
       this.playWithAllWords();
       selectWordsWindow.classList.add('hidden');
-    })
+    };
   }
 
   playWithOwnWords(words) {
@@ -235,7 +245,6 @@ export default class AuditionGame {
     }
   }
 
-
   createCurrentRoundPage () {
     const roundData = this.roundsData[this.round];
     const wrapper = this.createRoundPage(roundData);
@@ -306,6 +315,7 @@ export default class AuditionGame {
     const wordTranslationBlock = document.querySelector('.current-round > .words-translations-block');
 
     wordTranslationBlock.removeEventListener('click', this.wordClickListener);
+    document.removeEventListener('keydown', this.keyboardNumbersListener);
 
     image.classList.add('answered');
     puzzledWord.classList.add('answered');
@@ -324,6 +334,7 @@ export default class AuditionGame {
   checkAnswer(event) {
     const word = this.roundsData[this.round].wordTranslate;
     const wordTranslationBlock = document.querySelector('.current-round > .words-translations-block');
+    document.removeEventListener('keydown', this.keyboardListener);
 
     if (event.target.id) {
       wordTranslationBlock.removeEventListener('click', this.wordClickListener);
@@ -343,6 +354,7 @@ export default class AuditionGame {
   startRound() {
     setTimeout(() => this.roundsData[this.round].audio.play(), 500);
     
+    document.addEventListener('keydown', this.keyboardNumbersListener);
     this.changeBackground();
   }
 
