@@ -1,27 +1,31 @@
 /* eslint-disable class-methods-use-this */
+import 'materialize-css';
+import moment from 'moment';
 import Card from './Card';
 import { mySwiper, settings, dataController } from './constants';
-import 'materialize-css';
 import { updateMaterialComponents, setProgressbarToCurrentPosition, getApproprateWords, saveTrainingStatistics, } from './helpers';
+import { PreloaderController } from 'Service/PreloaderController';
 
 export default class Training {
   constructor(newWordsAmountPerDay, maxWordsPerDay, shortTermStat) {
-    console.log(newWordsAmountPerDay, maxWordsPerDay)
+    const preloaderController = new PreloaderController();
+    preloaderController.showPreloader();
     this.shortTermStat = shortTermStat || {
-      date: new Date().toDateString(),
+      date: moment().format('DD-MMM-YYYY'),
       totalCards: 0,
       wrightAnswers: 0,
       newWords:0,
       chain: 0,
       longestChain:0,
     };
-    settings.lastTrain = new Date().toDateString();
-    dataController.setUserOptions({name: 'Mr Checker', settings});   
+    settings.lastTrain = this.shortTermStat.date;
+    dataController.setUserOptions({settings});   
 
     getApproprateWords(newWordsAmountPerDay, maxWordsPerDay).then((res)=> {
       this.words = res;
       console.log(res);
-      this.start();
+      preloaderController.hidePreloader();
+      this.start();      
     })
 
     window.addEventListener('beforeunload', saveTrainingStatistics);
@@ -62,7 +66,7 @@ export default class Training {
     document.querySelector('.statistics__correct-answers').innerText = isNaN(rightAnswersPersent) ? '0%' : rightAnswersPersent + '%';
     document.querySelector('.statistics__total-cards').innerText = this.shortTermStat.totalCards;
     document.querySelector('.statistics__correct-in-row').innerText = this.shortTermStat.longestChain;
-    localStorage.setItem('stat', JSON.stringify(this.shortTermStat));
+    //localStorage.setItem('stat', JSON.stringify(this.shortTermStat));
     console.log(this.shortTermStat);
   }
 

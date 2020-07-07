@@ -1,14 +1,14 @@
 @import 'materialize-css';
 @import 'swiper/css/swiper';
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+@import 'Src/scss/components';
 
 html {
   font-size: 14px;
 
   @media screen and (max-width: 500px) {
     font-size: 10px;
-  }
-  
+  }  
 }
 
 .hidden {
@@ -111,7 +111,7 @@ html {
   width: 100%;
   display: flex;
   justify-content: space-between;
-  padding: 5px;
+  padding: 0 0 10px;
 }
 
 .tabs, .tab {

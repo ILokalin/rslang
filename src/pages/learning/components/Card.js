@@ -61,6 +61,9 @@ export default class Card {
 
   createCardContent(isRepeat) {
     const cardContent = ElementGen('div', 'card-content', this.cardElem);
+    const div = ElementGen('div', 'word', cardContent);
+    const translation = ElementGen('p', 'translation', div);
+    const transcription = ElementGen('p', 'transcription', div);
     const form = ElementGen('form', 'form', cardContent);
     const input = ElementGen('input', 'input_text', form);
     const result = ElementGen('div', 'result', form);
@@ -73,10 +76,7 @@ export default class Card {
       'i',
       'show-answer-btn teal-text waves-effect waves-light medium material-icons right tooltipped',
       form,
-    );
-    const div = ElementGen('div', 'word', cardContent);
-    const translation = ElementGen('p', 'translation', div);
-    const transcription = ElementGen('p', 'transcription', div);
+    );    
     const repeatId = Math.round(Math.random()*10000);
     const cardTabs = this.createCardTabs(isRepeat, repeatId);    
     cardContent.appendChild(cardTabs);
@@ -336,7 +336,7 @@ export default class Card {
       cardTitle.dataset.difficulty = (wordDifficulty || 'onlearn');
       input.value = input.dataset.word;     
       if (settings.autoPlayEnabled) {
-       // audioPlay(audio);
+        audioPlay(audio);
       }
       mySwiper.train.shortTermStat.totalCards++;
       mySwiper.train.updateStat();  
@@ -374,6 +374,8 @@ export default class Card {
       }
     });
 
+    result.style.zIndex = 2;
+
     const newProgress = updateProgress(+progress, isWrong);
 
     let saveOption;
@@ -403,8 +405,7 @@ export default class Card {
     }
 
     if (isWrong) {
-      mySwiper.train.shortTermStat.chain = 0;
-      result.style.zIndex = 2;
+      mySwiper.train.shortTermStat.chain = 0;      
       input.value = '';
       input.setAttribute('placeholder', input.dataset.word);
       
@@ -415,7 +416,7 @@ export default class Card {
       }, 3000);
 
       await againBtnAct();  
-    } else {
+    } else {  
       if (+input.dataset.tryCount === 1) {
         mySwiper.train.shortTermStat.wrightAnswers++; 
         mySwiper.train.shortTermStat.chain++;     
@@ -424,7 +425,7 @@ export default class Card {
       showAnswerBtn.classList.add('hidden');
       
       if (settings.autoPlayEnabled) {
-        // audioPlay(audio);
+        audioPlay(audio);
       }
       mySwiper.train.updateStat();  
       allowNextCard();

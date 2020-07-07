@@ -1,5 +1,7 @@
 import './index.scss';
 import 'materialize-css';
+import moment from 'moment';
+import './components/buttons';
 import { mySwiper, settings, dataController } from './components/constants';
 import Training from './components/Training';
 import {saveTrainingStatistics} from './components/helpers';
@@ -8,8 +10,7 @@ require.context('Src', true, /\.(png|svg|jpg|gif|mp3)$/);
 // eslint-disable-next-line no-undef
 M.AutoInit();
 console.log(settings);
-if (settings.lastTrain !== new Date().toDateString()) {
-  console.log(settings.lastTrain !== new Date().toDateString());
+if (settings.lastTrain !== moment().format('DD-MMM-YYYY')) {
   const train = new Training(settings.newCardsPerDay, settings.cardsPerDay);
   mySwiper.train = train;
 } else {
@@ -29,17 +30,4 @@ if (settings.lastTrain !== new Date().toDateString()) {
     }
   });
 }
-
-document.querySelector('.modal-more-btn').addEventListener('click', () => {
- mySwiper.train.continueTraining();
-})
-
-document.querySelector('.modal-done-more').addEventListener('click', () => {
-  const train = new Training(settings.newCardsPerDay, settings.cardsPerDay);
-  mySwiper.train = train;
-})
-
-document.querySelector('.save-settings-button').addEventListener('click', async () => {
-  await saveTrainingStatistics();
-})
 
