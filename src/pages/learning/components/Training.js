@@ -59,7 +59,7 @@ export default class Training {
       this.shortTermStat.longestChain = this.shortTermStat.chain;
     }    
     document.querySelector('.statistics__new-words-num').innerText = this.shortTermStat.newWords;
-    document.querySelector('.statistics__correct-answers').innerText = isNaN(rightAnswersPersent) ? '0%' : rightAnswersPersent+ '%';
+    document.querySelector('.statistics__correct-answers').innerText = isNaN(rightAnswersPersent) ? '0%' : rightAnswersPersent + '%';
     document.querySelector('.statistics__total-cards').innerText = this.shortTermStat.totalCards;
     document.querySelector('.statistics__correct-in-row').innerText = this.shortTermStat.longestChain;
     localStorage.setItem('stat', JSON.stringify(this.shortTermStat));
