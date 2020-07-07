@@ -2,14 +2,11 @@
 import 'materialize-css';
 import moment from 'moment';
 import Card from './Card';
-import { mySwiper, settings, dataController } from './constants';
+import { mySwiper, settings, dataController, preloaderController } from './constants';
 import { updateMaterialComponents, setProgressbarToCurrentPosition, getApproprateWords, saveTrainingStatistics, } from './helpers';
-import { PreloaderController } from 'Service/PreloaderController';
 
 export default class Training {
   constructor(newWordsAmountPerDay, maxWordsPerDay, shortTermStat) {
-    const preloaderController = new PreloaderController();
-    preloaderController.showPreloader();
     this.shortTermStat = shortTermStat || {
       date: moment().format('DD-MMM-YYYY'),
       totalCards: 0,
