@@ -152,8 +152,8 @@ export default class Card {
     const tab1 = ElementGen('li', 'tab col s3', ul);
     const tab2 = ElementGen('li', 'tab col s3', ul);
 
-    tab1.innerHTML = `<a class="active" href="#explain-${this.wordState.word}${isRepeat ? repeatId : ''}">Explain</a>`;
-    tab2.innerHTML = `<a href="#example-${this.wordState.word}${isRepeat ? repeatId : ''}">Example</a>`;
+    tab1.innerHTML = `<a class="active" href="#explain-${this.wordState.word}${isRepeat ? repeatId : ''}">Значение</a>`;
+    tab2.innerHTML = `<a href="#example-${this.wordState.word}${isRepeat ? repeatId : ''}">Пример</a>`;
 
     return cardTabs;
   }
