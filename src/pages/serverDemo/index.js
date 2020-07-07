@@ -18,7 +18,8 @@ const firstValue = document.querySelector('.page__input-words-example');
 const secondValue = document.querySelector('.page__input-words-ppage');
 const imageMaterial = document.querySelector('.page__la-pic');
 const audio = new Audio();
-const preloaderShow = document.querySelector('page__preloader-show');
+const preloaderShow = document.querySelector('.page__preloader-show');
+const preloaderController = new PreloaderController();
 
 let wordPagesCount = 0;
 
@@ -75,6 +76,7 @@ const wordsLoad = () => {
   const wordsPerExampleSentenceLTE = firstValue.value;
   const wordsPerPage = secondValue.value;
 
+  preloaderController.showPreloader();
   dataController
     .getWords({
       group: 1,
@@ -84,6 +86,7 @@ const wordsLoad = () => {
     })
     .then(
       (words) => {
+        preloaderController.hidePreloader();
         console.log(words);
       },
       (rejectReport) => {
@@ -102,8 +105,7 @@ const putUserSettings = () => {
 
 putDataButton.addEventListener('click', putUserSettings);
 
-const preloaderController = new PreloaderController();
 preloaderShow.addEventListener('click', () => {
-  preloaderController.show();
-  setTimeout(() => preloaderController.hide(), 5000);
+  preloaderController.showPreloader();
+  setTimeout(() => preloaderController.hidePreloader(), 25000);
 });
