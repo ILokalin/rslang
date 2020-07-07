@@ -12,7 +12,7 @@ import {
 import {
   inputField, dontKnowBtn, checkBtn, continueBtn, resultsBtn, painting, audio, translation,
   translateBtn, pronounceBtn, pictureBtn, roundStatisticsPage, gamePage, fullStatPage, statBtn,
-  puzzleGrooveWidth, dataController,
+  puzzleGrooveWidth, dataController, preloaderController,
 } from './constants';
 import {
   drawPuzzlePiece, drawFirstPuzzlePiece, drawLastPuzzlePiece, drawCorrect,
@@ -190,6 +190,7 @@ pictureBtn.addEventListener('click', () => {
 
 
 const startRound = async () => {
+  preloaderController.showPreloader();
   document.querySelectorAll('.game-row').forEach((el) => {
     el.innerHTML = '';
     el.classList.remove('droppable');
@@ -202,6 +203,7 @@ const startRound = async () => {
     know: [],
     dontknow: [],
   };
+  preloaderController.hidePreloader();
   
   setGameRound(); 
 
@@ -218,6 +220,7 @@ const startRound = async () => {
   continueBtn.classList.add('hidden');
   dontKnowBtn.classList.remove('hidden');
   resultsBtn.classList.add('hidden');
+  
 };
 
 const goToNextRound = () => {
