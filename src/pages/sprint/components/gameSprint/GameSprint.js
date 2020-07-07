@@ -1,4 +1,5 @@
 import { DataController } from 'Service/DataController';
+import { ElementGen } from 'Src/service/DomGen/DomGen';
 // eslint-disable-next-line no-undef
 M.AutoInit();
 
@@ -18,6 +19,12 @@ const blockSeries = document.getElementById('series');
 const timetVIew = document.getElementById('timer');
 const timerWrap = document.getElementById('timer-wrap');
 const timeWrapper = document.getElementById('timer-wrapper');
+const statistickDispalt = document.getElementById('statistick');
+const category = document.getElementById('statistick-words');
+const scoreStatistick = document.getElementById('score-statistick');
+const statistickRight = document.getElementById('answer-statistick--right');
+const statistickWrong = document.getElementById('answer-statistick--wrong');
+
 const stepToNextWordIndex = 1;
 const defaultGameScoreValue = 0;
 const timeAnswerResultVIew = 200;
@@ -55,6 +62,7 @@ const LevelViewInfo = {
 };
 const clearTextValue = '';
 let words = [];
+let wrongWords = [];
 
 export default class GameSprint {
   constructor(score) {
@@ -70,6 +78,8 @@ export default class GameSprint {
     this.poinForRightAnswer = 10;
     this.gameScore = score;
     this.gameLevel = 1;
+    this.countRightAnswers = 0;
+    this.countWrongAnswers = 0;
   }
 
   updateTime(gameTime) {
@@ -82,6 +92,7 @@ export default class GameSprint {
       startGameButton.classList.remove('hide');
       gameView.classList.add('hide');
       timerWrap.classList.remove('timer_line');
+      this.finalStatistics();
     }
     this.currentGameTime = gameTime - this.stepTime;
   }
@@ -111,6 +122,7 @@ export default class GameSprint {
     const { one } = LevelViewInfo;
     gameContainer.classList.add('wrong-answer');
     setTimeout(() => gameContainer.classList.remove('wrong-answer'), timeAnswerResultVIew);
+    this.countWrongAnswers += this.seriesPoint;
     this.seriesRightAnswer = this.startSeriesPoint;
     GameSprint.removeRightSeriesViewPoint();
     this.defaultLeavelView();
@@ -123,6 +135,7 @@ export default class GameSprint {
     seriesRightAnswerView[0].classList.remove('hide');
     seriesRightAnswerView[2].classList.remove('hide');
     seriesRightAnswerView[1].classList.remove('series_answer--right-final');
+    wrongWords.push(words[this.currentWordIndex]);
   }
 
   rightAnswer() {
@@ -131,6 +144,8 @@ export default class GameSprint {
 
     answerImage.classList.add('answer_img--right');
     setTimeout(() => answerImage.classList.remove('answer_img--right'), timeAnswerResultVIew);
+
+    this.countRightAnswers += this.seriesPoint;
 
     this.gameScore += this.poinForRightAnswer;
     scoreView.innerHTML = `${this.gameScore}`;
@@ -192,6 +207,7 @@ export default class GameSprint {
     parrotYellow.classList.add('hide');
     parrotBrown.classList.add('hide');
     parrotPink.classList.add('hide');
+    statistickDispalt.classList.add('hide');
   }
 
   static startTimerView() {
@@ -206,6 +222,9 @@ export default class GameSprint {
     this.seriesPoint = 1;
     this.startSeriesPoint = 0;
     this.poinForRightAnswer = 10;
+    this.countRightAnswers = 0;
+    this.countWrongAnswers = 0;
+    wrongWords = [];
   }
 
   stratButtonEvents() {
@@ -240,13 +259,12 @@ export default class GameSprint {
 
   answerButtonsEvent() {
     buttonWrong.addEventListener('click', () => {
-      this.currentWordIndex += stepToNextWordIndex;
-
       if (this.translateWordStatus) {
         this.wrongAnswer();
       } else {
         this.rightAnswer();
       }
+      this.currentWordIndex += stepToNextWordIndex;
       this.renderWords();
     });
 
@@ -281,9 +299,9 @@ export default class GameSprint {
         .then(
           (value) => {
             const { paginatedResults } = value[0];
-            paginatedResults.flat().map(({ word, wordTranslate }) => {
+            paginatedResults.flat().map(({ _id, word, wordTranslate }) => {
               preload.classList.add('hide');
-              return words.push({ word, wordTranslate });
+              return words.push({ _id, word, wordTranslate });
             });
           },
           (reason) => {
@@ -343,6 +361,24 @@ export default class GameSprint {
     }
   }
 
+  finalStatistics() {
+    scoreStatistick.innerHTML = `${this.gameScore}`;
+    statistickRight.innerHTML = `${this.countRightAnswers}`;
+    statistickWrong.innerHTML = `${this.countWrongAnswers}`;
+
+    statistickDispalt.classList.remove('hide');
+    category.appendChild(
+      this.renderWordsContainerColum(wrongWords)
+    );
+  }
+
+  removePreviosWords() {
+    const previosWords = document.querySelectorAll('.on-learn__column1 ');
+    if (previosWords.length > 0) {
+      previosWords.remove();
+    }
+  }
+
   init() {
     timerWrap.remove();
     dataController.getUser().then(
@@ -371,4 +407,81 @@ export default class GameSprint {
     );
   }
 
+  renderWordsContainerColum(arrayWords) {
+    this.removePreviosWords();
+    const ul = ElementGen(
+      'ul',
+      `on-learn__column1 collapsible col m6 l6 s12`,
+      this.cardElem,
+    );
+
+    arrayWords.forEach((element) => {
+      const word = element;
+      // eslint-disable-next-line no-underscore-dangle
+      dataController.getWordMaterials(element._id).then((materialOfCard) => {
+        word.image = materialOfCard.image;
+        word.audio = materialOfCard.audio;
+        word.audioExample = materialOfCard.audioExample;
+        word.audioMeaning = materialOfCard.audioMeaning;
+        word.transcription = materialOfCard.transcription;
+        word.textMeaning = materialOfCard.textMeaning;
+        word.textMeaningTranslate = materialOfCard.textMeaningTranslate;
+        word.textExample = materialOfCard.textExample;
+        word.textExampleTranslate = materialOfCard.textExampleTranslate;
+      }).then(() => {
+        const wordState = word;
+        const li = ElementGen('li', 'vocabulary__word-container');
+        li.appendChild(this.createHeader(wordState));
+        li.appendChild(this.createBody(wordState));
+        ul.appendChild(li);
+        this.playSound(li);
+        // eslint-disable-next-line no-undef
+        M.AutoInit();
+      });
+    });
+
+    return ul;
+  }
+
+  createHeader(wordState) {
+    const div = ElementGen('div', 'collapsible-header', this.cardElem);
+    div.insertAdjacentHTML(
+      'afterbegin',
+      `<i data-source="${wordState.audio}" class="material-icons vocabulary-sound">volume_up</i>
+                                        <span class="vocabulary__word">${wordState.word}</span>`,
+    );
+    return div;
+  }
+
+  createBody(wordState) {
+    const div = ElementGen('div', 'collapsible-body', this.cardElem);
+    div.insertAdjacentHTML(
+      'afterbegin',
+      `<div class="row">
+                    <p class="col s6">${wordState.wordTranslate}</p>
+                    <p class="col s6">${wordState.transcription}</p>
+                  </div>
+                  <img  src="${wordState.image}" alt="">
+                  <div class="sentences">
+                    <p>${wordState.textMeaning} <i class="material-icons vocabulary-sound" data-source="${wordState.audioMeaning}">volume_up</i></p>
+                    <p>${wordState.textMeaningTranslate}</p>
+                    <p>${wordState.textExample} <i data-source="${wordState.audioExample}" class="material-icons vocabulary-sound">volume_up</i></p>
+                    <p>${wordState.textExampleTranslate}</p>
+                  </div>
+                  <div class="divider"></div>`,
+    );
+    return div;
+  }
+
+  playSound(el) {
+    const vocabularySound = el.querySelectorAll('.vocabulary-sound');
+    vocabularySound.forEach((element) =>
+      element.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const sound = new Audio();
+        sound.src = e.target.dataset.source;
+        sound.play();
+      }),
+    );
+  }
 }

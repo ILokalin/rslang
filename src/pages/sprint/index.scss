@@ -1,6 +1,7 @@
 @import 'Src/scss/normalize';
 @import 'materialize-css';
 @import "../../components/AuthPopup/AuthPopup.scss";
+@import 'Src/scss/components';
 
 body {
     width: 100%;
@@ -379,6 +380,62 @@ body {
     align-items: center;
     justify-content: center;
   }
+
+  .statistick-short {
+    width: 300px;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+  }
+
+  .answers-statistick {
+    display: flex;
+    width: 50%;
+    justify-content: space-between;
+  }
+
+  // vocabulary 
+
+.collapsible-header {
+  justify-content: space-between;
+
+  & .vocabulary__word {
+    font-weight: bold;
+  }
+}
+
+.collapsible-body img{
+  width: 100%;
+}
+
+.vocabulary__card-footer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.vocabulary__card-footer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.restore-icon {
+  margin-left: auto !important;
+}
+
+.collapsible span.badge {
+  margin-left: 5px !important;
+  min-width: 140px;
+}
+
+#vocabulary__on-learn .restore-icon {
+  display: none !important;
+}
+
+#vocabulary__on-learn span.badge {
+  margin-left: auto !important;
+}
 
 
 
