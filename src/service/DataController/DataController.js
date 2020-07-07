@@ -1,4 +1,5 @@
 import { AuthPopup } from 'Components/AuthPopup';
+import moment from 'moment';
 import {
   openAuthPopup,
   closeAuthPopup,
@@ -286,35 +287,64 @@ export class DataController {
     return topResult;
   }
 
+  cardStatisticsAggregate(originStatOptionalCard, shortTimeStat, today) {
+    const shortStatTemplate = {
+      date: today,
+      totalCards: 0,
+      wrightAnswers: 0,
+      newWords: 0,
+      chain: 0,
+      longestChain: 0,
+    };
+    const { longTime = [], shortTime = shortStatTemplate } = originStatOptionalCard;
+    const resultOptionalCard = {
+      longTime,
+      shortTime,
+    };
+
+    if (shortTime.date !== today) {
+      const longTimeStatItem = [shortTime.date, shortTime.newWords];
+      resultOptionalCard.longTime.push(longTimeStatItem);
+      resultOptionalCard.shortTime = { ...shortStatTemplate, ...shortTimeStat };
+    }
+    return resultOptionalCard;
+  }
+
   prepareUploadStatistics(originStatistics, uploadStatistics) {
-    const { learnedWords = 0, optional = {} } = originStatistics;
-    const today = { date: new Date().toDateString() };
+    const today = moment().format('DD-MMM-YYYY');
+    const { optional = {} } = originStatistics;
     const tempStatisticsObject = {
       optional: this.unpackUserSettings(optional),
     };
 
-    tempStatisticsObject.learnedWords = uploadStatistics.card
-      ? learnedWords + uploadStatistics.card.learnedWords
-      : learnedWords;
-
-    Object.keys(uploadStatistics).forEach((key) => {
-      const statisticsItem = { ...uploadStatistics[key], ...today };
-      if (optional[key]) {
-        tempStatisticsObject.optional[key].longTime.push(statisticsItem);
-        tempStatisticsObject.optional[key].top = this.findTopStatistics(
-          tempStatisticsObject.optional[key].top,
-          statisticsItem,
-        );
-      } else {
-        tempStatisticsObject.optional[key] = {
-          longTime: [statisticsItem],
-          top: [statisticsItem],
-        };
-      }
-    });
+    if (uploadStatistics.card) {
+      tempStatisticsObject.optional.card = this.cardStatisticsAggregate(
+        tempStatisticsObject.optional.card,
+        uploadStatistics.card,
+        today,
+      );
+      const { longTime } = tempStatisticsObject.optional.card;
+      tempStatisticsObject.learnedWords = longTime.reduce((summ, value) => summ + value[1], 0);
+    } else {
+      Object.keys(uploadStatistics).forEach((key) => {
+        const todayAsObj = { date: today };
+        const statisticsItem = { ...uploadStatistics[key], ...todayAsObj };
+        if (optional[key]) {
+          tempStatisticsObject.optional[key].longTime.push(statisticsItem);
+          tempStatisticsObject.optional[key].top = this.findTopStatistics(
+            tempStatisticsObject.optional[key].top,
+            statisticsItem,
+          );
+        } else {
+          tempStatisticsObject.optional[key] = {
+            longTime: [statisticsItem],
+            top: [statisticsItem],
+          };
+        }
+      });
+    }
 
     tempStatisticsObject.optional = this.packUserSettings(tempStatisticsObject.optional);
-
     return tempStatisticsObject;
   }
 

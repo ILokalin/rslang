@@ -1,5 +1,6 @@
 import './index.scss';
 import { DataController } from 'Service/DataController';
+import { PreloaderController } from 'Service/PreloaderController';
 
 require.context('Src', true, /\.(png|svg|jpg|gif|mp3)$/);
 
@@ -16,6 +17,8 @@ const firstValue = document.querySelector('.page__input-words-example');
 const secondValue = document.querySelector('.page__input-words-ppage');
 const imageMaterial = document.querySelector('.page__la-pic');
 const audio = new Audio();
+const preloaderShow = document.querySelector('.page__preloader-show');
+const preloaderController = new PreloaderController();
 
 let wordPagesCount = 0;
 
@@ -72,6 +75,7 @@ const wordsLoad = () => {
   const wordsPerExampleSentenceLTE = firstValue.value;
   const wordsPerPage = secondValue.value;
 
+  preloaderController.showPreloader();
   dataController
     .getWords({
       group: 1,
@@ -81,6 +85,7 @@ const wordsLoad = () => {
     })
     .then(
       (words) => {
+        preloaderController.hidePreloader();
         console.log(words);
       },
       (rejectReport) => {
@@ -98,3 +103,8 @@ const putUserSettings = () => {
 };
 
 putDataButton.addEventListener('click', putUserSettings);
+
+preloaderShow.addEventListener('click', () => {
+  preloaderController.showPreloader();
+  setTimeout(() => preloaderController.hidePreloader(), 25000);
+});
