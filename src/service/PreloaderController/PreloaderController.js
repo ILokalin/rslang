@@ -1,5 +1,5 @@
 import { PreloaderView } from 'Components/PreloaderView';
-import { openPreloader, closePreloader } from 'Components/AppState';
+import { openPreloader, closePreloader } from 'Service/AppState';
 
 export class PreloaderController {
   constructor() {
