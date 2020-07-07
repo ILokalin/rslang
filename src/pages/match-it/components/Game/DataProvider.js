@@ -1,13 +1,11 @@
 import Utils from '../../services/utils';
-import { levelSelect } from '../../data/constants';
+import { levelSelect, roundSelect, DEFAULT_ROUND } from '../../data/constants';
 
 export default class DataProvider {
   constructor(dataController, userService) {
     this.dataController = dataController;
     this.userService = userService;
-    this.gameRound = '0.1';
-    this.gameRoundMax = 60;
-    this.data = new Map();
+    this.gameRound = this.userService.getRound();
   }
 
   async start() {
@@ -21,10 +19,7 @@ export default class DataProvider {
           this.gameRound = settings['match-it'].gameRound;
         }
         await this.userService.init();
-        this.data = this.userService.getMyWords();
-        if (this.data.size > 0) {
-          this.gameRoundMax = this.data.size;
-        } else {
+        if (!this.userService.hasWords()) {
           this.noWordsFound();
         }
       },
@@ -37,14 +32,37 @@ export default class DataProvider {
 
   noWordsFound() {
     levelSelect.options.remove(0);
-    this.gameRound = '1.1';
+    if (this.gameRound === this.userService.getRound()) {
+      this.gameRound = DEFAULT_ROUND;
+    }
   }
 
-  getGameRound() {
+  getInitialGameRound() {
     return this.gameRound;
   }
 
-  getData() {
-    return this.data;
+  getCurrentGameRound() {
+    if (Utils.isUserWordsSelected()) {
+      return this.userService.getRound();
+    }
+    return `${levelSelect.value}.${roundSelect.value}`;
+  }
+
+  getDisplayedRound() {
+    if (Utils.isUserWordsSelected()) {
+      return `${levelSelect.selectedOptions[0].innerHTML}`;
+    }
+    const currentRound = this.getCurrentGameRound();
+    return `Round ${currentRound}`;
+  }
+
+  async getData() {
+    let wordsData;
+    if (Utils.isUserWordsSelected()) {
+      wordsData = this.userService.getUserWords();
+    } else {
+      wordsData = await Utils.getWordsForRound(this.dataController);
+    }
+    return wordsData;
   }
 }

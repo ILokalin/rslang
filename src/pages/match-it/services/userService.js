@@ -1,10 +1,11 @@
-import { ERRORS_MAX_COUNT } from '../data/constants';
+import { ERRORS_MAX_COUNT, USER_DEFAULT_ROUND } from '../data/constants';
 import Utils from './utils';
 
 export default class UserService {
   constructor(dataController) {
     this.dataController = dataController;
-    this.myWords = new Map();
+    this.userWords = [];
+    this.round = USER_DEFAULT_ROUND;
   }
 
   async init() {
@@ -12,23 +13,23 @@ export default class UserService {
     const userWordsForRound = await Utils.getUserWordsForRound(this.dataController);
     if (userWordsForRound) {
       this.userWordsArr = userWordsForRound[0].paginatedResults;
-      const size = Math.floor(this.userWordsArr.length / ERRORS_MAX_COUNT);
-      let i = 0;
-      while (i < size) {
-        i += 1;
-        this.myWords.set(
-          i.toString(),
-          this.userWordsArr.slice((i - 1) * ERRORS_MAX_COUNT, i * ERRORS_MAX_COUNT),
-        );
-      }
     }
   }
 
-  getMyWords() {
-    return this.myWords;
+  getRound() {
+    return this.round;
+  }
+
+  getUserWords() {
+    const shuffled = this.userWordsArr.sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, ERRORS_MAX_COUNT);
   }
 
   isAuthorized() {
     return this.authorized;
+  }
+
+  hasWords() {
+    return this.userWordsArr.length > ERRORS_MAX_COUNT;
   }
 }
