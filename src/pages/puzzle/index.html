@@ -15,35 +15,34 @@
     </nav>   
     <main>
         <div class="home-page">
-            <p class='home-page__desc'> Hello! Try to complete 6 levels of our game! Each puzzle contains 10 english
-                sentences, which you have to put together in pieces. There are 3 types of hints. In the end you'll see a masterpiece
-                of painting. Let's Go! </p>            
-            <a class="home-page__btn btn-large waves-effect waves-light red lighten-2 pulse"><i class="material-icons">extension</i> Play!</a>
+            <p class='home-page__desc'> Привет! Попробуй завершить 6 уровней игры в пазл или тренируй слова из своего словаря! Каждый пазл содержит 10 английских продложений, которые Вам предстоит собрать по кусочкам. Есть три типа подсказок: произношение, картинка и перевод. В конце вы увидите мировой шедевр живописи.
+                Поехали! </p>            
+            <a class="home-page__btn btn-large waves-effect waves-light red lighten-2 pulse"><i class="material-icons">extension</i> Играть!</a>
         </div>         
         <div class="game-page hidden">
             <ul id="slide-out" class="sidenav">
                 <li>
-                    <div class="user-view"> Choose game options </div>
+                    <div class="user-view"> Опции игры </div>
                 </li>                
                 <li>
                     <div class="divider"></div>
                 </li>
-                <li><a class="subheader">Difficulty</a></li>                
+                <li><a class="subheader">Сложность</a></li>                
                 <li>
                     <div class="level-select input-field col s12">
                         <select>
-                            <option value="1" selected>Level 1</option>
-                            <option value="2">Level 2</option>
-                            <option value="3">Level 3</option>
-                            <option value="4">Level 4</option>
-                            <option value="5">Level 5</option>
-                            <option value="6">Level 6</option>
+                            <option value="1" selected>Уровень 1</option>
+                            <option value="2">Уровень 2</option>
+                            <option value="3">Уровень 3</option>
+                            <option value="4">Уровень 4</option>
+                            <option value="5">Уровень 5</option>
+                            <option value="6">Уровень 6</option>
                         </select>
                     </div>
                 </li>
                 <li>                 
                 <div class="round-select input-field col s6">
-                    <input class = "disabled" placeholder="Choose round" min="1"  type="number" class="validate">
+                    <input class = "disabled" placeholder="Выберите раунд" min="1"  type="number" class="validate">
                 </div>
                 </li>
                 <li>
@@ -52,31 +51,31 @@
                 <li>
                     <label>
                         <input class="user-words-checkbox" type="checkbox" />
-                        <span>Play with my words</span>
+                        <span>Тренировать мои слова</span>
                     </label>
                 </li>
                 <li>
                     <div class="divider"></div>
                 </li>
-                <li><a class="subheader">Hints</a></li>
+                <li><a class="subheader">Подсказки</a></li>
                 <li>
                     <ul class="hints">
                         <li>
                             <label>
                                 <input class="translate-checkbox" type="checkbox" />
-                                <span>Translate</span>
+                                <span>Перевод</span>
                             </label>
                         </li>
                         <li>
                             <label>
                                 <input class="pronounce-checkbox" type="checkbox" />
-                                <span>Pronounce</span>
+                                <span>Произношение</span>
                             </label>
                         </li>
                         <li>
                             <label>
                                 <input class="picture-checkbox" type="checkbox" />
-                                <span>Picture</span>
+                                <span>Картинка</span>
                             </label>
                         </li>
                     </ul>
@@ -89,7 +88,7 @@
                     <li>
                         <label class="auto-pronounce-check col s1">
                             <input type="checkbox" />
-                            <span>Auto pronounce</span>
+                            <span>Автопроизношение</span>
                         </label>
                     </li>
                     <li>
@@ -111,7 +110,7 @@
             </div>
             <div class="game-container">  
                 <div class="translation-container">
-                    <p class="sentence-translation right">Translation of sentence</p>
+                    <p class="sentence-translation right"></p>
                 </div>      
                 
                 <div class="game-result">
@@ -137,22 +136,22 @@
                     <ul class="footer-buttons">
                         <li>
                             <button class="dontknow-btn footer-btn btn waves-effect waves-light red lighten-2 " name="action">
-                                I don't know
+                                Я не знаю
                             </button>
                         </li>                       
                         <li>
                             <button class="check-btn footer-btn btn waves-effect waves-light red lighten-2 hidden" name="action">
-                                Check
+                                Проверить
                             </button>
                         </li>
                         <li>
                             <button class="continue-btn footer-btn btn waves-effect waves-light red lighten-2 hidden" name="action">
-                                Continue
+                                Продолжить
                             </button>
                         </li>
                         <li>
                             <button class="results-btn footer-btn btn waves-effect waves-light red lighten-2 hidden" name="action">
-                                Results
+                                Результат
                             </button>
                         </li>
                     </ul>
@@ -164,15 +163,15 @@
                 <a class="link-to-painting" href=""  target="_blank">
                     <img class="miniature-painting"  alt="miniature-painting">
                 </a>
-                <div class="miniature-painting-info center-align">picture info</div>
+                <div class="miniature-painting-info center-align"></div>
             </div>
          
-                <p class="round-statistics-dontknow center-align">I don't know<span class="round-statistics-dontknow-number left badge red"></span></p> 
+                <p class="round-statistics-dontknow center-align">Ошибки<span class="round-statistics-dontknow-number left badge red"></span></p> 
                 <table class="responsive-table centered dontknow-table">
                     <tbody></tbody>
                 </table>          
            
-                <p class="round-statistics-know center-align">I know<span class="round-statistics-know-number left badge green"></span></p>
+                <p class="round-statistics-know center-align">Я знаю<span class="round-statistics-know-number left badge green"></span></p>
                 <table class="responsive-table centered know-table">
                     <tbody></tbody>                
                 </table> 
@@ -180,12 +179,12 @@
                     <ul class="round-statistics-buttons">
                         <li>
                             <button class="round-statistic-continue-btn footer-btn btn waves-effect waves-light red lighten-2" name="action">
-                                Continue
+                                Продолжить
                             </button>
                         </li>
                         <li>
                             <button class="statistic-btn footer-btn btn waves-effect waves-light red lighten-2" name="action">
-                                Statistic
+                                Статистика
                             </button>
                         </li>
                     </ul>
@@ -196,10 +195,10 @@
             <table class="responsive-table centered">
                 <thead>
                     <tr>
-                        <th>Round</th>
-                        <th>Date</th>
-                        <th>I know </th>
-                        <th>I don't know</th>
+                        <th>Раунд</th>
+                        <th>Дата</th>
+                        <th>Я знаю</th>
+                        <th>Ошибки</th>
                     </tr>
                 </thead>
                 <tbody>               
@@ -208,7 +207,7 @@
                 </tbody>
             </table>
             <button class="full-statistic-continue-btn btn waves-effect waves-light red lighten-2 right" name="action">
-                Continue
+                Продолжить
             </button>
         </div>
         <audio src=""></audio>
