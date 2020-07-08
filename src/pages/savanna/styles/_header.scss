@@ -8,5 +8,18 @@
   color: white;
 }
 .dropdown-trigger {
- padding-left: 10px !important;
+  padding-left: 10px !important;
+  box-sizing: border-box !important;
+}
+.avatar img {
+  margin-top: 10px;
+  width: 100px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 4px solid #80cbc4;
+  box-shadow: 0 0 0 4px hsla(0, 0%, 100%, 0.2);
+}
+.home {
+  position: absolute;
+  right: 20px;
 }

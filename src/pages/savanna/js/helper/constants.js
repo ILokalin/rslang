@@ -12,19 +12,23 @@ const fallingWordText = document.querySelector('.falling-word__item');
 const fallingWordElement = document.querySelector('.falling-word');
 const answerElements = document.querySelectorAll('.answer-options__item');
 const answerContainer = document.querySelector('.answer-options');
-const userNameElement = document.querySelector('.user-name');
+const userNameElement = document.querySelector('.avatar__name');
 const health = 5;
 const statistic = document.querySelector('.statistic');
-const errorCount = document.querySelector('.error-count ');
-const errorTable = document.querySelector('.error-table');
-const knowCount = document.querySelector('.know-count');
-const knowTable = document.querySelector('.know-table');
+const errorCount = document.querySelector('.answers-invalid-title');
+const errorTable = document.querySelector('.answers-invalid-items');
+const knowCount = document.querySelector('.answers-valid-title');
+const knowTable = document.querySelector('.answers-valid-items');
 const levelOption = document.querySelector('.level');
 const roundOption = document.querySelector('.round');
 const audio = document.querySelector('.audio');
 const repeatOption = document.querySelector('.repeat');
-const preloader = document.querySelector('.preloader-background');
 const levelAndRoundselectors = document.querySelectorAll('.game-option');
+const statisticContainer = document.querySelector('.statistic-container');
+const homeButton = document.querySelector('.home');
+const popupMenu = document.querySelector('.popup-menu');
+const resumeButton = document.querySelector('.resume');
+const healtBar = document.querySelector('.healt-bar');
 
 export {
   appStartButton,
@@ -52,6 +56,10 @@ export {
   roundOption,
   audio,
   repeatOption,
-  preloader,
   levelAndRoundselectors,
+  statisticContainer,
+  homeButton,
+  popupMenu,
+  resumeButton,
+  healtBar,
 };

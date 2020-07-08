@@ -1,4 +1,5 @@
 import { closeAuthPopup, authPopupState, setUserData } from 'Service/AppState';
+import moment from 'moment';
 import LocalStorageMock from './LocalStorageMock';
 import { DataController } from '../DataController';
 
@@ -75,21 +76,31 @@ describe('Helpers tests', () => {
       learnedWords: 5,
       optional: dataController.packUserSettings({
         card: {
-          learnedWords: 20,
-          series: 10,
+          longTime: [
+            ['02-Jul-2020', 40],
+            ['03-Jul-2020', 40],
+          ],
+          shortTime: {
+            date: '04-Jul-2020',
+            totalCards: 6,
+            wrightAnswers: 5,
+            newWords: 2,
+            chain: 1,
+            longestChain: 3,
+          },
         },
         savanna: {
           top: [
-            { date: '', result: 100 },
-            { date: '', result: 80 },
-            { date: '', result: 75 },
+            { date: '01-Jul-2020', result: 100 },
+            { date: '02-Jul-2020', result: 80 },
+            { date: '03-Jul-2020', result: 75 },
           ],
           longTime: [
-            { date: '', result: 50 },
-            { date: '', result: 50 },
-            { date: '', result: 100 },
-            { date: '', result: 80 },
-            { date: '', result: 75 },
+            { date: '03-Jul-2020', result: 50 },
+            { date: '03-Jul-2020', result: 50 },
+            { date: '03-Jul-2020', result: 100 },
+            { date: '03-Jul-2020', result: 80 },
+            { date: '03-Jul-2020', result: 75 },
           ],
         },
       }),
@@ -119,6 +130,126 @@ describe('Helpers tests', () => {
         { result: 30 },
       ).length,
     ).toBe(5);
+  });
+
+  test('Cards statistics has aggregating on days', () => {
+    const originStatOptionalCard = {
+      longTime: [
+        ['02-Jul-2020', 40],
+        ['03-Jul-2020', 40],
+      ],
+      shortTime: {
+        date: '04-Jul-2020',
+        totalCards: 1,
+        wrightAnswers: 1,
+        newWords: 0,
+        chain: 1,
+        longestChain: 1,
+      },
+    };
+
+    const shortTimeStat = {
+      totalCards: 5,
+      wrightAnswers: 4,
+      newWords: 2,
+      chain: 1,
+      longestChain: 3,
+    };
+
+    const checkStat = {
+      longTime: [
+        ['02-Jul-2020', 40],
+        ['03-Jul-2020', 40],
+      ],
+      shortTime: {
+        date: '04-Jul-2020',
+        totalCards: 6,
+        wrightAnswers: 5,
+        newWords: 2,
+        chain: 1,
+        longestChain: 3,
+      },
+    };
+
+    const today = moment(new Date('07-04-20')).format('DD-MMM-YYYY');
+    expect(
+      dataController.cardStatisticsAggregate(originStatOptionalCard, shortTimeStat, today),
+    ).toEqual(checkStat);
+  });
+
+  test('Cards statistics create new short stat with clear original', () => {
+    const originStatOptionalCard = {};
+
+    const shortTimeStat = {
+      totalCards: 5,
+      wrightAnswers: 4,
+      newWords: 2,
+      chain: 1,
+      longestChain: 3,
+    };
+
+    const checkStat = {
+      longTime: [],
+      shortTime: {
+        date: '04-Jul-2020',
+        totalCards: 5,
+        wrightAnswers: 4,
+        newWords: 2,
+        chain: 1,
+        longestChain: 3,
+      },
+    };
+
+    const today = moment(new Date('07-04-20')).format('DD-MMM-YYYY');
+    expect(
+      dataController.cardStatisticsAggregate(originStatOptionalCard, shortTimeStat, today),
+    ).toEqual(checkStat);
+  });
+
+  test('Cards statistics create new longTime stat and start new short', () => {
+    const originStatOptionalCard = {
+      longTime: [
+        ['02-Jul-2020', 40],
+        ['03-Jul-2020', 40],
+      ],
+      shortTime: {
+        date: '04-Jul-2020',
+        totalCards: 1,
+        wrightAnswers: 1,
+        newWords: 5,
+        chain: 1,
+        longestChain: 1,
+      },
+    };
+
+    const shortTimeStat = {
+      totalCards: 5,
+      wrightAnswers: 4,
+      newWords: 2,
+      chain: 1,
+      longestChain: 3,
+    };
+
+    const checkStat = {
+      longTime: [
+        ['02-Jul-2020', 40],
+        ['03-Jul-2020', 40],
+        ['04-Jul-2020', 5],
+      ],
+      shortTime: {
+        date: '05-Jul-2020',
+        totalCards: 5,
+        wrightAnswers: 4,
+        newWords: 2,
+        chain: 1,
+        longestChain: 3,
+      },
+    };
+
+    const today = moment(new Date('07-05-20')).format('DD-MMM-YYYY');
+    expect(
+      dataController.cardStatisticsAggregate(originStatOptionalCard, shortTimeStat, today),
+    ).toEqual(checkStat);
   });
 });
 
@@ -238,12 +369,19 @@ describe('Test for userWords', () => {
     expect(statistics.savanna.longTime.length).toBeGreaterThanOrEqual(1);
   });
 
-  test('The setUserStatistics write statistic', async () => {
+  test('The setUserStatistics write statistics card', async () => {
     const testStat = {
-      card: { result: 90, learnedWords: 4 },
+      card: {
+        totalCards: 5,
+        wrightAnswers: 4,
+        newWords: 10,
+        chain: 1,
+        longestChain: 3,
+      },
     };
+
     const statistics = await dataController.setUserStatistics(testStat);
-    expect(statistics.learnedWords).toBeGreaterThanOrEqual(4);
+    expect(statistics.learnedWords).toBeGreaterThanOrEqual(10);
   });
 
   test('The userStatisticsGet returned combination of statistics object', async () => {
@@ -253,6 +391,8 @@ describe('Test for userWords', () => {
 
   test('The getWordMaterials retuned all materias from server', async () => {
     const materials = await dataController.getWordMaterials('5e9f5ee35eb9e72bc21af4a0');
-    expect(materials.audio).toEqual(expect.stringContaining('data:audio/mpeg;base64,SUQzBAAAAAAAI1'));
+    expect(materials.audio).toEqual(
+      expect.stringContaining('data:audio/mpeg;base64,SUQzBAAAAAAAI1'),
+    );
   });
 });
