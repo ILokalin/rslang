@@ -1,4 +1,4 @@
-export const AuthPopupForm = {
+export const authPopupForm = {
   name: 'auth-popup',
   tag: 'div',
   children: [
@@ -18,7 +18,7 @@ export const AuthPopupForm = {
                 {
                   tag: 'h2',
                   classAdd: 'center-align',
-                  innerText: 'Login',
+                  innerText: 'Вход',
                   isAccess: 'header',
                 },
                 {
@@ -55,7 +55,7 @@ export const AuthPopupForm = {
                               for: 'email',
                               dataError: 'wrong',
                               dataSuccess: 'right',
-                              innerText: 'Email',
+                              innerText: 'Эл.почта',
                             },
                           ],
                         },
@@ -87,7 +87,7 @@ export const AuthPopupForm = {
                               for: 'name',
                               dataError: 'wrong',
                               dataSuccess: 'right',
-                              innerText: 'Name',
+                              innerText: 'Ваше имя',
                             },
                           ],
                         },
@@ -118,7 +118,7 @@ export const AuthPopupForm = {
                               for: 'password',
                               dataError: 'wrong',
                               dataSuccess: 'right',
-                              innerText: 'Password',
+                              innerText: 'Пароль',
                             },
                           ],
                         },
@@ -140,7 +140,7 @@ export const AuthPopupForm = {
                                 {
                                   tag: 'p',
                                   classAdd: 'margin,medium-small,register-msg',
-                                  innerText: 'No account?',
+                                  innerText: 'Нет аккаунта?',
                                 },
                                 {
                                   tag: 'p',
@@ -165,7 +165,7 @@ export const AuthPopupForm = {
                                 {
                                   tag: 'p',
                                   classAdd: 'margin,medium-small,register-msg',
-                                  innerText: 'Have account?',
+                                  innerText: 'Есть аккаунт?',
                                 },
                                 {
                                   tag: 'p',
@@ -187,7 +187,7 @@ export const AuthPopupForm = {
                               type: 'button',
                               href: '#',
                               classAdd: 'login-btn,btn,waves-effect,waves-light,col,s3',
-                              innerText: 'Register',
+                              innerText: 'Регистрация',
                               isAccess: 'register',
                             },
                             {
@@ -195,7 +195,7 @@ export const AuthPopupForm = {
                               type: 'button',
                               href: '#',
                               classAdd: 'login-btn,btn,waves-effect,waves-light,col,s3',
-                              innerText: 'Login',
+                              innerText: 'Вход',
                               isAccess: 'login',
                             },
                             {
@@ -205,7 +205,7 @@ export const AuthPopupForm = {
                               className: 'button',
                               classAdd:
                                 'cancel-btn,btn,waves-effect,waves-light,teal,lighten-2,col,s3',
-                              innerText: 'Cancel',
+                              innerText: 'Отменить',
                               isAccess: 'cancel',
                             },
                           ],
