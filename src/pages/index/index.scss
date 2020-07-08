@@ -5,7 +5,7 @@
 @import 'Src/scss/components';
 
 .hidden {
-  display: none;
+  display: none!important;
 }
 
 header, main, footer, .settings-container, .statistics-container, .vocabulary-container {
@@ -88,7 +88,7 @@ header, main, footer, .settings-container, .statistics-container, .vocabulary-co
   position:relative; 
   height:100px; 
   margin-bottom:10px; 
-  background-color:#fff; 
+  background-color:#e0e0e0; 
   border-radius:150px 150px 0 0; 
   overflow:hidden; 
   text-align:center; 
@@ -106,7 +106,7 @@ header, main, footer, .settings-container, .statistics-container, .vocabulary-co
 
 .sc-percentage { 
   position:absolute; 
-  top: 7rem; 
+  top: 100px; 
   left:-200%; 
   width:400%; 
   height:400%; 
@@ -115,7 +115,7 @@ header, main, footer, .settings-container, .statistics-container, .vocabulary-co
 }
 
 .sc-percentage { 
-  transform:rotate(150deg); 
+  transform:rotate(0deg); 
   transform-origin: top center; 
 }
 
@@ -211,3 +211,4 @@ header, main, footer, .settings-container, .statistics-container, .vocabulary-co
 #vocabulary__on-learn span.badge {
   margin-left: auto !important;
 }
+

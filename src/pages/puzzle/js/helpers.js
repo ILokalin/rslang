@@ -96,7 +96,7 @@ const checkBoxHandler = async (event) => {
     const isChecked = +event.target.closest('label').querySelector('input').checked;
 
     switch (checkboxName) {
-      case 'Translate': {
+      case 'Перевод': {
         store.hints.isTranslationOn = isChecked;
         toggleBtn(translateBtn, isChecked);
         if (isChecked) {
@@ -106,12 +106,12 @@ const checkBoxHandler = async (event) => {
         }
         break;
       }
-      case 'Pronounce': {
+      case 'Произношение': {
         store.hints.isPronounceOn = isChecked;
         toggleBtn(pronounceBtn, isChecked);
         break;
       }
-      case 'Picture': {
+      case 'Картинка': {
         store.hints.isPictureOn = isChecked;
         toggleBtn(pictureBtn, isChecked);
         inputField.querySelector('.game-row').children.forEach((canvas) => {
@@ -120,7 +120,7 @@ const checkBoxHandler = async (event) => {
         });
         break;
       }
-      case 'Auto pronounce': {
+      case 'Автопроизношение': {
         store.isAutoPronounceOn = isChecked;
         break;
       }

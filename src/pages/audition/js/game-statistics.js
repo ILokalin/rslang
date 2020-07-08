@@ -1,20 +1,57 @@
+import { DataController } from 'Service/DataController';
 import AuditionGame from './audition';
 import {
   gameContainer,
 } from './constants'
 
 export default class AuditionGameStatistics {
-  constructor (words) {
+  constructor (words, user, startNewGame) {
+    this.dataController = new DataController();
     this.gameWords = words;
+    this.resultMessage;
+    this.user = user;
+    this.startNewGame = startNewGame;
     this.getGameStatistics();
   }
 
   getGameStatistics() {
-    debugger;
     const answeredWords = this.gameWords.filter((word) => word.answer);
     const errorWords = this.gameWords.filter((word) => !word.answer);
-    const gamePoints = answeredWords.length;
-    this.renderStatisticWindow(answeredWords, errorWords, gamePoints);
+    const points = (answeredWords.length / 10) * 100;
+    if (this.user) {
+      this.saveGameStatistic(points, answeredWords, errorWords);
+    } else {
+      this.renderStatisticWindow(answeredWords, errorWords, points);
+    }
+  }
+
+  saveGameStatistic(points, correct, error) {
+    const options = {
+      audition: {
+        result: points,
+        knownWords: correct.length, 
+        mistakeWords: error.length,
+      }
+    }
+
+    this.dataController.setUserStatistics(options)
+    .then(
+    (statisticsAnswer) => {
+      const longGameStatistic = statisticsAnswer.audition.longTime;
+      const currentResult = longGameStatistic[longGameStatistic.length - 1].result;
+      const previousResult = longGameStatistic[longGameStatistic.length - 2].result;
+
+      if (currentResult > previousResult) {
+        const result = currentResult - previousResult;
+        this.resultMessage = `Ваш результат на ${result}% лучше, чем в предыдущую игру. Так держать!`
+      } else if (currentResult < previousResult) {
+        const result = previousResult - currentResult;
+        this.resultMessage = `Ваш результат на ${result}% хуже, чем в предыдущую игру. Попробуйте сыграть ещё раз!`
+      }
+
+      this.renderStatisticWindow(correct, error, points);
+    },
+  )
   }
 
   renderStatisticWindow(answered, error, points) {
@@ -24,23 +61,28 @@ export default class AuditionGameStatistics {
     statisticBlock.classList.add('statistic-block');
     gameContainer.append(statisticBlock);
 
-    const gamePointsEl = document.createElement('span');
+    const gamePointsEl = document.createElement('p');
     gamePointsEl.classList.add('game-points-element');
-    gamePointsEl.innerText = `У вас ${points} правильных ответов`;
+    if (this.resultMessage) {
+      gamePointsEl.innerText = `У вас ${points}% правильных ответов. ${this.resultMessage}`;
+    } else {
+      gamePointsEl.innerText = `У вас ${points}% правильных ответов.`;
+    }
     statisticBlock.append(gamePointsEl);
-    debugger
 
-    if(answered.length) {
+    if (answered.length) {
       const answeredBlock = document.createElement('div');
-      answeredBlock.innerHTML = `Знаю <span class="answered-words-number">${answered.length}</span>`;
+      answeredBlock.innerHTML = `<p class="answered-words-label">Знаю <span class="answered-words-number">${answered.length}</span></p>`;
+      answeredBlock.classList = 'answered-words-correct';
 
       answered.forEach((el) => this.createGameWords(el, answeredBlock));
       statisticBlock.append(answeredBlock);
     }
 
-    if(error.length) {
+    if (error.length) {
       const errorBlock = document.createElement('div');
-      errorBlock.innerHTML = `Не знаю <span class="error-words-number">${error.length}</span>`;
+      errorBlock.innerHTML = `<p class="answered-words-label">Не знаю <span class="error-words-number">${error.length}</span></p>`;
+      errorBlock.classList = 'answered-words-error';
 
       error.forEach((el) => this.createGameWords(el, errorBlock));
       statisticBlock.append(errorBlock);
@@ -49,10 +91,7 @@ export default class AuditionGameStatistics {
     const newGameBtn = document.createElement('button');
     newGameBtn.classList.add('btn', 'new-game-btn');
     newGameBtn.innerText = 'Новая игра';
-    newGameBtn.addEventListener('click', () => {
-      gameContainer.innerHTML = '';
-      new AuditionGame();
-    });
+    newGameBtn.addEventListener('click', this.startNewGame);
     statisticBlock.append(newGameBtn);
 
     const exitGameBtn = document.createElement('button');
@@ -73,7 +112,7 @@ export default class AuditionGameStatistics {
     });
     answeredWordEl.append(audioEl);
 
-    const answeredWord = document.createElement('span');
+    const answeredWord = document.createElement('p');
     answeredWord.classList.add('answered-word');
     answeredWord.innerText = word.word;
     answeredWord.addEventListener('click', () => {
@@ -81,7 +120,7 @@ export default class AuditionGameStatistics {
     });
     answeredWordEl.append(answeredWord);
 
-    const answeredWordTranslation =  document.createElement('span');
+    const answeredWordTranslation =  document.createElement('p');
     answeredWordTranslation.classList.add('word-translation');
     answeredWordTranslation.innerText = word.wordTranslate;
     answeredWordEl.append(answeredWordTranslation);
