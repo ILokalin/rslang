@@ -98,6 +98,7 @@ export default class Game {
     this.gameSettings.displayRound();
     this.sendSettingsToBackEnd();
     const wordsData = await this.dataProvider.getData();
+    this.clearGameContainer();
     await wordsData.forEach(this.createCard.bind(this));
     wordsData.forEach((data) => words.push(data));
     words.sort(() => 0.5 - Math.random());
@@ -105,10 +106,13 @@ export default class Game {
     this.dataTransfer.start(this.props);
   }
 
-  clearGameResults() {
-    checkBtn.classList.remove('activeBtn');
+  clearGameContainer() {
     allCards.innerHTML = '';
     allWords.innerHTML = '';
+  }
+
+  clearGameResults() {
+    checkBtn.classList.remove('activeBtn');
     scoreLabel.classList.add('hidden');
     scoreLabel.children[0].innerHTML = '';
   }
