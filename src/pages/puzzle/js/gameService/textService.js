@@ -12,7 +12,7 @@ const getWordsForRound = async (level, round) => {
     wordsPerExampleSentenceLTE: 10,
     wordsPerPage: 10,
   }
-  const wordsArr = await dataController.getWords(options);  
+  const wordsArr = await dataController.getWords(options); 
   return wordsArr;
 }
 
@@ -27,7 +27,7 @@ const getUserWordsForGame = async () => {
   } 
   else {
     shuffle(res);
-    res = res.slice(0, 10);    
+    res = res.slice(0, 10);  
     return res;
   }
 }

@@ -47,7 +47,7 @@ const createStatisticRow = (word) => {
   td2.className = 'col s11';
 
   td1.insertAdjacentHTML('afterbegin', `<i class="material-icons sound-icon" data-audio-src="https://raw.githubusercontent.com/jules0802/rslang-data/master/${word.audioExample}">volume_up</i>`);
-  td2.insertAdjacentText('afterbegin', word.textExample);
+  td2.insertAdjacentHTML('afterbegin', word.textExample);
 
   tr.appendChild(td1);
   tr.appendChild(td2);
