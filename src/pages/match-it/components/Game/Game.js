@@ -3,6 +3,7 @@ import GameSettings from '../GameSettings';
 import DataProvider from './DataProvider';
 
 import {
+  gameContainer,
   allCards,
   allWords,
   ERRORS_MAX_COUNT,
@@ -14,7 +15,7 @@ import {
 } from '../../data/constants';
 
 export default class Game {
-  constructor(dataController, userService, dataTransferService) {
+  constructor(dataController, preloaderController, dataTransferService, userService) {
     localStorage.isStart = false;
     this.props = {
       errors: ERRORS_MAX_COUNT,
@@ -23,20 +24,21 @@ export default class Game {
       knowArr: [],
     };
     this.dataController = dataController;
-    this.userService = userService;
-    this.dataProvider = new DataProvider(this.dataController, this.userService);
+    this.dataProvider = new DataProvider(dataController, preloaderController, userService);
     this.dataTransfer = dataTransferService;
+    this.userService = userService;
   }
 
   async start() {
     await this.dataProvider.start();
-    this.init();
+    await this.init();
+    gameContainer.classList.remove('hidden');
   }
 
-  init() {
+  async init() {
     this.gameSettings = new GameSettings(this.dataProvider);
     this.gameSettings.init(this.optionSelected.bind(this));
-    this.createCardPage();
+    await this.createCardPage();
     restartBtn.addEventListener('click', this.onRestartBtnClick.bind(this));
     nextBtn.addEventListener('click', this.onNextBtnClick.bind(this));
     checkBtn.addEventListener('click', this.showResults.bind(this));
@@ -78,14 +80,14 @@ export default class Game {
     await this.dataController.setUserStatistics(requestBody);
   }
 
-  onRestartBtnClick(e) {
-    this.restartGame();
+  async onRestartBtnClick(e) {
+    await this.restartGame();
     e.preventDefault();
   }
 
-  onNextBtnClick(e) {
+  async onNextBtnClick(e) {
     Utils.goToNextRound();
-    this.restartGame();
+    await this.restartGame();
     e.preventDefault();
   }
 
@@ -111,10 +113,10 @@ export default class Game {
     scoreLabel.children[0].innerHTML = '';
   }
 
-  restartGame() {
+  async restartGame() {
     this.clearGameResults();
     this.clearStatistics();
-    this.createCardPage();
+    await this.createCardPage();
   }
 
   prepareStatisticsContent(card) {
