@@ -1,5 +1,6 @@
 import { DataController } from 'Service/DataController';
 import { ElementGen } from 'Src/service/DomGen/DomGen';
+import { PreloaderController } from 'Service/PreloaderController';
 // eslint-disable-next-line no-undef
 M.AutoInit();
 
@@ -14,7 +15,6 @@ const seriesRightAnswerView = document.querySelectorAll('#corect-answer');
 const answerImage = document.getElementById('answer_img');
 const buttonWrong = document.getElementById('wrong-btn');
 const buttonRight = document.getElementById('right-btn');
-const preload = document.getElementById('preload');
 const blockSeries = document.getElementById('series');
 const timetVIew = document.getElementById('timer');
 const timerWrap = document.getElementById('timer-wrap');
@@ -24,7 +24,6 @@ const category = document.getElementById('statistick-words');
 const scoreStatistick = document.getElementById('score-statistick');
 const statistickRight = document.getElementById('answer-statistick--right');
 const statistickWrong = document.getElementById('answer-statistick--wrong');
-
 const stepToNextWordIndex = 1;
 const defaultGameScoreValue = 0;
 const timeAnswerResultVIew = 200;
@@ -37,7 +36,9 @@ const parrotPink = document.getElementById('parrot-pink');
 const avatarName = document.getElementById('avatar__name');
 const dropDownMenu = document.querySelectorAll('.dropdown-content');
 const dropDownMenuElement = dropDownMenu[0].querySelectorAll('span');
+const maxScore = document.getElementById('score-statistick--max');
 const dataController = new DataController();
+const preloaderController = new PreloaderController();
 const LevelViewInfo = {
   one: {
     color: seriesViewDefaulltBackgraundColor,
@@ -303,14 +304,14 @@ export default class GameSprint {
   }
 
   getWordsForGame(level) {
-    preload.classList.remove('hide');
+    preloaderController.showPreloader();
     if (level === 0 || level === '0') {
       dataController.userWordsGetAll(['onlearn'])
         .then(
           (value) => {
             const { paginatedResults } = value[0];
             paginatedResults.flat().map(({ _id, word, wordTranslate }) => {
-              preload.classList.add('hide');
+              preloaderController.hidePreloader();
               return words.push({ _id, word, wordTranslate });
             });
           },
@@ -335,7 +336,7 @@ export default class GameSprint {
         .then(
           (value) => {
             value.flat().map(({ id, word, wordTranslate }) => {
-              preload.classList.add('hide');
+              preloaderController.hidePreloader();
               return words.push({ _id: id, word, wordTranslate });
             });
           },
@@ -370,6 +371,7 @@ export default class GameSprint {
   }
 
   finalStatistics() {
+    preloaderController.showPreloader();
     scoreStatistick.innerHTML = `Результат игры ${this.gameScore} очков`;
     statistickRight.innerHTML = `${this.countRightAnswers}`;
     statistickWrong.innerHTML = `${this.countWrongAnswers}`;
@@ -385,15 +387,23 @@ export default class GameSprint {
     const optionsForStatistick = {
       sprint: {
         result: this.gameScore,
-        rightAnswer: this.countRightAnswers,
-        wrongAnswer: this.countWrongAnswers,
+        knownWords: this.countRightAnswers,
+        mistakeWords: this.countWrongAnswers,
       }
     }
 
     dataController.setUserStatistics(optionsForStatistick)
       .then(
-        (statisticsAnswer) => { console.log(statisticsAnswer) },
-        (rejectReport) => { console.log(rejectReport) }
+        (statisticsAnswer) => {
+          preloaderController.hidePreloader();
+          console.log(statisticsAnswer)
+
+        },
+        (rejectReport) => {
+          preloaderController.hidePreloader();
+          console.log(rejectReport)
+          maxScore.innerHTML = '';
+        }
       )
   }
 
@@ -404,7 +414,6 @@ export default class GameSprint {
         avatarName.innerText = userSettings.name;
         this.gameLevel = 0;
         this.constrolLevelAfterReload();
-        preload.classList.remove('hide');
         this.getWordsForGame(this.gameLevel);
         this.startGame();
         this.answerButtonsEvent();
@@ -433,6 +442,17 @@ export default class GameSprint {
       `on-learn__column${colum} collapsible col m6 l6 s12`,
       this.cardElem,
     );
+
+    const titleUl = document.createElement("div");
+    if (colum === 1) {
+      titleUl.classList.add('words-statistick--right');
+      titleUl.innerHTML = 'Знаю'
+    } else {
+      titleUl.classList.add('words-statistick--wrong');
+      titleUl.innerHTML = 'Ошибки'
+    }
+
+    ul.appendChild(titleUl);
 
     arrayWords.forEach((element) => {
       const word = element;

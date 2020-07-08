@@ -1,5 +1,4 @@
 import GameSprint from './gameSprint/GameSprint';
-import 'materialize-css';
 
 export default class App {
   constructor() {

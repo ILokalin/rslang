@@ -9,7 +9,6 @@
 
 <body>
   <header class="header">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <nav>
       <div class="nav-wrapper orange z-depth-5">
@@ -84,6 +83,7 @@
         </div>
       </div>
       <div class="statistick-short hide" id='statistick'>
+        <div class="score-statistick" id="score-statistick--max">0</div>
         <div class="score-statistick" id="score-statistick">0</div>
         <div class="answers-statistick">
           <div class="counter-answers">Правильных ответов:&nbsp <div class="answer-statistick--right"
@@ -95,10 +95,6 @@
             </div>
           </div>
         </div>
-        <div class="answers-statistick">
-          <div class="words-statistick--right">Знаю</div>
-          <div class="words-statistick--wrong">Ошибки</div>
-        </div>
         <div class="statistick-words" id="statistick-words"></div>
       </div>
       <div class="game-container_start-btn">
@@ -106,21 +102,6 @@
       </div>
     </div>
   </main>
-  <div class="priload-wrraper-main hide" id='preload'>
-    <div class="preloader-wrapper big active">
-      <div class="spinner-layer spinner-blue-only">
-        <div class="circle-clipper left">
-          <div class="circle"></div>
-        </div>
-        <div class="gap-patch">
-          <div class="circle"></div>
-        </div>
-        <div class="circle-clipper right">
-          <div class="circle"></div>
-        </div>
-      </div>
-    </div>
-  </div>
 </body>
 
 </html>
