@@ -1,4 +1,4 @@
-import { mySwiper, settings, dataController, soundBtn } from './constants';
+import { mySwiper, settings, dataController, soundBtn, preloaderController } from './constants';
 import Training from './Training';
 import {saveTrainingStatistics} from './helpers';
 
@@ -7,6 +7,7 @@ document.querySelector('.modal-more-btn').addEventListener('click', () => {
 })
 
 document.querySelector('.modal-done-more').addEventListener('click', () => {
+  preloaderController.showPreloader();
   const train = new Training(settings.newCardsPerDay, settings.cardsPerDay);
   mySwiper.train = train;
 })
@@ -31,4 +32,8 @@ soundBtn.addEventListener('click', () => {
     soundBtn.querySelector('i').innerText = 'volume_off';
     settings.autoPlayEnabled = 0;
   }
+})
+
+document.querySelector('.open-short-stat').addEventListener('click', () => {
+  document.querySelector('.sidenav-trigger').click();
 })
