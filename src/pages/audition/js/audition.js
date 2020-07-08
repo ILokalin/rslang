@@ -1,4 +1,5 @@
 import AuditionGameStatistics from './game-statistics'
+import { PreloaderController } from 'Service/PreloaderController';
 import { DataController } from 'Service/DataController';
 import {
   gameContainer,
@@ -19,6 +20,7 @@ export default class AuditionGame {
     this.roundsNumber = 10;
     this.roundsData = [];
     this.dataController = new DataController();
+    this.preloaderController = new PreloaderController();
 
     this.getUserData();
     this.addSelectDifficultyHandler();
@@ -120,9 +122,11 @@ export default class AuditionGame {
   }
 
   getUserWords() {
+    this.preloaderController.showPreloader();
     this.dataController.userWordsGetAll(['onlearn'])
       .then(
         (response) => {
+          this.preloaderController.hidePreloader();
           const words = response[0].paginatedResults;
 
           if (words.length < 10) {
@@ -199,9 +203,11 @@ export default class AuditionGame {
   }
 
   getWords(pages) {
+    this.preloaderController.showPreloader();
     Promise.all(pages.map(page => this.fetchWords(page)))
       .then(responses => Promise.all(responses.map(r => r.json())))
       .then(result => {
+        this.preloaderController.hidePreloader();
         const words = [].concat(...result).sort(() => Math.random() - Math.random());
         this.createRoundsData(words);
         this.createCurrentRoundPage();
