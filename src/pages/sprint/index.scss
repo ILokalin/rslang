@@ -39,7 +39,7 @@ body {
     position: relative;
     width: 80%;
     max-width: 600px;
-    height: 600px;
+    min-height: 600px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -382,8 +382,8 @@ body {
   }
 
   .statistick-short {
-    width: 300px;
-    height: 300px;
+    width: 100%;
+    height: 500px;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -392,8 +392,9 @@ body {
 
   .answers-statistick {
     display: flex;
-    width: 50%;
-    justify-content: space-between;
+    width: 100%;
+    justify-content: space-around;
+    font-size: 1.5rem;
   }
 
   // vocabulary 
@@ -437,6 +438,41 @@ body {
   margin-left: auto !important;
 }
 
+.score-statistick {
+  font-size: 2rem;
+}
+
+.statistick-words{
+  width: 100%;
+  max-height: 400px;
+  display: flex;
+  overflow-y: scroll;
+  font-size: 1rem;
+}
+
+.on-learn__column1,
+.on-learn__column2 {
+  width: 50%;
+}
+
+.collapsible {
+  border: none !important;
+  margin: .5rem 0 1rem !important;
+  box-shadow: none !important;
+}
+
+.counter-answers {
+  display: flex;
+  font-size: 1.5rem;
+}
+
+.answer-statistick--right {
+  color: #38d44b; 
+}
+
+.answer-statistick--wrong {
+  color: rgb(212,75,56); 
+}
 
 
 

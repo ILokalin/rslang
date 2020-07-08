@@ -63,6 +63,7 @@ const LevelViewInfo = {
 const clearTextValue = '';
 let words = [];
 let wrongWords = [];
+let wrongRight = [];
 
 export default class GameSprint {
   constructor(score) {
@@ -80,6 +81,7 @@ export default class GameSprint {
     this.gameLevel = 1;
     this.countRightAnswers = 0;
     this.countWrongAnswers = 0;
+    this.counterGames = 0;
   }
 
   updateTime(gameTime) {
@@ -146,6 +148,7 @@ export default class GameSprint {
     setTimeout(() => answerImage.classList.remove('answer_img--right'), timeAnswerResultVIew);
 
     this.countRightAnswers += this.seriesPoint;
+    wrongRight.push(words[this.currentWordIndex]);
 
     this.gameScore += this.poinForRightAnswer;
     scoreView.innerHTML = `${this.gameScore}`;
@@ -225,15 +228,22 @@ export default class GameSprint {
     this.countRightAnswers = 0;
     this.countWrongAnswers = 0;
     wrongWords = [];
+    wrongRight = [];
+  }
+
+  controllGameCount() {
+    while (category.firstChild) {
+      category.removeChild(category.firstChild);
+    }
   }
 
   stratButtonEvents() {
     startGameButton.addEventListener('click', () => {
+      this.controllGameCount();
       clearTimeout(this.timer);
       this.keyboardEvents();
       this.defaultGameValue();
       this.gameScore = defaultGameScoreValue;
-      console.log(words);
       words.sort(() => Math.random() - 0.5);
 
       blockSeries.style.background = seriesViewDefaulltBackgraundColor;
@@ -294,7 +304,7 @@ export default class GameSprint {
 
   getWordsForGame(level) {
     preload.classList.remove('hide');
-    if (level === '0') {
+    if (level === 0 || level === '0') {
       dataController.userWordsGetAll(['onlearn'])
         .then(
           (value) => {
@@ -321,13 +331,12 @@ export default class GameSprint {
         })
     }
     else {
-      console.log(this.gameLevel);
       dataController.getWords({ group: this.gameLevel - 1, page: 1, wordsPerPage: 200 })
         .then(
           (value) => {
-            value.flat().map(({ word, wordTranslate }) => {
+            value.flat().map(({ id, word, wordTranslate }) => {
               preload.classList.add('hide');
-              return words.push({ word, wordTranslate });
+              return words.push({ _id: id, word, wordTranslate });
             });
           },
           (reason) => {
@@ -343,7 +352,6 @@ export default class GameSprint {
       el.addEventListener('click', (e) => {
         words = [];
         this.gameLevel = e.target.dataset.id;
-        console.log(this.gameLevel);
         this.getWordsForGame(this.gameLevel);
         startGameButton.classList.remove('hide');
         gameView.classList.add('hide');
@@ -356,27 +364,37 @@ export default class GameSprint {
   }
 
   constrolLevelAfterReload() {
-    if (localStorage.getItem('level') && localStorage.getItem('level')) {
+    if (localStorage.getItem('level') !== '0') {
       this.gameLevel = localStorage.getItem('level');
     }
   }
 
   finalStatistics() {
-    scoreStatistick.innerHTML = `${this.gameScore}`;
+    scoreStatistick.innerHTML = `Результат игры ${this.gameScore} очков`;
     statistickRight.innerHTML = `${this.countRightAnswers}`;
     statistickWrong.innerHTML = `${this.countWrongAnswers}`;
 
     statistickDispalt.classList.remove('hide');
     category.appendChild(
-      this.renderWordsContainerColum(wrongWords)
+      this.renderWordsContainerColum(wrongRight, 1)
     );
-  }
 
-  removePreviosWords() {
-    const previosWords = document.querySelectorAll('.on-learn__column1 ');
-    if (previosWords.length > 0) {
-      previosWords.remove();
+    category.appendChild(
+      this.renderWordsContainerColum(wrongWords, 2)
+    );
+    const optionsForStatistick = {
+      sprint: {
+        result: this.gameScore,
+        rightAnswer: this.countRightAnswers,
+        wrongAnswer: this.countWrongAnswers,
+      }
     }
+
+    dataController.setUserStatistics(optionsForStatistick)
+      .then(
+        (statisticsAnswer) => { console.log(statisticsAnswer) },
+        (rejectReport) => { console.log(rejectReport) }
+      )
   }
 
   init() {
@@ -396,22 +414,23 @@ export default class GameSprint {
       },
       (rejectReport) => {
         console.log(rejectReport);
+        this.gameLevel = 1;
         this.constrolLevelAfterReload();
-        this.getWordsForGame(this.gameLevel);
-        this.startGame();
-        this.answerButtonsEvent();
         this.choiceLevel();
         dropDownMenu[0].childNodes[0].classList.add('hide');
         dropDownMenu[0].childNodes[this.gameLevel].click();
+        this.getWordsForGame(this.gameLevel);
+        this.startGame();
+        this.answerButtonsEvent();
+
       },
     );
   }
 
-  renderWordsContainerColum(arrayWords) {
-    this.removePreviosWords();
+  renderWordsContainerColum(arrayWords, colum) {
     const ul = ElementGen(
       'ul',
-      `on-learn__column1 collapsible col m6 l6 s12`,
+      `on-learn__column${colum} collapsible col m6 l6 s12`,
       this.cardElem,
     );
 

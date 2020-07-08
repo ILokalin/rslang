@@ -127,7 +127,7 @@ export default class Game {
     this.clearStatistics();
     const round = GameSettings.displayRound();
     this.dataController.setUserOptions({ 'match-it': { gameRound: round } }).then(() => {
-      await this.createCardPage();
+      this.createCardPage();
     });
   }
 
