@@ -107,6 +107,10 @@ const Utils = {
       roundSelect.value = 1;
     }
   },
+
+  isUserWordsSelected: () => {
+    return levelSelect.selectedOptions[0].value === '0';
+  },
 };
 
 export default Utils;
