@@ -10,7 +10,7 @@ const dataController = new DataController();
 const preloaderController = new PreloaderController();
 const userService = new UserService(dataController);
 
-const intro = new Intro();
-intro.init();
 const game = new Game(dataController, preloaderController, userService);
-game.start();
+const intro = new Intro();
+intro.init(game);
+
