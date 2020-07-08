@@ -134,16 +134,9 @@ export default class Game {
   async optionSelected() {
     this.clearGameResults();
     this.clearStatistics();
-<<<<<<< HEAD
-    const round = GameSettings.displayRound();
-    this.dataController.setUserOptions({ 'match-it': { gameRound: round } }).then(() => {
-      this.createCardPage();
-    });
-=======
     this.gameSettings.displayRound();
     this.sendSettingsToBackEnd();
     await this.createCardPage();
->>>>>>> ae72fe37164460ff3b82c72c2a7f84b391c3f7ba
   }
 
   async createCard(data, index) {
