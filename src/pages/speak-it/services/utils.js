@@ -36,7 +36,7 @@ const Utils = {
   getUserWordsForRound: async (dataController) => {
     let wordsArr;
     try {
-      wordsArr = await dataController.userWordsGetAll(['deleted']);
+      wordsArr = await dataController.userWordsGetAll(['onlearn']);
     } catch (err) {
       Utils.openModal(`API request failed with error: ${err.message}`);
     }
@@ -138,6 +138,10 @@ const Utils = {
   goToTop: () => {
     document.body.scrollTop = 0;
     document.documentElement.scrollTop = 0;
+  },
+
+  isUserWordsSelected: () => {
+    return levelSelectEl.selectedOptions[0].value === '0';
   },
 };
 

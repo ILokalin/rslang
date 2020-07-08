@@ -27,6 +27,8 @@ const roundLabelEl = document.querySelector('.round-label');
 const userNameEl = document.querySelector('.avatar__name');
 const errorMessageEl = document.querySelector('.error-text');
 const defaultUser = 'ANONIMUS';
+const DEFAULT_ROUND = '1.1';
+const USER_DEFAULT_ROUND = '0.1';
 
 export {
   INTRO,
@@ -48,6 +50,8 @@ export {
   RESULTS_ERRORS,
   KNOW,
   RESULTS_KNOW,
+  DEFAULT_ROUND,
+  USER_DEFAULT_ROUND,
   speechRecognitionLanguage,
   sideNavTriggerEl,
   levelSelectEl,
