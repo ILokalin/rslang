@@ -271,7 +271,7 @@ export function apiUserSignIn(user) {
         const { userId, token } = response;
         localStorage.setItem('userId', userId);
         localStorage.setItem('token', token);
-        if (!localStorage.isLogin) {
+        if (!JSON.parse(localStorage.isLogin)) {
           localStorage.setItem('isLogin', true);
         }
         resolve(response);
