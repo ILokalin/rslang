@@ -33,5 +33,6 @@ const progressBar = document.querySelector('.progress');
 const settings = JSON.parse(localStorage.getItem('settings'));
 const dataController = new DataController();
 const preloaderController = new PreloaderController();
+const soundBtn = document.querySelector('.sound-button');
 
-export { mySwiper, progressBar, settings, dataController, preloaderController };
+export { mySwiper, progressBar, settings, dataController, preloaderController, soundBtn };

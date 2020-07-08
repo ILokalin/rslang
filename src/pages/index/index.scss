@@ -50,6 +50,17 @@ header, main, footer, .settings-container, .statistics-container, .vocabulary-co
 
 .settings__general {
   margin-top: 2rem;
+
+  
+  & .range-block {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+  }
+
+  & .range-field {   
+    width: 90%
+  }
 }
 
 // main

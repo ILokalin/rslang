@@ -4,7 +4,7 @@ import moment from 'moment';
 import './components/buttons';
 import { mySwiper, settings, dataController, preloaderController } from './components/constants';
 import Training from './components/Training';
-import {saveTrainingStatistics} from './components/helpers';
+import {saveTrainingStatistics, handleVolumeBtn} from './components/helpers';
 
 require.context('Src', true, /\.(png|svg|jpg|gif|mp3)$/);
 
@@ -12,7 +12,7 @@ preloaderController.showPreloader();
 
 // eslint-disable-next-line no-undef
 M.AutoInit();
-
+handleVolumeBtn();
 if (settings.lastTrain !== moment().format('DD-MMM-YYYY')) {
   const train = new Training(settings.newCardsPerDay, settings.cardsPerDay);
   mySwiper.train = train;

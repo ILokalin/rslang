@@ -23,26 +23,14 @@ html {
   @extend .teal-text;
 }
 
-.home {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  @extend .teal-text, .text-lighten-2;
-}
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
-.sidenav-trigger {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  @extend .teal-text, .text-lighten-2;  
-}
-
-.save-settings-button {
-  position: absolute;
-  top: 20px;
-  right: 80px;
-  cursor: pointer;
-  @extend .teal-text, .text-lighten-2;
+  & li {
+    cursor: pointer;
+  }
 }
 
 .sidenav-close {
@@ -165,6 +153,17 @@ html {
 
 .form {
   position: relative;
+
+  & .input_text {
+    padding-left: 3px!important;
+  }
+
+  & .submit-answer {
+    border: none; 
+    outline: none;
+    background: transparent;
+    cursor: pointer;
+  }
 }
 
 .card.large {
@@ -173,13 +172,12 @@ html {
   }
 }
 
-
-
 .result{
   position: absolute;
   left:0;
   z-index: -2;
   margin-bottom: 8px;
+  padding-left: 3px;
 }
 
 .correct {
@@ -216,4 +214,8 @@ html {
 .progress {
   width: 90%;
   margin: 20px auto;
+}
+
+.swiper-pagination {
+  position: static;
 }

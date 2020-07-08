@@ -29,7 +29,7 @@
       </div>
       <ul>
         <li><a class="menu__home" href="#">Главная страница<i class="material-icons right">home</i></a></li>
-        <li><a href="/learning" target="_blank">Тренировка <i class="material-icons right">developer_mode</i></a></li>
+        <li><a class="teal-text" href="/learning">Тренировка <i class="material-icons right teal-text">developer_mode</i></a></li>
         <li><a class="menu__settings" href="#!">Настройки <i class="material-icons right">settings</i></a></li>
         <li><a class="menu__statistics" href="#!">Статистика <i class="material-icons right">show_chart</i></a></li>
         <li><a class="menu__vocabulary" href="#!">Словарь <i class="material-icons right">sort_by_alpha</i></a></a></li>
@@ -233,7 +233,7 @@
     <div class="row">
       <div class="col s12">
         <ul class="tabs">
-          <li class="tab col s3 m6"><a class="active" href="#general">Тренировка</a></li>
+          <li class="tab col s3 m6"><a class="active" href="#general">Общие</a></li>
           <li class="tab col s3 m6"><a href="#card">Карточка</a></li>
         </ul>
       </div>
@@ -241,17 +241,24 @@
         <p class="center">Передвигайте ползунок на нужный уровень </p>
         <form class="settings__general" action="#">
           <div class="row">
-            <h5 class="center">Общее количество карточек в день</h5>
-            <p class="range-field">
-              <input class="general__max-amount" type="range" value=30 min="15" max="40" />
-            </p>
+            <h5 class="center">Общее количество карточек в день - <span class="total-cards-amount"></span></h5>
+            <div class="range-block total-block">
+              <span class="range-min-value">15</span>
+              <p class="range-field">
+                <input class="general__max-amount" type="range" value=30 min="15" max="40" />
+              </p>
+              <span class="range-max-value">40</span>
+            </div>
           </div>
           <div class="row">
-            <h5 class="center">Количество новых карточек в день</h5>
-            <p class="range-field">
-
-              <input class="general__new-amount" type="range" value=15 min="0" max="40" />
-            </p>
+            <h5 class="center">Количество новых карточек в день - <span class="new-words-amount"></span></h5>
+            <div class="range-block new-block">
+              <span class="range-min-value">0</span>
+              <p class="range-field">
+                <input class="general__new-amount" type="range" value=15 min="0" max="40" />
+              </p>
+              <span class="range-max-value">15</span>
+            </div> 
           </div>
           <div class="row">
             <p>
@@ -275,32 +282,32 @@
         <form class="settings__card" action="#">
           <div class="row">
             <div class="card-info-checkboxes col s6">
-              <p class="tooltipped" data-position="bottom" data-tooltip="Минимум одна отметка">Информация о слове *</p>
+              <p class="tooltipped" data-position="bottom" data-tooltip="Минимум одна отметка полей со звездочкой">Информация о слове *</p>
               <ul>
                 <li class="row">
                   <label class="center">
                     <input class="card__show-translation" type="checkbox" checked="checked" />
-                    <span>Перевод слова</span>
+                    <span>Перевод слова *</span>
                   </label>
                 </li>
                 <li class="row">
                   <label>
                     <input class="card__show-meaning" type="checkbox" />
-                    <span>Значение</span>
+                    <span>Значение *</span>
                   </label>
                   <label class="right">
                     <input class="card__show-meaning-translation" type="checkbox" />
-                    <span>Перевод</span>
+                    <span>Перевод значения</span>
                   </label>
                 </li>
                 <li class="row">
                   <label>
                     <input class="card__show-example" type="checkbox" />
-                    <span>Пример</span>
+                    <span>Пример *</span>
                   </label>
                   <label class="right">
                     <input class="card__show-example-translation" type="checkbox" />
-                    <span>Перевод</span>
+                    <span>Перевод примера</span>
                   </label>
                 </li>
               </ul>
@@ -375,7 +382,7 @@
             <a class="settings-save-btn waves-effect waves-light btn">Cохранить настройки</a>
           </div>
           <div class="row">
-            <p class="card__info-message red-text hidden">В блоке "Информация о слове" должна быть хотя бы одна отметка!
+            <p class="card__info-message red-text hidden">В блоке "Информация о слове" должна быть хотя бы одна отметка среди полей, помеченых звездочкой (*)!
             </p>
           </div>
         </form>

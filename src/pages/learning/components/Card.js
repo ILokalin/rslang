@@ -20,6 +20,7 @@ import {
   showToastHard,
   showPicture,
   saveTrainingStatistics,
+  showFooterBtns,
 } from './helpers';
 import { mySwiper, settings, dataController } from './constants';
 import 'materialize-css';
@@ -66,7 +67,7 @@ export default class Card {
     const transcription = ElementGen('p', 'transcription', div);
     const form = ElementGen('form', 'form', cardContent);
     const input = ElementGen('input', 'input_text', form);
-    const result = ElementGen('div', 'result', form);
+    const result = ElementGen('div', 'result', form);    
     const deleteBtn = ElementGen(
       'i',
       'delete-btn teal-text waves-effect waves-light medium material-icons right tooltipped',
@@ -76,7 +77,12 @@ export default class Card {
       'i',
       'show-answer-btn teal-text waves-effect waves-light medium material-icons right tooltipped',
       form,
-    );    
+    );  
+    const submit = ElementGen(
+      'button', 
+      'submit-answer teal-text waves-effect waves-teal small material-icons tooltipped', 
+      form
+    );  
     const repeatId = Math.round(Math.random()*10000);
     const cardTabs = this.createCardTabs(isRepeat, repeatId);    
     cardContent.appendChild(cardTabs);
@@ -94,14 +100,17 @@ export default class Card {
     input.setAttribute('type', 'text');
     input.setAttribute('style', `width: ${measureWordWidth(this.wordState.word) + 2}px;`);
     result.setAttribute('style', `width: ${measureWordWidth(this.wordState.word) + 2}px;`);
+    submit.setAttribute('type', 'submit');
     explain.setAttribute('id', `explain-${this.wordState.word}${isRepeat ? repeatId : ''}`);
     example.setAttribute('id', `example-${this.wordState.word}${isRepeat ? repeatId : ''}`);
     
     input.dataset.word = this.wordState.word;
-    input.dataset.tryCount = 0; 
+    input.dataset.tryCount = 0;
+    submit.dataset.tooltip = 'Проверить ответ';  
     deleteBtn.dataset.tooltip = 'Удалить из словаря';   
     showAnswerBtn.dataset.tooltip = 'Показать ответ'; 
 
+    submit.innerText = 'done_outline';
     deleteBtn.innerText = 'delete_forever';
     showAnswerBtn.innerText = 'help_outline';
     translation.innerText = this.wordState.wordTranslate;
@@ -159,7 +168,7 @@ export default class Card {
   }
 
   createCardAction() {
-    const cardAction = ElementGen('div', 'card-action', this.cardElem);
+    const cardAction = ElementGen('div', 'card-action hidden', this.cardElem);
 
     cardAction.appendChild(this.createFooterButton('again-btn'));
     cardAction.appendChild(this.createFooterButton('simple-btn'));
@@ -338,6 +347,9 @@ export default class Card {
       if (settings.autoPlayEnabled) {
         audioPlay(audio);
       }
+      if (settings.footerBtnsEnabled) {
+        showFooterBtns();
+      }
       mySwiper.train.shortTermStat.totalCards++;
       mySwiper.train.updateStat();  
       allowNextCard();
@@ -426,6 +438,9 @@ export default class Card {
       
       if (settings.autoPlayEnabled) {
         audioPlay(audio);
+      }
+      if (settings.footerBtnsEnabled) {
+        showFooterBtns();
       }
       mySwiper.train.updateStat();  
       allowNextCard();

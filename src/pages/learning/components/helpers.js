@@ -1,7 +1,7 @@
 /* eslint-disable no-plusplus */
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-param-reassign */
-import { progressBar, mySwiper, settings, dataController } from './constants';
+import { progressBar, mySwiper, settings, dataController, soundBtn } from './constants';
 import Card from './Card';
 
 const measureWordWidth = (word) => {
@@ -24,6 +24,16 @@ const updateMaterialComponents = () => {
   // eslint-disable-next-line no-undef
   const modalInstances = M.Modal.init(modals);
 };
+
+const handleVolumeBtn = () => {
+  if (settings.autoPlayEnabled) {
+    soundBtn.querySelector('i').innerText = 'volume_up';
+    soundBtn.classList.remove('off');
+  } else {
+    soundBtn.classList.add('off');
+    soundBtn.querySelector('i').innerText = 'volume_off';
+  }
+}
 
 const setProgressbarToCurrentPosition = () => {
   const current = document.querySelector('.swiper-pagination-current').innerText;
@@ -57,15 +67,19 @@ const showGuessingWordInSentence = (element) => {
 };
 
 const showTranscription = () => {
-  mySwiper.slides[mySwiper.activeIndex].querySelector('.transcription').classList.remove('.hidden');
+  mySwiper.slides[mySwiper.activeIndex].querySelector('.transcription').classList.remove('hidden');
 };
 
 const hideTranscription = () => {
-  mySwiper.slides[mySwiper.activeIndex].querySelector('.transcription').classList.add('.hidden');
+  mySwiper.slides[mySwiper.activeIndex].querySelector('.transcription').classList.add('hidden');
 };
 
 const showPicture = () => {
   mySwiper.slides[mySwiper.activeIndex].querySelector('.image-association').style.zIndex = 3;
+}
+
+const showFooterBtns = () => {
+  mySwiper.slides[mySwiper.activeIndex].querySelector('.card-action').classList.remove('hidden');
 }
 
 const allowNextCard = async () => {
@@ -131,17 +145,11 @@ const showExample = () => {
 
 const againBtnAct = async () => {
   const cardTitle = mySwiper.slides[mySwiper.activeIndex].querySelector('.card-title');
-  console.log(cardTitle);
   const {wordId} = cardTitle.dataset;
-  console.log(wordId);
   const {difficulty} = cardTitle.dataset;
-  console.log(difficulty);
   const {progress} = cardTitle.dataset;
-  console.log(progress);
   // eslint-disable-next-line no-underscore-dangle
   const wordState = mySwiper.train.words.find((el) => ((el._id || el.id) === wordId));
-  console.log(mySwiper.train.words);
-  console.log(wordState)
   const dupl = new Card(wordState, true);
 
   M.AutoInit();
@@ -292,4 +300,6 @@ export {
   showToastHard,
   showPicture,
   saveTrainingStatistics,
+  handleVolumeBtn,
+  showFooterBtns,
 };

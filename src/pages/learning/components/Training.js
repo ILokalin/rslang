@@ -7,6 +7,7 @@ import { updateMaterialComponents, setProgressbarToCurrentPosition, getApproprat
 
 export default class Training {
   constructor(newWordsAmountPerDay, maxWordsPerDay, shortTermStat) {
+    console.log(settings);
     this.shortTermStat = shortTermStat || {
       date: moment().format('DD-MMM-YYYY'),
       totalCards: 0,
