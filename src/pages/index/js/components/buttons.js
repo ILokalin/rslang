@@ -25,7 +25,7 @@ import {
   showAnswerBtn,
   autoPlay,
 } from '../constants';
-import {whoIsGameFor} from './whoIsGameFor';
+import { whoIsGameFor } from './whoIsGameFor';
 
 const userLogout = () => {
   dataController.logoutUser();
@@ -36,12 +36,21 @@ const userLogout = () => {
   titleUser.innerText = 'CAPTAIN ANONIMUS';
 };
 
+const storageHandle = ({ key }) => {
+  if (key === 'isLogin' && !JSON.parse(localStorage[key])) {
+    userLogout();
+  } else if (key === 'isLogin' && JSON.parse(localStorage[key])) {
+    whoIsGameFor();
+  }
+};
+
+window.addEventListener('storage', storageHandle);
+
 loginButton.addEventListener('click', whoIsGameFor);
 
 logoutButtons.forEach((btn) => {
   btn.addEventListener('click', userLogout);
 });
-
 
 settingsSaveBtns.forEach((btn) => {
   const settings = JSON.parse(localStorage.getItem('settings'));
@@ -75,6 +84,6 @@ settingsSaveBtns.forEach((btn) => {
     console.log(settings);
     localStorage.setItem('settings', JSON.stringify(settings));
     // TODO send settings to backend
-    dataController.setUserOptions({settings});
+    dataController.setUserOptions({ settings });
   });
 });
