@@ -1,7 +1,8 @@
 import { preloaderState } from 'Service/AppState';
 import { DomGen } from 'Service/DomGen';
-import { messages } from './PreloaderViewConst';
+import { messages, textOfFacts } from './PreloaderViewConst';
 import { preloaderViewScreen } from './PreloaderViewScreen';
+import { preloaderCommand } from 'Service/AppState';
 
 export class PreloaderView {
   constructor() {
@@ -12,38 +13,48 @@ export class PreloaderView {
     this.preloader = DomGen(preloaderViewScreen);
     this.countOfMessage = 0;
 
-    preloaderState.watch((isShow) => {
-      if (isShow) {
-        this.showPreloader();
-      } else {
+    preloaderState.watch((control) => {
+      if (control === preloaderCommand.long) {
+        this.showLongPreloader();
+      } else if (control === preloaderCommand.hide) {
         this.hidePreloader();
+      } else if (control === preloaderCommand.short) {
+        this.showShortPreloader();
       }
     });
   }
 
   startCycleAnimation() {
     setTimeout(() => {
-      this.countOfMessage += 1;
+      const { length } = messages;
+      this.countOfMessage = this.countOfMessage === length - 1 ? 0 : this.countOfMessage + 1;
+
       if (this.countOfMessage >= 7 && this.isHide) {
         this.preloader.block.remove();
         this.countOfMessage = 0;
       } else {
-        this.preloader.discribeLine.innerText = messages[this.countOfMessage];
+        this.preloader.discribeLine.innerText = messages[this.countOfMessage].text;
+        this.timeSet = this.isHide ? 300 : messages[this.countOfMessage].time;
         this.startCycleAnimation();
       }
     }, this.timeSet);
   }
 
-  showPreloader() {
-    this.timeSet = 5000;
+  showLongPreloader() {
+    this.timeSet = messages[this.countOfMessage].time;
     this.isHide = false;
     this.body.append(this.preloader.block);
-    this.preloader.discribeLine.innerText = messages[this.countOfMessage];
+    this.preloader.discribeLine.innerText = messages[this.countOfMessage].text;
     this.startCycleAnimation();
   }
 
+  showShortPreloader() {
+    const { length } = textOfFacts;
+    const randomIndex = Math.floor(Math.random() * length);
+    this.preloader.discribeLine.innerText = textOfFacts[randomIndex];
+  }
+
   hidePreloader() {
-    this.timeSet = 500;
     this.isHide = true;
   }
 }
