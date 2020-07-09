@@ -359,14 +359,14 @@ export default class GameSprint {
         timerWrap.classList.remove('timer_line');
         timerWrap.remove();
         this.defaultGameValue();
-        localStorage.setItem('level', this.gameLevel);
+        localStorage.setItem('levelSprint', this.gameLevel);
       })
     })
   }
 
   constrolLevelAfterReload() {
-    if (localStorage.getItem('level') !== '0') {
-      this.gameLevel = localStorage.getItem('level');
+    if (localStorage.getItem('levelSprint') !== '0') {
+      this.gameLevel = localStorage.getItem('levelSprint');
     }
   }
 
