@@ -39,7 +39,7 @@ export default class DataProvider {
     levelSelectEl.options.remove(0);
     this.gameRound = Utils.getCurrentRound();
     if (this.gameRound === this.userService.getRound()) {
-        this.gameRound = DEFAULT_ROUND;
+      this.gameRound = DEFAULT_ROUND;
     }
   }
 
