@@ -4,6 +4,7 @@ import GameSettings from '../GameSettings';
 import DataProvider from './DataProvider';
 
 import {
+  GAME_CONTAINER,
   CARDS_ITEMS,
   ERRORS_MAX_COUNT,
   WORD_IMG,
@@ -41,6 +42,7 @@ export default class Game {
   async start() {
     await this.dataProvider.start();
     await this.init();
+    GAME_CONTAINER.classList.remove('hidden');
   }
 
   async init() {
@@ -75,9 +77,6 @@ export default class Game {
     });
     RESULTS.classList.remove('hidden');
     Utils.goToTop();
-    if (SPEAK_BTN.classList.contains('activeBtn')) {
-      await this.sendStatisticsToBackEnd();
-    }
     e.preventDefault();
   }
 
@@ -109,9 +108,13 @@ export default class Game {
     e.preventDefault();
   }
 
-  onNewGameBtnClick(e) {
-    this.restartGame();
+  async onNewGameBtnClick(e) {
+    if (SPEAK_BTN.classList.contains('activeBtn')) {
+      await this.sendStatisticsToBackEnd();
+    }
     RESULTS.classList.add('hidden');
+    Utils.goToNextRound();
+    await this.levelOrRoundSelected();
     e.preventDefault();
   }
 

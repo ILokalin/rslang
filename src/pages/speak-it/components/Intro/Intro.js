@@ -1,4 +1,4 @@
-import { INTRO, START_BTN, GAME_CONTAINER, sideNavTriggerEl } from '../../data/constants';
+import { INTRO, START_BTN, sideNavTriggerEl } from '../../data/constants';
 
 export default class Intro {
   init(game) {
@@ -9,7 +9,6 @@ export default class Intro {
 
   startButtonClick(e) {
     INTRO.classList.add('hidden');
-    GAME_CONTAINER.classList.remove('hidden');
     sideNavTriggerEl.classList.remove('hidden');
     this.game.start();
     e.preventDefault();

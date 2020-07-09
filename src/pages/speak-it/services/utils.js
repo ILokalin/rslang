@@ -5,6 +5,7 @@ import {
   SCORE,
   RESULTS,
   ERRORS_MAX_COUNT,
+  ROUNDS_MAX_COUNT,
   CARDS_ITEMS,
   userNameEl,
   levelSelectEl,
@@ -138,6 +139,20 @@ const Utils = {
   goToTop: () => {
     document.body.scrollTop = 0;
     document.documentElement.scrollTop = 0;
+  },
+
+  goToNextRound: () => {
+    const level = parseInt(levelSelectEl.value, 10);
+    const round = parseInt(roundSelectEl.value, 10);
+    if (round < ROUNDS_MAX_COUNT) {
+      roundSelectEl.value = round + 1;
+    } else if (level < LEVELS_MAX_COUNT) {
+      levelSelectEl.value = level + 1;
+      roundSelectEl.value = 1;
+    } else {
+      levelSelectEl.value = 1;
+      roundSelectEl.value = 1;
+    }
   },
 
   isUserWordsSelected: () => {
