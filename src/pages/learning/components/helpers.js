@@ -11,6 +11,15 @@ const measureWordWidth = (word) => {
   return ctx.measureText(word).width;
 };
 
+const saveTrainingStatistics = async () => {
+  const saveOptions = {
+    card: mySwiper.train.shortTermStat,
+  }
+  console.log(saveOptions);
+  await dataController.setUserStatistics(saveOptions);
+}
+
+
 const updateMaterialComponents = () => {
   // eslint-disable-next-line no-undef
   M.AutoInit();
@@ -29,9 +38,11 @@ const handleVolumeBtn = () => {
   if (settings.autoPlayEnabled) {
     soundBtn.querySelector('i').innerText = 'volume_up';
     soundBtn.classList.remove('off');
+    soundBtn.dataset.tooltip = 'Отключить звуки';
   } else {
     soundBtn.classList.add('off');
     soundBtn.querySelector('i').innerText = 'volume_off';
+    soundBtn.dataset.tooltip = 'Включить звуки';
   }
 }
 
@@ -152,6 +163,7 @@ const againBtnAct = async () => {
   const wordState = mySwiper.train.words.find((el) => ((el._id || el.id) === wordId));
   const dupl = new Card(wordState, true);
 
+  // eslint-disable-next-line no-undef
   M.AutoInit();
   
   const duplTitle = dupl.cardElem.querySelector('.card-title');
@@ -273,13 +285,6 @@ const getApproprateWords = async (newWordsAmount, totalAmount) => {
   return res;    
 }
 
-const saveTrainingStatistics = async () => {
-  const saveOptions = {
-    card: mySwiper.train.shortTermStat,
-  }
-  console.log(saveOptions);
-  await dataController.setUserStatistics(saveOptions);
-}
 
 export {
   measureWordWidth,

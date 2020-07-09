@@ -64,7 +64,6 @@ export default class Training {
     document.querySelector('.statistics__correct-answers').innerText = isNaN(rightAnswersPersent) ? '0%' : rightAnswersPersent + '%';
     document.querySelector('.statistics__total-cards').innerText = this.shortTermStat.totalCards;
     document.querySelector('.statistics__correct-in-row').innerText = this.shortTermStat.longestChain;
-    //localStorage.setItem('stat', JSON.stringify(this.shortTermStat));
     console.log(this.shortTermStat);
   }
 

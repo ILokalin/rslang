@@ -44,7 +44,7 @@ logoutButtons.forEach((btn) => {
 
 
 settingsSaveBtns.forEach((btn) => {
-  const settings = JSON.parse(localStorage.getItem('settings'));
+  const settings = JSON.parse(localStorage.getItem('cardsSettings'));
   btn.addEventListener('click', (event) => {
     if (event.target.closest('form.settings__general')) {
       if (+cardsPerDay.value < +newCardsPerDay.value) {
@@ -73,8 +73,7 @@ settingsSaveBtns.forEach((btn) => {
       settings.autoPlayEnabled = +autoPlay.checked;
     }
     console.log(settings);
-    localStorage.setItem('settings', JSON.stringify(settings));
-    // TODO send settings to backend
+    localStorage.setItem('cardsSettings', JSON.stringify(settings));
     dataController.setUserOptions({settings});
   });
 });

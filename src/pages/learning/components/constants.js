@@ -30,7 +30,7 @@ const mySwiper = new Swiper('.swiper-container', {
 });
 mySwiper.allowTouchMove = false;
 const progressBar = document.querySelector('.progress');
-const settings = JSON.parse(localStorage.getItem('settings'));
+const settings = JSON.parse(localStorage.getItem('cardsSettings'));
 const dataController = new DataController();
 const preloaderController = new PreloaderController();
 const soundBtn = document.querySelector('.sound-button');

@@ -26,10 +26,13 @@ soundBtn.addEventListener('click', () => {
   if (soundBtn.classList.contains('off')) {
     soundBtn.querySelector('i').innerText = 'volume_up';
     soundBtn.classList.remove('off');
+    soundBtn.dataset.tooltip = 'Отключить звуки';
     settings.autoPlayEnabled = 1;
   } else {
     soundBtn.classList.add('off');
+    document.querySelectorAll('audio').forEach((audio) => { audio.pause() });
     soundBtn.querySelector('i').innerText = 'volume_off';
+    soundBtn.dataset.tooltip = 'Включить звуки';
     settings.autoPlayEnabled = 0;
   }
 })

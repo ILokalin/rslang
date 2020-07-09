@@ -41,7 +41,7 @@ export const whoIsGameFor = () => {
       console.log('We have user', userSettings);
       titleUser.innerText = userSettings.name;
 
-      localStorage.setItem('settings', JSON.stringify(userSettings.settings));
+      localStorage.setItem('cardsSettings', JSON.stringify(userSettings.settings));
       handleSettingsView();
 
       const vocabulary = new VocabularyWord(dataController);
@@ -81,7 +81,7 @@ export const whoIsGameFor = () => {
         showAnswerBtnEnabled: 0,
         autoPlayEnabled: 1,
       };      
-      localStorage.setItem('settings', JSON.stringify(settings));
+      localStorage.setItem('cardsSettings', JSON.stringify(settings));
       handleSettingsView();
       main.classList.remove('hidden');
     },

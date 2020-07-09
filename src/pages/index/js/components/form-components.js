@@ -51,7 +51,7 @@ document.querySelector('.card-info-checkboxes').addEventListener('click', () => 
 })
 
 export const handleSettingsView = () => {
-  const settings = JSON.parse(localStorage.getItem('settings'));
+  const settings = JSON.parse(localStorage.getItem('cardsSettings'));
   cardsPerDay.value = +settings.cardsPerDay;
   document.querySelector('.total-cards-amount').innerText = cardsPerDay.value;
   document.querySelector('.new-block .range-max-value').innerText = cardsPerDay.value;
