@@ -2,7 +2,33 @@
 /* eslint-disable no-param-reassign */
 import Chart from 'chart.js';
 
-export const renderStatChart = () => {
+const getDummyData = (fullStatisticsObject) => {
+  const { longTime } = fullStatisticsObject.card;
+  console.log(longTime);
+  let sum = 0;
+  const dummyData = ['0'].concat(longTime.map((item) => {
+    sum += item[1];
+    return sum;
+  }));
+  if (fullStatisticsObject.card.shortTime) {
+    dummyData.push(sum + fullStatisticsObject.card.shortTime.newWords);
+  }
+  console.log(dummyData);
+  return dummyData
+}
+
+const getLabels = (fullStatisticsObject) => {
+  const { longTime } = fullStatisticsObject.card;
+  console.log(longTime);
+  const labels = [''].concat(longTime.map((item) => item[0]));
+  if (fullStatisticsObject.card.shortTime) {
+    labels.push(fullStatisticsObject.card.shortTime.date);
+  }
+  console.log(labels);
+  return labels;
+}
+
+export const renderStatChart = (fullStatisticsObject) => {
   const canvas = document.getElementById('chart');
   const ctx    = canvas.getContext('2d');
   const grad   = ctx.createLinearGradient(0, 0, 0, window.innerHeight);
@@ -34,12 +60,13 @@ export const renderStatChart = () => {
   })
   Chart.controllers.shadowLine = shadowLine
 
-  const dummyData = [0, 30, 50, 60, 80, 90, 120, 120];
+  const dummyData = getDummyData(fullStatisticsObject);
+  
   // eslint-disable-next-line no-unused-vars
   const chart = new Chart(ctx, {
     type: 'shadowLine',
     data: {
-      labels: ['', '23.06.2020', '23.06.2020', '23.06.2020', '23.06.2020', '23.06.2020', '23.06.2020', ],
+      labels: getLabels(fullStatisticsObject),
       datasets: [{
         label: '',
         backgroundColor: grad,

@@ -49,7 +49,7 @@
                 class="material-icons right blue-text">record_voice_over</i></a></li>
           <li><a href="/sprint" target="_blank">Спринт <i
                 class="material-icons right orange-text">directions_run</i></a></li>
-          <li><a href="#" target="_blank">Match It <i class="material-icons right purple-text">open_with</i></a></li>
+          <li><a href="/match-it" target="_blank">Match It <i class="material-icons right purple-text">open_with</i></a></li>
         </ul>
         <li>
           <div class="divider"></div>
@@ -116,10 +116,10 @@
               <div class="sc-background">
                 <div class="sc-percentage"></div>
                 <div class="sc-mask"></div>
-                <span class="sc-value">50</span>
+                <span class="sc-value">0</span>
               </div>
               <span class="sc-min">0</span>
-              <span class="sc-max">100</span>
+              <span class="sc-max">0</span>
             </div>
           </div>
         </div>
@@ -220,7 +220,7 @@
                     I am convenient because I require little markup to use effectively.</p>
                 </div>
                 <div class="card-action">
-                  <a class="waves-effect waves-teal btn-flat" href="#" target="_blank">Играть</a>
+                  <a class="waves-effect waves-teal btn-flat" href="./match-it" target="_blank">Играть</a>
                 </div>
               </div>
             </div>
@@ -384,12 +384,113 @@
   </div>
   <div class="statistics-container hidden">
     <h4 class="center">Статистика</h4>
-    <div class="chart-container">
+    <h5 class="center">Статистика изучения слов</h5> 
+    <div class="chart-container">        
       <canvas id="chart"></canvas>
       <div id="chartjs-tooltip">
         <div id="chartjs-tooltip__text"></div>
       </div>
     </div>
+    <div class="table-container">
+      <h5 class="center">Статистика миниигр</h5>
+      <div class="col s12">
+        <ul class="tabs">
+          <li class="tab col s2"><a class="active" href="#stat-audiochallenge">Аудиовызов</a></li>
+          <li class="tab col s2"><a href="#stat-puzzle">Puzzle</a></li>
+          <li class="tab col s2"><a href="#stat-savanna">Саванна</a></li>
+          <li class="tab col s2"><a href="#stat-speakit">Speak It!</a></li>
+          <li class="tab col s2"><a href="#stat-sprint">Спринт</a></li>
+          <li class="tab col s2"><a href="#stat-matchit">Match It!</a></li>
+        </ul>
+      </div>
+      <div id="stat-audiochallenge" class="col s12">
+        <table class="responsive-table">
+          <thead>
+            <tr>
+              <th>Дата Игры</th>
+              <th>Счет игры</th>
+            </tr>
+          </thead> 
+          <tbody>
+          </tbody> 
+        </table>   
+
+      </div>
+      <div id="stat-puzzle" class="col s12">
+        <table class="responsive-table">
+          <thead>
+            <tr>
+              <th>Раунд</th>
+              <th>Дата Игры</th>
+              <th>Счет игры</th>
+              <th>Угадано</th>
+              <th>Не угадано</th>
+            </tr>
+          </thead> 
+          <tbody>
+          </tbody> 
+        </table> 
+      </div>
+      <div id="stat-savanna" class="col s12">
+        <table class="responsive-table">
+          <thead>
+            <tr>
+              <th>Дата Игры</th>
+              <th>Счет игры</th>
+              <th>Угадано</th>
+              <th>Не угадано</th>
+            </tr>
+          </thead> 
+          <tbody>
+          </tbody> 
+        </table>
+      </div>
+      <div id="stat-speakit" class="col s12">
+        <table class="responsive-table">
+          <thead>
+            <tr>
+              <th>Раунд</th>
+              <th>Дата Игры</th>
+              <th>Счет игры</th>
+              <th>Угадано</th>
+              <th>Не угадано</th>
+            </tr>
+          </thead> 
+          <tbody>
+          </tbody> 
+        </table> 
+      </div>
+      <div id="stat-sprint" class="col s12">
+        <table class="responsive-table">
+          <thead>
+            <tr>
+              <th>Дата Игры</th>
+              <th>Счет игры</th>
+              <th>Угадано</th>
+              <th>Не угадано</th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+      </div>
+      <div id="stat-matchit" class="col s12">
+        <table class="responsive-table">
+          <thead>
+            <tr>
+              <th>Раунд</th>
+              <th>Дата Игры</th>
+              <th>Счет игры</th>
+              <th>Угадано</th>
+              <th>Не угадано</th>
+            </tr>
+          </thead> 
+          <tbody>
+          </tbody> 
+        </table> 
+      </div>   
+    </div>
+  </div> 
   </div>
   <div class="vocabulary-container hidden">
     <h4 class="center">Словарь</h4>
@@ -413,19 +514,19 @@
         </div>
       </div>
     </div>
-    <div class="modal greeting">
-      <div class="modal-content">
-        <h4>Добро пожаловать!</h4>
-        <p>Для заучивания слов в нашем приложении применяется метод интервальных повторений. <br>
-          Интервальные повторения — это метод эффективного запоминания, его суть в том, чтобы повторять заученную
-          информацию через определенные промежутки времени (без повторений она быстро забудется)<br>
-          Для того, чтобы мы могли подобрать индивидуальные интервалы для каждого изучаемого слова, предлагаем Вам для
-          начала выбрать подходящие Вам настройки. </p>
-      </div>
-      <div class="modal-footer">
-        <a href="#!" class="modal-close waves-effect waves-green btn-flat">Начать!</a>
-      </div>
+  </div>
+  <div class="modal greeting">
+    <div class="modal-content">
+      <h4>Добро пожаловать!</h4>
+      <p>Для заучивания слов в нашем приложении применяется метод интервальных повторений. <br>
+        Интервальные повторения — это метод эффективного запоминания, его суть в том, чтобы повторять заученную
+        информацию через определенные промежутки времени (без повторений она быстро забудется)<br>
+        Для того, чтобы мы могли подобрать индивидуальные интервалы для каждого изучаемого слова, предлагаем Вам для
+        начала выбрать подходящие Вам настройки. </p>
     </div>
-</body>
-
+    <div class="modal-footer">
+      <a href="#!" class="modal-close waves-effect waves-green btn-flat">Начать!</a>
+    </div>
+  </div>
+  </body>
 </html>

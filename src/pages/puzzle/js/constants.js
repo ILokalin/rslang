@@ -1,4 +1,5 @@
 import { DataController } from 'Service/DataController/DataController';
+import { PreloaderController } from 'Service/PreloaderController';
 
 const gamePage = document.querySelector('.game-page');
 const homePage = document.querySelector('.home-page');
@@ -25,6 +26,7 @@ const fullStatPage = document.querySelector('.full-stat-page');
 const statBtn = document.querySelector('.statistic-btn');
 const puzzleGrooveWidth = 17;
 const dataController = new DataController();
+const preloaderController = new PreloaderController();
 const paintingUrl = 'https://raw.githubusercontent.com/jules0802/rslang_data_paintings/master/';
 
 export {
@@ -32,5 +34,5 @@ export {
   pictureBtn, inputField, dontKnowBtn, checkBtn, continueBtn, resultsBtn, painting,
   audio, translation, paintingInfo, sideNav, roundsCount, errorMsg, 
   miniature, miniatureInfo, linkToPainting, roundStatisticsPage, fullStatPage, statBtn, puzzleGrooveWidth, 
-  dataController, paintingUrl,
+  dataController, paintingUrl, preloaderController,
 };

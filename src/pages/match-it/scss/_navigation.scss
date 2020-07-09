@@ -1,0 +1,24 @@
+.select-wrapper {
+  width: 100%;
+}
+
+.level-select,
+.range-field,
+.round-select {
+  padding-left: 20px;
+}
+
+.sidenav .user-view {
+  padding-top: 0;
+}
+
+.home {
+  position: absolute;
+  right: 20px;
+}
+
+@media only screen and (min-width: 993px) {
+  nav a.sidenav-trigger {
+    display: block;
+  }
+}

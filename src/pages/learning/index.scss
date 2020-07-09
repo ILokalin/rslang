@@ -1,7 +1,15 @@
-//@import 'Src/scss/normalize';
 @import 'materialize-css';
 @import 'swiper/css/swiper';
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+@import 'Src/scss/components';
+
+html {
+  font-size: 14px;
+
+  @media screen and (max-width: 500px) {
+    font-size: 10px;
+  }  
+}
 
 .hidden {
   display: none!important;
@@ -13,7 +21,6 @@
 
 .header__description {
   @extend .teal-text;
-
 }
 
 .home {
@@ -27,6 +34,14 @@
   position: absolute;
   top: 20px;
   right: 20px;
+  @extend .teal-text, .text-lighten-2;  
+}
+
+.save-settings-button {
+  position: absolute;
+  top: 20px;
+  right: 80px;
+  cursor: pointer;
   @extend .teal-text, .text-lighten-2;
 }
 
@@ -73,7 +88,11 @@
   width: 50%;
   max-width: 400px;
   border: 2px solid #bdbdbd;
-  border-radius: 2px
+  border-radius: 2px;
+
+  @media screen and (max-width: 500px) {
+    width: 80%;
+  }
 }
 
 .swiper-slide {
@@ -81,10 +100,18 @@
   background-color: #f1f8e9;
 }
 
+.swiper-button-next {
+ left: calc(75% + 10px);
+ @media screen and (max-width: 500px) {
+    left: calc(90% + 5px);
+  }
+}
+
 .word {
+  width: 100%;
   display: flex;
   justify-content: space-between;
-  padding: 5px;
+  padding: 0 0 10px;
 }
 
 .tabs, .tab {
@@ -95,15 +122,10 @@
 
 .card-content {
   padding: 10px!important;
-  //height: fit-content!important;
- // overflow: scroll!important;
 
   & p {
     display: block;    
     line-height: 20px;
-   // overflow: hidden;
-   // white-space: nowrap;
-   // text-overflow: ellipsis;
   }
 
   & .translation {
@@ -120,7 +142,10 @@
   max-height: 45%!important;
 
   & .card-title {
-    z-index: 3;
+    z-index: 4;
+    @extend .blue-grey-text, .text-darken-2;
+    font-weight: 400;
+    font-size: 1.5rem;
   }
 }
 
@@ -142,14 +167,19 @@
   position: relative;
 }
 
+.card.large {
+  @media screen and (max-width: 500px) {
+    height: 430px;
+  }
+}
+
 
 
 .result{
   position: absolute;
-  //top: 235px;
   left:0;
- z-index: -2;
- margin-bottom: 8px;
+  z-index: -2;
+  margin-bottom: 8px;
 }
 
 .correct {
