@@ -1,5 +1,6 @@
 import Swiper from 'swiper';
 import { DataController } from 'Service/DataController/DataController';
+import { PreloaderController } from 'Service/PreloaderController';
 import { setProgressbarToCurrentPosition } from './helpers';
 import 'materialize-css';
 
@@ -31,5 +32,6 @@ mySwiper.allowTouchMove = false;
 const progressBar = document.querySelector('.progress');
 const settings = JSON.parse(localStorage.getItem('settings'));
 const dataController = new DataController();
+const preloaderController = new PreloaderController();
 
-export { mySwiper, progressBar, settings, dataController };
+export { mySwiper, progressBar, settings, dataController, preloaderController };

@@ -1,0 +1,70 @@
+.btns {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 80px;
+  &.btns-res {
+    margin-bottom: 20px;
+  }
+}
+
+main .btn {
+  &.btn-large {
+    background-color: #6ba26b;
+    &.activeBtn {
+      transition: 0.15s;
+      color: #fff;
+      background: #558b2f;
+      &:hover {
+        transition: 0.15s;
+        color: #fff;
+        background: #90a4ae;
+      }
+    }
+  }
+  &:focus {
+    outline: 0;
+  }
+  &:active {
+    outline: 0;
+  }
+}
+
+.btn.result {
+  width: 300px;
+  margin: 0 30px;
+}
+
+.btn-res:first-child {
+  margin-right: 40px;
+  margin-bottom: 10px;
+}
+
+.btn-res {
+  font-size: 20px;
+  min-width: 160px;
+  margin: 0;
+  &:nth-child(1) {
+    margin-right: 40px;
+  }
+}
+
+@media only screen and (max-width: 1400px) {
+  .btn.voice {
+    width: 360px;
+  }
+}
+
+@media only screen and (max-width: 1000px) {
+  .container {
+    .btns {
+      flex-direction: column;
+    }
+
+    .restart,
+    .next,
+    .result {
+      width: 50vw;
+      margin: 10px auto;
+    }
+  }
+}

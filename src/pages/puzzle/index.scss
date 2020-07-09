@@ -2,7 +2,7 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700,800,900&display=swap&subset=cyrillic,cyrillic-ext');
 @import 'materialize-css';
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
-@import 'Src/components/AuthPopup/AuthPopup.scss';
+@import 'Src/scss/components';
 
 
 @mixin flex {
@@ -173,6 +173,10 @@ $inset-shadow:
   margin: 0 auto;
   background-color:rgba(256, 256, 256, 0.8);
   width: 60%;
+
+  & td {
+    padding: 5px;
+  }
 }
 
 .badge {

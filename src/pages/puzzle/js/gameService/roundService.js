@@ -1,11 +1,11 @@
 import { store } from '../storage';
 import { roundsCount } from '../constants';
 
-const getGameRound = () => `Round ${store.level}.${store.round}`;
+const getGameRound = () => `Раунд ${store.level}.${store.round}`;
 const setGameRound = () => {
   const roundTitle = document.querySelector('.game-header h4');
   if (store.playUserWords) {
-    roundTitle.innerText = 'Your words'
+    roundTitle.innerText = 'Ваши Слова'
   } else {
     roundTitle.innerText = getGameRound();
   }

@@ -102,6 +102,9 @@ export class DataController {
 
   logoutUser() {
     localStorage.setItem('token', '');
+    if (JSON.parse(localStorage.isLogin)) {
+      localStorage.setItem('isLogin', false);
+    }
   }
 
   getUser() {

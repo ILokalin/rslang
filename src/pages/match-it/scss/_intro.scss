@@ -1,0 +1,37 @@
+.intro {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  padding: 10px;
+  transition: 0.5s;
+  text-align: center;
+}
+
+.title {
+  font-size: 40px;
+  font-weight: 300;
+  margin: -100px auto 40px;
+  letter-spacing: 13px;
+  text-transform: uppercase;
+  color: #000;
+}
+
+.intro-text {
+  font-size: 2em;
+  font-weight: 400;
+
+  max-width: 1000px;
+  margin: 0 auto 60px;
+  color: $text-color;
+}
+
+.btn.intro-btn {
+  font-weight: 300;
+}
