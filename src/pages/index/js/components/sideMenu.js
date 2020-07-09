@@ -1,3 +1,4 @@
+import 'materialize-css';
 import {
 settings,
 statistcs,
@@ -5,7 +6,7 @@ vocabulary,
 main,
 } from '../constants';
 
-document.querySelector('.menu ul').addEventListener('click', (event) => {
+document.querySelector('.menu').addEventListener('click', (event) => {
   if (event.target.closest('.menu__settings')) {
     settings.classList.remove('hidden');
     main.classList.add('hidden');

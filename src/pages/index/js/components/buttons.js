@@ -24,6 +24,10 @@ import {
   meaningTranslation,
   showAnswerBtn,
   autoPlay,
+  menuLinks,
+  trainingBtn,
+  mainPageStats,
+  mainLogoutMsg,
 } from '../constants';
 import { whoIsGameFor } from './whoIsGameFor';
 
@@ -34,6 +38,10 @@ const userLogout = () => {
     btn.classList.add('hidden');
   });
   titleUser.innerText = 'CAPTAIN ANONIMUS';
+  menuLinks.forEach((link) => {link.classList.add('disabled-link')});
+  trainingBtn.classList.add('disabled');
+  mainPageStats.classList.add('hidden');
+  mainLogoutMsg.classList.remove('hidden');
 };
 
 const storageHandle = ({ key }) => {
@@ -86,3 +94,7 @@ settingsSaveBtns.forEach((btn) => {
     dataController.setUserOptions({settings});
   });
 });
+
+document.querySelector('.message-login').addEventListener('click', () => {
+  loginButton.click();
+})

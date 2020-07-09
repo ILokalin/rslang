@@ -20,16 +20,16 @@
       </div>
     </nav>
   </header>
-  <div class="menu">
+  <div >
     <ul id="slide-out" class="sidenav sidenav-fixed">
       <div class="avatar center blue lighten-5">
         <img class="avatar__img" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/20625/avatar-bg.png" />
         <h4 class="avatar__name">CAPTAIN ANONIMUS</h4>
         <a class="avatar__logout logout-btn hidden" href="#!">LOGOUT</a>
       </div>
-      <ul>
+      <ul class="menu">
         <li><a class="menu__home" href="#">Главная страница<i class="material-icons right">home</i></a></li>
-        <li><a class="teal-text" href="/learning">Тренировка <i class="material-icons right teal-text">developer_mode</i></a></li>
+        <li><a class="menu__training" href="/learning">Тренировка <i class="material-icons right">developer_mode</i></a></li>
         <li><a class="menu__settings" href="#!">Настройки <i class="material-icons right">settings</i></a></li>
         <li><a class="menu__statistics" href="#!">Статистика <i class="material-icons right">show_chart</i></a></li>
         <li><a class="menu__vocabulary" href="#!">Словарь <i class="material-icons right">sort_by_alpha</i></a></a></li>
@@ -122,6 +122,10 @@
               <span class="sc-max">0</span>
             </div>
           </div>
+        </div>
+        <div class="main-page-logout-message row">
+        <h5 class="center">Добро пожаловать! Наше приложение основано на индивидуальном подходе к каждому пользователю, поэтому для доступности полного функционала рекомендуем <a href="#" class="message-login">Войти в приложение</a></h5>
+        <h5 class="center">В анонимном режиме Вам доступны только мини игры.</h5>
         </div>
       </li>
       <li>
