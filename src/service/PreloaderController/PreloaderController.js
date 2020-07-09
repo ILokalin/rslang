@@ -1,5 +1,6 @@
 import { PreloaderView } from 'Components/PreloaderView';
-import { openPreloader, closePreloader } from 'Service/AppState';
+import { openPreloader, closePreloader , preloaderCommand } from 'Service/AppState';
+
 
 export class PreloaderController {
   constructor() {
@@ -7,11 +8,11 @@ export class PreloaderController {
     preloaderView.init();
   }
 
-  showPreloader() {
-    openPreloader();
+  showPreloader(command = preloaderCommand.short) {
+    openPreloader(command);
   }
 
   hidePreloader() {
-    closePreloader();
+    closePreloader(preloaderCommand.hide);
   }
 }
