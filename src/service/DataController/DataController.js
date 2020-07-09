@@ -305,7 +305,9 @@ export class DataController {
       shortTime,
     };
 
-    if (shortTime.date !== today) {
+    if (shortTime.date === today) {
+      resultOptionalCard.shortTime = {...shortTimeStat, ...{date: today}};
+    } else {
       const longTimeStatItem = [shortTime.date, shortTime.newWords];
       resultOptionalCard.longTime.push(longTimeStatItem);
       resultOptionalCard.shortTime = { ...shortStatTemplate, ...shortTimeStat };
