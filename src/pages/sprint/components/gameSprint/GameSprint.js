@@ -311,9 +311,9 @@ export default class GameSprint {
           (value) => {
             const { paginatedResults } = value[0];
             paginatedResults.flat().map(({ _id, word, wordTranslate }) => {
-              preloaderController.hidePreloader();
               return words.push({ _id, word, wordTranslate });
             });
+            preloaderController.hidePreloader();
           },
           (reason) => {
             answerImage.innerText = `${reason}`;
@@ -336,9 +336,9 @@ export default class GameSprint {
         .then(
           (value) => {
             value.flat().map(({ id, word, wordTranslate }) => {
-              preloaderController.hidePreloader();
               return words.push({ _id: id, word, wordTranslate });
             });
+            preloaderController.hidePreloader();
           },
           (reason) => {
             answerImage.innerText = `${reason}`;
