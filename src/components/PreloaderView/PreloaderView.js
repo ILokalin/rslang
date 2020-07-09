@@ -1,8 +1,8 @@
-import { preloaderState } from 'Service/AppState';
+import { preloaderState , preloaderCommand } from 'Service/AppState';
 import { DomGen } from 'Service/DomGen';
 import { messages, textOfFacts } from './PreloaderViewConst';
 import { preloaderViewScreen } from './PreloaderViewScreen';
-import { preloaderCommand } from 'Service/AppState';
+
 
 export class PreloaderView {
   constructor() {

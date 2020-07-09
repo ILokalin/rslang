@@ -1,6 +1,6 @@
 import { PreloaderView } from 'Components/PreloaderView';
-import { openPreloader, closePreloader } from 'Service/AppState';
-import { preloaderCommand } from 'Service/AppState';
+import { openPreloader, closePreloader , preloaderCommand } from 'Service/AppState';
+
 
 export class PreloaderController {
   constructor() {
