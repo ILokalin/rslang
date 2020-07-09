@@ -8,6 +8,14 @@ import {
 import { startRound, hidePaintingInfo, hideBackgroundPic } from './game';
 import { setBackgroundToPuzzlePiece } from './canvas';
 
+const storageHandle = ({ key }) => {
+  if (key === 'isLogin' && !JSON.parse(localStorage[key])) {
+    window.location.reload();
+  } else if (key === 'isLogin' && JSON.parse(localStorage[key])) {
+    window.location.reload();
+  }
+};
+
 const handleRoundsPerLevel = () => {
   document.querySelector('.round-select input').setAttribute('max', roundsCount[store.level - 1]);
 };
@@ -72,14 +80,18 @@ const playButtonHandler = async () => {
 
 const selectLevelHandler = async (event) => {
   store.level = event.target.value;
-  await dataController.setUserOptions({puzzle: store.stringifySettings()});
+  if (JSON.parse(localStorage.getItem('isLogin'))) {
+    await dataController.setUserOptions({puzzle: store.stringifySettings()});
+  }
   document.querySelector('.round-select input').classList.remove('disabled');
   handleRoundsPerLevel();
 };
 
 const chooseRoundHandler = async (event) => {
   store.round = event.target.value;
-  await dataController.setUserOptions({puzzle: store.stringifySettings()});
+  if (JSON.parse(localStorage.getItem('isLogin'))) {
+    await dataController.setUserOptions({puzzle: store.stringifySettings()});
+  }
 };
 
 const toggleBtn = (el, isEnabled) => {
@@ -136,12 +148,14 @@ const checkBoxHandler = async (event) => {
         break;
       }
     }
-    await dataController.setUserOptions({puzzle: store.stringifySettings()});
+    if (JSON.parse(localStorage.getItem('isLogin'))) {
+      await dataController.setUserOptions({puzzle: store.stringifySettings()});
+    }
   }
 };
 
 
 export {
   playButtonHandler, selectLevelHandler, chooseRoundHandler, checkBoxHandler, 
-  checkCheckboxes, handleRoundsPerLevel, getRandomInteger, shuffle,
+  checkCheckboxes, handleRoundsPerLevel, getRandomInteger, shuffle, storageHandle,
 };

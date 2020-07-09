@@ -1,6 +1,6 @@
 class Store {
   constructor() {
-    this.playUserWords = 1;
+    this.playUserWords = 0;
     this.level = 1;
     this.round = 1;
     this.isAutoPronounceOn = 1;
