@@ -10,3 +10,5 @@ export {
   closePreloader,
   preloaderState,
 } from './AppState';
+
+export { preloaderCommand } from './AppStateConst';
