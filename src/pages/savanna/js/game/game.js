@@ -118,7 +118,6 @@ export default class Game {
 
   async changeRepeatOption() {
     this.preloadController.showPreloader();
-    this.login = repeatOption.checked;
     if (repeatOption.checked) {
       this.switchOption();
       this.currentDataSet = await helper.getWordsRepeatByApi(this.dataController);
@@ -340,11 +339,11 @@ export default class Game {
     statistic.classList.remove('hidden');
     await this.renderValidWords();
     await this.renderInvalidWords();
-    this.resetGame();
     if (this.login) {
       helper.setUserOption(this.dataController, this.level, this.round);
       this.sendStatistic(this.login);
     }
+    this.resetGame();
   }
 
   async renderValidWords() {

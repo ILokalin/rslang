@@ -110,6 +110,8 @@ const helper = {
         },
       })
       .then((dataStat) => console.log(dataStat));
+
+    console.log(winRate, wordsObject.dontKnowWords.length, wordsObject.knowWords.length);
   },
 
   setUserOption(dataController, level, round) {
@@ -159,7 +161,7 @@ const helper = {
     const li = document.createElement('li');
     li.innerHTML = `<a class="subheader">Повторение слов недоступно, залогиньтесь.</a>`;
     menu.appendChild(li);
-  }
+  },
 };
 
 export default helper;
