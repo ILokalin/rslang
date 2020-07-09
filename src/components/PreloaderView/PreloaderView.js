@@ -43,6 +43,7 @@ export class PreloaderView {
   showLongPreloader() {
     this.timeSet = messages[this.countOfMessage].time;
     this.isHide = false;
+    this.isQuicklyHide = false;
     this.body.append(this.preloader.block);
     this.preloader.discribeLine.innerText = messages[this.countOfMessage].text;
     this.startCycleAnimation();
@@ -50,11 +51,17 @@ export class PreloaderView {
 
   showShortPreloader() {
     const { length } = textOfFacts;
+    this.isHide = false;
+    this.isQuicklyHide = true;
     const randomIndex = Math.floor(Math.random() * length);
     this.preloader.discribeLine.innerText = textOfFacts[randomIndex];
+    this.body.append(this.preloader.block);
   }
 
   hidePreloader() {
     this.isHide = true;
+    if (this.isQuicklyHide) {
+      this.preloader.block.remove();
+    }
   }
 }

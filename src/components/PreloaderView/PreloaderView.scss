@@ -7,7 +7,7 @@
   bottom: 0;
   left: 0;
   z-index: 1000;
-  background-color: rgba(22, 136, 111, 0.8);
+  background-color: rgb(39, 169, 157);
 
   &__animation {
     position:absolute;
@@ -93,7 +93,8 @@
     left:50%;
     transform: translate(-50%,calc(-50% + 88px));
     margin:0;
-    color: var(--color-basic)
+    color: var(--color-basic);
+    text-align: center;
   }
 }
 
