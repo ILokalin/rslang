@@ -7,7 +7,7 @@ const currentGameStage = document.querySelector('.stage');
 const hearts = document.querySelectorAll('.heart');
 const gameContainer = document.querySelector('.game-container');
 const gameHeader = document.querySelector('.game-header');
-const soundSwitcher = document.querySelector('.sound-switcher');
+const soundButton = document.querySelector('.sound-switcher');
 const fallingWordText = document.querySelector('.falling-word__item');
 const fallingWordElement = document.querySelector('.falling-word');
 const answerElements = document.querySelectorAll('.answer-options__item');
@@ -29,6 +29,8 @@ const homeButton = document.querySelector('.home');
 const popupMenu = document.querySelector('.popup-menu');
 const resumeButton = document.querySelector('.resume');
 const healtBar = document.querySelector('.healt-bar');
+const menu = document.querySelector('.sidenav');
+const soundIcon = document.querySelector('.sound-icon');
 
 export {
   appStartButton,
@@ -39,7 +41,7 @@ export {
   hearts,
   gameContainer,
   gameHeader,
-  soundSwitcher,
+  soundButton,
   fallingWordText,
   answerElements,
   answerContainer,
@@ -62,4 +64,6 @@ export {
   popupMenu,
   resumeButton,
   healtBar,
+  menu,
+  soundIcon,
 };

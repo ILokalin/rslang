@@ -23,3 +23,6 @@
   position: absolute;
   right: 20px;
 }
+.is-repeath:hover::after {
+  content: '→';
+}

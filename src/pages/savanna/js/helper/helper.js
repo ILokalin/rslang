@@ -1,4 +1,4 @@
-import { userNameElement, audio, healtBar, health } from './constants';
+import { userNameElement, audio, healtBar, health, menu } from './constants';
 import '../../assets/img/savanna-heart.svg';
 
 const helper = {
@@ -150,6 +150,16 @@ const helper = {
       healtBar.appendChild(heart);
     }
   },
+  renderNeedMoreWords() {
+    const li = document.createElement('li');
+    li.innerHTML = `<a class="subheader">Недостаточно слов для повтора.</a>`;
+    menu.appendChild(li);
+  },
+  renderRepeatDontWork() {
+    const li = document.createElement('li');
+    li.innerHTML = `<a class="subheader">Повторение слов недоступно, залогиньтесь.</a>`;
+    menu.appendChild(li);
+  }
 };
 
 export default helper;

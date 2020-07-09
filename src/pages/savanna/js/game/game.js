@@ -1,4 +1,6 @@
 import { DataController } from 'Service/DataController';
+import { PreloaderController } from 'Service/PreloaderController';
+
 import {
   gameStartButton,
   restartButton,
@@ -21,10 +23,11 @@ import {
   repeatOption,
   levelAndRoundselectors,
   statisticContainer,
-  soundSwitcher,
+  soundButton,
   popupMenu,
   homeButton,
   resumeButton,
+  soundIcon,
 } from '../helper/constants';
 import helper from '../helper/helper';
 
@@ -34,6 +37,7 @@ export default class Game {
     this.fallingWordText = fallingWordText;
     this.answersElements = answerElements;
     this.dataController = new DataController();
+    this.preloadController = new PreloaderController();
     this.health = health;
     this.repeat = false;
     this.login = false;
@@ -60,7 +64,7 @@ export default class Game {
     levelOption.addEventListener('change', this.changeLevel.bind(this));
     repeatOption.addEventListener('change', this.changeRepeatOption.bind(this));
     statisticContainer.addEventListener('click', this.playWord.bind(this));
-    soundSwitcher.addEventListener('click', this.changeMute.bind(this));
+    soundButton.addEventListener('click', this.changeMute.bind(this));
     homeButton.addEventListener('click', this.showPopupMenu.bind(this));
     resumeButton.addEventListener('click', this.resumeGame.bind(this));
     helper.renredHearts();
@@ -73,6 +77,7 @@ export default class Game {
   }
 
   async trueLogin(data) {
+    this.preloadController.showPreloader();
     this.currentDataSet = await helper.getWordsRepeatByApi(this.dataController);
     repeatOption.checked = true;
     this.switchOption();
@@ -83,19 +88,24 @@ export default class Game {
       repeatOption.checked = true;
       repeatOption.disabled = true;
       this.switchOption();
+      helper.renderNeedMoreWords();
     }
     this.round = data.savanna.lastRound;
     this.level = data.savanna.lastLevel;
     this.login = true;
+    this.preloadController.hidePreloader();
     helper.renderUserName(data);
   }
 
   async falseLogin() {
+    this.preloadController.showPreloader();
     this.currentDataSet = await helper.getWordsByApi(this.dataController);
     this.login = false;
     repeatOption.checked = false;
     repeatOption.disabled = true;
     helper.renderEmptyUserName();
+    this.preloadController.hidePreloader();
+    helper.renderRepeatDontWork();
   }
 
   changeRound(event) {
@@ -107,6 +117,7 @@ export default class Game {
   }
 
   async changeRepeatOption() {
+    this.preloadController.showPreloader();
     this.login = repeatOption.checked;
     if (repeatOption.checked) {
       this.switchOption();
@@ -117,6 +128,7 @@ export default class Game {
       this.currentDataSet = await helper.getWordsByApi(this.dataController);
       this.repeat = false;
     }
+    this.preloadController.hidePreloader();
   }
 
   switchOption() {
@@ -238,14 +250,21 @@ export default class Game {
     }
     this.stop();
     this.props.knowWords.push(this.currentWord);
-    if ((this.level === 5 && this.round === 5) || this.currentDataSet.length === 0) {
-      this.showStat(true);
-    } else if (this.round === 5) {
-      this.level += 1;
-      this.round = 0;
-      this.start(true);
+    if (!this.repeat) {
+      if (this.level === 5 && this.round === 5) {
+        this.showStat(true);
+      } else if (this.round === 5) {
+        this.level += 1;
+        this.round = 0;
+        this.start(true);
+      } else {
+        this.round += 1;
+        this.start(true);
+      }
     } else {
-      this.round += 1;
+      if (this.currentDataSet.length === 0) {
+        this.showStat(true);
+      }
       this.start(true);
     }
   }
@@ -322,8 +341,10 @@ export default class Game {
     await this.renderValidWords();
     await this.renderInvalidWords();
     this.resetGame();
-    helper.setUserOption(this.dataController, this.level, this.round);
-    this.sendStatistic(this.login);
+    if (this.login) {
+      helper.setUserOption(this.dataController, this.level, this.round);
+      this.sendStatistic(this.login);
+    }
   }
 
   async renderValidWords() {
@@ -393,12 +414,14 @@ export default class Game {
   }
 
   async prepareNewGame(repeat) {
+    this.preloadController.showPreloader();
     if (repeat) {
       this.currentDataSet = await helper.getWordsRepeatByApi(this.dataController);
     } else {
       this.currentDataSet = await helper.getWordsByApi(this.dataController);
     }
     await this.createTranslates();
+    this.preloadController.hidePreloader();
   }
 
   showGameOptions() {
@@ -420,6 +443,7 @@ export default class Game {
 
   changeMute() {
     this.mute = !this.mute;
+    soundIcon.classList.toggle('disabled');
   }
 
   showPopupMenu(e) {
