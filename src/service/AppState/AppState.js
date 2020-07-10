@@ -1,4 +1,5 @@
 import { createEvent, createStore } from 'effector';
+import { preloaderCommand } from './AppStateConst';
 
 export const openAuthPopup = createEvent();
 export const closeAuthPopup = createEvent();
@@ -17,6 +18,6 @@ export const authReportStore = createStore('').on(
 
 export const openPreloader = createEvent();
 export const closePreloader = createEvent();
-export const preloaderState = createStore(false)
-  .on(openPreloader, () => true)
-  .on(closePreloader, () => false);
+export const preloaderState = createStore(preloaderCommand.hide)
+  .on(openPreloader, (_, value) => value)
+  .on(closePreloader, (_, value) => value);
