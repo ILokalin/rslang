@@ -19,7 +19,11 @@ import {
   apiWordMaterialsGet,
 } from 'Service/ServerAPI';
 import { reportMessages } from './reportMessages';
-import { dataControllerConst } from './dataControllerConst';
+import {
+  dataControllerConst,
+  cardDefaultSettingsTemplate,
+  cardShortStatTemplate,
+} from './dataControllerConst';
 
 const authPopup = new AuthPopup();
 
@@ -233,6 +237,7 @@ export class DataController {
   chainCreateSignInSettingsGet(userData) {
     const userSettingsName = {
       optional: this.packUserSettings({
+        settings: cardDefaultSettingsTemplate,
         name: userData.name,
       }),
     };
@@ -262,10 +267,17 @@ export class DataController {
   }
 
   orderingStatResult(userStatistics) {
+    const statisticsItems = ['savanna', 'audition', 'puzzle', 'sprint', 'speak-it', 'match-it'];
     const { learnedWords = 0, optional = {} } = userStatistics;
+    const today = moment().format('DD-MMM-YYYY');
+    const shortStat = { ...cardShortStatTemplate, ...{ date: today } };
     const originStatistics = {
       ...this.unpackUserSettings(optional),
     };
+    originStatistics.card = originStatistics.card ?? { shortTime: shortStat, longTime: [] };
+    statisticsItems.forEach((item) => {
+      originStatistics[item] = originStatistics[item] ?? { longTime: [] };
+    });
     originStatistics.learnedWords = learnedWords;
 
     return originStatistics;
@@ -291,15 +303,8 @@ export class DataController {
   }
 
   cardStatisticsAggregate(originStatOptionalCard, shortTimeStat, today) {
-    const shortStatTemplate = {
-      date: today,
-      totalCards: 0,
-      wrightAnswers: 0,
-      newWords: 0,
-      chain: 0,
-      longestChain: 0,
-    };
-    const { longTime = [], shortTime = shortStatTemplate } = originStatOptionalCard;
+    const shortStat = { ...cardShortStatTemplate, ...{ date: today } };
+    const { longTime = [], shortTime = shortStat } = originStatOptionalCard;
     const resultOptionalCard = {
       longTime,
       shortTime,
@@ -308,7 +313,7 @@ export class DataController {
     if (shortTime.date !== today) {
       const longTimeStatItem = [shortTime.date, shortTime.newWords];
       resultOptionalCard.longTime.push(longTimeStatItem);
-      resultOptionalCard.shortTime = { ...shortStatTemplate, ...shortTimeStat };
+      resultOptionalCard.shortTime = { ...shortStat, ...shortTimeStat };
     }
     return resultOptionalCard;
   }
