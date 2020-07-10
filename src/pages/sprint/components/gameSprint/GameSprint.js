@@ -365,7 +365,7 @@ export default class GameSprint {
   }
 
   constrolLevelAfterReload() {
-    if (localStorage.getItem('levelSprint') !== '0') {
+    if (localStorage.getItem('levelSprint') !== '0' && localStorage.getItem('levelSprint') != null) {
       this.gameLevel = localStorage.getItem('levelSprint');
     }
   }
