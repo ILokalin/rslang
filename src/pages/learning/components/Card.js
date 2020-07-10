@@ -237,6 +237,7 @@ export default class Card {
       mySwiper.slides[mySwiper.activeIndex].querySelector('.hard-btn'),
     ];
     const cardTitle = event.target.closest('.card').querySelector('.card-title');
+    const word = event.target.closest('.card').querySelector('.imput_text').dataset.word;
     const {progress} = cardTitle.dataset;
     const {wordId} = cardTitle.dataset;
     let saveOption;
@@ -291,7 +292,7 @@ export default class Card {
           }
           cardTitle.dataset.progress = (newProgress >= 0 ? newProgress : 0);
           cardTitle.dataset.difficulty = 'hard';
-          showToastHard()
+          showToastHard(word);
       }
       buttonsArr.forEach((el) => el.setAttribute('disabled', 'disabled'))
     }    
