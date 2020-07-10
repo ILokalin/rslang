@@ -28,6 +28,7 @@ import {
   homeButton,
   resumeButton,
   soundIcon,
+  nextRoundButton,
 } from '../helper/constants';
 import helper from '../helper/helper';
 
@@ -46,11 +47,13 @@ export default class Game {
     this.level = 0;
     this.round = 0;
     this.height = 0;
+    this.countRepeat = 0;
     this.translates = [];
     this.answers = [];
     this.currentWord = null;
     this.currentIntreval = null;
     this.currentDataSet = null;
+    this.nextDataSet = null;
     this.keyPressHandler = this.keyboardCheckAnswer.bind(this);
     this.mouseClickHandler = this.mouseCheckAnswer.bind(this);
     this.props = {
@@ -67,6 +70,7 @@ export default class Game {
     soundButton.addEventListener('click', this.changeMute.bind(this));
     homeButton.addEventListener('click', this.showPopupMenu.bind(this));
     resumeButton.addEventListener('click', this.resumeGame.bind(this));
+    nextRoundButton.addEventListener('click', this.newGame.bind(this));
     helper.renredHearts();
     this.getUserData();
     this.createTranslates();
@@ -77,57 +81,65 @@ export default class Game {
   }
 
   async trueLogin(data) {
-    this.preloadController.showPreloader();
-    this.currentDataSet = await helper.getWordsRepeatByApi(this.dataController);
+    this.round = data.savanna.lastRound;
+    this.level = data.savanna.lastLevel;
+    this.login = true;
+    // this.preloadController.showPreloader();
+    await this.createRepeatWords();
     repeatOption.checked = true;
     this.switchOption();
     this.repeat = true;
     if (!this.currentDataSet) {
-      this.currentDataSet = await helper.getWordsByApi(this.dataController);
+      await this.createNewWords();
+      // this.preloadController.hidePreloader();
       this.repeat = false;
       repeatOption.checked = true;
       repeatOption.disabled = true;
       this.switchOption();
       helper.renderNeedMoreWords();
     }
-    this.round = data.savanna.lastRound;
-    this.level = data.savanna.lastLevel;
-    this.login = true;
-    this.preloadController.hidePreloader();
     helper.renderUserName(data);
   }
 
   async falseLogin() {
-    this.preloadController.showPreloader();
-    this.currentDataSet = await helper.getWordsByApi(this.dataController);
+    await this.createNewWords();
     this.login = false;
     repeatOption.checked = false;
     repeatOption.disabled = true;
     helper.renderEmptyUserName();
-    this.preloadController.hidePreloader();
     helper.renderRepeatDontWork();
   }
 
   changeRound(event) {
     this.round = +event.target.value - 1;
+    this.createNewWords();
   }
 
   changeLevel(event) {
     this.level = +event.target.value - 1;
+    this.createNewWords();
   }
 
   async changeRepeatOption() {
-    this.preloadController.showPreloader();
     if (repeatOption.checked) {
       this.switchOption();
-      this.currentDataSet = await helper.getWordsRepeatByApi(this.dataController);
+      // this.preloadController.showPreloader();
+      await this.createRepeatWords();
       this.repeat = true;
     } else {
       this.switchOption();
-      this.currentDataSet = await helper.getWordsByApi(this.dataController);
+      await this.createNewWords();
+      // this.preloadController.hidePreloader();
       this.repeat = false;
     }
-    this.preloadController.hidePreloader();
+  }
+
+  async createRepeatWords() {
+    this.currentDataSet = await helper.getWordsRepeatByApi(this.dataController);
+  }
+
+  async createNewWords() {
+    this.currentDataSet = await helper.getWordsByApi(this.dataController, this.level, this.round);
   }
 
   switchOption() {
@@ -145,7 +157,7 @@ export default class Game {
     if (repeat) {
       this.currentWord = this.currentDataSet.pop();
     } else {
-      this.currentWord = this.currentDataSet[this.level][this.round].pop();
+      this.currentWord = this.currentDataSet.pop();
     }
     this.answers.push(this.currentWord.wordTranslate);
     while (this.answers.length < 4) {
@@ -173,6 +185,7 @@ export default class Game {
     this.height = 0;
     document.body.addEventListener('keydown', this.keyPressHandler);
     answerContainer.addEventListener('click', this.mouseClickHandler);
+    console.log(this.currentDataSet);
   }
 
   renderLevel(repeat) {
@@ -242,7 +255,7 @@ export default class Game {
     }
   }
 
-  correctAnswer(mute) {
+  async correctAnswer(mute) {
     this.isGame = false;
     if (!mute) {
       helper.makeCorrectNoise();
@@ -250,20 +263,19 @@ export default class Game {
     this.stop();
     this.props.knowWords.push(this.currentWord);
     if (!this.repeat) {
-      if (this.level === 5 && this.round === 5) {
-        this.showStat(true);
-      } else if (this.round === 5) {
+      if (this.round === 29) {
         this.level += 1;
-        this.round = 0;
-        this.start(true);
+        this.showStat(true);
       } else {
         this.round += 1;
+        await this.createNewWords();
         this.start(true);
       }
     } else {
-      if (this.currentDataSet.length === 0) {
+      if (this.currentDataSet.length === 0 || this.countRepeat === 29) {
         this.showStat(true);
       }
+      this.countRepeat += 1;
       this.start(true);
     }
   }
@@ -343,7 +355,6 @@ export default class Game {
       helper.setUserOption(this.dataController, this.level, this.round);
       this.sendStatistic(this.login);
     }
-    this.resetGame();
   }
 
   async renderValidWords() {
@@ -398,35 +409,52 @@ export default class Game {
     }
   }
 
-  async resetGame() {
-    if (this.round === 5 && this.level === 5) {
-      this.round = 0;
+  resetRoundAndLevel() {
+    if (this.level === 5) {
       this.level = 0;
     }
+    if (this.round === 29) {
+      this.round = 0;
+    }
+    if (this.countRepeat === 29) {
+      this.countRepeat = 0;
+    }
+  }
+
+  async prepareNewGame(repeat) {
+    this.resetRoundAndLevel();
+    helper.renderCurrentRoundInOption(this.round);
+    helper.renderCurrentLevelInOption(this.level);
     this.props = {
       dontKnowWords: [],
       knowWords: [],
     };
+    this.restoreHealt();
     this.currentWord = null;
     this.health = health;
-    this.restoreHealt();
-  }
-
-  async prepareNewGame(repeat) {
-    this.preloadController.showPreloader();
     if (repeat) {
-      this.currentDataSet = await helper.getWordsRepeatByApi(this.dataController);
+      if (this.currentDataSet.length < 10) {
+        await this.createRepeatWords();
+      }
     } else {
-      this.currentDataSet = await helper.getWordsByApi(this.dataController);
+      await this.createNewWords();
     }
     await this.createTranslates();
-    this.preloadController.hidePreloader();
   }
 
   showGameOptions() {
+    this.prepareNewGame(this.repeat);
     statistic.classList.add('hidden');
     intro.classList.remove('hidden');
+  }
+
+  newGame(e) {
+    e.preventDefault();
     this.prepareNewGame(this.repeat);
+    gameContainer.classList.remove('hidden');
+    gameHeader.classList.remove('hidden');
+    statistic.classList.add('hidden');
+    this.renderRound();
   }
 
   restoreHealt() {

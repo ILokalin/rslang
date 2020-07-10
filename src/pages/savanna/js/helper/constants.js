@@ -30,6 +30,7 @@ const resumeButton = document.querySelector('.resume');
 const healtBar = document.querySelector('.healt-bar');
 const menu = document.querySelector('.sidenav');
 const soundIcon = document.querySelector('.sound-icon');
+const nextRoundButton = document.querySelector('.next-round');
 
 export {
   appStartButton,
@@ -64,4 +65,5 @@ export {
   healtBar,
   menu,
   soundIcon,
+  nextRoundButton,
 };

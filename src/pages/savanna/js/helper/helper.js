@@ -1,4 +1,4 @@
-import { userNameElement, audio, healtBar, health, menu } from './constants';
+import { userNameElement, audio, healtBar, health, menu, roundOption } from './constants';
 import '../../assets/img/savanna-heart.svg';
 
 const helper = {
@@ -10,58 +10,9 @@ const helper = {
     userNameElement.innerText = '';
   },
 
-  async getWordsByApi(dataController) {
-    const dataSetForGame = [];
-    const round1 = dataController.getWords({ group: 0, wordsPerPage: 600 }).then((data) => data);
-    const round2 = dataController.getWords({ group: 1, wordsPerPage: 600 }).then((data) => data);
-    const round3 = dataController.getWords({ group: 2, wordsPerPage: 600 }).then((data) => data);
-    const round4 = dataController.getWords({ group: 3, wordsPerPage: 600 }).then((data) => data);
-    const round5 = dataController.getWords({ group: 4, wordsPerPage: 600 }).then((data) => data);
-    const round6 = dataController.getWords({ group: 5, wordsPerPage: 600 }).then((data) => data);
-    const dataSet = Promise.all([round1, round2, round3, round4, round5, round6]).then(
-      (data) => data,
-    );
-    (await dataSet).forEach((element) => {
-      const round = [];
-      round.push(
-        element
-          .slice(0, 100)
-          .sort(() => Math.random() - 0.5)
-          .splice(0, 5),
-      );
-      round.push(
-        element
-          .slice(100, 200)
-          .sort(() => Math.random() - 0.5)
-          .splice(0, 5),
-      );
-      round.push(
-        element
-          .slice(200, 300)
-          .sort(() => Math.random() - 0.5)
-          .splice(0, 5),
-      );
-      round.push(
-        element
-          .slice(300, 400)
-          .sort(() => Math.random() - 0.5)
-          .splice(0, 5),
-      );
-      round.push(
-        element
-          .slice(400, 500)
-          .sort(() => Math.random() - 0.5)
-          .splice(0, 5),
-      );
-      round.push(
-        element
-          .slice(500, 600)
-          .sort(() => Math.random() - 0.5)
-          .splice(0, 5),
-      );
-      dataSetForGame.push(round);
-    });
-    return dataSetForGame;
+  async getWordsByApi(dataController, level, round) {
+    const words = await dataController.getWords({ group: level, page: round }).then((data) => data);
+    return words.sort(() => Math.random() - 0.5);
   },
 
   async getTranslatesByApi(dataController) {
@@ -77,12 +28,8 @@ const helper = {
     let repeatWords = await dataController
       .userWordsGetAll(['onlearn', 'hard', 'deleted'])
       .then((data) => data[0].paginatedResults);
-    if (repeatWords.length > 36) {
-      repeatWords = repeatWords.sort(() => Math.random() - 0.5).slice(0, 36);
-    } else if (repeatWords.length < 10) {
+    if (repeatWords.length < 10) {
       repeatWords = null;
-    } else if (repeatWords.length <= 36 && repeatWords.length >= 10) {
-      repeatWords = repeatWords.sort(() => Math.random() - 0.5);
     }
     return repeatWords;
   },
@@ -108,7 +55,6 @@ const helper = {
         },
       })
       .then((dataStat) => console.log(dataStat));
-
   },
 
   setUserOption(dataController, level, round) {
@@ -158,6 +104,15 @@ const helper = {
     const li = document.createElement('li');
     li.innerHTML = `<a class="subheader">Повторение слов недоступно, залогиньтесь.</a>`;
     menu.appendChild(li);
+  },
+  renderCurrentRoundInOption(value) {
+    roundOption.value = value + 1;
+  },
+  renderCurrentLevelInOption(value) {
+    const levelOptionList = document.querySelector('.dropdown-content');
+    console.log(levelOptionList);
+    levelOptionList.children.forEach((child) => child.classList.remove('selected'));
+    levelOptionList.children[value + 1].classList.add('selected');
   },
 };
 
