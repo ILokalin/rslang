@@ -231,18 +231,12 @@ export function apiUserCreate(user) {
     })
       .then((rawResponse) => {
         if (isSuccess(rawResponse)) {
-          return rawResponse.json();
+          return resolve();
         }
         const error = new Error(rawResponse.statusText);
         error.master = 'user';
         error.code = rawResponse.status;
         throw error;
-      })
-      .then((response) => {
-        const { id, email } = response;
-        localStorage.setItem('userId', id);
-        localStorage.setItem('email', email);
-        resolve(response);
       })
       .catch((errorReport) => reject(errorReport));
   });
