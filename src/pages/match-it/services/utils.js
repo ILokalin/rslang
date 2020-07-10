@@ -5,6 +5,7 @@ import {
   LEVELS_MAX_COUNT,
   ROUNDS_MAX_COUNT,
   ERRORS_MAX_COUNT,
+  results,
   errorMessage,
   defaultUser,
 } from '../data/constants';
@@ -94,6 +95,11 @@ const Utils = {
     });
   },
 
+  onReturnBtnClick: (e) => {
+    results.classList.add('hidden');
+    e.preventDefault();
+  },
+
   goToNextRound: () => {
     const level = parseInt(levelSelect.value, 10);
     const round = parseInt(roundSelect.value, 10);
@@ -110,6 +116,11 @@ const Utils = {
 
   isUserWordsSelected: () => {
     return levelSelect.selectedOptions[0].value === '0';
+  },
+
+  goToTop: () => {
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
   },
 };
 

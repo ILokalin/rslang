@@ -18,9 +18,13 @@ const allCards = document.querySelector('.container__cards');
 const allWords = document.querySelector('.container__words');
 const restartBtn = document.querySelector('.restart');
 const checkBtn = document.querySelector('.result');
+const returnBtn = document.querySelector('.return');
 const nextBtn = document.querySelector('.next');
 const scoreLabel = document.querySelector('.score');
+const results = document.querySelector('.game-results');
 const errorMessage = document.querySelector('.error-text');
+const errorsLabel = document.querySelector('.errors-num');
+const knowsLabel = document.querySelector('.success-num');
 const defaultUser = 'Unknown';
 
 export {
@@ -35,11 +39,15 @@ export {
   levelSelect,
   allCards,
   allWords,
+  returnBtn,
   nextBtn,
   checkBtn,
   restartBtn,
   scoreLabel,
+  results,
   errorMessage,
+  errorsLabel,
+  knowsLabel,
   defaultUser,
   DATA_PATH,
   LEVELS_MAX_COUNT,

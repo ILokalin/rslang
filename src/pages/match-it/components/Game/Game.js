@@ -8,6 +8,10 @@ import {
   allWords,
   ERRORS_MAX_COUNT,
   scoreLabel,
+  results,
+  errorsLabel,
+  knowsLabel,
+  returnBtn,
   nextBtn,
   checkBtn,
   restartBtn,
@@ -42,12 +46,16 @@ export default class Game {
     restartBtn.addEventListener('click', this.onRestartBtnClick.bind(this));
     nextBtn.addEventListener('click', this.onNextBtnClick.bind(this));
     checkBtn.addEventListener('click', this.showResults.bind(this));
+    returnBtn.addEventListener('click', Utils.onReturnBtnClick);
   }
 
   async showResults(e) {
     if (checkBtn.classList.contains('activeBtn')) {
       return;
     }
+    errorsLabel.innerText = this.props.errors;
+    knowsLabel.innerText = this.props.know;
+
     Utils.disableCardsTransfer();
     checkBtn.classList.add('activeBtn');
     scoreLabel.children[0].innerHTML = this.props.know;
@@ -56,6 +64,8 @@ export default class Game {
     if (this.userService.isAuthorized()) {
       await this.sendStatisticsToBackEnd();
     }
+    results.classList.remove('hidden');
+    Utils.goToTop();
     e.preventDefault();
   }
 
@@ -87,6 +97,7 @@ export default class Game {
 
   async onNextBtnClick(e) {
     Utils.goToNextRound();
+    results.classList.add('hidden');
     await this.restartGame();
     e.preventDefault();
   }

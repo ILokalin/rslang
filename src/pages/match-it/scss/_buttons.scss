@@ -1,9 +1,13 @@
 .btns {
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   margin-bottom: 80px;
   &.btns-res {
     margin-bottom: 20px;
+    .btn-medium {
+      height: 44px;
+      line-height: 44px;
+    }
   }
 }
 
@@ -61,7 +65,6 @@ main .btn {
     }
 
     .restart,
-    .next,
     .result {
       width: 50vw;
       margin: 10px auto;

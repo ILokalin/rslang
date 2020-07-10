@@ -1,4 +1,4 @@
-import { checkBtn, ERRORS_MAX_COUNT } from '../data/constants';
+import { allWords, checkBtn, ERRORS_MAX_COUNT } from '../data/constants';
 
 export default class DataTransferService {
   start(props) {
@@ -7,6 +7,7 @@ export default class DataTransferService {
     this.wordTransfer = this.wordTransferEvent.bind(this);
     document.querySelectorAll('.draggable').forEach((item) => {
       item.addEventListener('dragstart', this.dragStart);
+      item.addEventListener('dragend', this.dragEnd);
     });
     document.querySelectorAll('.container__cards .droptarget').forEach((item) => {
       item.addEventListener('dragover', (event) => event.preventDefault());
@@ -23,9 +24,17 @@ export default class DataTransferService {
   }
 
   dragStart(event) {
+    if (event.target.closest('.container__cards')) {
+      allWords.classList.add('dashed');
+    }
+
     const itemDataTransfer = event.dataTransfer;
     itemDataTransfer.dropEffect = 'move';
     itemDataTransfer.setData('text', event.target.closest('.card-panel').id);
+  }
+
+  dragEnd(event) {
+    allWords.classList.remove('dashed');
   }
 
   cardTransferEvent(event) {
@@ -70,11 +79,15 @@ export default class DataTransferService {
 
   wordTransferEvent(event) {
     event.preventDefault();
+
     const id = event.dataTransfer.getData('text');
     const card = document.getElementById(id);
     if (card) {
       const { currentTarget } = event;
       const targetCard = currentTarget.closest('.col');
+      if (targetCard.children.length > 1) {
+        return;
+      }
       targetCard.append(card);
       document.querySelectorAll('.container__cards .col').forEach((child) => {
         if (child.children.length === 1) {
