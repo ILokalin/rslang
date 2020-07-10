@@ -61,7 +61,6 @@ const helper = {
       );
       dataSetForGame.push(round);
     });
-    console.log(dataSetForGame);
     return dataSetForGame;
   },
 
@@ -85,7 +84,6 @@ const helper = {
     } else if (repeatWords.length <= 36 && repeatWords.length >= 10) {
       repeatWords = repeatWords.sort(() => Math.random() - 0.5);
     }
-    console.log(repeatWords);
     return repeatWords;
   },
 
@@ -111,7 +109,6 @@ const helper = {
       })
       .then((dataStat) => console.log(dataStat));
 
-    console.log(winRate, wordsObject.dontKnowWords.length, wordsObject.knowWords.length);
   },
 
   setUserOption(dataController, level, round) {

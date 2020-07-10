@@ -6,7 +6,7 @@ import {
   restartButton,
   gameContainer,
   gameHeader,
-  difficultMenu,
+  intro,
   fallingWordText,
   answerElements,
   answerContainer,
@@ -186,7 +186,7 @@ export default class Game {
   startGame(e) {
     this.renderRound();
     e.preventDefault();
-    difficultMenu.classList.add('hidden');
+    intro.classList.add('hidden');
     gameContainer.classList.remove('hidden');
     gameHeader.classList.remove('hidden');
   }
@@ -425,7 +425,7 @@ export default class Game {
 
   showGameOptions() {
     statistic.classList.add('hidden');
-    difficultMenu.classList.remove('hidden');
+    intro.classList.remove('hidden');
     this.prepareNewGame(this.repeat);
   }
 

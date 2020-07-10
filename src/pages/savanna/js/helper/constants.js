@@ -1,6 +1,5 @@
 const appStartButton = document.querySelector('.app-start');
 const intro = document.querySelector('.intro');
-const difficultMenu = document.querySelector('.difficult');
 const gameStartButton = document.querySelector('.startGame');
 const restartButton = document.querySelector('.restart');
 const currentGameStage = document.querySelector('.stage');
@@ -35,7 +34,6 @@ const soundIcon = document.querySelector('.sound-icon');
 export {
   appStartButton,
   intro,
-  difficultMenu,
   gameStartButton,
   currentGameStage,
   hearts,
