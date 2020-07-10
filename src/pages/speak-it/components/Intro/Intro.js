@@ -1,15 +1,16 @@
-import { INTRO, START_BTN, GAME_CONTAINER, sideNavTriggerEl } from '../../data/constants';
+import { INTRO, START_BTN, sideNavTriggerEl } from '../../data/constants';
 
 export default class Intro {
-  init() {
+  init(game) {
     this.el = START_BTN;
-    this.el.addEventListener('click', Intro.startButtonClick);
+    this.game = game;
+    this.el.addEventListener('click', this.startButtonClick.bind(this));
   }
 
-  static startButtonClick(e) {
+  startButtonClick(e) {
     INTRO.classList.add('hidden');
-    GAME_CONTAINER.classList.remove('hidden');
     sideNavTriggerEl.classList.remove('hidden');
+    this.game.start();
     e.preventDefault();
   }
 }

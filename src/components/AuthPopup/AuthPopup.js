@@ -1,8 +1,8 @@
 import 'materialize-css';
 import { DomGen } from 'Service/DomGen';
 import { closeAuthPopup, authPopupState, setUserData, authReportStore } from 'Service/AppState';
-import { AuthPopConst } from './AuthPopupConst';
-import { AuthPopupForm } from './AuthPopupForm';
+import { regExp, messages } from './AuthPopupConst';
+import { authPopupForm } from './AuthPopupForm';
 
 export class AuthPopup {
   constructor() {
@@ -13,7 +13,7 @@ export class AuthPopup {
   }
 
   init() {
-    this.popup = DomGen(AuthPopupForm);
+    this.popup = DomGen(authPopupForm);
 
     authReportStore.watch((reportMessage) => {
       this.popup.reportLine.innerText = reportMessage;
@@ -37,7 +37,7 @@ export class AuthPopup {
   formToLogin() {
     const { header, nameLine, register, login, toggleBlockLogin, toggleBlockRegister } = this.popup;
 
-    header.innerText = 'Login';
+    header.innerText = messages.login;
     nameLine.style.display = 'none';
     register.style.display = 'none';
     login.style.display = 'block';
@@ -73,9 +73,9 @@ export class AuthPopup {
 
   sendUserData() {
     const isValidate =
-      AuthPopConst.emailRegexp.test(this.popup.email.value) &&
-      AuthPopConst.passwordRegexp.test(this.popup.password.value) &&
-      (!this.isFormRegister || AuthPopConst.nameRegexp.test(this.popup.name.value));
+      regExp.email.test(this.popup.email.value) &&
+      regExp.password.test(this.popup.password.value) &&
+      (!this.isFormRegister || regExp.name.test(this.popup.name.value));
 
     const user = {
       email: this.popup.email.value,
@@ -90,13 +90,13 @@ export class AuthPopup {
     if (isValidate) {
       setUserData(user);
     } else {
-      if (!AuthPopConst.emailRegexp.test(this.popup.email.value)) {
-        this.popup.reportLine.innerText = 'Please input correct email address';
+      if (!regExp.email.test(this.popup.email.value)) {
+        this.popup.reportLine.innerText = messages.correctEmail;
       }
-      if (!AuthPopConst.passwordRegexp.test(this.popup.password.value)) {
-        this.popup.reportLine.innerText = 'Please use correct password format. See below.';
+      if (!regExp.password.test(this.popup.password.value)) {
+        this.popup.reportLine.innerText = messages.correctPassword;
       }
-      if (this.isFormRegister && !AuthPopConst.nameRegexp.test(this.popup.name.value)) {
+      if (this.isFormRegister && !regExp.name.test(this.popup.name.value)) {
         this.popup.reportLine.innerText = 'Please use one or more letters for name';
       }
     }

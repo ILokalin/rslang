@@ -1,14 +1,16 @@
-import { DataController } from 'Service/DataController';
 import Utils from '../../services/utils';
 import SpeechRecognitionService from '../../services/speechRecognition';
 import GameSettings from '../GameSettings';
+import DataProvider from './DataProvider';
 
 import {
+  GAME_CONTAINER,
   CARDS_ITEMS,
   ERRORS_MAX_COUNT,
   WORD_IMG,
   WORD_TRANSLATION,
   DATA_PATH,
+  SPEAK_BTN,
   RESTART,
   RETURN,
   RESULTS,
@@ -22,9 +24,7 @@ import {
 } from '../../data/constants';
 
 export default class Game {
-  constructor() {
-    this.gameSettings = new GameSettings();
-    this.gameSettings.init(this.levelOrRoundSelected.bind(this));
+  constructor(dataController, preloaderController, userService) {
     localStorage.isStart = false;
     this.authorized = false;
     this.props = {
@@ -34,25 +34,21 @@ export default class Game {
       knowArr: [],
     };
     Utils.resetMainCard();
-    this.dataController = new DataController();
+    this.dataController = dataController;
+    this.userService = userService;
+    this.dataProvider = new DataProvider(dataController, preloaderController, userService);
   }
 
-  start() {
-    this.dataController.getUser().then(
-      (settings) => {
-        Utils.displayUserName(settings);
-        this.authorized = true;
-        this.init();
-      },
-      (report) => {
-        Utils.displayEmptyUserName(report);
-        this.init();
-      },
-    );
+  async start() {
+    await this.dataProvider.start();
+    await this.init();
+    GAME_CONTAINER.classList.remove('hidden');
   }
 
-  init() {
-    this.createCardPage();
+  async init() {
+    this.gameSettings = new GameSettings(this.dataProvider);
+    this.gameSettings.init(this.levelOrRoundSelected.bind(this));
+    await this.createCardPage();
     RESTART.addEventListener('click', this.onRestartBtnClick.bind(this));
     RETURN.addEventListener('click', Utils.onReturnBtnClick);
     NEW_GAME.addEventListener('click', this.onNewGameBtnClick.bind(this));
@@ -60,7 +56,7 @@ export default class Game {
     this.recognition = new SpeechRecognitionService(this.props);
   }
 
-  showResults(e) {
+  async showResults(e) {
     ERRORS.innerText = this.props.errors;
     KNOW.innerText = this.props.know;
     RESULTS_ERRORS.innerHTML = '';
@@ -84,31 +80,52 @@ export default class Game {
     e.preventDefault();
   }
 
+  async saveSettings() {
+    this.gameSettings.displayRound();
+    Utils.setCurrentRound(this.dataProvider.getCurrentGameRound());
+    if (this.userService.isAuthorized()) {
+      await this.dataController.setUserOptions({
+        'speak-it': { gameRound: Utils.getCurrentRound() },
+      });
+    }
+  }
+
+  async sendStatisticsToBackEnd() {
+    const results = Math.floor((this.props.know / ERRORS_MAX_COUNT) * 100) || 0;
+    const requestBody = {
+      'speak-it': {
+        result: results,
+        round: roundLabelEl.innerHTML,
+        knownWords: this.props.know,
+        mistakeWords: this.props.errors,
+      },
+    };
+    await this.dataController.setUserStatistics(requestBody);
+  }
+
   onRestartBtnClick(e) {
     this.restartGame();
     e.preventDefault();
   }
 
-  onNewGameBtnClick(e) {
-    this.restartGame();
+  async onNewGameBtnClick(e) {
+    if (SPEAK_BTN.classList.contains('activeBtn')) {
+      await this.sendStatisticsToBackEnd();
+    }
     RESULTS.classList.add('hidden');
+    Utils.goToNextRound();
+    await this.levelOrRoundSelected();
     e.preventDefault();
   }
 
   async createCardPage() {
     this.props.errorsArr = [];
     this.props.errorsArr.length = 0;
-    let wordsData;
-    if (this.authorized) {
-      wordsData = await Utils.getUserWordsForRound(this.dataController);
-    }
-    if (!wordsData || (wordsData[0].totalCount.count || 0) < ERRORS_MAX_COUNT) {
-      wordsData = await Utils.getWordsForRound(this.dataController);
-    } else {
-      roundLabelEl.innerText = '';
-    }
+    this.saveSettings();
+    const wordsData = await this.dataProvider.getData();
+    CARDS_ITEMS.innerHTML = '';
     await wordsData.forEach(this.createCard.bind(this));
-    await Utils.disableCardClick();
+    Utils.disableCardClick();
     Utils.resetCardMinWidth('0');
   }
 
@@ -135,12 +152,12 @@ export default class Game {
     this.props.knowArr.length = 0;
   }
 
-  levelOrRoundSelected() {
+  async levelOrRoundSelected() {
     this.clearStatistics();
+    this.saveSettings();
     this.restartGame();
     Utils.resetCardMinWidth();
-    CARDS_ITEMS.innerHTML = '';
-    this.createCardPage();
+    await this.createCardPage();
   }
 
   async createCard(data, index) {

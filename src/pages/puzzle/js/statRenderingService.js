@@ -22,8 +22,6 @@ const createRow = (roundStat) => {
   return tr;
 };
 
-
-
 const fillStatistics = async () => {
   const tableBody = fullStatPage.querySelector('tbody');
   const longTermStatistics = await getStatistics();
