@@ -8,6 +8,15 @@
   display: none!important;
 }
 
+.disabled-link {
+  pointer-events: none;
+  cursor: default;
+  @extend .grey-text, .text-lighten-2;
+  & i {
+    @extend .grey-text, .text-lighten-2;
+  } 
+}
+
 header, main, footer, .settings-container, .statistics-container, .vocabulary-container {
   padding-left: 300px;
 }
@@ -33,6 +42,10 @@ header, main, footer, .settings-container, .statistics-container, .vocabulary-co
   box-shadow:0 0 0 4px rgba(255,255,255,0.2);
 }
 
+.menu__training, .menu__training i  {
+  @extend .teal-text, .text-lighten-2;
+}
+
 // Settings
 
 .tab .active {
@@ -50,6 +63,21 @@ header, main, footer, .settings-container, .statistics-container, .vocabulary-co
 
 .settings__general {
   margin-top: 2rem;
+
+  
+  & .range-block {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+  }
+
+  & .range-field {   
+    width: 90%
+  }
+}
+
+.translation-label {
+  margin-left: 20px;
 }
 
 // main
@@ -69,6 +97,8 @@ header, main, footer, .settings-container, .statistics-container, .vocabulary-co
   flex-wrap: wrap;
   margin-bottom:0;
 }
+
+
 
 //pie
 

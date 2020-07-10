@@ -24,6 +24,10 @@ import {
   meaningTranslation,
   showAnswerBtn,
   autoPlay,
+  menuLinks,
+  trainingBtn,
+  mainPageStats,
+  mainLogoutMsg,
 } from '../constants';
 import { whoIsGameFor } from './whoIsGameFor';
 
@@ -34,6 +38,10 @@ const userLogout = () => {
     btn.classList.add('hidden');
   });
   titleUser.innerText = 'CAPTAIN ANONIMUS';
+  menuLinks.forEach((link) => {link.classList.add('disabled-link')});
+  trainingBtn.classList.add('disabled');
+  mainPageStats.classList.add('hidden');
+  mainLogoutMsg.classList.remove('hidden');
 };
 
 const storageHandle = ({ key }) => {
@@ -53,7 +61,7 @@ logoutButtons.forEach((btn) => {
 });
 
 settingsSaveBtns.forEach((btn) => {
-  const settings = JSON.parse(localStorage.getItem('settings'));
+  const settings = JSON.parse(localStorage.getItem('cardsSettings'));
   btn.addEventListener('click', (event) => {
     if (event.target.closest('form.settings__general')) {
       if (+cardsPerDay.value < +newCardsPerDay.value) {
@@ -82,8 +90,11 @@ settingsSaveBtns.forEach((btn) => {
       settings.autoPlayEnabled = +autoPlay.checked;
     }
     console.log(settings);
-    localStorage.setItem('settings', JSON.stringify(settings));
-    // TODO send settings to backend
-    dataController.setUserOptions({ settings });
+    localStorage.setItem('cardsSettings', JSON.stringify(settings));
+    dataController.setUserOptions({settings});
   });
 });
+
+document.querySelector('.message-login').addEventListener('click', () => {
+  loginButton.click();
+})
