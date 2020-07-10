@@ -39,6 +39,7 @@ const mainPageStats = document.querySelector('.main-page-statistics-container');
 const mainLogoutMsg = document.querySelector('.main-page-logout-message');
 
 export {
+  menuHome,
   settings,
   statistcs,
   vocabulary,

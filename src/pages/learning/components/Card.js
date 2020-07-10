@@ -372,7 +372,10 @@ export default class Card {
     const {wordId} = cardTitle.dataset;
     const wordDifficulty = cardTitle.dataset.difficulty;
     const showAnswerBtn = event.target.closest('.card').querySelector('.show-answer-btn');
+    const submitAnswer = event.target.closest('.card').querySelector('.submit-answer');
     let isWrong;
+
+    submitAnswer.setAttribute('disabled', 'disabled');
 
     input.blur();
 
@@ -425,6 +428,7 @@ export default class Card {
         result.style.zIndex = -1;
         result.innerHTML = '';
         input.focus();
+        submitAnswer.removeAttribute('disabled');
       }, 3000);
 
       await againBtnAct();  

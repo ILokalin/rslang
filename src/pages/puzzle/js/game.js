@@ -204,23 +204,24 @@ const startRound = async () => {
     dontknow: [],
   };
   preloaderController.hidePreloader();
-  
-  setGameRound(); 
+  if (gameState.words) {
+    setGameRound(); 
 
-  setRoundPainting();
-  setPaintingInfo();
-  
-  painting.onload = async () => {
-    document.querySelector('.game-result').setAttribute('style', `height: ${painting.clientHeight}px`);
-   await playNextSentence();
-  };
-  pictureBtn.dataset.pictureOn = store.hints.isPictureOn;
-  hideTranslation();
-  checkBtn.classList.add('hidden');
-  continueBtn.classList.add('hidden');
-  dontKnowBtn.classList.remove('hidden');
-  resultsBtn.classList.add('hidden');
-  
+    setRoundPainting();
+    setPaintingInfo();
+    
+    painting.onload = async () => {
+      document.querySelector('.game-result').setAttribute('style', `height: ${painting.clientHeight}px`);
+      await playNextSentence();
+    };
+    
+    pictureBtn.dataset.pictureOn = store.hints.isPictureOn;
+    hideTranslation();
+    checkBtn.classList.add('hidden');
+    continueBtn.classList.add('hidden');
+    dontKnowBtn.classList.remove('hidden');
+    resultsBtn.classList.add('hidden');
+  }  
 };
 
 const goToNextRound = async () => {
