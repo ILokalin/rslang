@@ -24,10 +24,12 @@ const helper = {
     return transtales;
   },
 
-  async getWordsRepeatByApi(dataController) {
+  async getWordsRepeatByApi(dataController, preloaderController) {
+    preloaderController.showPreloader();
     let repeatWords = await dataController
       .userWordsGetAll(['onlearn', 'hard', 'deleted'])
       .then((data) => data[0].paginatedResults);
+    preloaderController.hidePreloader();
     if (repeatWords.length < 10) {
       repeatWords = null;
     }
@@ -110,9 +112,9 @@ const helper = {
   },
   renderCurrentLevelInOption(value) {
     const levelOptionList = document.querySelector('.dropdown-content');
-    console.log(levelOptionList);
     levelOptionList.children.forEach((child) => child.classList.remove('selected'));
-    levelOptionList.children[value + 1].classList.add('selected');
+    levelOptionList.children[value].classList.add('selected');
+    levelOptionList.children[value].click();
   },
 };
 

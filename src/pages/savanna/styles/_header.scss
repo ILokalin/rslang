@@ -4,7 +4,7 @@
 .sidenav-trigger {
   position: absolute;
   top: 20px;
-  left: 30px;
+  left: 20px;
   color: white;
 }
 .dropdown-trigger {
@@ -23,4 +23,7 @@
   position: absolute;
   right: 20px;
 }
-
+.round {
+  padding-left: 10px !important;
+  width: 290px !important;
+}

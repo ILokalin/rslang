@@ -11,7 +11,7 @@
   padding: 10px;
   transition: 0.5s;
   text-align: center;
-  transition: .5s;
+  transition: 0.5s;
 }
 .statistic-container {
   position: relative;
@@ -64,6 +64,7 @@
   width: 34px;
   height: 34px;
   color: rgba(14, 30, 37, 0.7);
+  cursor: pointer;
 }
 .btns-res {
   width: calc(100% - 32px);
@@ -79,7 +80,7 @@
 .answers-valid-items {
   margin-bottom: 50px;
 }
-.result-title{
+.result-title {
   font-size: 2.2rem;
 }
 .answer-tr {

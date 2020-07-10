@@ -38,7 +38,7 @@ export default class Game {
     this.fallingWordText = fallingWordText;
     this.answersElements = answerElements;
     this.dataController = new DataController();
-    this.preloadController = new PreloaderController();
+    this.preloaderController = new PreloaderController();
     this.health = health;
     this.repeat = false;
     this.login = false;
@@ -84,20 +84,21 @@ export default class Game {
     this.round = data.savanna.lastRound;
     this.level = data.savanna.lastLevel;
     this.login = true;
-    // this.preloadController.showPreloader();
+    helper.renderCurrentRoundInOption(this.round);
+    helper.renderCurrentLevelInOption(this.level);
     await this.createRepeatWords();
     repeatOption.checked = true;
     this.switchOption();
     this.repeat = true;
     if (!this.currentDataSet) {
       await this.createNewWords();
-      // this.preloadController.hidePreloader();
       this.repeat = false;
       repeatOption.checked = true;
       repeatOption.disabled = true;
       this.switchOption();
       helper.renderNeedMoreWords();
     }
+    console.log(this.currentDataSet);
     helper.renderUserName(data);
   }
 
@@ -118,24 +119,26 @@ export default class Game {
   changeLevel(event) {
     this.level = +event.target.value - 1;
     this.createNewWords();
+    console.log(this.level);
   }
 
   async changeRepeatOption() {
     if (repeatOption.checked) {
       this.switchOption();
-      // this.preloadController.showPreloader();
       await this.createRepeatWords();
       this.repeat = true;
     } else {
       this.switchOption();
       await this.createNewWords();
-      // this.preloadController.hidePreloader();
       this.repeat = false;
     }
   }
 
   async createRepeatWords() {
-    this.currentDataSet = await helper.getWordsRepeatByApi(this.dataController);
+    this.currentDataSet = await helper.getWordsRepeatByApi(
+      this.dataController,
+      this.preloaderController,
+    );
   }
 
   async createNewWords() {
@@ -352,6 +355,7 @@ export default class Game {
     await this.renderValidWords();
     await this.renderInvalidWords();
     if (this.login) {
+      this.resetRoundAndLevel();
       helper.setUserOption(this.dataController, this.level, this.round);
       this.sendStatistic(this.login);
     }
@@ -410,7 +414,8 @@ export default class Game {
   }
 
   resetRoundAndLevel() {
-    if (this.level === 5) {
+    console.log(this.level, this.round, this.countRepeat);
+    if (this.level === 6) {
       this.level = 0;
     }
     if (this.round === 29) {
@@ -486,6 +491,7 @@ export default class Game {
     if (this.isGame) {
       this.isFallWord();
       document.body.addEventListener('keydown', this.keyPressHandler);
+      answerContainer.addEventListener('click', this.mouseClickHandler);
     } else {
       statistic.classList.remove('hidden');
     }
