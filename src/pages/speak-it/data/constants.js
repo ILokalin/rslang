@@ -1,5 +1,4 @@
-export const DATA_PATH = 'https://raw.githubusercontent.com/anasidorovich/rslang-data/master';
-
+const DATA_PATH = 'https://raw.githubusercontent.com/anasidorovich/rslang-data/master';
 const INTRO = document.querySelector('.intro');
 const START_BTN = document.querySelector('.intro-btn');
 const GAME_CONTAINER = document.querySelector('.container');
@@ -27,16 +26,21 @@ const roundLabelEl = document.querySelector('.round-label');
 const userNameEl = document.querySelector('.avatar__name');
 const errorMessageEl = document.querySelector('.error-text');
 const defaultUser = 'ANONIMUS';
+const LEVELS_MAX_COUNT = 6;
 const ROUNDS_MAX_COUNT = 60;
 const DEFAULT_ROUND = '1.1';
 const USER_DEFAULT_ROUND = '0.1';
+const ATTEMPTS_PER_WORD = 3;
+const SCORE_TOTAL_COUNT = 5;
 
 export {
+  DATA_PATH,
   INTRO,
   START_BTN,
   GAME_CONTAINER,
   CARDS_ITEMS,
   SCORE,
+  SCORE_TOTAL_COUNT,
   ERRORS_MAX_COUNT,
   WORD_IMG,
   WORD_TRANSLATION,
@@ -51,9 +55,11 @@ export {
   RESULTS_ERRORS,
   KNOW,
   RESULTS_KNOW,
+  LEVELS_MAX_COUNT,
   ROUNDS_MAX_COUNT,
   DEFAULT_ROUND,
   USER_DEFAULT_ROUND,
+  ATTEMPTS_PER_WORD,
   speechRecognitionLanguage,
   sideNavTriggerEl,
   levelSelectEl,

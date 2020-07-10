@@ -109,7 +109,7 @@ export default class Game {
   }
 
   async onNewGameBtnClick(e) {
-    if (SPEAK_BTN.classList.contains('activeBtn')) {
+    if (SPEAK_BTN.classList.contains('activeBtn') && this.userService.isAuthorized()) {
       await this.sendStatisticsToBackEnd();
     }
     RESULTS.classList.add('hidden');
@@ -130,7 +130,7 @@ export default class Game {
   }
 
   restartGame() {
-    Utils.clearScore();
+    Utils.prepareScore();
     Utils.resetCards();
     this.props.errors = ERRORS_MAX_COUNT;
     this.props.know = 0;

@@ -3,8 +3,10 @@ import {
   WORD_INPUT,
   WORD_IMG,
   SCORE,
+  SCORE_TOTAL_COUNT,
   RESULTS,
   ERRORS_MAX_COUNT,
+  LEVELS_MAX_COUNT,
   ROUNDS_MAX_COUNT,
   CARDS_ITEMS,
   userNameEl,
@@ -128,12 +130,23 @@ const Utils = {
     e.preventDefault();
   },
 
-  clearScore: () => {
+  prepareScore: () => {
     SCORE.innerHTML = '';
+    if (JSON.parse(localStorage.isStart) === true) {
+      // eslint-disable-next-line no-plusplus
+      for (let i = 0; i < SCORE_TOTAL_COUNT; i++) {
+        SCORE.insertAdjacentHTML('beforeend', `<div class="star"></div>`);
+      }
+    }
   },
 
-  increaseScore: () => {
-    SCORE.insertAdjacentHTML('beforeend', `<div class="star"></div>`);
+  decreaseScore: () => {
+    SCORE.removeChild(SCORE.firstChild);
+    return SCORE.children.length;
+  },
+
+  totalScore: () => {
+    return SCORE.children.length;
   },
 
   goToTop: () => {
