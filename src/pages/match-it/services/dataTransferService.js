@@ -33,7 +33,7 @@ export default class DataTransferService {
     itemDataTransfer.setData('text', event.target.closest('.card-panel').id);
   }
 
-  dragEnd(event) {
+  dragEnd() {
     allWords.classList.remove('dashed');
   }
 

@@ -17,53 +17,53 @@
     <main class="main">
         <div class="intro">
             <p class="intro-text">
-                Matching cards is a fun and addictive puzzle game.
-                <br />
-                Find all the matching pairs of cards and go to the next level.
+                Match It - простая, но интересная игра, построеная на связи слов и изображений.
+                Ты сможешь проверить, как много слов ты уже знаешь. И не только!
+                Путем ассоциий ты легко запомнишь более сотни самых широко употребляемых английских слов
+                различных уровней сложности. Вперед к цели!
             </p>
             <a href="#" class="btn btn-large waves-effect waves-light intro-btn purple darken-2 pulse">
                 <i class="material-icons left">art_track</i>
-                Start
+                Старт
             </a>
         </div>
         <div class="game-page hidden">
             <ul id="slide-out" class="sidenav">
                 <li class="avatar center blue lighten-5">
                     <img class="avatar__img" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/20625/avatar-bg.png" alt="avatar"/>
-                    <h4 class="avatar__name">ANONIMUS</h4>
+                    <h4 class="avatar__name"></h4>
                 </li>
-                    <li>
-                        <div class="user-view"> Choose game options </div>
-                    </li>
-                    <li>
-                        <div class="divider"></div>
-                    </li>
-                    <li><a class="subheader">Difficulty</a></li>
-                    <li>
-                        <div class="level-select input-field col s12">
-                            <select>
-                                <option value="0">Your Words</option>
-                                <option value="1" selected>Level 1</option>
-                                <option value="2">Level 2</option>
-                                <option value="3">Level 3</option>
-                                <option value="4">Level 4</option>
-                                <option value="5">Level 5</option>
-                                <option value="6">Level 6</option>
-                            </select>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="round-select input-field col s6">
-                            <input class="disabled validate" placeholder="Choose round" min="1" max="60" type="number">
-                        </div>
-                    </li>
-                    <li><a href="#!">Total Score <i class="material-icons right">show_chart</i></a></li>
+                <li>
+                    <div class="user-view">Опции игры</div>
+                </li>
+                <li>
+                    <div class="divider"></div>
+                </li>
+                <li><a class="subheader">Сложность</a></li>
+                <li>
+                    <div class="level-select input-field col s12">
+                        <select>
+                            <option value="0">Мои слова</option>
+                            <option value="1" selected>Уровень 1</option>
+                            <option value="2">Уровень 2</option>
+                            <option value="3">Уровень 3</option>
+                            <option value="4">Уровень 4</option>
+                            <option value="5">Уровень 5</option>
+                            <option value="6">Уровень 6</option>
+                        </select>
+                    </div>
+                </li>
+                <li>
+                    <div class="round-select input-field col s6">
+                        <input class="disabled validate" placeholder="Выберите раунд" min="1" max="60" type="number">
+                    </div>
+                </li>
             </ul>
         </div>
         <div class="container cards hidden">
             <div class="res">
-                <h4 class="round-label hidden">Round 1.1</h4>
-                <h4 class="score hidden">Matches: <span>0</span></h4>
+                <h4 class="round-label hidden">Раунд 1.1</h4>
+                <h4 class="score hidden">Совпадений: <span>0</span></h4>
             </div>
             <div class="row">
                 <div class="container__words col l5 s6 m4 droptarget">
@@ -72,8 +72,8 @@
                 </div>
             </div>
             <div class="btns">
-                <a href="#" class="btn btn-large restart waves-effect waves-light">Restart</a>
-                <a href="#" class="btn btn-large waves-effect waves-light result">Check</a>
+                <a href="#" class="btn btn-large restart waves-effect waves-light">Начать снова</a>
+                <a href="#" class="btn btn-large waves-effect waves-light result">Проверить</a>
             </div>
         </div>
     </main>
@@ -89,19 +89,19 @@
                     <span class="success-num">0</span>
                 </p>
                 <div class="btns btns-res">
-                    <a href="#" class="btn btn-medium waves-effect waves-light return">Continue</a>
-                    <a href="#" class="btn btn-medium waves-effect waves-light next">Next</a>
+                    <a href="#" class="btn btn-medium waves-effect waves-light return">Вернуться</a>
+                    <a href="#" class="btn btn-medium waves-effect waves-light next">Начать следующий раунд</a>
                 </div>
             </tr>
         </table>
     </div>
     <div id="modal-error" class="modal">
         <div class="modal-content">
-            <h4>Ooops!</h4>
+            <h4>Упс!</h4>
             <p class="error-text"></p>
         </div>
         <div class="modal-footer">
-            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Ok</a>
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Ок</a>
         </div>
     </div>
   </body>

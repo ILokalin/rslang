@@ -25,7 +25,6 @@ const results = document.querySelector('.game-results');
 const errorMessage = document.querySelector('.error-text');
 const errorsLabel = document.querySelector('.errors-num');
 const knowsLabel = document.querySelector('.success-num');
-const defaultUser = 'Unknown';
 
 export {
   introPage,
@@ -48,7 +47,6 @@ export {
   errorMessage,
   errorsLabel,
   knowsLabel,
-  defaultUser,
   DATA_PATH,
   LEVELS_MAX_COUNT,
   ROUNDS_MAX_COUNT,

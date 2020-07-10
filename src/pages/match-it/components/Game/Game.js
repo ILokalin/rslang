@@ -55,7 +55,6 @@ export default class Game {
     }
     errorsLabel.innerText = this.props.errors;
     knowsLabel.innerText = this.props.know;
-
     Utils.disableCardsTransfer();
     checkBtn.classList.add('activeBtn');
     scoreLabel.children[0].innerHTML = this.props.know;
@@ -78,10 +77,10 @@ export default class Game {
   }
 
   async sendStatisticsToBackEnd() {
-    const results = Math.floor((this.props.know / ERRORS_MAX_COUNT) * 100) || 0;
+    const totalResult = Math.floor((this.props.know / ERRORS_MAX_COUNT) * 100) || 0;
     const requestBody = {
       'match-it': {
-        result: results,
+        result: totalResult,
         round: roundLabel.innerHTML,
         knownWords: this.props.know,
         mistakeWords: this.props.errors,

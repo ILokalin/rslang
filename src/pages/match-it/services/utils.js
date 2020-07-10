@@ -7,16 +7,11 @@ import {
   ERRORS_MAX_COUNT,
   results,
   errorMessage,
-  defaultUser,
 } from '../data/constants';
 
 const Utils = {
   displayUserName: (userSettings) => {
     userName.innerText = `${userSettings.name}`;
-  },
-
-  displayEmptyUserName: () => {
-    userName.innerText = defaultUser;
   },
 
   getCurrentRound: () => {

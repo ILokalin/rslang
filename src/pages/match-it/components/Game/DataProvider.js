@@ -12,8 +12,8 @@ export default class DataProvider {
   async start() {
     return this.dataController.getUser().then(
       (settings) => this.processUserSettings(settings),
-      () => {
-        Utils.displayEmptyUserName();
+      (report) => {
+        Utils.displayUserName(report);
         this.noWordsFound();
       },
     );
@@ -58,7 +58,7 @@ export default class DataProvider {
       return `${levelSelect.selectedOptions[0].innerHTML}`;
     }
     const currentRound = this.getCurrentGameRound();
-    return `Round ${currentRound}`;
+    return `Раунд ${currentRound}`;
   }
 
   async getData() {
