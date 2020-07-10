@@ -293,7 +293,7 @@ export class DataController {
     };
 
     if (shortTime.date === today) {
-      resultOptionalCard.shortTime = {...shortTimeStat, ...{date: today}};
+      resultOptionalCard.shortTime = { ...shortTimeStat, ...{ date: today } };
     } else {
       const longTimeStatItem = [shortTime.date, shortTime.newWords];
       resultOptionalCard.longTime.push(longTimeStatItem);
