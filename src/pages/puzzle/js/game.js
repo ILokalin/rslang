@@ -223,7 +223,8 @@ const startRound = async () => {
   
 };
 
-const goToNextRound = () => {
+const goToNextRound = async () => {
+  console.log(store);
   hideBackgroundPic();
   hidePaintingInfo();
   roundStatisticsPage.classList.add('hidden');
@@ -234,9 +235,13 @@ const goToNextRound = () => {
   }  
 // TODO send to settings round and level;
 console.log(store.stringifySettings());
-  dataController.setUserOptions({puzzle: store.stringifySettings()}).then(async () => { 
+  if (JSON.parse(localStorage.getItem('isLogin'))) {
+    dataController.setUserOptions({puzzle: store.stringifySettings()}).then(async () => { 
+      await startRound();
+    });
+  } else {
     await startRound();
-  });  
+  }
 };
 
 // Footer buttons
@@ -279,14 +284,16 @@ continueBtn.addEventListener('click', async () => {
     dontKnowBtn.classList.remove('hidden');
   } else {    
     if (isPaintingOpen()) {
-      goToNextRound();
+      await goToNextRound();
     } else {
       showBackgroundPic();
       showPaintingInfo();
       resultsBtn.classList.remove('hidden');
       setRoundStatistics(gameState);
-    }
-    await saveGlobalStatistics(gameState);
+    } 
+    if (JSON.parse(localStorage.getItem('isLogin'))) {
+      await saveGlobalStatistics(gameState);
+    }    
   }
 });
 
@@ -326,12 +333,12 @@ resultsBtn.addEventListener('click', () => {
 });
 
 
-document.querySelector('.round-statistic-continue-btn').addEventListener('click', () => {
-  goToNextRound();
+document.querySelector('.round-statistic-continue-btn').addEventListener('click', async () => {
+  await goToNextRound();
 });
 
-document.querySelector('.full-statistic-continue-btn').addEventListener('click', () => {
-  goToNextRound();
+document.querySelector('.full-statistic-continue-btn').addEventListener('click', async () => {
+  await goToNextRound();
 });
 
 statBtn.addEventListener('click', async () => {

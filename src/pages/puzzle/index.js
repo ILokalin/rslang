@@ -3,34 +3,20 @@ import 'materialize-css';
 import { store } from './js/storage';
 import {
   playButtonHandler, selectLevelHandler, chooseRoundHandler, checkBoxHandler, 
-  checkIfUserIsSaved, checkCheckboxes,
+  checkIfUserIsSaved, checkCheckboxes, storageHandle,
 } from './js/helpers';
 import {
- sideNav, dataController
+ sideNav, dataController, statBtn,
 } from './js/constants';
 import { startRound } from './js/game';
+import { whoIsGameFor } from './js/userService';
 
 require.context('Src', true, /\.(png|svg|jpg|gif|mp3)$/);
 
 // eslint-disable-next-line no-undef
-const whoIsGameFor = () => {
-  dataController.getUser().then(
-    (userSettings) => {
-      console.log('We have user', userSettings);
-      if (userSettings.puzzle) {
-        store.setUserSettings(userSettings.puzzle);
-        checkCheckboxes();
-      } 
-    },
-    (rejectReport) => {
-      console.log('User canceled');    
-    },
-  );
-};
+M.AutoInit();
 
 whoIsGameFor();
-
-M.AutoInit();
 
 document.querySelector('.home-page__btn').addEventListener('click', playButtonHandler);
 document.querySelector('select').addEventListener('change', selectLevelHandler);
@@ -38,6 +24,7 @@ document.querySelector('.round-select input').addEventListener('change', chooseR
 document.querySelector('.hints').addEventListener('click', checkBoxHandler);
 document.querySelector('.auto-pronounce-check').addEventListener('click', checkBoxHandler);
 document.querySelector('.user-words-checkbox').addEventListener('click', checkBoxHandler);
+window.addEventListener('storage', storageHandle);
 
 const options = {
   onOpenStart() {
