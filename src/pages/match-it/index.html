@@ -9,8 +9,8 @@
     <nav>
         <div class="nav-wrapper purple darken-2 z-depth-5">
             <a href="#" data-target="slide-out" class="sidenav-trigger hidden"><i class="material-icons">menu</i></a>
-            <a href="#" class="brand-logo center">Match It</a>
-            <a href="/index" target="_blank" class="home"><i class="medium material-icons">home</i></a>
+            <h1 class="brand-logo center">Match It</h1>
+            <a href="/index" class="home"><i class="medium material-icons">home</i></a>
         </div>
     </nav>
 
@@ -74,10 +74,27 @@
             <div class="btns">
                 <a href="#" class="btn btn-large restart waves-effect waves-light">Restart</a>
                 <a href="#" class="btn btn-large waves-effect waves-light result">Check</a>
-                <a href="#" class="btn btn-large waves-effect waves-light next">Next</a>
             </div>
         </div>
     </main>
+    <div class="game-results hidden">
+        <table class="results-container responsive-table">
+            <tr><th scope="col"></th></tr>
+            <tr><td><p class="errors">
+                Ошибок
+                <span class="errors-num">9</span>
+            </p>
+                <p class="success">
+                    Знаю
+                    <span class="success-num">0</span>
+                </p>
+                <div class="btns btns-res">
+                    <a href="#" class="btn btn-medium waves-effect waves-light return">Continue</a>
+                    <a href="#" class="btn btn-medium waves-effect waves-light next">Next</a>
+                </div>
+            </tr>
+        </table>
+    </div>
     <div id="modal-error" class="modal">
         <div class="modal-content">
             <h4>Ooops!</h4>
