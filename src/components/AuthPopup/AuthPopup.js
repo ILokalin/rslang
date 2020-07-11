@@ -1,7 +1,7 @@
 import 'materialize-css';
 import { DomGen } from 'Service/DomGen';
 import { closeAuthPopup, authPopupState, setUserData, authReportStore } from 'Service/AppState';
-import { regExp, messages } from './AuthPopupConst';
+import { regExp, authMessages } from './AuthPopupConst';
 import { authPopupForm } from './AuthPopupForm';
 
 export class AuthPopup {
@@ -15,7 +15,7 @@ export class AuthPopup {
   init() {
     this.popup = DomGen(authPopupForm);
 
-    authReportStore.watch((reportMessage) => {
+    authReportStore.watch((reportMessage = authMessages.promptLogin) => {
       this.popup.reportLine.innerText = reportMessage;
     });
 
@@ -37,25 +37,27 @@ export class AuthPopup {
   formToLogin() {
     const { header, nameLine, register, login, toggleBlockLogin, toggleBlockRegister } = this.popup;
 
-    header.innerText = messages.login;
+    header.innerText = authMessages.login;
     nameLine.style.display = 'none';
     register.style.display = 'none';
     login.style.display = 'block';
     toggleBlockLogin.style.display = 'none';
     toggleBlockRegister.style.display = 'block';
     this.isFormRegister = false;
+    this.popup.reportLine.innerText = authMessages.promptLogin;
   }
 
   formToRegister() {
     const { header, nameLine, register, login, toggleBlockLogin, toggleBlockRegister } = this.popup;
 
-    header.innerText = 'Register';
+    header.innerText = authMessages.register;
     nameLine.style.display = 'block';
     register.style.display = 'block';
     login.style.display = 'none';
     toggleBlockLogin.style.display = 'block';
     toggleBlockRegister.style.display = 'none';
     this.isFormRegister = true;
+    this.popup.reportLine.innerText = authMessages.promptRegister;
   }
 
   openPopup() {
@@ -91,13 +93,13 @@ export class AuthPopup {
       setUserData(user);
     } else {
       if (!regExp.email.test(this.popup.email.value)) {
-        this.popup.reportLine.innerText = messages.correctEmail;
+        this.popup.reportLine.innerText = authMessages.correctEmail;
       }
       if (!regExp.password.test(this.popup.password.value)) {
-        this.popup.reportLine.innerText = messages.correctPassword;
+        this.popup.reportLine.innerText = authMessages.correctPassword;
       }
       if (this.isFormRegister && !regExp.name.test(this.popup.name.value)) {
-        this.popup.reportLine.innerText = 'Please use one or more letters for name';
+        this.popup.reportLine.innerText = authMessages.correctName;
       }
     }
   }

@@ -43,7 +43,6 @@ export class DataController {
 
     authPopupState.watch((state) => {
       if (state) {
-        showAuthReport(reportMessages.default.welcome);
         this.isAuthInProgress = true;
       } else if (this.isAuthInProgress) {
         this.isAuthInProgress = false;

@@ -18,6 +18,7 @@ export const authPopupForm = {
                 {
                   tag: 'h2',
                   classAdd: 'center-align',
+                  className: 'title',
                   innerText: 'Вход',
                   isAccess: 'header',
                 },
@@ -36,7 +37,8 @@ export const authPopupForm = {
                       children: [
                         {
                           tag: 'div',
-                          classAdd: 'input-field,first-line,col,s12',
+                          classAdd: 'input-field,col,s12',
+                          className: 'line',
                           children: [
                             {
                               tag: 'i',
@@ -69,6 +71,7 @@ export const authPopupForm = {
                         {
                           tag: 'div',
                           classAdd: 'input-field,first-line,col,s12',
+                          className: 'line',
                           children: [
                             {
                               tag: 'i',
@@ -100,6 +103,7 @@ export const authPopupForm = {
                         {
                           tag: 'div',
                           classAdd: 'input-field,col,s12',
+                          className: 'line',
                           children: [
                             {
                               tag: 'i',
@@ -129,12 +133,27 @@ export const authPopupForm = {
                       classAdd: 'row,input-wrapper',
                       children: [
                         {
+                          tag: 'p',
+                          classAdd: 'center-align',
+                          className: 'info-message',
+                          isAccess: 'infoLine',
+                          innerText:
+                            'Пароль должен содержать не менее одной цифры, прописной и строчной буквы, спец.символ. Длинна не менее 8 символов.',
+                        },
+                      ],
+                    },
+                    {
+                      tag: 'div',
+                      classAdd: 'row',
+                      className: 'entry-wrapper',
+                      children: [
+                        {
                           tag: 'div',
                           classAdd: 'input-field,col,buttons-wrapper,s12',
                           children: [
                             {
                               tag: 'div',
-                              class: 'col s6',
+                              classAdd: 'col,s4,m6',
                               isAccess: 'toggleBlockRegister',
                               children: [
                                 {
@@ -143,14 +162,14 @@ export const authPopupForm = {
                                   innerText: 'Нет аккаунта?',
                                 },
                                 {
-                                  tag: 'p',
+                                  tag: 'div',
                                   classAdd: 'margin,medium-small,register-btn',
                                   children: [
                                     {
                                       tag: 'button',
                                       type: 'button',
                                       className: 'button,button--link',
-                                      innerText: 'Register Now!',
+                                      innerText: 'Регистрация!',
                                       isAccess: 'toggleRegister',
                                     },
                                   ],
@@ -159,7 +178,7 @@ export const authPopupForm = {
                             },
                             {
                               tag: 'div',
-                              class: 'col s6',
+                              classAdd: 'col,s4,m6',
                               isAccess: 'toggleBlockLogin',
                               children: [
                                 {
@@ -175,7 +194,7 @@ export const authPopupForm = {
                                       tag: 'button',
                                       type: 'button',
                                       className: 'button,button--link',
-                                      innerText: 'Sign in!',
+                                      innerText: 'Вход!',
                                       isAccess: 'toggleLogin',
                                     },
                                   ],
@@ -183,30 +202,37 @@ export const authPopupForm = {
                               ],
                             },
                             {
-                              tag: 'button',
-                              type: 'button',
-                              href: '#',
-                              classAdd: 'login-btn,btn,waves-effect,waves-light,col,s3',
-                              innerText: 'Регистрация',
-                              isAccess: 'register',
-                            },
-                            {
-                              tag: 'button',
-                              type: 'button',
-                              href: '#',
-                              classAdd: 'login-btn,btn,waves-effect,waves-light,col,s3',
-                              innerText: 'Вход',
-                              isAccess: 'login',
-                            },
-                            {
-                              tag: 'button',
-                              type: 'button',
-                              href: '#',
-                              className: 'button',
-                              classAdd:
-                                'cancel-btn,btn,waves-effect,waves-light,teal,lighten-2,col,s3',
-                              innerText: 'Отменить',
-                              isAccess: 'cancel',
+                              tag: 'div',
+                              classAdd: 'col,s7,m6,buttons-wrapper',
+                              className: 'buttons-wrapper',
+                              children: [
+                                {
+                                  tag: 'button',
+                                  type: 'button',
+                                  href: '#',
+                                  classAdd: 'login-btn,btn,waves-effect,waves-light,col,s12,m6',
+                                  innerText: 'Регистрация',
+                                  isAccess: 'register',
+                                },
+                                {
+                                  tag: 'button',
+                                  type: 'button',
+                                  href: '#',
+                                  classAdd: 'login-btn,btn,waves-effect,waves-light,col,s12,m6',
+                                  innerText: 'Вход',
+                                  isAccess: 'login',
+                                },
+                                {
+                                  tag: 'button',
+                                  type: 'button',
+                                  href: '#',
+                                  className: 'button',
+                                  classAdd:
+                                    'cancel-btn,btn,waves-effect,waves-light,teal,lighten-2,col,s12,m6',
+                                  innerText: 'Отменить',
+                                  isAccess: 'cancel',
+                                },
+                              ],
                             },
                           ],
                         },
