@@ -22,11 +22,11 @@ body {
 .text {
   font-size: 1.7rem;
   padding: 1px 5px;
-  color: #2B92E0;
+  color: #2b92e0;
 }
 .text-answer {
   font-size: 2.3rem;
-  color: #2B92E0;
+  color: #2b92e0;
 }
 .text:hover {
   cursor: pointer;
@@ -36,4 +36,8 @@ body {
   visibility: hidden;
   pointer-events: none;
   opacity: 0;
+}
+.disabled {
+  pointer-events: none;
+  opacity: 0.3;
 }
