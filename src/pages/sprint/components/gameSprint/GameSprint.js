@@ -607,8 +607,8 @@ export default class GameSprint {
     })
     if (this.userStatus === false) {
       dropDownMenuSecond[0].childNodes[0].classList.add('hide');
-      dropDownMenuSecond[0].childNodes[1].click();
-      dropDownMenuElementSecond[1].click();
+      dropDownMenuSecond[0].childNodes[this.gameLevel].click();
+      this.getWordsForGame(this.gameLevel);
     }
   }
 }
