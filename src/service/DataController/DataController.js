@@ -214,7 +214,7 @@ export class DataController {
           this.resolve(this.unpackUserSettings(userSettings.optional));
         },
         (rejectReport) => {
-          showAuthReport(reportMessages[rejectReport.master][rejectReport.code]);
+          this.authErrorReport(rejectReport);
         },
       );
   }
@@ -229,7 +229,7 @@ export class DataController {
           this.resolve(this.unpackUserSettings(userSettings.optional));
         },
         (rejectReport) => {
-          showAuthReport(reportMessages[rejectReport.master][rejectReport.code]);
+          this.authErrorReport(rejectReport);
         },
       );
   }
@@ -253,9 +253,13 @@ export class DataController {
           this.resolve(this.unpackUserSettings(userSettings.optional));
         },
         (rejectReport) => {
-          showAuthReport(reportMessages[rejectReport.master][rejectReport.code]);
+          this.authErrorReport(rejectReport);
         },
       );
+  }
+
+  authErrorReport(rejectReport) {
+    showAuthReport(reportMessages[rejectReport.master][rejectReport.code] ?? rejectReport.message);
   }
 
   checkToken() {
