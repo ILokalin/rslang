@@ -244,7 +244,6 @@ export default class Game {
   }
 
   mouseCheckAnswer(event) {
-    console.log(event);
     if (
       event.target.classList.contains('answer-options__item') &&
       event.target.innerText.slice(2) === this.currentWord.wordTranslate
@@ -301,7 +300,6 @@ export default class Game {
   }
 
   keyboardCheckAnswer(event) {
-    console.log(event);
     try {
       event.preventDefault();
       const checker = document.querySelector(`[key="${event.key}"]`);
