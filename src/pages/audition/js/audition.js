@@ -337,7 +337,6 @@ export default class AuditionGame {
   }
 
   showAnswer() {
-    const word = this.roundsData[this.round].wordTranslate;
     const image = document.querySelector('.current-round > .word-image-element');
     const puzzledWord = document.querySelector('.current-round > .puzzled-word-element');
     const checkAnswerBtn = document.querySelector('.current-round > .check-answer-btn');
