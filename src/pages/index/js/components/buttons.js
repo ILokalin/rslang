@@ -93,7 +93,6 @@ settingsSaveBtns.forEach((btn) => {
       settings.showAnswerBtnEnabled = +showAnswerBtn.checked;
       settings.autoPlayEnabled = +autoPlay.checked;
     }
-    console.log(settings);
     localStorage.setItem('cardsSettings', JSON.stringify(settings));
     dataController.setUserOptions({settings});
   });
@@ -101,4 +100,8 @@ settingsSaveBtns.forEach((btn) => {
 
 document.querySelector('.message-login').addEventListener('click', () => {
   loginButton.click();
+})
+
+document.querySelector('.clear-stat-btn').addEventListener('click', async () => {
+  await dataController.clearStatistics();
 })

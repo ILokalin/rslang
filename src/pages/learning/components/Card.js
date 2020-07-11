@@ -252,7 +252,6 @@ export default class Card {
             status: 'onlearn',
             progress: newProgress,
           }
-          console.log(saveOption);
           if (progress) {       
             await dataController.userWordsPut(saveOption);
           } else {
@@ -268,7 +267,6 @@ export default class Card {
             status: 'onlearn',
             progress: newProgress,
           }
-          console.log(saveOption);
           if (progress) {       
             await dataController.userWordsPut(saveOption);
           } else {
@@ -284,7 +282,6 @@ export default class Card {
             status: 'hard',
             progress: (newProgress >= 0 ? newProgress : 0),
           }
-          console.log(saveOption);
           if (progress) {       
             await dataController.userWordsPut(saveOption);
           } else {
@@ -317,7 +314,6 @@ export default class Card {
         status: 'deleted',
         progress: (progress || 0),
       }
-      console.log(saveOption);
       if (progress) {       
         await dataController.userWordsPut(saveOption);       
       } else {
@@ -335,7 +331,6 @@ export default class Card {
         status: (wordDifficulty || 'onlearn'),
         progress: (newProgress >= 0 ? newProgress : 0),
       }
-      console.log(saveOption);
       if (progress) {       
         await dataController.userWordsPut(saveOption);        
       } else {
@@ -403,7 +398,6 @@ export default class Card {
         status: 'onlearn',
         progress: 0,
       }  
-      console.log(saveOption)
       await dataController.userWordsPut(saveOption);    
       cardTitle.dataset.progress = 0;
       cardTitle.dataset.difficulty = 'onlearn';
@@ -414,7 +408,6 @@ export default class Card {
         status: (wordDifficulty || 'onlearn'),
         progress: newProgress,
       }
-      console.log(saveOption)
       await dataController.userWordsPost(saveOption);
       cardTitle.dataset.progress = newProgress;
       cardTitle.dataset.difficulty = wordDifficulty || 'onlearn';

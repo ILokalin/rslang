@@ -15,7 +15,6 @@ const saveTrainingStatistics = async () => {
   const saveOptions = {
     card: mySwiper.train.shortTermStat,
   }
-  console.log(saveOptions);
   await dataController.setUserStatistics(saveOptions);
 }
 
@@ -94,7 +93,6 @@ const showFooterBtns = () => {
 }
 
 const allowNextCard = async () => {
-  console.log(mySwiper);
   if (mySwiper.activeIndex === mySwiper.slides.length - 1) {
     await saveTrainingStatistics();
     // eslint-disable-next-line no-undef
@@ -242,7 +240,6 @@ const getApproprateWords = async (newWordsAmount, totalAmount) => {
 // получить все слова пользователя
   const userWordsReponse = await dataController.userWordsGetAll(['hard', 'onlearn', 'deleted']);
   const userWords = userWordsReponse["0"].paginatedResults;
-  console.log(userWords);
   while (res.length < newWordsAmount) {
     // получить много слов общих 
     const query = {

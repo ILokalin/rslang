@@ -19,8 +19,6 @@ const getWordsForRound = async (level, round) => {
 const getUserWordsForGame = async () => {
   const wordsArr = await dataController.userWordsGetAll(['onlearn', 'hard', 'deleted']);  
   let res = wordsArr['0'].paginatedResults.filter((el) => el.wordsPerExampleSentence <= 10);
-  console.log('wordsArr', wordsArr);
-  console.log('res', res);
   if (res.length < 10) {
     openModal('Для игры со словами пользователя недостаточно слов. Выберите уровень и раунд в меню для игры со всеми словами. Так же вы можете вернуться на главную страницу и потренироваться, чтобы пополнить свой словарь.');
     store.playUserWords = 0;

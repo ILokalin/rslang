@@ -1,12 +1,10 @@
 const cleanVocabulary = () => {
-  console.log('here')
   document.querySelector('#vocabulary__on-learn').innerHTML = '';
   document.querySelector('#vocabulary__difficult').innerHTML = '';
   document.querySelector('#vocabulary__deleted').innerHTML = '';
 }
 
 const cleanStatistics = () => {
-  console.log('here')
   document.querySelector('.chart-container').innerHTML = '<canvas id="chart"></canvas><div id="chartjs-tooltip"><div id="chartjs-tooltip__text"></div></div>';
   const arr = [
     document.getElementById('stat-audiochallenge'),

@@ -242,3 +242,9 @@ header, main, footer, .settings-container, .statistics-container, .vocabulary-co
   margin-left: auto !important;
 }
 
+.stat-table-header {
+  margin: 20px;
+  display: flex; 
+  justify-content: space-between;
+  align-items: center;
+}

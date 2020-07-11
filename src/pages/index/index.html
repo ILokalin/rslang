@@ -4,14 +4,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>RS Lang 22</title>
+  <title>Lingua School</title>
 </head>
 
 <body>
   <header>
     <nav>
       <div class="nav-wrapper teal lighten-2">
-        <a href="#" class="brand-logo center">RS Lang 22</a>
+        <a class="brand-logo center">Lingua School</a>
         <ul id="nav-mobile nav" class="right">
           <li><a class="nav__login waves-effect waves-light btn">ВХОД</a></li>
           <li><a class="nav__logout logout-btn waves-effect waves-light btn hidden">ВЫХОД</a></li>
@@ -141,8 +141,7 @@
                   <span class="card-title">Аудиовызов</span>
                 </div>
                 <div class="card-content">
-                  <p>I am a very simple card. I am good at containing small bits of information.
-                    I am convenient because I require little markup to use effectively.</p>
+                  <p>Потренируй аудирование!</p>
                 </div>
                 <div class="card-action">
                   <a class="waves-effect waves-teal btn-flat" href="./audition" target="_blank">Играть</a>
@@ -152,12 +151,11 @@
             <div class="col s12 m6">
               <div class="card small">
                 <div class="card-image">
-                  <img src="https://via.placeholder.com/150">
+                  <img src="/img/bg-puzzle.png">
                   <span class="card-title">Puzzle</span>
                 </div>
                 <div class="card-content">
-                  <p>I am a very simple card. I am good at containing small bits of information.
-                    I am convenient because I require little markup to use effectively.</p>
+                  <p>Собери предложение и шедевр!</p>
                 </div>
                 <div class="card-action">
                   <a class="waves-effect waves-teal btn-flat" href="./puzzle" target="_blank">Играть</a>
@@ -169,12 +167,11 @@
             <div class="col s12 m6">
               <div class="card small">
                 <div class="card-image">
-                  <img src="https://via.placeholder.com/50">
+                  <img src="/img/bg-savanna.png">
                   <span class="card-title">Саванна</span>
                 </div>
                 <div class="card-content">
-                  <p>I am a very simple card. I am good at containing small bits of information.
-                    I am convenient because I require little markup to use effectively.</p>
+                  <p>Попробуй угадать слово, пока оно не исчезло.</p>
                 </div>
                 <div class="card-action">
                   <a class="waves-effect waves-teal btn-flat" href="./savanna" target="_blank">Играть</a>
@@ -184,12 +181,11 @@
             <div class="col s12 m6">
               <div class="card small">
                 <div class="card-image">
-                  <img src="https://via.placeholder.com/150">
+                  <img src="/img/speak-it-bg.png">
                   <span class="card-title">Speak It</span>
                 </div>
                 <div class="card-content">
-                  <p>I am a very simple card. I am good at containing small bits of information.
-                    I am convenient because I require little markup to use effectively.</p>
+                  <p>Потренируй свое произношение!</p>
                 </div>
                 <div class="card-action">
                   <a class="waves-effect waves-teal btn-flat" href="./speak-it" target="_blank">Играть</a>
@@ -201,12 +197,11 @@
             <div class="col s12 m6">
               <div class="card small">
                 <div class="card-image">
-                  <img src="https://via.placeholder.com/50">
+                  <img src="/img/sprintBackGround.png">
                   <span class="card-title">Спринт</span>
                 </div>
                 <div class="card-content">
-                  <p>I am a very simple card. I am good at containing small bits of information.
-                    I am convenient because I require little markup to use effectively.</p>
+                  <p>Сколько слов ты сможешь угадать?</p>
                 </div>
                 <div class="card-action">
                   <a class="waves-effect waves-teal btn-flat" href="./sprint" target="_blank">Играть</a>
@@ -220,8 +215,7 @@
                   <span class="card-title">Match It</span>
                 </div>
                 <div class="card-content">
-                  <p>I am a very simple card. I am good at containing small bits of information.
-                    I am convenient because I require little markup to use effectively.</p>
+                  <p>Соедини слово и картинку.</p>
                 </div>
                 <div class="card-action">
                   <a class="waves-effect waves-teal btn-flat" href="./match-it" target="_blank">Играть</a>
@@ -403,7 +397,10 @@
       </div>
     </div>
     <div class="table-container">
-      <h5 class="center">Статистика миниигр</h5>
+      <div class="stat-table-header">
+        <h5 class="">Статистика миниигр</h5>
+        <a class="clear-stat-btn waves-effect waves-light btn">Очистить статистику</a>
+      </div>
       <div class="col s12">
         <ul class="tabs">
           <li class="tab col s2"><a class="active" href="#stat-audiochallenge">Аудиовызов</a></li>
@@ -424,7 +421,7 @@
           </thead> 
           <tbody>
           </tbody> 
-        </table>   
+        </table> 
 
       </div>
       <div id="stat-puzzle" class="col s12">
