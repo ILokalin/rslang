@@ -3,7 +3,10 @@ html, body {
 }
 
 body {
-  background: linear-gradient(90deg,#3fccbf,#e0f2f1);
+  background-image: url("assets/img/background.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
   background-attachment: fixed;
 }
 
