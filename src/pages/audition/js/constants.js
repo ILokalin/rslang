@@ -28,4 +28,4 @@ export {
   popUp,
   popUpResumeBtn,
   abortGameBtn,
-}
+};
