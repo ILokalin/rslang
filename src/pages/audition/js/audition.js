@@ -7,6 +7,9 @@ import {
   difficultySelector,
   logInBtn,
   errorMessageEl,
+  warningMessageWindow,
+  warningMessageText,
+  warningMessageBtn,
   selectWordsWindow,
   ownWordsBtn,
   allWordsBtn,
@@ -41,6 +44,16 @@ export default class AuditionGame {
 
   static getRandomNumber (max) {
       return Math.floor(Math.random() * Math.floor(max));
+  }
+
+  showWarningWindow(message) {
+    gameContainer.innerHTML = '';
+    warningMessageWindow.classList.remove('hidden');
+    warningMessageText.innerText = message;
+    warningMessageBtn.onclick = () => {
+      this.playWithAllWords();
+      warningMessageWindow.classList.add('hidden');
+    };
   }
 
   addKeyboardHandler() {
@@ -89,9 +102,9 @@ export default class AuditionGame {
   }
 
   selectDifficultyHandler(e) {
-    console.log(e.target)
     this.level = e.target.value;
-    this.startGame();
+    const message = `Уровень сложности ${+this.level + 1}`;
+    this.showWarningWindow(message);
   }
 
   getUserData() {
@@ -136,8 +149,7 @@ export default class AuditionGame {
           if (words.length < 10) {
             const message = 'Вы не выучили достаточное количество слов для игры. Игра начнется со всеми словами.'
             
-            AuditionGame.openModal(message);
-            this.playWithAllWords();
+            this.showWarningWindow(message);
           } else {
             this.showSelectWordsWindow(words);
           }
