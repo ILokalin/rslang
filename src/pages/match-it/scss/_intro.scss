@@ -1,17 +1,21 @@
-.intro {
+.intro-page {
   position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
   left: 0;
+  width: 100%;
+  flex-direction: column;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
+.intro {
+  width: 80%;
+  margin: 10% 20px 20px;
   display: flex;
   align-items: center;
   flex-direction: column;
   justify-content: center;
-  padding: 10px;
   transition: 0.5s;
-  text-align: center;
 }
 
 .title {
@@ -28,7 +32,7 @@
   font-weight: 400;
 
   max-width: 1000px;
-  margin: 0 auto 60px;
+  margin: 0 auto 20px;
   color: $text-color;
 }
 
