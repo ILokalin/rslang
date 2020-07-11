@@ -31,6 +31,8 @@ export const cardDefaultSettingsTemplate = {
   deleteBtnEnabled: 1,
   footerBtnsEnabled: 1,
   justNewWords: 0,
-  newCardsPerDay: 5,
+  newCardsPerDay: 15,
   showAnswerBtnEnabled: 1,
 };
+
+export const statisticsItems = ['savanna', 'audition', 'puzzle', 'sprint', 'speak-it', 'match-it'];

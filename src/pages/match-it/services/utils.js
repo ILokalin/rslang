@@ -5,17 +5,13 @@ import {
   LEVELS_MAX_COUNT,
   ROUNDS_MAX_COUNT,
   ERRORS_MAX_COUNT,
+  results,
   errorMessage,
-  defaultUser,
 } from '../data/constants';
 
 const Utils = {
   displayUserName: (userSettings) => {
     userName.innerText = `${userSettings.name}`;
-  },
-
-  displayEmptyUserName: () => {
-    userName.innerText = defaultUser;
   },
 
   getCurrentRound: () => {
@@ -71,7 +67,8 @@ const Utils = {
     </div>
     `,
 
-  getWordCard: (word) => `<span class="white-text truncate">${word}</span>`,
+  getWordCard: (word, translation) =>
+    `<span class="white-text truncate">${word}</span><span class="translation">${translation}</span>`,
 
   displayResults: () => {
     const cardsContent = document.querySelectorAll('.container__cards .draggable');
@@ -94,6 +91,11 @@ const Utils = {
     });
   },
 
+  onReturnBtnClick: (e) => {
+    results.classList.add('hidden');
+    e.preventDefault();
+  },
+
   goToNextRound: () => {
     const level = parseInt(levelSelect.value, 10);
     const round = parseInt(roundSelect.value, 10);
@@ -110,6 +112,17 @@ const Utils = {
 
   isUserWordsSelected: () => {
     return levelSelect.selectedOptions[0].value === '0';
+  },
+
+  goToTop: () => {
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+  },
+
+  storageHandle: ({ key }) => {
+    if (key === 'isLogin') {
+      window.location.reload();
+    }
   },
 };
 
