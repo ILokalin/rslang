@@ -30,6 +30,7 @@ export const authPopupForm = {
                 {
                   tag: 'form',
                   classAdd: 'login-form',
+                  isAccess: 'form',
                   children: [
                     {
                       tag: 'div',
@@ -208,7 +209,7 @@ export const authPopupForm = {
                               children: [
                                 {
                                   tag: 'button',
-                                  type: 'button',
+                                  type: 'submit',
                                   href: '#',
                                   classAdd: 'login-btn,btn,waves-effect,waves-light,col,s12,m6',
                                   innerText: 'Регистрация',
@@ -216,7 +217,7 @@ export const authPopupForm = {
                                 },
                                 {
                                   tag: 'button',
-                                  type: 'button',
+                                  type: 'submit',
                                   href: '#',
                                   classAdd: 'login-btn,btn,waves-effect,waves-light,col,s12,m6',
                                   innerText: 'Вход',
@@ -227,8 +228,7 @@ export const authPopupForm = {
                                   type: 'button',
                                   href: '#',
                                   className: 'button',
-                                  classAdd:
-                                    'cancel-btn,btn,waves-effect,waves-light,teal,lighten-2,col,s12,m6',
+                                  classAdd: 'cancel-btn,btn,waves-effect,waves-light,col,s12,m6',
                                   innerText: 'Отменить',
                                   isAccess: 'cancel',
                                 },

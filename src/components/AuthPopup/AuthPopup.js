@@ -6,7 +6,7 @@ import { authPopupForm } from './AuthPopupForm';
 
 export class AuthPopup {
   constructor() {
-    this.sendUserData = this.sendUserData.bind(this);
+    this.formIsSubmit = this.formIsSubmit.bind(this);
     this.formToLogin = this.formToLogin.bind(this);
     this.formToRegister = this.formToRegister.bind(this);
     this.body = document.body;
@@ -28,10 +28,9 @@ export class AuthPopup {
     });
 
     this.popup.cancel.addEventListener('click', this.cancelAuth);
-    this.popup.login.addEventListener('click', this.sendUserData);
     this.popup.toggleLogin.addEventListener('click', this.formToLogin);
     this.popup.toggleRegister.addEventListener('click', this.formToRegister);
-    this.popup.register.addEventListener('click', this.sendUserData);
+    this.popup.form.addEventListener('submit', this.formIsSubmit);
   }
 
   formToLogin() {
@@ -73,7 +72,9 @@ export class AuthPopup {
     closeAuthPopup();
   }
 
-  sendUserData() {
+  formIsSubmit(event) {
+    event.preventDefault();
+
     const isValidate =
       regExp.email.test(this.popup.email.value) &&
       regExp.password.test(this.popup.password.value) &&
