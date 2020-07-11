@@ -103,6 +103,9 @@ export default class AuditionGame {
 
   selectDifficultyHandler(e) {
     this.level = e.target.value;
+    if (this.user) {
+      this.dataController.setUserOptions({ 'audition': { gameLevel: this.level } });
+    }
     const message = `Уровень сложности ${+this.level + 1}`;
     this.showWarningWindow(message);
   }
@@ -114,10 +117,11 @@ export default class AuditionGame {
         (userSettings) => {
           this.preloaderController.hidePreloader();
           this.user = userSettings.name;
+          this.level = userSettings.audition.gameLevel;
           userNameEl.innerText = this.user;
           this.startGame();
         },
-        (rejectReport) => {
+        () => {
           this.preloaderController.hidePreloader();
           logInBtn.classList.remove('hidden');
           logInBtn.addEventListener('click', this.logInListener);
@@ -231,9 +235,9 @@ export default class AuditionGame {
         this.addKeyboardHandler();
         this.startRound();
       })
-      .catch((err) => {
+      .catch(() => {
         this.preloaderController.hidePreloader();
-        const message = `API request failed with error: ${err.message}`
+        const message = `Не получилось загрузить слова. Возможно проблемы с сетью. Попробуйте ещё раз через какое-то время`
         AuditionGame.openModal(message);
       })
   }
