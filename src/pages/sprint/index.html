@@ -13,9 +13,7 @@
     <nav>
       <div class="nav-wrapper orange z-depth-5">
         <a href="#" class="brand-logo center">Sprint</a>
-        <ul class="right">
-          <li><a class="logout-btn waves-effect waves-light btn yellow darken-2">LOGOUT</a></li>
-        </ul>
+        <a href="/index" target="_self" class="home right padding-right"><i class="medium material-icons">home</i></a>
       </div>
     </nav>
     <div class="game-page hidden">
@@ -31,12 +29,12 @@
           <div class="level-select input-field col s12">
             <select>
               <option value="1" data-columns="3">Слова пользователя</option>
-              <option value="2">Level 1</option>
-              <option value="3">Level 2</option>
-              <option value="4">Level 3</option>
-              <option value="5">Level 4</option>
-              <option value="6">Level 5</option>
-              <option value="7">Level 6</option>
+              <option value="2">Уровень 1</option>
+              <option value="3">Уровень 2</option>
+              <option value="4">Уровень 3</option>
+              <option value="5">Уровень 4</option>
+              <option value="6">Уровень 5</option>
+              <option value="7">Уровень 6</option>
             </select>
           </div>
         </li>
@@ -55,6 +53,8 @@
         </div>
       </div>
     </div>
+    <div class="material-icons sound-controll" id='sound-controll--on'>volume_up</div>
+    <div class="material-icons sound-controll hide" id='sound-controll--off'>volume_off</div>
     <div class="score" id="score">0</div>
     <div class="container_game" id='container'>
       <div class="game hide" id="game">
@@ -98,7 +98,7 @@
         <div class="statistick-words" id="statistick-words"></div>
       </div>
       <div class="game-container_start-btn">
-        <button class="btn orange" id="controls_start-btn">Начать игру</button>
+        <button class="btn-large orange waves-effect waves-orange pulse" id="controls_start-btn">Начать игру</button>
       </div>
     </div>
   </main>

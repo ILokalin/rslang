@@ -1,5 +1,7 @@
 import GameSprint from './gameSprint/GameSprint';
 
+
+
 export default class App {
   constructor() {
     this.score = 0;

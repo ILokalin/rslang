@@ -24,6 +24,8 @@ const category = document.getElementById('statistick-words');
 const scoreStatistick = document.getElementById('score-statistick');
 const statistickRight = document.getElementById('answer-statistick--right');
 const statistickWrong = document.getElementById('answer-statistick--wrong');
+const soundOn = document.getElementById('sound-controll--on');
+const soundOff = document.getElementById('sound-controll--off');
 const stepToNextWordIndex = 1;
 const defaultGameScoreValue = 0;
 const timeAnswerResultVIew = 200;
@@ -39,6 +41,13 @@ const dropDownMenuElement = dropDownMenu[0].querySelectorAll('span');
 const maxScore = document.getElementById('score-statistick--max');
 const dataController = new DataController();
 const preloaderController = new PreloaderController();
+const soundRight = new Audio();
+soundRight.src = '/sound/correct.mp3';
+const soundFolse = new Audio();
+soundFolse.src = '/sound/failure.mp3';
+
+
+
 const LevelViewInfo = {
   one: {
     color: seriesViewDefaulltBackgraundColor,
@@ -83,6 +92,39 @@ export default class GameSprint {
     this.countRightAnswers = 0;
     this.countWrongAnswers = 0;
     this.counterGames = 0;
+    this.soundControll = true;
+  }
+
+  playSoundAnswers() {
+    soundOn.addEventListener('click', () => {
+      soundOn.classList.add('hide');
+      soundOff.classList.remove('hide');
+      this.soundControll = false;
+      localStorage.setItem('soundControllSprint', false);
+    });
+
+    soundOff.addEventListener('click', () => {
+      soundOn.classList.remove('hide');
+      soundOff.classList.add('hide');
+      this.soundControll = true;
+      localStorage.setItem('soundControllSprint', true);
+    });
+
+    if (localStorage.getItem('soundControllSprint') === 'false') {
+      soundOn.click();
+    }
+  }
+
+  playWrongSound() {
+    soundFolse.play()
+    soundRight.pause();
+    soundRight.currentTime = 0.0;
+  }
+
+  playRightSound() {
+    soundRight.play()
+    soundFolse.pause();
+    soundFolse.currentTime = 0.0;
   }
 
   updateTime(gameTime) {
@@ -139,6 +181,7 @@ export default class GameSprint {
     seriesRightAnswerView[2].classList.remove('hide');
     seriesRightAnswerView[1].classList.remove('series_answer--right-final');
     wrongWords.push(words[this.currentWordIndex]);
+    if (this.soundControll) { this.playWrongSound(); }
   }
 
   rightAnswer() {
@@ -161,6 +204,7 @@ export default class GameSprint {
     } else {
       this.transitionOnNextLevel();
     }
+    if (this.soundControll) { this.playRightSound(); }
   }
 
   static removeRightSeriesViewPoint() {
@@ -351,6 +395,7 @@ export default class GameSprint {
     dropDownMenuElement.forEach((el, index) => {
       el.setAttribute('data-id', index);
       el.addEventListener('click', (e) => {
+        console.log('hi');
         words = [];
         this.gameLevel = e.target.dataset.id;
         this.getWordsForGame(this.gameLevel);
@@ -409,6 +454,8 @@ export default class GameSprint {
 
   init() {
     timerWrap.remove();
+    this.playSoundAnswers();
+    window.addEventListener('storage', this.storageHandle);
     dataController.getUser().then(
       (userSettings) => {
         avatarName.innerText = userSettings.name;
@@ -420,6 +467,7 @@ export default class GameSprint {
         this.choiceLevel();
         dropDownMenu[0].childNodes[0].classList.remove('hide');
         dropDownMenu[0].childNodes[this.gameLevel].click();
+        dropDownMenuElement[this.gameLevel].click();
       },
       (rejectReport) => {
         console.log(rejectReport);
@@ -431,9 +479,16 @@ export default class GameSprint {
         this.getWordsForGame(this.gameLevel);
         this.startGame();
         this.answerButtonsEvent();
-
       },
     );
+  }
+
+  storageHandle({ key }) {
+    if (key === 'isLogin') {
+      document.location.reload(true);
+    } else if (key === 'isLogin') {
+      document.location.reload(true);
+    }
   }
 
   renderWordsContainerColum(arrayWords, colum) {
