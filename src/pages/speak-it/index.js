@@ -13,3 +13,9 @@ const userService = new UserService(dataController);
 const game = new Game(dataController, preloaderController, userService);
 const intro = new Intro();
 intro.init(game);
+
+const storageHandle = ({ key }) => {
+  if (key === 'isLogin') {
+    location.reload();
+  }
+};

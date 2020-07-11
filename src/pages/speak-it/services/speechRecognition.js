@@ -26,7 +26,7 @@ export default class SpeechRecognitionService {
       this.recognition.start();
       this.recognition.addEventListener('end', this.recognition.start);
     } catch (err) {
-      localStorage.isStart = true;
+      localStorage.isStartSpeakIt = true;
     }
   }
 
@@ -73,15 +73,15 @@ export default class SpeechRecognitionService {
 
   speakButtonClick(evt) {
     this.attempts = ATTEMPTS_PER_WORD;
-    localStorage.isStart = !JSON.parse(localStorage.isStart);
+    localStorage.isStartSpeakIt = !JSON.parse(localStorage.isStartSpeakIt);
     Utils.prepareScore();
-    if (JSON.parse(localStorage.isStart)) {
+    if (JSON.parse(localStorage.isStartSpeakIt)) {
       this.startRecording();
       SPEAK_BTN.classList.add('activeBtn');
       SPEAK_BTN.innerText = 'Stop game';
       Utils.resetMainCard();
       Utils.disableCardClick();
-    } else if (!JSON.parse(localStorage.isStart)) {
+    } else if (!JSON.parse(localStorage.isStartSpeakIt)) {
       this.stopRecording();
       SPEAK_BTN.classList.remove('activeBtn');
       SPEAK_BTN.innerText = 'Speak please';
