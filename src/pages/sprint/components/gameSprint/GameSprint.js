@@ -77,7 +77,7 @@ let wrongRight = [];
 
 export default class GameSprint {
   constructor(score) {
-    this.gameTime = 10;
+    this.gameTime = 60;
     this.currentGameTime = 0;
     this.stopGameTime = 0;
     this.stepTime = 1;
@@ -357,7 +357,6 @@ export default class GameSprint {
         .then(
           (value) => {
             const { paginatedResults } = value[0];
-            console.log(paginatedResults);
             paginatedResults.flat().map(({ _id, word, wordTranslate }) => {
               return words.push({ _id, word, wordTranslate });
             });
