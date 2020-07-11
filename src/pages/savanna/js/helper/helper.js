@@ -57,7 +57,7 @@ const helper = {
           mistakeWords: wordsObject.dontKnowWords.length,
         },
       })
-      .then((dataStat) => console.log(dataStat));
+      .then((dataStat) => dataStat);
   },
 
   setUserOption(dataController, level, round) {

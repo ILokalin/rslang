@@ -48,7 +48,7 @@ export default class Game {
     this.level = 0;
     this.round = 0;
     this.height = 0;
-    this.countRepeat = 25;
+    this.countRepeat = 0;
     this.translates = [];
     this.answers = [];
     this.currentWord = null;
@@ -184,7 +184,7 @@ export default class Game {
     this.answersElements.forEach((answer, index) => {
       answer.setAttribute('key', index + 1);
       // eslint-disable-next-line no-param-reassign
-      answer.innerHTML = `${index + 1} ${this.answers.pop()}`;
+      answer.innerHTML = `<span class="digit">${index + 1}</span> ${this.answers.pop()}`;
     });
     this.height = 0;
     document.body.addEventListener('keydown', this.keyPressHandler);
@@ -244,6 +244,7 @@ export default class Game {
   }
 
   mouseCheckAnswer(event) {
+    console.log(event);
     if (
       event.target.classList.contains('answer-options__item') &&
       event.target.innerText.slice(2) === this.currentWord.wordTranslate
@@ -259,7 +260,6 @@ export default class Game {
   }
 
   async correctAnswer(mute) {
-    console.log(this.countRepeat);
     this.isGame = false;
     if (!mute) {
       helper.makeCorrectNoise();
@@ -301,6 +301,7 @@ export default class Game {
   }
 
   keyboardCheckAnswer(event) {
+    console.log(event);
     try {
       event.preventDefault();
       const checker = document.querySelector(`[key="${event.key}"]`);
