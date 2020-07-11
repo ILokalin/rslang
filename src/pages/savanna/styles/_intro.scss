@@ -1,5 +1,4 @@
-.intro,
-.difficult {
+.intro {
   width: 100%;
   position: absolute;
   top: 0;
@@ -13,8 +12,7 @@
   transition: 0.5s;
   text-align: center;
 }
-.intro-text,
-.difficult-text {
+.intro-text {
   padding: 10px;
   font-size: 1.5em;
   font-weight: 400;
@@ -22,9 +20,4 @@
 }
 .intro-btn {
   margin-top: 20px;
-}
-.input-field.col label {
-  left: 0;
-  color: black;
-  font-size: 1rem;
 }

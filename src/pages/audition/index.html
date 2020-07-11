@@ -1,15 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Аудиовызов</title>
 </head>
+
 <body>
   <nav>
     <div class="nav-wrapper teal">
-        <a href="#" class="brand-logo center">Аудиовызов</a>
-        <a href="/" class="abort-game-btn"><i class="medium material-icons">home</i></a>
+      <a href="#" class="brand-logo center">Аудиовызов</a>
+      <a href="/" class="abort-game-btn"><i class="medium material-icons">home</i></a>
     </div>
   </nav>
   <ul id="slide-out" class="sidenav">
@@ -22,29 +24,31 @@
     </li>
     <li><a class="subheader">Уровень сложности</a></li>
     <li></li>
-      <div class="input-field col s12">
-        <select class="select-difficulty">
-          <option value="0" selected>Level 1</option>
-          <option value="1">Level 2</option>
-          <option value="2">Level 3</option>
-          <option value="3">Level 4</option>
-          <option value="4">Level 5</option>
-          <option value="5">Level 6</option>
-        </select>
-      </div>
+    <div class="input-field col s12">
+      <select class="select-difficulty">
+        <option value="0" selected>Level 1</option>
+        <option value="1">Level 2</option>
+        <option value="2">Level 3</option>
+        <option value="3">Level 4</option>
+        <option value="4">Level 5</option>
+        <option value="5">Level 6</option>
+      </select>
+    </div>
     </li>
   </ul>
   <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
   <div class="game-container">
-    <p class="game-description">В этой игре будут звучать английские слова. Кликните на правильный перевод прозвучавшего слова, либо нажмите соответствующую кнопку на клавиатуре. Чтобы услышать слово ещё раз, нажмите на изображение рупора.</p>
+    <p class="game-description">В этой игре будут звучать английские слова. Кликните на правильный перевод прозвучавшего
+      слова, либо нажмите соответствующую кнопку на клавиатуре. Чтобы услышать слово ещё раз, нажмите на изображение
+      рупора.</p>
     <button class="btn start-game-btn" id="start-game-btn">Начать игру</button>
   </div>
   <div id="modal-warning" class="modal">
     <div class="modal-content">
-        <p class="warning-text"></p>
+      <p class="warning-text"></p>
     </div>
     <div class="modal-footer">
-        <a href="#!" class="modal-close waves-effect waves-green btn-flat">Ok</a>
+      <a href="#!" class="modal-close waves-effect waves-green btn-flat">Ok</a>
     </div>
   </div>
   <div class="select-words-window hidden">
@@ -53,4 +57,5 @@
     <button id="all-words" class="btn select-words-btn">Все слова</button>
   </div>
 </body>
+
 </html>
