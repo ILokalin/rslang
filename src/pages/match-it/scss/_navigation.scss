@@ -17,6 +17,17 @@
   right: 20px;
 }
 
+.nav-wrapper h1 {
+  height: 64px;
+  margin-top: 0;
+  margin-bottom: 0;
+  line-height: 64px;
+}
+
+nav a.sidenav-trigger {
+  margin: 0 20px;
+}
+
 @media only screen and (min-width: 993px) {
   nav a.sidenav-trigger {
     display: block;

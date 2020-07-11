@@ -1,13 +1,11 @@
 import { DataController } from 'Service/DataController';
-import AuditionGame from './audition';
-import {
-  gameContainer,
-} from './constants'
+import { gameContainer } from './constants';
 
 export default class AuditionGameStatistics {
-  constructor (words, user, startNewGame) {
+  constructor(words, user, startNewGame) {
     this.dataController = new DataController();
     this.gameWords = words;
+    // eslint-disable-next-line no-unused-expressions
     this.resultMessage;
     this.user = user;
     this.startNewGame = startNewGame;
@@ -29,29 +27,33 @@ export default class AuditionGameStatistics {
     const options = {
       audition: {
         result: points,
-        knownWords: correct.length, 
+        knownWords: correct.length,
         mistakeWords: error.length,
-      }
-    }
+      },
+    };
 
-    this.dataController.setUserStatistics(options)
-    .then(
-    (statisticsAnswer) => {
-      const longGameStatistic = statisticsAnswer.audition.longTime;
-      const currentResult = longGameStatistic[longGameStatistic.length - 1].result;
-      const previousResult = longGameStatistic[longGameStatistic.length - 2].result;
+    this.dataController.setUserStatistics(options).then((statisticsAnswer) => {
+      const {
+        longTime,
+        longTime: { length },
+      } = statisticsAnswer.audition;
+      const currentResult = longTime[length - 1].result;
 
-      if (currentResult > previousResult) {
-        const result = currentResult - previousResult;
-        this.resultMessage = `Ваш результат на ${result}% лучше, чем в предыдущую игру. Так держать!`
-      } else if (currentResult < previousResult) {
-        const result = previousResult - currentResult;
-        this.resultMessage = `Ваш результат на ${result}% хуже, чем в предыдущую игру. Попробуйте сыграть ещё раз!`
+      if (length > 1) {
+        const previousResult = longTime[length - 2].result;
+        if (currentResult > previousResult) {
+          const result = currentResult - previousResult;
+          this.resultMessage = `Ваш результат на ${result}% лучше, чем в предыдущую игру. Так держать!`;
+        } else if (currentResult < previousResult) {
+          const result = previousResult - currentResult;
+          this.resultMessage = `Ваш результат на ${result}% хуже, чем в предыдущую игру. Попробуйте сыграть ещё раз!`;
+        }
+      } else {
+        this.resultMessage = 'Ваша первая игра. Поздравляем!';
       }
 
       this.renderStatisticWindow(correct, error, points);
-    },
-  )
+    });
   }
 
   renderStatisticWindow(answered, error, points) {
@@ -120,7 +122,7 @@ export default class AuditionGameStatistics {
     });
     answeredWordEl.append(answeredWord);
 
-    const answeredWordTranslation =  document.createElement('p');
+    const answeredWordTranslation = document.createElement('p');
     answeredWordTranslation.classList.add('word-translation');
     answeredWordTranslation.innerText = word.wordTranslate;
     answeredWordEl.append(answeredWordTranslation);
@@ -128,9 +130,7 @@ export default class AuditionGameStatistics {
     block.append(answeredWordEl);
   }
 
-
   exitGame() {
-    window.location.href='/';
+    window.location.href = '/';
   }
-
 }
