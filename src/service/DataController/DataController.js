@@ -23,6 +23,7 @@ import {
   dataControllerConst,
   cardDefaultSettingsTemplate,
   cardShortStatTemplate,
+  statisticsItems,
 } from './dataControllerConst';
 
 const authPopup = new AuthPopup();
@@ -267,7 +268,6 @@ export class DataController {
   }
 
   orderingStatResult(userStatistics) {
-    const statisticsItems = ['savanna', 'audition', 'puzzle', 'sprint', 'speak-it', 'match-it'];
     const { learnedWords = 0, optional = {} } = userStatistics;
     const today = moment().format('DD-MMM-YYYY');
     const shortStat = { ...cardShortStatTemplate, ...{ date: today } };
@@ -283,35 +283,17 @@ export class DataController {
     return originStatistics;
   }
 
-  findTopStatistics(topList, currentResult) {
-    let nextFindPosition = currentResult;
-
-    const topResult = topList.map((topPosition) => {
-      if (nextFindPosition.result >= topPosition.result) {
-        const returnItem = nextFindPosition;
-        nextFindPosition = topPosition;
-        return returnItem;
-      }
-      return topPosition;
-    });
-
-    if (topResult.length < 5) {
-      topResult.push(nextFindPosition);
-    }
-
-    return topResult;
-  }
-
   cardStatisticsAggregate(originStatOptionalCard, shortTimeStat, today) {
     const shortStat = { ...cardShortStatTemplate, ...{ date: today } };
-    const { longTime = [], shortTime = shortStat } = originStatOptionalCard;
+
+    const { longTime = [], shortTime = shortStat } = originStatOptionalCard ?? {};
     const resultOptionalCard = {
       longTime,
       shortTime,
     };
 
     if (shortTime.date === today) {
-      resultOptionalCard.shortTime = {...shortTimeStat, ...{date: today}};
+      resultOptionalCard.shortTime = { ...shortTimeStat, ...{ date: today } };
     } else {
       const longTimeStatItem = [shortTime.date, shortTime.newWords];
       resultOptionalCard.longTime.push(longTimeStatItem);
@@ -341,14 +323,9 @@ export class DataController {
         const statisticsItem = { ...uploadStatistics[key], ...todayAsObj };
         if (optional[key]) {
           tempStatisticsObject.optional[key].longTime.push(statisticsItem);
-          tempStatisticsObject.optional[key].top = this.findTopStatistics(
-            tempStatisticsObject.optional[key].top,
-            statisticsItem,
-          );
         } else {
           tempStatisticsObject.optional[key] = {
             longTime: [statisticsItem],
-            top: [statisticsItem],
           };
         }
       });
