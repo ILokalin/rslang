@@ -89,19 +89,23 @@ export default class AuditionGame {
   }
 
   selectDifficultyHandler(e) {
+    console.log(e.target)
     this.level = e.target.value;
     this.startGame();
   }
 
   getUserData() {
+    this.preloaderController.showPreloader();
     this.dataController.getUser()
       .then(
         (userSettings) => {
+          this.preloaderController.hidePreloader();
           this.user = userSettings.name;
           userNameEl.innerText = this.user;
           this.startGame();
         },
         (rejectReport) => {
+          this.preloaderController.hidePreloader();
           logInBtn.classList.remove('hidden');
           logInBtn.addEventListener('click', this.logInListener);
           this.startGame();
@@ -216,6 +220,7 @@ export default class AuditionGame {
         this.startRound();
       })
       .catch((err) => {
+        this.preloaderController.hidePreloader();
         const message = `API request failed with error: ${err.message}`
         AuditionGame.openModal(message);
       })
