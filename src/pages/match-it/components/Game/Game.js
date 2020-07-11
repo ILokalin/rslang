@@ -62,9 +62,6 @@ export default class Game {
     scoreLabel.children[0].innerHTML = this.props.know;
     Utils.displayResults();
     scoreLabel.classList.remove('hidden');
-    if (this.userService.isAuthorized()) {
-      await this.sendStatisticsToBackEnd();
-    }
     resultsErrors.innerHTML = '';
     resultsKnows.innerHTML = '';
     this.props.errorsArr.forEach((item) => this.appendResultsItem(item, resultsErrors));
@@ -108,6 +105,9 @@ export default class Game {
   }
 
   async onNextBtnClick(e) {
+    if (this.userService.isAuthorized()) {
+      await this.sendStatisticsToBackEnd();
+    }
     Utils.goToNextRound();
     results.classList.add('hidden');
     await this.restartGame();
@@ -122,7 +122,11 @@ export default class Game {
     this.sendSettingsToBackEnd();
     const wordsData = await this.dataProvider.getData();
     this.clearGameContainer();
-    await wordsData.forEach(this.createCard.bind(this));
+    await Promise.all(
+      wordsData.map(async (data, i) => {
+        await this.createCard(data, i);
+      }),
+    );
     wordsData.forEach((data) => words.push(data));
     words.sort(() => 0.5 - Math.random());
     words.forEach(this.createWordCard, this);
