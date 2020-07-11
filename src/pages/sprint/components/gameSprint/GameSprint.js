@@ -19,7 +19,7 @@ const blockSeries = document.getElementById('series');
 const timetVIew = document.getElementById('timer');
 const timerWrap = document.getElementById('timer-wrap');
 const timeWrapper = document.getElementById('timer-wrapper');
-const statistickDispalt = document.getElementById('statistick');
+const statistickDispaly = document.getElementById('statistick');
 const category = document.getElementById('statistick-words');
 const scoreStatistick = document.getElementById('score-statistick');
 const statistickRight = document.getElementById('answer-statistick--right');
@@ -39,7 +39,6 @@ const parrotPink = document.getElementById('parrot-pink');
 const avatarName = document.getElementById('avatar__name');
 const dropDownMenu = document.querySelectorAll('.dropdown-content');
 const dropDownMenuElement = dropDownMenu[0].querySelectorAll('span');
-const maxScore = document.getElementById('score-statistick--max');
 const dataController = new DataController();
 const preloaderController = new PreloaderController();
 const soundRight = new Audio();
@@ -78,7 +77,7 @@ let wrongRight = [];
 
 export default class GameSprint {
   constructor(score) {
-    this.gameTime = 60;
+    this.gameTime = 10;
     this.currentGameTime = 0;
     this.stopGameTime = 0;
     this.stepTime = 1;
@@ -139,6 +138,7 @@ export default class GameSprint {
       gameView.classList.add('hide');
       timerWrap.classList.remove('timer_line');
       this.finalStatistics();
+      this.choiceLevel();
     }
     this.currentGameTime = gameTime - this.stepTime;
   }
@@ -256,7 +256,7 @@ export default class GameSprint {
     parrotYellow.classList.add('hide');
     parrotBrown.classList.add('hide');
     parrotPink.classList.add('hide');
-    statistickDispalt.classList.add('hide');
+    statistickDispaly.classList.add('hide');
   }
 
   static startTimerView() {
@@ -357,6 +357,7 @@ export default class GameSprint {
         .then(
           (value) => {
             const { paginatedResults } = value[0];
+            console.log(paginatedResults);
             paginatedResults.flat().map(({ _id, word, wordTranslate }) => {
               return words.push({ _id, word, wordTranslate });
             });
@@ -369,14 +370,16 @@ export default class GameSprint {
           if (words.length < minWordsForGameValue) {
             dropDownMenu[0].childNodes[0].style.pointerEvents = 'none';
             dropDownMenu[0].childNodes[1].click();
+            dropDownMenuElement[1].click();
             dropDownMenu[0].childNodes[0].setAttribute('title', 'Недост изученных слов')
             dropDownMenuElement[0].innerHTML = 'Слова пользователя (недостаточно слов)'
           } else {
             dropDownMenu[0].childNodes[0].style.pointerEvents = 'auto';
-            dropDownMenu[0].childNodes[0].removeAttribute('title')
-            dropDownMenuElement[0].innerHTML = 'Слова пользователя'
+            dropDownMenu[0].childNodes[0].removeAttribute('title');
+            dropDownMenuElement[0].innerHTML = 'Слова пользователя';
           }
         })
+
     }
     else {
       dataController.getWords({ group: this.gameLevel - 1, page: 1, wordsPerPage: 200 })
@@ -392,13 +395,13 @@ export default class GameSprint {
           },
         );
     }
+
   }
 
   choiceLevel() {
     dropDownMenuElement.forEach((el, index) => {
       el.setAttribute('data-id', index);
       el.addEventListener('click', (e) => {
-        console.log('hi');
         words = [];
         this.gameLevel = e.target.dataset.id;
         this.getWordsForGame(this.gameLevel);
@@ -424,7 +427,7 @@ export default class GameSprint {
     statistickRight.innerHTML = `${this.countRightAnswers}`;
     statistickWrong.innerHTML = `${this.countWrongAnswers}`;
 
-    statistickDispalt.classList.remove('hide');
+    statistickDispaly.classList.remove('hide');
     category.appendChild(
       this.renderWordsContainerColum(wrongRight, 1)
     );
@@ -445,14 +448,14 @@ export default class GameSprint {
         (statisticsAnswer) => {
           preloaderController.hidePreloader();
           console.log(statisticsAnswer)
-
         },
         (rejectReport) => {
           preloaderController.hidePreloader();
           console.log(rejectReport)
-          maxScore.innerHTML = '';
         }
-      )
+      ).then(() => {
+        this.choiceLevelAfterGame();
+      })
   }
 
   init() {
@@ -471,6 +474,7 @@ export default class GameSprint {
         dropDownMenu[0].childNodes[0].classList.remove('hide');
         dropDownMenu[0].childNodes[this.gameLevel].click();
         dropDownMenuElement[this.gameLevel].click();
+        this.userStatus = true;
       },
       (rejectReport) => {
         console.log(rejectReport);
@@ -479,9 +483,11 @@ export default class GameSprint {
         this.choiceLevel();
         dropDownMenu[0].childNodes[0].classList.add('hide');
         dropDownMenu[0].childNodes[this.gameLevel].click();
+        dropDownMenuElement[this.gameLevel].click();
         this.getWordsForGame(this.gameLevel);
         this.startGame();
         this.answerButtonsEvent();
+        this.userStatus = false;
       },
     );
   }
@@ -511,7 +517,7 @@ export default class GameSprint {
     }
 
     ul.appendChild(titleUl);
-
+    this.choiceLevel();
     arrayWords.forEach((element) => {
       const word = element;
       // eslint-disable-next-line no-underscore-dangle
@@ -532,8 +538,6 @@ export default class GameSprint {
         li.appendChild(this.createBody(wordState));
         ul.appendChild(li);
         this.playSound(li);
-        // eslint-disable-next-line no-undef
-        M.AutoInit();
       });
     });
 
@@ -580,5 +584,32 @@ export default class GameSprint {
         sound.play();
       }),
     );
+  }
+
+  choiceLevelAfterGame() {
+    // eslint-disable-next-line no-undef
+    M.AutoInit();
+    const dropDownMenuSecond = document.querySelectorAll('.dropdown-content');
+    const dropDownMenuElementSecond = dropDownMenuSecond[0].querySelectorAll('span');
+    dropDownMenuElementSecond.forEach((el, index) => {
+      el.setAttribute('data-id', index);
+      el.addEventListener('click', (e) => {
+        words = [];
+        this.gameLevel = e.target.dataset.id;
+        this.getWordsForGame(this.gameLevel);
+        startGameButton.classList.remove('hide');
+        gameView.classList.add('hide');
+        timerWrap.classList.remove('timer_line');
+        timerWrap.remove();
+        this.defaultGameValue();
+        localStorage.setItem('levelSprint', this.gameLevel);
+        statistickDispaly.classList.add('hide');
+      })
+    })
+    if (this.userStatus === false) {
+      dropDownMenuSecond[0].childNodes[0].classList.add('hide');
+      dropDownMenuSecond[0].childNodes[1].click();
+      dropDownMenuElementSecond[1].click();
+    }
   }
 }
