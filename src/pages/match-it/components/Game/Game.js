@@ -78,7 +78,9 @@ export default class Game {
     arr.appendChild(item);
   }
 
-  async sendSettingsToBackEnd() {
+  async saveSettings() {
+    this.gameSettings.displayRound();
+    Utils.setCurrentRound(this.dataProvider.getCurrentGameRound());
     if (this.userService.isAuthorized()) {
       await this.dataController.setUserOptions({
         'match-it': { gameRound: this.dataProvider.getCurrentGameRound() },
@@ -118,8 +120,7 @@ export default class Game {
     this.props.errorsArr = [];
     this.props.errorsArr.length = 0;
     const words = [];
-    this.gameSettings.displayRound();
-    this.sendSettingsToBackEnd();
+    this.saveSettings();
     const wordsData = await this.dataProvider.getData();
     this.clearGameContainer();
     await Promise.all(
@@ -168,7 +169,7 @@ export default class Game {
     this.clearGameResults();
     this.clearStatistics();
     this.gameSettings.displayRound();
-    this.sendSettingsToBackEnd();
+    this.saveSettings();
     await this.createCardPage();
   }
 

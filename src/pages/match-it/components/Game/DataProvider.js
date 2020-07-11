@@ -37,6 +37,7 @@ export default class DataProvider {
 
   noWordsFound() {
     levelSelect.options.remove(0);
+    this.gameRound = Utils.getCurrentRound();
     if (this.gameRound === this.userService.getRound()) {
       this.gameRound = DEFAULT_ROUND;
     }
