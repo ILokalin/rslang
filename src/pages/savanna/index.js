@@ -9,6 +9,7 @@ M.AutoInit();
 const game = new Game();
 const storageHandle = ({ key }) => {
   if (key === 'isLogin') {
+    // eslint-disable-next-line no-restricted-globals
     location.reload();
   }
 };

@@ -44,10 +44,11 @@ export default class Game {
     this.login = false;
     this.mute = false;
     this.isGame = false;
+    this.isIntro = true;
     this.level = 0;
     this.round = 0;
     this.height = 0;
-    this.countRepeat = 0;
+    this.countRepeat = 25;
     this.translates = [];
     this.answers = [];
     this.currentWord = null;
@@ -81,9 +82,14 @@ export default class Game {
   }
 
   async trueLogin(data) {
-    this.round = data.savanna.lastRound;
-    this.level = data.savanna.lastLevel;
     this.login = true;
+    try {
+      this.level = data.savanna.lastLevel;
+      this.round = data.savanna.lastRound;
+    } catch (e) {
+      this.level = 0;
+      this.round = 0;
+    }
     helper.renderCurrentRoundInOption(this.round);
     helper.renderCurrentLevelInOption(this.level);
     await this.createRepeatWords();
@@ -98,7 +104,6 @@ export default class Game {
       this.switchOption();
       helper.renderNeedMoreWords();
     }
-    console.log(this.currentDataSet);
     helper.renderUserName(data);
   }
 
@@ -119,7 +124,6 @@ export default class Game {
   changeLevel(event) {
     this.level = +event.target.value - 1;
     this.createNewWords();
-    console.log(this.level);
   }
 
   async changeRepeatOption() {
@@ -155,13 +159,10 @@ export default class Game {
     this.translates = await helper.getTranslatesByApi(this.dataController);
   }
 
-  createRound(repeat) {
+  createRound() {
+    this.isIntro = false;
     this.isGame = true;
-    if (repeat) {
-      this.currentWord = this.currentDataSet.pop();
-    } else {
-      this.currentWord = this.currentDataSet.pop();
-    }
+    this.currentWord = this.currentDataSet.pop();
     this.answers.push(this.currentWord.wordTranslate);
     while (this.answers.length < 4) {
       if (this.translates.pop !== this.currentWord.wordTranslate) {
@@ -175,7 +176,7 @@ export default class Game {
     if (this.translates.length < 10) {
       this.createTranslates();
     }
-    this.createRound(this.repeat);
+    this.createRound();
     this.stopHighlight();
     this.isFallWord();
     this.renderLevel(this.repeat);
@@ -188,7 +189,6 @@ export default class Game {
     this.height = 0;
     document.body.addEventListener('keydown', this.keyPressHandler);
     answerContainer.addEventListener('click', this.mouseClickHandler);
-    console.log(this.currentDataSet);
   }
 
   renderLevel(repeat) {
@@ -259,6 +259,7 @@ export default class Game {
   }
 
   async correctAnswer(mute) {
+    console.log(this.countRepeat);
     this.isGame = false;
     if (!mute) {
       helper.makeCorrectNoise();
@@ -274,10 +275,9 @@ export default class Game {
         await this.createNewWords();
         this.start(true);
       }
+    } else if (this.currentDataSet.length === 0 || this.countRepeat === 29) {
+      this.showStat(true);
     } else {
-      if (this.currentDataSet.length === 0 || this.countRepeat === 29) {
-        this.showStat(true);
-      }
       this.countRepeat += 1;
       this.start(true);
     }
@@ -311,7 +311,7 @@ export default class Game {
         this.wrongAnswer(this.mute);
       }
     } catch (error) {
-      console.log(error);
+      console.log('Нажата неверная кнопка');
     }
   }
 
@@ -414,7 +414,6 @@ export default class Game {
   }
 
   resetRoundAndLevel() {
-    console.log(this.level, this.round, this.countRepeat);
     if (this.level === 6) {
       this.level = 0;
     }
@@ -448,6 +447,7 @@ export default class Game {
   }
 
   showGameOptions() {
+    this.isIntro = true;
     this.prepareNewGame(this.repeat);
     statistic.classList.add('hidden');
     intro.classList.remove('hidden');
@@ -479,8 +479,11 @@ export default class Game {
   }
 
   showPopupMenu(e) {
-    if (!this.isGame) {
+    if (!this.isGame || !this.isIntro) {
       statistic.classList.add('hidden');
+    }
+    if (!this.isGame || this.isIntro) {
+      intro.classList.add('hidden');
     }
     popupMenu.classList.remove('hidden');
     this.stop();
@@ -492,6 +495,8 @@ export default class Game {
       this.isFallWord();
       document.body.addEventListener('keydown', this.keyPressHandler);
       answerContainer.addEventListener('click', this.mouseClickHandler);
+    } else if (this.isIntro) {
+      intro.classList.remove('hidden');
     } else {
       statistic.classList.remove('hidden');
     }

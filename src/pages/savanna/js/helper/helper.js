@@ -30,6 +30,7 @@ const helper = {
       .userWordsGetAll(['onlearn', 'hard', 'deleted'])
       .then((data) => data[0].paginatedResults);
     preloaderController.hidePreloader();
+    repeatWords.sort(() => Math.random() - 0.5);
     if (repeatWords.length < 10) {
       repeatWords = null;
     }
@@ -62,7 +63,7 @@ const helper = {
   setUserOption(dataController, level, round) {
     dataController
       .setUserOptions({ savanna: { lastLevel: level, lastRound: round } })
-      .then((data) => console.log(data));
+      .then((data) => data);
   },
 
   makeCorrectNoise() {
