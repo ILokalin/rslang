@@ -17,13 +17,3 @@ const intro = new Intro();
 intro.init(game);
 
 require.context('Src', true, /\.(png|svg|jpg|gif|mp3)$/);
-
-/*
-const storageHandle = ({ key }) => {
-  if (key === 'isLogin') {
-    location.reload();
-  }
-};
-
-window.addEventListener('storage', storageHandle);
-*/

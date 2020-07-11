@@ -15,17 +15,19 @@
     </nav>
 
     <main class="main">
-        <div class="intro">
-            <p class="intro-text">
-                Match It - простая, но интересная игра, построеная на связи слов и изображений.
-                Ты сможешь проверить, как много слов ты уже знаешь. И не только!
-                Путем ассоциий ты легко запомнишь более сотни самых широко употребляемых английских слов
-                различных уровней сложности. Вперед к цели!
-            </p>
-            <a href="#" class="btn btn-large waves-effect waves-light intro-btn purple darken-2 pulse">
-                <i class="material-icons left">art_track</i>
-                Старт
-            </a>
+        <div class="intro-page">
+            <div class="intro">
+                <p class="intro-text">
+                    Match It - простая, но интересная игра, построеная на связи слов и изображений.
+                    Ты сможешь проверить, как много слов ты уже знаешь. И не только!
+                    Путем ассоциаций ты легко запомнишь более сотни самых широко употребляемых английских слов
+                    различных уровней сложности. Вперед к цели!
+                </p>
+                <a href="#" class="btn btn-large waves-effect waves-light intro-btn purple darken-2 pulse">
+                    <i class="material-icons left">art_track</i>
+                    Старт
+                </a>
+            </div>
         </div>
         <div class="game-page hidden">
             <ul id="slide-out" class="sidenav">
@@ -79,18 +81,19 @@
     </main>
     <div class="game-results hidden">
         <table class="results-container responsive-table">
-            <tr><th scope="col"></th></tr>
             <tr><td><p class="errors">
                 Ошибок
                 <span class="errors-num">9</span>
             </p>
+                <div class="errors-item"></div>
                 <p class="success">
                     Знаю
                     <span class="success-num">0</span>
                 </p>
+                <div class="success-item"></div>
                 <div class="btns btns-res">
-                    <a href="#" class="btn btn-medium waves-effect waves-light return">Вернуться</a>
-                    <a href="#" class="btn btn-medium waves-effect waves-light next">Начать следующий раунд</a>
+                    <a href="#" class="btn waves-effect waves-light return">Вернуться</a>
+                    <a href="#" class="btn waves-effect waves-light next">Следующий раунд</a>
                 </div>
             </tr>
         </table>

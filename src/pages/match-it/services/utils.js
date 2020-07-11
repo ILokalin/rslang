@@ -67,7 +67,8 @@ const Utils = {
     </div>
     `,
 
-  getWordCard: (word) => `<span class="white-text truncate">${word}</span>`,
+  getWordCard: (word, translation) =>
+    `<span class="white-text truncate">${word}</span><span class="translation">${translation}</span>`,
 
   displayResults: () => {
     const cardsContent = document.querySelectorAll('.container__cards .draggable');
@@ -116,6 +117,12 @@ const Utils = {
   goToTop: () => {
     document.body.scrollTop = 0;
     document.documentElement.scrollTop = 0;
+  },
+
+  storageHandle: ({ key }) => {
+    if (key === 'isLogin') {
+      window.location.reload();
+    }
   },
 };
 

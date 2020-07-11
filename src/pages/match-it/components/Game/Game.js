@@ -16,11 +16,12 @@ import {
   checkBtn,
   restartBtn,
   roundLabel,
+  resultsErrors,
+  resultsKnows,
 } from '../../data/constants';
 
 export default class Game {
   constructor(dataController, preloaderController, dataTransferService, userService) {
-    localStorage.isStart = false;
     this.props = {
       errors: ERRORS_MAX_COUNT,
       know: 0,
@@ -31,6 +32,7 @@ export default class Game {
     this.dataProvider = new DataProvider(dataController, preloaderController, userService);
     this.dataTransfer = dataTransferService;
     this.userService = userService;
+    window.addEventListener('storage', Utils.storageHandle);
   }
 
   async start() {
@@ -63,9 +65,20 @@ export default class Game {
     if (this.userService.isAuthorized()) {
       await this.sendStatisticsToBackEnd();
     }
+    resultsErrors.innerHTML = '';
+    resultsKnows.innerHTML = '';
+    this.props.errorsArr.forEach((item) => this.appendResultsItem(item, resultsErrors));
+    this.props.knowArr.forEach((item) => this.appendResultsItem(item, resultsKnows));
     results.classList.remove('hidden');
     Utils.goToTop();
     e.preventDefault();
+  }
+
+  appendResultsItem(el, arr) {
+    const item = el;
+    item.className = 'item';
+    item.draggable = false;
+    arr.appendChild(item);
   }
 
   async sendSettingsToBackEnd() {
@@ -178,7 +191,7 @@ export default class Game {
     CARD.id = `word-${data.id || data._id}`;
     CARD.draggable = true;
     CARD.classList.add('card-panel', 'teal', 'draggable');
-    CARD.innerHTML = Utils.getWordCard(`${data.word}`);
+    CARD.innerHTML = Utils.getWordCard(`${data.word}`, `${data.wordTranslate}`);
     cardWrapper.append(CARD);
     const cln = CARD.cloneNode(true);
     this.props.errorsArr.push(cln);

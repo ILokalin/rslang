@@ -25,6 +25,8 @@ const results = document.querySelector('.game-results');
 const errorMessage = document.querySelector('.error-text');
 const errorsLabel = document.querySelector('.errors-num');
 const knowsLabel = document.querySelector('.success-num');
+const resultsErrors = document.querySelector('.errors-item');
+const resultsKnows = document.querySelector('.success-item');
 
 export {
   introPage,
@@ -47,6 +49,8 @@ export {
   errorMessage,
   errorsLabel,
   knowsLabel,
+  resultsErrors,
+  resultsKnows,
   DATA_PATH,
   LEVELS_MAX_COUNT,
   ROUNDS_MAX_COUNT,
