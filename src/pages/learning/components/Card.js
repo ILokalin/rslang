@@ -237,7 +237,7 @@ export default class Card {
       mySwiper.slides[mySwiper.activeIndex].querySelector('.hard-btn'),
     ];
     const cardTitle = event.target.closest('.card').querySelector('.card-title');
-    const word = event.target.closest('.card').querySelector('.imput_text').dataset.word;
+    const word = event.target.closest('.card').querySelector('.input_text').dataset.word;
     const {progress} = cardTitle.dataset;
     const {wordId} = cardTitle.dataset;
     let saveOption;
