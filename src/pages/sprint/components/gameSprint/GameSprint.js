@@ -26,6 +26,7 @@ const statistickRight = document.getElementById('answer-statistick--right');
 const statistickWrong = document.getElementById('answer-statistick--wrong');
 const soundOn = document.getElementById('sound-controll--on');
 const soundOff = document.getElementById('sound-controll--off');
+const discription = document.getElementById('discription');
 const stepToNextWordIndex = 1;
 const defaultGameScoreValue = 0;
 const timeAnswerResultVIew = 200;
@@ -284,6 +285,8 @@ export default class GameSprint {
 
   stratButtonEvents() {
     startGameButton.addEventListener('click', () => {
+      gameContainer.classList.remove('opasity');
+      discription.classList.add('hide');
       this.controllGameCount();
       clearTimeout(this.timer);
       this.keyboardEvents();
