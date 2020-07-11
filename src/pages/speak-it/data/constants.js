@@ -25,7 +25,6 @@ const roundSelectEl = document.querySelector('.round-select input');
 const roundLabelEl = document.querySelector('.round-label');
 const userNameEl = document.querySelector('.avatar__name');
 const errorMessageEl = document.querySelector('.error-text');
-const defaultUser = 'ANONIMUS';
 const LEVELS_MAX_COUNT = 6;
 const ROUNDS_MAX_COUNT = 60;
 const DEFAULT_ROUND = '1.1';
@@ -67,5 +66,4 @@ export {
   roundLabelEl,
   userNameEl,
   errorMessageEl,
-  defaultUser,
 };

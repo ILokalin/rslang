@@ -78,13 +78,13 @@ export default class SpeechRecognitionService {
     if (JSON.parse(localStorage.isStartSpeakIt)) {
       this.startRecording();
       SPEAK_BTN.classList.add('activeBtn');
-      SPEAK_BTN.innerText = 'Stop game';
+      SPEAK_BTN.innerText = 'Стоп игра';
       Utils.resetMainCard();
       Utils.disableCardClick();
     } else if (!JSON.parse(localStorage.isStartSpeakIt)) {
       this.stopRecording();
       SPEAK_BTN.classList.remove('activeBtn');
-      SPEAK_BTN.innerText = 'Speak please';
+      SPEAK_BTN.innerText = 'Начать говорить';
       Utils.resetMainCard();
       Utils.disableCardClick();
       Utils.resetCards();

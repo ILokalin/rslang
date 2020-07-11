@@ -13,7 +13,6 @@ import {
   levelSelectEl,
   roundSelectEl,
   errorMessageEl,
-  defaultUser,
 } from '../data/constants';
 
 const Utils = {
