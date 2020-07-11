@@ -31,7 +31,7 @@ import {
   menuHome,
 } from '../constants';
 import { whoIsGameFor } from './whoIsGameFor';
-import { cleanPage } from './helpers'
+import { cleanPage, cleanStatisticsTable } from './helpers'
 
 const userLogout = () => {
   dataController.logoutUser();
@@ -104,4 +104,5 @@ document.querySelector('.message-login').addEventListener('click', () => {
 
 document.querySelector('.clear-stat-btn').addEventListener('click', async () => {
   await dataController.clearStatistics();
+  cleanStatisticsTable();
 })
