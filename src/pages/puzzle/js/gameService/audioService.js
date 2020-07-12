@@ -2,7 +2,7 @@ import { store } from '../storage';
 import { audio, dataController } from '../constants';
 
 const setAudioSrc = (word) => {
-  dataController.getMaterials(word.audioExample).then((res)=> {
+  dataController.getMaterials(word.audioExample).then((res) => {
     audio.setAttribute('src', res);
   });
 };
@@ -24,6 +24,4 @@ const roundStatisticAudioHandler = (event) => {
   }
 };
 
-export {
-  setAudioSrc, roundStatisticAudioHandler, autopronounce, playAudio,
-};
+export { setAudioSrc, roundStatisticAudioHandler, autopronounce, playAudio };

@@ -96,6 +96,13 @@ const Utils = {
     e.preventDefault();
   },
 
+  validateRoundValue: () => {
+    const round = parseInt(roundSelect.value, 10);
+    if (round > ROUNDS_MAX_COUNT) {
+      roundSelect.value = ROUNDS_MAX_COUNT;
+    }
+  },
+
   goToNextRound: () => {
     const level = parseInt(levelSelect.value, 10);
     const round = parseInt(roundSelect.value, 10);

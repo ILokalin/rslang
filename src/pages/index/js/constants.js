@@ -33,12 +33,13 @@ const menuTraining = document.querySelector('.menu__training');
 const menuSettings = document.querySelector('.menu__settings');
 const menuStatistics = document.querySelector('.menu__statistics');
 const menuVocabulary = document.querySelector('.menu__vocabulary');
-const menuLinks = [ menuTraining, menuSettings, menuStatistics, menuVocabulary ];
+const menuLinks = [menuTraining, menuSettings, menuStatistics, menuVocabulary];
 const trainingBtn = document.querySelector('.training-btn');
 const mainPageStats = document.querySelector('.main-page-statistics-container');
 const mainLogoutMsg = document.querySelector('.main-page-logout-message');
 
 export {
+  menuHome,
   settings,
   statistcs,
   vocabulary,

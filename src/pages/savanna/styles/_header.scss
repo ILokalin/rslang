@@ -6,6 +6,9 @@
   top: 20px;
   left: 20px;
   color: white;
+  @media screen and (max-width: 600px) {
+    top: 16px;
+  }
 }
 .dropdown-trigger {
   padding-left: 10px !important;
@@ -22,6 +25,15 @@
 .home {
   position: absolute;
   right: 20px;
+  z-index: 100;
+}
+.brand-logo {
+  margin-top: 0;
+  margin-bottom: 0;
+  line-height: 64px;
+  @media screen and (max-width: 600px) {
+    line-height: 53px;
+  }
 }
 .round {
   padding-left: 10px !important;

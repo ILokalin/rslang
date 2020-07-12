@@ -17,23 +17,21 @@
   <ul id="slide-out" class="sidenav">
     <div class="avatar">
       <h4 class="avatar__name"></h4>
-      <a class="login-btn hidden" href="#">LOGIN</a>
     </div>
     <li>
       <div class="divider"></div>
     </li>
     <li><a class="subheader">Уровень сложности</a></li>
-    <li></li>
-    <div class="input-field col s12">
-      <select class="select-difficulty">
-        <option value="0" selected>Level 1</option>
-        <option value="1">Level 2</option>
-        <option value="2">Level 3</option>
-        <option value="3">Level 4</option>
-        <option value="4">Level 5</option>
-        <option value="5">Level 6</option>
-      </select>
-    </div>
+      <div class="input-field col s12">
+        <select class="select-difficulty">
+          <option value="0" selected>Уровень 1</option>
+          <option value="1">Уровень 2</option>
+          <option value="2">Уровень 3</option>
+          <option value="3">Уровень 4</option>
+          <option value="4">Уровень 5</option>
+          <option value="5">Уровень 6</option>
+        </select>
+      </div>
     </li>
   </ul>
   <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
@@ -41,7 +39,7 @@
     <p class="game-description">В этой игре будут звучать английские слова. Кликните на правильный перевод прозвучавшего
       слова, либо нажмите соответствующую кнопку на клавиатуре. Чтобы услышать слово ещё раз, нажмите на изображение
       рупора.</p>
-    <button class="btn start-game-btn" id="start-game-btn">Начать игру</button>
+    <button class="btn-large waves-effect waves-light start-game-btn" id="start-game-btn">Начать игру</button>
   </div>
   <div id="modal-warning" class="modal">
     <div class="modal-content">
@@ -50,6 +48,10 @@
     <div class="modal-footer">
       <a href="#!" class="modal-close waves-effect waves-green btn-flat">Ok</a>
     </div>
+  </div>
+  <div class="warning-window hidden">
+    <p class="warning-description"></p>
+    <button class="btn confirm-warning-btn">OK</button>
   </div>
   <div class="select-words-window hidden">
     <p class="select-words-description">Выберите какие слова вы хотите использовать в игре</p>

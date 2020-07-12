@@ -1,4 +1,13 @@
-import { userNameElement, audio, healtBar, health, menu, roundOption } from './constants';
+import {
+  userNameElement,
+  audio,
+  healtBar,
+  health,
+  menu,
+  roundOption,
+  popUpError,
+  mainContainer,
+} from './constants';
 import '../../assets/img/savanna-heart.svg';
 
 const helper = {
@@ -6,21 +15,22 @@ const helper = {
     userNameElement.innerText = `${user.name}`;
   },
 
-  renderEmptyUserName() {
-    userNameElement.innerText = '';
-  },
-
   async getWordsByApi(dataController, level, round) {
     const words = await dataController.getWords({ group: level, page: round }).then((data) => data);
     return words.sort(() => Math.random() - 0.5);
   },
 
+  hideMainContainer() {
+    mainContainer.classList.add('hidden');
+    popUpError.classList.remove('hidden');
+  },
+
   async getTranslatesByApi(dataController) {
     const transtales = [];
-    const dataSet = dataController
+    const dataSet = await dataController
       .getWords({ group: 0, wordsPerPage: 600 })
       .then((data) => data.sort(() => Math.random() - 0.5));
-    (await dataSet).forEach((element) => transtales.push(element.wordTranslate));
+    dataSet.forEach((element) => transtales.push(element.wordTranslate));
     return transtales;
   },
 
@@ -30,6 +40,7 @@ const helper = {
       .userWordsGetAll(['onlearn', 'hard', 'deleted'])
       .then((data) => data[0].paginatedResults);
     preloaderController.hidePreloader();
+    repeatWords.sort(() => Math.random() - 0.5);
     if (repeatWords.length < 10) {
       repeatWords = null;
     }
@@ -56,13 +67,13 @@ const helper = {
           mistakeWords: wordsObject.dontKnowWords.length,
         },
       })
-      .then((dataStat) => console.log(dataStat));
+      .then((dataStat) => dataStat);
   },
 
   setUserOption(dataController, level, round) {
     dataController
       .setUserOptions({ savanna: { lastLevel: level, lastRound: round } })
-      .then((data) => console.log(data));
+      .then((data) => data);
   },
 
   makeCorrectNoise() {
@@ -116,6 +127,7 @@ const helper = {
     levelOptionList.children[value].classList.add('selected');
     levelOptionList.children[value].click();
   },
+  hideGameIntroStat() {},
 };
 
 export default helper;

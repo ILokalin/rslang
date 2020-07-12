@@ -10,9 +10,9 @@ const createRow = (roundStat) => {
   const td3 = document.createElement('td');
   const td4 = document.createElement('td');
 
-  td1.insertAdjacentText('afterbegin', roundStat.round);  
-  td2.insertAdjacentText('afterbegin', roundStat.date);  
-  td3.insertAdjacentText('afterbegin', roundStat.knownWords); 
+  td1.insertAdjacentText('afterbegin', roundStat.round);
+  td2.insertAdjacentText('afterbegin', roundStat.date);
+  td3.insertAdjacentText('afterbegin', roundStat.knownWords);
   td4.insertAdjacentText('afterbegin', roundStat.mistakeWords);
 
   tr.appendChild(td1);
@@ -44,7 +44,10 @@ const createStatisticRow = (word) => {
   td1.className = 'col s1';
   td2.className = 'col s11';
 
-  td1.insertAdjacentHTML('afterbegin', `<i class="material-icons sound-icon" data-audio-src="https://raw.githubusercontent.com/jules0802/rslang-data/master/${word.audioExample}">volume_up</i>`);
+  td1.insertAdjacentHTML(
+    'afterbegin',
+    `<i class="material-icons sound-icon" data-audio-src="https://raw.githubusercontent.com/jules0802/rslang-data/master/${word.audioExample}">volume_up</i>`,
+  );
   td2.insertAdjacentHTML('afterbegin', word.textExample);
 
   tr.appendChild(td1);
@@ -59,7 +62,7 @@ const setRoundStatistics = (gameState) => {
 
   document.querySelector('.round-statistics-dontknow-number').innerText = gameState.dontknow.length;
   document.querySelector('.round-statistics-know-number').innerText = gameState.know.length;
-  
+
   gameState.dontknow.forEach((word) => {
     dontKnowTable.appendChild(createStatisticRow(word));
   });
@@ -74,6 +77,10 @@ const clearRoundStatistics = () => {
 };
 
 export {
-  clearStatistics, createRow, fillStatistics, clearRoundStatistics,
-  setRoundStatistics, createStatisticRow,
+  clearStatistics,
+  createRow,
+  fillStatistics,
+  clearRoundStatistics,
+  setRoundStatistics,
+  createStatisticRow,
 };
