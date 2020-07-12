@@ -70,7 +70,6 @@ export const whoIsGameFor = () => {
       });
     },
     (rejectReport) => {
-      console.log('User canceled');
       titleUser.innerText = `${rejectReport.name}`;
       main.classList.remove('hidden');
       menuLinks.forEach((link) => {link.classList.add('disabled-link')});
