@@ -21,6 +21,12 @@ header, main, footer, .settings-container, .statistics-container, .vocabulary-co
   }
 }
 
+.brand-logo {
+  @media screen and (max-width : 400px) {
+    font-size: 1.5rem!important;
+  }
+}
+
 //Side
 
 .avatar img {
