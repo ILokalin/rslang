@@ -1,30 +1,70 @@
+/* eslint-disable import/no-cycle */
 /* eslint-disable no-param-reassign */
 import { store } from './storage';
 // eslint-disable-next-line import/no-cycle
 import { checkCheckboxes } from './helpers';
 import {
-  isPaintingOpen, hidePaintingInfo, showPaintingInfo, setPaintingInfo,
-  hideBackgroundPic, showBackgroundPic, connectPuzzles, getLengthOfAllPieces,
-  shuffleArray, getSymbolsCount, getGameRowWidth, getGameRowHeight, getRoundPainting,
-  setRoundPainting, setGameRound, getWordsForRound, roundStatisticAudioHandler, autopronounce,
-  connectSentenceWithHints, showTranslation, hideTranslation, getSizeOfPiece,
-  setRound, getUserWordsForGame } from './gameService/gameService';
+  isPaintingOpen,
+  hidePaintingInfo,
+  showPaintingInfo,
+  setPaintingInfo,
+  hideBackgroundPic,
+  showBackgroundPic,
+  connectPuzzles,
+  getLengthOfAllPieces,
+  shuffleArray,
+  getSymbolsCount,
+  getGameRowWidth,
+  getGameRowHeight,
+  setRoundPainting,
+  setGameRound,
+  getWordsForRound,
+  roundStatisticAudioHandler,
+  autopronounce,
+  connectSentenceWithHints,
+  showTranslation,
+  hideTranslation,
+  getSizeOfPiece,
+  setRound,
+  getUserWordsForGame,
+} from './gameService/gameService';
 import {
-  inputField, dontKnowBtn, checkBtn, continueBtn, resultsBtn, painting, audio, translation,
-  translateBtn, pronounceBtn, pictureBtn, roundStatisticsPage, gamePage, fullStatPage, statBtn,
-  puzzleGrooveWidth, dataController, preloaderController,
+  inputField,
+  dontKnowBtn,
+  checkBtn,
+  continueBtn,
+  resultsBtn,
+  painting,
+  audio,
+  translation,
+  translateBtn,
+  pronounceBtn,
+  pictureBtn,
+  roundStatisticsPage,
+  gamePage,
+  fullStatPage,
+  statBtn,
+  puzzleGrooveWidth,
+  dataController,
+  preloaderController,
 } from './constants';
 import {
-  drawPuzzlePiece, drawFirstPuzzlePiece, drawLastPuzzlePiece, drawCorrect,
-  drawWrong, drawWhiteBorder, setBackgroundToPuzzlePiece,
+  drawPuzzlePiece,
+  drawFirstPuzzlePiece,
+  drawLastPuzzlePiece,
+  drawCorrect,
+  drawWrong,
+  drawWhiteBorder,
+  setBackgroundToPuzzlePiece,
 } from './canvas';
 
-import {
-  saveGlobalStatistics,  
-} from './statisticsService';
+import { saveGlobalStatistics } from './statisticsService';
 
 import {
-  fillStatistics, clearStatistics, setRoundStatistics, clearRoundStatistics,
+  fillStatistics,
+  clearStatistics,
+  setRoundStatistics,
+  clearRoundStatistics,
 } from './statRenderingService';
 
 let gameState = null;
@@ -33,7 +73,7 @@ const renderPuzzlesInInputField = (sentence) => {
   document.querySelector('.game-input .game-row').innerHTML = '';
   const regexp = /(<(\/?[^>]+)>)/g;
   sentence = sentence.replace(regexp, '');
-  const symbolsCount = getSymbolsCount(sentence);  
+  const symbolsCount = getSymbolsCount(sentence);
   const arr = sentence.split(' ');
   const gameRowWidth = getGameRowWidth();
   const estimatedLength = getLengthOfAllPieces(arr) - puzzleGrooveWidth * (arr.length - 1);
@@ -73,10 +113,11 @@ const renderPuzzlesInInputField = (sentence) => {
   });
 
   shuffleArray(canvases);
-  canvases.forEach((canvas) => { document.querySelector('.game-input .game-row').appendChild(canvas); });
+  canvases.forEach((canvas) => {
+    document.querySelector('.game-input .game-row').appendChild(canvas);
+  });
   connectPuzzles(inputField.querySelector('.game-row'));
 };
-
 
 function dragHandler(mousedownEvent) {
   const currentRow = gameState.currentSentence + 1;
@@ -98,7 +139,6 @@ function dragHandler(mousedownEvent) {
   this.addEventListener('mouseup', (mouseupEvent) => {
     this.style.cursor = 'pointer';
     this.style.zIndex = 'auto';
-    ;
     const target = gameResults.getBoundingClientRect();
     const current = inputField.querySelector('.game-row').getBoundingClientRect();
     const coordX = mouseupEvent.clientX;
@@ -106,14 +146,19 @@ function dragHandler(mousedownEvent) {
     this.style.position = 'relative';
     this.style.top = 'auto';
     this.style.left = 'auto';
-    if (coordX >= target.left && coordX <= target.right
-      && coordY >= target.top && coordY <= target.bottom) {
+    if (
+      coordX >= target.left &&
+      coordX <= target.right &&
+      coordY >= target.top &&
+      coordY <= target.bottom
+    ) {
       if (!gameResults.children.length) {
         gameResults.appendChild(this);
       } else {
         // check if draggable on child
-        const childrenAtLeftSide = Array.from(gameResults.children)
-          .filter((child) => child.getBoundingClientRect().x < coordX);
+        const childrenAtLeftSide = Array.from(gameResults.children).filter(
+          (child) => child.getBoundingClientRect().x < coordX,
+        );
         if (childrenAtLeftSide.length !== 0) {
           childrenAtLeftSide[childrenAtLeftSide.length - 1].insertAdjacentElement('afterend', this);
         } else {
@@ -122,17 +167,24 @@ function dragHandler(mousedownEvent) {
         }
       }
       // check if draggable inside input field
-    } else if (coordX >= current.left && coordX <= current.right
-      && coordY >= current.top && coordY <= current.bottom) {
-          gameResults.appendChild(this);                
-      } else {
+    } else if (
+      coordX >= current.left &&
+      coordX <= current.right &&
+      coordY >= current.top &&
+      coordY <= current.bottom
+    ) {
+      gameResults.appendChild(this);
+    } else {
       inputField.querySelector('.game-row').appendChild(this);
     }
     connectPuzzles(gameResults);
     connectPuzzles(inputField.querySelector('.game-row'));
     // check if words left
     if (inputField.querySelector('.game-row').children.length === 0) {
-      gameResults.setAttribute('style', `${gameResults.getAttribute('style')}justify-content: end;`);
+      gameResults.setAttribute(
+        'style',
+        `${gameResults.getAttribute('style')}justify-content: end;`,
+      );
       checkBtn.classList.remove('hidden');
       dontKnowBtn.classList.add('hidden');
       gameResults.classList.remove('droppable');
@@ -180,13 +232,17 @@ pictureBtn.addEventListener('click', () => {
     pictureBtn.dataset.pictureOn = 1;
   }
   inputField.querySelector('.game-row').children.forEach((canvas) => {
-    setBackgroundToPuzzlePiece(canvas, canvas.dataset.sx,
-      canvas.dataset.sy, canvas.dataset.word, +pictureBtn.dataset.pictureOn);
+    setBackgroundToPuzzlePiece(
+      canvas,
+      canvas.dataset.sx,
+      canvas.dataset.sy,
+      canvas.dataset.word,
+      +pictureBtn.dataset.pictureOn,
+    );
   });
 });
 
 // Round begin
-
 
 const startRound = async () => {
   preloaderController.showPreloader();
@@ -197,30 +253,34 @@ const startRound = async () => {
   });
   clearRoundStatistics();
   gameState = {
-    words: store.playUserWords ? await getUserWordsForGame() : await getWordsForRound(store.level, store.round),
+    words: store.playUserWords
+      ? await getUserWordsForGame()
+      : await getWordsForRound(store.level, store.round),
     currentSentence: 0,
     know: [],
     dontknow: [],
   };
   preloaderController.hidePreloader();
   if (gameState.words) {
-    setGameRound(); 
+    setGameRound();
 
     setRoundPainting();
     setPaintingInfo();
-    
+
     painting.onload = async () => {
-      document.querySelector('.game-result').setAttribute('style', `height: ${painting.clientHeight}px`);
+      document
+        .querySelector('.game-result')
+        .setAttribute('style', `height: ${painting.clientHeight}px`);
       await playNextSentence();
     };
-    
+
     pictureBtn.dataset.pictureOn = store.hints.isPictureOn;
     hideTranslation();
     checkBtn.classList.add('hidden');
     continueBtn.classList.add('hidden');
     dontKnowBtn.classList.remove('hidden');
     resultsBtn.classList.add('hidden');
-  }  
+  }
 };
 
 const goToNextRound = async () => {
@@ -231,10 +291,10 @@ const goToNextRound = async () => {
   gamePage.classList.remove('hidden');
   if (!store.playUserWords) {
     setRound();
-  }  
-// TODO send to settings round and level;
-if (JSON.parse(localStorage.getItem('isLogin'))) {
-    dataController.setUserOptions({puzzle: store.stringifySettings()}).then(async () => { 
+  }
+  // TODO send to settings round and level;
+  if (JSON.parse(localStorage.getItem('isLogin'))) {
+    dataController.setUserOptions({ puzzle: store.stringifySettings() }).then(async () => {
       await startRound();
     });
   } else {
@@ -250,7 +310,9 @@ const dontKnowHandler = () => {
   const array = Array.from(inputField.querySelector('.game-row').children);
   const gameResults = document.querySelector(`.game-result .game-row:nth-child(${currentRow})`);
 
-  gameResults.children.forEach((child) => { array.push(child); });
+  gameResults.children.forEach((child) => {
+    array.push(child);
+  });
   array.sort((a, b) => a.dataset.targetOrder - b.dataset.targetOrder);
   array.forEach((el) => {
     el.removeEventListener('mousedown', dragHandler);
@@ -274,13 +336,15 @@ dontKnowBtn.addEventListener('click', () => {
 continueBtn.addEventListener('click', async () => {
   const currentRow = gameState.currentSentence + 1;
   const gameResults = document.querySelector(`.game-result .game-row:nth-child(${currentRow})`);
-  gameResults.children.forEach((word) => { drawWhiteBorder(word); });
+  gameResults.children.forEach((word) => {
+    drawWhiteBorder(word);
+  });
   if (gameState.currentSentence < 9) {
     gameState.currentSentence += 1;
     await playNextSentence();
     continueBtn.classList.add('hidden');
     dontKnowBtn.classList.remove('hidden');
-  } else {    
+  } else {
     if (isPaintingOpen()) {
       await goToNextRound();
     } else {
@@ -288,10 +352,10 @@ continueBtn.addEventListener('click', async () => {
       showPaintingInfo();
       resultsBtn.classList.remove('hidden');
       setRoundStatistics(gameState);
-    } 
+    }
     if (JSON.parse(localStorage.getItem('isLogin'))) {
       await saveGlobalStatistics(gameState);
-    }    
+    }
   }
 });
 
@@ -330,7 +394,6 @@ resultsBtn.addEventListener('click', () => {
   roundStatisticsPage.addEventListener('click', roundStatisticAudioHandler);
 });
 
-
 document.querySelector('.round-statistic-continue-btn').addEventListener('click', async () => {
   await goToNextRound();
 });
@@ -345,6 +408,5 @@ statBtn.addEventListener('click', async () => {
   clearStatistics();
   await fillStatistics();
 });
-
 
 export { startRound, setRound };

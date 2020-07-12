@@ -12,28 +12,19 @@ const drawPuzzlePiece = (canvas, size) => {
   ctx.moveTo(0, 0);
   ctx.lineTo(size, 0);
   ctx.lineTo(size, a);
-  ctx.bezierCurveTo(
-    size + 9, a - 4,
-    size + 15, a - 2,
-    size + 15, a + 7,
-  );
-  ctx.bezierCurveTo(
-    size + 15, a + 22,
-    size, a + 14,
-    size, a + 14,
-  );
+  ctx.bezierCurveTo(size + 9, a - 4, size + 15, a - 2, size + 15, a + 7);
+  ctx.bezierCurveTo(size + 15, a + 22, size, a + 14, size, a + 14);
   ctx.lineTo(size, canvas.height);
   ctx.lineTo(0, canvas.height);
   ctx.lineTo(0, canvas.height - a);
+  ctx.bezierCurveTo(9, canvas.height - a + 4, 15, canvas.height - a + 2, 15, canvas.height - a - 7);
   ctx.bezierCurveTo(
-    9, canvas.height - a + 4,
-    15, canvas.height - a + 2,
-    15, canvas.height - a - 7,
-  );
-  ctx.bezierCurveTo(
-    15, canvas.height - a - 22,
-    0, canvas.height - a - 14,
-    0, canvas.height - a - 14,
+    15,
+    canvas.height - a - 22,
+    0,
+    canvas.height - a - 14,
+    0,
+    canvas.height - a - 14,
   );
   ctx.lineTo(0, 0);
   ctx.stroke();
@@ -54,16 +45,8 @@ const drawFirstPuzzlePiece = (canvas, size) => {
   ctx.moveTo(0, 0);
   ctx.lineTo(size, 0);
   ctx.lineTo(size, a);
-  ctx.bezierCurveTo(
-    size + 9, a - 4,
-    size + 15, a - 2,
-    size + 15, a + 7,
-  );
-  ctx.bezierCurveTo(
-    size + 15, a + 22,
-    size, a + 14,
-    size, a + 14,
-  );
+  ctx.bezierCurveTo(size + 9, a - 4, size + 15, a - 2, size + 15, a + 7);
+  ctx.bezierCurveTo(size + 15, a + 22, size, a + 14, size, a + 14);
   ctx.lineTo(size, canvas.height);
   ctx.lineTo(0, canvas.height);
   ctx.lineTo(0, 0);
@@ -87,15 +70,14 @@ const drawLastPuzzlePiece = (canvas, size) => {
   ctx.lineTo(size, canvas.height);
   ctx.lineTo(0, canvas.height);
   ctx.lineTo(0, canvas.height - a);
+  ctx.bezierCurveTo(9, canvas.height - a + 4, 15, canvas.height - a + 2, 15, canvas.height - a - 7);
   ctx.bezierCurveTo(
-    9, canvas.height - a + 4,
-    15, canvas.height - a + 2,
-    15, canvas.height - a - 7,
-  );
-  ctx.bezierCurveTo(
-    15, canvas.height - a - 22,
-    0, canvas.height - a - 14,
-    0, canvas.height - a - 14,
+    15,
+    canvas.height - a - 22,
+    0,
+    canvas.height - a - 14,
+    0,
+    canvas.height - a - 14,
   );
   ctx.lineTo(0, 0);
   ctx.fill();
@@ -135,7 +117,17 @@ const setBackgroundToPuzzlePiece = (canvas, sx, sy, word, isPictureOn) => {
     ctx.fillStyle = 'white';
     ctx.fill();
     ctx.globalAlpha = 0.5;
-    ctx.drawImage(painting, sx / widthScale, sy / heightScale, canvas.width / widthScale, canvas.height / heightScale, 0, 0, canvas.width, canvas.height);
+    ctx.drawImage(
+      painting,
+      sx / widthScale,
+      sy / heightScale,
+      canvas.width / widthScale,
+      canvas.height / heightScale,
+      0,
+      0,
+      canvas.width,
+      canvas.height,
+    );
   } else {
     ctx.globalAlpha = 1;
     ctx.fillStyle = '#f48fb1';
@@ -146,15 +138,19 @@ const setBackgroundToPuzzlePiece = (canvas, sx, sy, word, isPictureOn) => {
   ctx.fillStyle = '#795548';
   if (gameResult.offsetWidth < 500) {
     ctx.font = '0.8rem Montserrat';
-  }
-  else {
+  } else {
     ctx.font = '1rem Montserrat';
-  }  
+  }
   ctx.fillText(word, (canvas.width - ctx.measureText(word).width) / 2, (canvas.height / 3) * 2);
   ctx.strokeStyle = 'white';
 };
 
 export {
-  drawPuzzlePiece, drawFirstPuzzlePiece, drawLastPuzzlePiece, drawCorrect,
-  drawWrong, drawWhiteBorder, setBackgroundToPuzzlePiece,
+  drawPuzzlePiece,
+  drawFirstPuzzlePiece,
+  drawLastPuzzlePiece,
+  drawCorrect,
+  drawWrong,
+  drawWhiteBorder,
+  setBackgroundToPuzzlePiece,
 };

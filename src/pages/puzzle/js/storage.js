@@ -13,14 +13,15 @@ class Store {
 
   setUserSettings(settings) {
     const arr = settings.split(',');
-    [this.playUserWords,
-    this.level,
-    this.round,
-    this.isAutoPronounceOn,
-    this.hints.isPronounceOn,
-    this.hints.isTranslationOn,
-    this.hints.isPictureOn,
-    ] = arr.map(el => +el);     
+    [
+      this.playUserWords,
+      this.level,
+      this.round,
+      this.isAutoPronounceOn,
+      this.hints.isPronounceOn,
+      this.hints.isTranslationOn,
+      this.hints.isPictureOn,
+    ] = arr.map((el) => +el);
   }
 
   stringifySettings() {
@@ -52,7 +53,7 @@ class Store {
     this.isAutoPronounceOn = +value;
   }
 
-  setHints (hintsObj) {
+  setHints(hints) {
     this.hints = hints;
   }
 }
