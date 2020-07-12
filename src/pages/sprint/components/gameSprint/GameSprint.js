@@ -77,7 +77,7 @@ let wrongRight = [];
 
 export default class GameSprint {
   constructor(score) {
-    this.gameTime = 60;
+    this.gameTime = 30;
     this.currentGameTime = 0;
     this.stopGameTime = 0;
     this.stepTime = 1;
@@ -182,6 +182,7 @@ export default class GameSprint {
     seriesRightAnswerView[2].classList.remove('hide');
     seriesRightAnswerView[1].classList.remove('series_answer--right-final');
     wrongWords.push(words[this.currentWordIndex]);
+    this.currentWordIndex += stepToNextWordIndex;
     if (this.soundControll) { this.playWrongSound(); }
   }
 
@@ -194,6 +195,8 @@ export default class GameSprint {
 
     this.countRightAnswers += this.seriesPoint;
     wrongRight.push(words[this.currentWordIndex]);
+    console.log(wrongRight);
+    this.currentWordIndex += stepToNextWordIndex;
 
     this.gameScore += this.poinForRightAnswer;
     scoreView.innerHTML = `${this.gameScore}`;
@@ -322,13 +325,10 @@ export default class GameSprint {
       } else {
         this.rightAnswer();
       }
-      this.currentWordIndex += stepToNextWordIndex;
       this.renderWords();
     });
 
     buttonRight.addEventListener('click', () => {
-      this.currentWordIndex += stepToNextWordIndex;
-
       if (this.translateWordStatus) {
         this.rightAnswer();
       } else {
