@@ -335,6 +335,7 @@ export class DataController {
     }
 
     tempStatisticsObject.optional = this.packUserSettings(tempStatisticsObject.optional);
+    debugger
     return tempStatisticsObject;
   }
 
@@ -361,5 +362,16 @@ export class DataController {
       resultUserSettings[field] = JSON.stringify(userSettings[field]);
     });
     return resultUserSettings;
+  }
+
+  clearStatistics() {
+    this.getUserStatistics().then((currentStatistics) =>
+      apiUserSettingsPut(
+        this.prepareUploadStatistics(currentStatistics, {
+          card: this.orderingStatResult(currentStatistics).card,
+        }),
+        'statistics',
+      ),
+    );
   }
 }
