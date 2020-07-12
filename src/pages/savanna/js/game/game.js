@@ -34,7 +34,6 @@ export default class Game {
   constructor() {
     this.dataController = new DataController();
     this.preloaderController = new PreloaderController();
-    this.preloaderController.showPreloader();
     this.fallingWordElement = fallingWordElement;
     this.fallingWordText = fallingWordText;
     this.answersElements = answerElements;
@@ -74,7 +73,6 @@ export default class Game {
     helper.renredHearts();
     this.getUserData();
     this.createTranslates();
-    this.preloaderController.hidePreloader();
   }
 
   async getUserData() {
@@ -156,7 +154,10 @@ export default class Game {
   }
 
   async createTranslates() {
-    this.translates = await helper.getTranslatesByApi(this.dataController);
+    this.translates = await helper.getTranslatesByApi(
+      this.dataController,
+      this.preloaderController,
+    );
   }
 
   createRound() {
@@ -179,9 +180,6 @@ export default class Game {
 
   renderRound() {
     try {
-      if (this.translates.length < 10) {
-        this.createTranslates();
-      }
       this.createRound();
       this.stopHighlight();
       this.isFallWord();
@@ -448,7 +446,6 @@ export default class Game {
   }
 
   async prepareNewGame(repeat) {
-    this.preloaderController.showPreloader();
     this.resetRoundAndLevel();
     helper.renderCurrentRoundInOption(this.round);
     helper.renderCurrentLevelInOption(this.level);
@@ -468,7 +465,6 @@ export default class Game {
       await this.createNewWords();
     }
     await this.createTranslates();
-    this.preloaderController.hidePreloader();
   }
 
   showGameOptions() {
