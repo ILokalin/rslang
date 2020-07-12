@@ -5,6 +5,7 @@ import {
   WORD_IMG,
   RESULTS_BTN,
   ERRORS_MAX_COUNT,
+  ATTEMPTS_PER_WORD,
   speechRecognitionLanguage,
 } from '../data/constants';
 
@@ -14,10 +15,10 @@ export default class SpeechRecognitionService {
     window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     // eslint-disable-next-line no-undef
     this.recognition = new SpeechRecognition();
-    this.recognition.interimResults = true;
     this.recognition.lang = speechRecognitionLanguage;
     this.recognition.addEventListener('result', this.onResult.bind(this));
     SPEAK_BTN.addEventListener('click', this.speakButtonClick.bind(this));
+    this.attempts = ATTEMPTS_PER_WORD;
   }
 
   startRecording() {
@@ -25,7 +26,7 @@ export default class SpeechRecognitionService {
       this.recognition.start();
       this.recognition.addEventListener('end', this.recognition.start);
     } catch (err) {
-      localStorage.isStart = true;
+      localStorage.isStartSpeakIt = true;
     }
   }
 
@@ -38,7 +39,24 @@ export default class SpeechRecognitionService {
     const { transcript } = event.results[0][0];
     WORD_INPUT.value = String(transcript).trim().toLowerCase();
     const CARDS = document.querySelectorAll('.container .item');
+    const { errors } = this.props;
     CARDS.forEach(this.checkResults, this);
+    this.checkRoundResult(errors);
+  }
+
+  checkRoundResult(errors) {
+    if (errors === this.props.errors) {
+      this.attempts -= 1;
+    } else {
+      this.attempts = ATTEMPTS_PER_WORD;
+    }
+    if (this.attempts === 0) {
+      Utils.decreaseScore();
+      this.attempts = ATTEMPTS_PER_WORD;
+    }
+    if (Utils.totalScore() === 0 || this.props.knowArr.length === ERRORS_MAX_COUNT) {
+      RESULTS_BTN.click();
+    }
   }
 
   checkResults(card) {
@@ -49,27 +67,24 @@ export default class SpeechRecognitionService {
         this.props.errors -= 1;
         card.classList.add('activeItem');
         WORD_IMG.src = `${card.getAttribute('data-img')}`;
-        Utils.increaseScore();
-        if (this.props.knowArr.length === ERRORS_MAX_COUNT) {
-          RESULTS_BTN.click();
-        }
       }
     }
   }
 
   speakButtonClick(evt) {
-    Utils.clearScore();
-    localStorage.isStart = !JSON.parse(localStorage.isStart);
-    if (JSON.parse(localStorage.isStart)) {
+    this.attempts = ATTEMPTS_PER_WORD;
+    localStorage.isStartSpeakIt = !JSON.parse(localStorage.isStartSpeakIt);
+    Utils.prepareScore();
+    if (JSON.parse(localStorage.isStartSpeakIt)) {
       this.startRecording();
       SPEAK_BTN.classList.add('activeBtn');
-      SPEAK_BTN.innerText = 'Stop game';
+      SPEAK_BTN.innerText = 'Стоп игра';
       Utils.resetMainCard();
       Utils.disableCardClick();
-    } else if (!JSON.parse(localStorage.isStart)) {
+    } else if (!JSON.parse(localStorage.isStartSpeakIt)) {
       this.stopRecording();
       SPEAK_BTN.classList.remove('activeBtn');
-      SPEAK_BTN.innerText = 'Speak please';
+      SPEAK_BTN.innerText = 'Начать говорить';
       Utils.resetMainCard();
       Utils.disableCardClick();
       Utils.resetCards();

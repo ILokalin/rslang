@@ -1,7 +1,8 @@
-.sidenav-trigger {
-  position: absolute;
-  top: 20px;
-  color: #fff;
+.nav-wrapper h1 {
+  height: 56px;
+  margin-top: 0;
+  margin-bottom: 0;
+  line-height: 56px;
 }
 
 .level-select,
@@ -19,11 +20,31 @@
   right: 20px;
 }
 
-.avatar img {
-  margin-top: 10px;
-  width: 100px;
-  border-radius: 50%;
-  overflow: hidden;
-  border: 4px solid #80cbc4;
-  box-shadow: 0 0 0 4px hsla(0, 0%, 100%, 0.2);
+.sidenav li.avatar {
+  img {
+    margin-top: 10px;
+    width: 100px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 4px solid #80cbc4;
+    box-shadow: 0 0 0 4px hsla(0, 0%, 100%, 0.2);
+  }
+
+  .avatar__name {
+    padding-bottom: 20px;
+    line-height: 110%;
+  }
+}
+
+@media only screen and (min-width: 993px) {
+  nav a.sidenav-trigger {
+    display: block;
+  }
+}
+
+@media only screen and (min-width: 601px) {
+  .nav-wrapper h1 {
+    height: 64px;
+    line-height: 64px;
+  }
 }

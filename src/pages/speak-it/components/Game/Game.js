@@ -10,7 +10,6 @@ import {
   WORD_IMG,
   WORD_TRANSLATION,
   DATA_PATH,
-  SPEAK_BTN,
   RESTART,
   RETURN,
   RESULTS,
@@ -25,7 +24,7 @@ import {
 
 export default class Game {
   constructor(dataController, preloaderController, userService) {
-    localStorage.isStart = false;
+    localStorage.isStartSpeakIt = false;
     this.authorized = false;
     this.props = {
       errors: ERRORS_MAX_COUNT,
@@ -37,6 +36,7 @@ export default class Game {
     this.dataController = dataController;
     this.userService = userService;
     this.dataProvider = new DataProvider(dataController, preloaderController, userService);
+    window.addEventListener('storage', Utils.storageHandle);
   }
 
   async start() {
@@ -109,7 +109,7 @@ export default class Game {
   }
 
   async onNewGameBtnClick(e) {
-    if (SPEAK_BTN.classList.contains('activeBtn')) {
+    if (JSON.parse(localStorage.isStartSpeakIt) === true && this.userService.isAuthorized()) {
       await this.sendStatisticsToBackEnd();
     }
     RESULTS.classList.add('hidden');
@@ -124,13 +124,17 @@ export default class Game {
     this.saveSettings();
     const wordsData = await this.dataProvider.getData();
     CARDS_ITEMS.innerHTML = '';
-    await wordsData.forEach(this.createCard.bind(this));
+    await Promise.all(
+      wordsData.map(async (data, i) => {
+        await this.createCard(data, i);
+      }),
+    );
     Utils.disableCardClick();
     Utils.resetCardMinWidth('0');
   }
 
   restartGame() {
-    Utils.clearScore();
+    Utils.prepareScore();
     Utils.resetCards();
     this.props.errors = ERRORS_MAX_COUNT;
     this.props.know = 0;
@@ -153,6 +157,7 @@ export default class Game {
   }
 
   async levelOrRoundSelected() {
+    RESULTS.classList.add('hidden');
     this.clearStatistics();
     this.saveSettings();
     this.restartGame();

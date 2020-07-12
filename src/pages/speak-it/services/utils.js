@@ -3,24 +3,21 @@ import {
   WORD_INPUT,
   WORD_IMG,
   SCORE,
+  SCORE_TOTAL_COUNT,
   RESULTS,
   ERRORS_MAX_COUNT,
+  LEVELS_MAX_COUNT,
   ROUNDS_MAX_COUNT,
   CARDS_ITEMS,
   userNameEl,
   levelSelectEl,
   roundSelectEl,
   errorMessageEl,
-  defaultUser,
 } from '../data/constants';
 
 const Utils = {
   displayUserName: (userSettings) => {
     userNameEl.innerText = userSettings.name;
-  },
-
-  displayEmptyUserName: () => {
-    userNameEl.innerText = defaultUser;
   },
 
   getCurrentRound: () => {
@@ -98,7 +95,7 @@ const Utils = {
     WORD_IMG.src = WORD_IMG.dataset.src;
     WORD_TRANSLATION.innerText = WORD_TRANSLATION.dataset.text;
     WORD_INPUT.value = '';
-    if (JSON.parse(localStorage.isStart) === true) {
+    if (JSON.parse(localStorage.isStartSpeakIt) === true) {
       WORD_INPUT.classList.remove('none');
       WORD_TRANSLATION.classList.add('none');
     } else {
@@ -109,7 +106,7 @@ const Utils = {
 
   disableCardClick: () => {
     const CARDS = document.querySelectorAll('.container .item');
-    if (JSON.parse(localStorage.isStart) === true) {
+    if (JSON.parse(localStorage.isStartSpeakIt) === true) {
       CARDS.forEach((item) => {
         const card = item;
         card.style.pointerEvents = 'none';
@@ -128,17 +125,35 @@ const Utils = {
     e.preventDefault();
   },
 
-  clearScore: () => {
+  prepareScore: () => {
     SCORE.innerHTML = '';
+    if (JSON.parse(localStorage.isStartSpeakIt) === true) {
+      // eslint-disable-next-line no-plusplus
+      for (let i = 0; i < SCORE_TOTAL_COUNT; i++) {
+        SCORE.insertAdjacentHTML('beforeend', `<div class="star"></div>`);
+      }
+    }
   },
 
-  increaseScore: () => {
-    SCORE.insertAdjacentHTML('beforeend', `<div class="star"></div>`);
+  decreaseScore: () => {
+    SCORE.removeChild(SCORE.firstChild);
+    return SCORE.children.length;
+  },
+
+  totalScore: () => {
+    return SCORE.children.length;
   },
 
   goToTop: () => {
     document.body.scrollTop = 0;
     document.documentElement.scrollTop = 0;
+  },
+
+  validateRoundValue: () => {
+    const round = parseInt(roundSelectEl.value, 10);
+    if (round > ROUNDS_MAX_COUNT) {
+      roundSelectEl.value = ROUNDS_MAX_COUNT;
+    }
   },
 
   goToNextRound: () => {
@@ -157,6 +172,12 @@ const Utils = {
 
   isUserWordsSelected: () => {
     return levelSelectEl.selectedOptions[0].value === '0';
+  },
+
+  storageHandle: ({ key }) => {
+    if (key === 'isLogin') {
+      window.location.reload();
+    }
   },
 };
 
