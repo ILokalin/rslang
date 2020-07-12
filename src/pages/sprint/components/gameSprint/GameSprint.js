@@ -46,8 +46,6 @@ soundRight.src = '/sound/correct.mp3';
 const soundFolse = new Audio();
 soundFolse.src = '/sound/failure.mp3';
 
-
-
 const LevelViewInfo = {
   one: {
     color: seriesViewDefaulltBackgraundColor,
@@ -116,13 +114,13 @@ export default class GameSprint {
   }
 
   playWrongSound() {
-    soundFolse.play()
+    soundFolse.play();
     soundRight.pause();
     soundRight.currentTime = 0.0;
   }
 
   playRightSound() {
-    soundRight.play()
+    soundRight.play();
     soundFolse.pause();
     soundFolse.currentTime = 0.0;
   }
@@ -158,7 +156,7 @@ export default class GameSprint {
   }
 
   wrongIndexTranslateWord() {
-    const indexWrongTranslateWord = Math.floor(Math.random() * (words.length));
+    const indexWrongTranslateWord = Math.floor(Math.random() * words.length);
     return indexWrongTranslateWord === this.currentWordIndex
       ? this.wrongIndexTranslateWord()
       : indexWrongTranslateWord;
@@ -183,7 +181,9 @@ export default class GameSprint {
     seriesRightAnswerView[1].classList.remove('series_answer--right-final');
     wrongWords.push(words[this.currentWordIndex]);
     this.currentWordIndex += stepToNextWordIndex;
-    if (this.soundControll) { this.playWrongSound(); }
+    if (this.soundControll) {
+      this.playWrongSound();
+    }
   }
 
   rightAnswer() {
@@ -195,7 +195,6 @@ export default class GameSprint {
 
     this.countRightAnswers += this.seriesPoint;
     wrongRight.push(words[this.currentWordIndex]);
-    console.log(wrongRight);
     this.currentWordIndex += stepToNextWordIndex;
 
     this.gameScore += this.poinForRightAnswer;
@@ -208,7 +207,9 @@ export default class GameSprint {
     } else {
       this.transitionOnNextLevel();
     }
-    if (this.soundControll) { this.playRightSound(); }
+    if (this.soundControll) {
+      this.playRightSound();
+    }
   }
 
   static removeRightSeriesViewPoint() {
@@ -353,7 +354,8 @@ export default class GameSprint {
   getWordsForGame(level) {
     preloaderController.showPreloader();
     if (level === 0 || level === '0') {
-      dataController.userWordsGetAll(['onlearn'])
+      dataController
+        .userWordsGetAll(['onlearn'])
         .then(
           (value) => {
             const { paginatedResults } = value[0];
@@ -365,36 +367,33 @@ export default class GameSprint {
           (reason) => {
             answerImage.innerText = `${reason}`;
           },
-        ).then(() => {
+        )
+        .then(() => {
           if (words.length < minWordsForGameValue) {
             dropDownMenu[0].childNodes[0].style.pointerEvents = 'none';
             dropDownMenu[0].childNodes[1].click();
             dropDownMenuElement[1].click();
-            dropDownMenu[0].childNodes[0].setAttribute('title', 'Недост изученных слов')
-            dropDownMenuElement[0].innerHTML = 'Слова пользователя (недостаточно слов)'
+            dropDownMenu[0].childNodes[0].setAttribute('title', 'Недост изученных слов');
+            dropDownMenuElement[0].innerHTML = 'Слова пользователя (недостаточно слов)';
           } else {
             dropDownMenu[0].childNodes[0].style.pointerEvents = 'auto';
             dropDownMenu[0].childNodes[0].removeAttribute('title');
             dropDownMenuElement[0].innerHTML = 'Слова пользователя';
           }
-        })
-
+        });
+    } else {
+      dataController.getWords({ group: this.gameLevel - 1, page: 1, wordsPerPage: 200 }).then(
+        (value) => {
+          value.flat().map(({ id, word, wordTranslate }) => {
+            return words.push({ _id: id, word, wordTranslate });
+          });
+          preloaderController.hidePreloader();
+        },
+        (reason) => {
+          answerImage.innerText = `${reason}`;
+        },
+      );
     }
-    else {
-      dataController.getWords({ group: this.gameLevel - 1, page: 1, wordsPerPage: 200 })
-        .then(
-          (value) => {
-            value.flat().map(({ id, word, wordTranslate }) => {
-              return words.push({ _id: id, word, wordTranslate });
-            });
-            preloaderController.hidePreloader();
-          },
-          (reason) => {
-            answerImage.innerText = `${reason}`;
-          },
-        );
-    }
-
   }
 
   choiceLevel() {
@@ -410,12 +409,15 @@ export default class GameSprint {
         timerWrap.remove();
         this.defaultGameValue();
         localStorage.setItem('levelSprint', this.gameLevel);
-      })
-    })
+      });
+    });
   }
 
   constrolLevelAfterReload() {
-    if (localStorage.getItem('levelSprint') !== '0' && localStorage.getItem('levelSprint') != null) {
+    if (
+      localStorage.getItem('levelSprint') !== '0' &&
+      localStorage.getItem('levelSprint') != null
+    ) {
       this.gameLevel = localStorage.getItem('levelSprint');
     }
   }
@@ -427,34 +429,30 @@ export default class GameSprint {
     statistickWrong.innerHTML = `${this.countWrongAnswers}`;
 
     statistickDispaly.classList.remove('hide');
-    category.appendChild(
-      this.renderWordsContainerColum(wrongRight, 1)
-    );
+    category.appendChild(this.renderWordsContainerColum(wrongRight, 1));
 
-    category.appendChild(
-      this.renderWordsContainerColum(wrongWords, 2)
-    );
+    category.appendChild(this.renderWordsContainerColum(wrongWords, 2));
     const optionsForStatistick = {
       sprint: {
         result: this.gameScore,
         knownWords: this.countRightAnswers,
         mistakeWords: this.countWrongAnswers,
-      }
-    }
+      },
+    };
 
-    dataController.setUserStatistics(optionsForStatistick)
+    dataController
+      .setUserStatistics(optionsForStatistick)
       .then(
-        (statisticsAnswer) => {
+        () => {
           preloaderController.hidePreloader();
-          console.log(statisticsAnswer)
         },
-        (rejectReport) => {
+        () => {
           preloaderController.hidePreloader();
-          console.log(rejectReport)
-        }
-      ).then(() => {
+        },
+      )
+      .then(() => {
         this.choiceLevelAfterGame();
-      })
+      });
   }
 
   init() {
@@ -475,8 +473,7 @@ export default class GameSprint {
         dropDownMenuElement[this.gameLevel].click();
         this.userStatus = true;
       },
-      (rejectReport) => {
-        console.log(rejectReport);
+      () => {
         this.gameLevel = 1;
         this.constrolLevelAfterReload();
         this.choiceLevel();
@@ -506,13 +503,13 @@ export default class GameSprint {
       this.cardElem,
     );
 
-    const titleUl = document.createElement("div");
+    const titleUl = document.createElement('div');
     if (colum === 1) {
       titleUl.classList.add('words-statistick--right');
-      titleUl.innerHTML = 'Знаю'
+      titleUl.innerHTML = 'Знаю';
     } else {
       titleUl.classList.add('words-statistick--wrong');
-      titleUl.innerHTML = 'Ошибки'
+      titleUl.innerHTML = 'Ошибки';
     }
 
     ul.appendChild(titleUl);
@@ -520,24 +517,27 @@ export default class GameSprint {
     arrayWords.forEach((element) => {
       const word = element;
       // eslint-disable-next-line no-underscore-dangle
-      dataController.getWordMaterials(element._id).then((materialOfCard) => {
-        word.image = materialOfCard.image;
-        word.audio = materialOfCard.audio;
-        word.audioExample = materialOfCard.audioExample;
-        word.audioMeaning = materialOfCard.audioMeaning;
-        word.transcription = materialOfCard.transcription;
-        word.textMeaning = materialOfCard.textMeaning;
-        word.textMeaningTranslate = materialOfCard.textMeaningTranslate;
-        word.textExample = materialOfCard.textExample;
-        word.textExampleTranslate = materialOfCard.textExampleTranslate;
-      }).then(() => {
-        const wordState = word;
-        const li = ElementGen('li', 'vocabulary__word-container');
-        li.appendChild(this.createHeader(wordState));
-        li.appendChild(this.createBody(wordState));
-        ul.appendChild(li);
-        this.playSound(li);
-      });
+      dataController
+        .getWordMaterials(element._id)
+        .then((materialOfCard) => {
+          word.image = materialOfCard.image;
+          word.audio = materialOfCard.audio;
+          word.audioExample = materialOfCard.audioExample;
+          word.audioMeaning = materialOfCard.audioMeaning;
+          word.transcription = materialOfCard.transcription;
+          word.textMeaning = materialOfCard.textMeaning;
+          word.textMeaningTranslate = materialOfCard.textMeaningTranslate;
+          word.textExample = materialOfCard.textExample;
+          word.textExampleTranslate = materialOfCard.textExampleTranslate;
+        })
+        .then(() => {
+          const wordState = word;
+          const li = ElementGen('li', 'vocabulary__word-container');
+          li.appendChild(this.createHeader(wordState));
+          li.appendChild(this.createBody(wordState));
+          ul.appendChild(li);
+          this.playSound(li);
+        });
     });
 
     return ul;
@@ -603,8 +603,8 @@ export default class GameSprint {
         this.defaultGameValue();
         localStorage.setItem('levelSprint', this.gameLevel);
         statistickDispaly.classList.add('hide');
-      })
-    })
+      });
+    });
     if (this.userStatus === false) {
       dropDownMenuSecond[0].childNodes[0].classList.add('hide');
       dropDownMenuSecond[0].childNodes[this.gameLevel].click();
