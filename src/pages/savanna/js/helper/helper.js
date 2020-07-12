@@ -1,4 +1,13 @@
-import { userNameElement, audio, healtBar, health, menu, roundOption } from './constants';
+import {
+  userNameElement,
+  audio,
+  healtBar,
+  health,
+  menu,
+  roundOption,
+  popUpError,
+  mainContainer,
+} from './constants';
 import '../../assets/img/savanna-heart.svg';
 
 const helper = {
@@ -6,35 +15,53 @@ const helper = {
     userNameElement.innerText = `${user.name}`;
   },
 
-  renderEmptyUserName() {
-    userNameElement.innerText = '';
+  async getWordsByApi(dataController, level, round) {
+    try {
+      const words = await dataController
+        .getWords({ group: level, page: round })
+        .then((data) => data);
+      return words.sort(() => Math.random() - 0.5);
+    } catch (error) {
+      helper.hideMainContainer();
+      return error;
+    }
   },
 
-  async getWordsByApi(dataController, level, round) {
-    const words = await dataController.getWords({ group: level, page: round }).then((data) => data);
-    return words.sort(() => Math.random() - 0.5);
+  hideMainContainer() {
+    mainContainer.classList.add('hidden');
+    popUpError.classList.remove('hidden');
   },
 
   async getTranslatesByApi(dataController) {
-    const transtales = [];
-    const dataSet = dataController
-      .getWords({ group: 0, wordsPerPage: 600 })
-      .then((data) => data.sort(() => Math.random() - 0.5));
-    (await dataSet).forEach((element) => transtales.push(element.wordTranslate));
-    return transtales;
+    try {
+      const transtales = [];
+      const dataSet = await dataController
+        .getWords({ group: 0, wordsPerPage: 600 })
+        .then((data) => data.sort(() => Math.random() - 0.5));
+      dataSet.forEach((element) => transtales.push(element.wordTranslate));
+      return transtales;
+    } catch (error) {
+      helper.hideMainContainer();
+      return error;
+    }
   },
 
   async getWordsRepeatByApi(dataController, preloaderController) {
-    preloaderController.showPreloader();
-    let repeatWords = await dataController
-      .userWordsGetAll(['onlearn', 'hard', 'deleted'])
-      .then((data) => data[0].paginatedResults);
-    preloaderController.hidePreloader();
-    repeatWords.sort(() => Math.random() - 0.5);
-    if (repeatWords.length < 10) {
-      repeatWords = null;
+    try {
+      preloaderController.showPreloader();
+      let repeatWords = await dataController
+        .userWordsGetAll(['onlearn', 'hard', 'deleted'])
+        .then((data) => data[0].paginatedResults);
+      preloaderController.hidePreloader();
+      repeatWords.sort(() => Math.random() - 0.5);
+      if (repeatWords.length < 10) {
+        repeatWords = null;
+      }
+      return repeatWords;
+    } catch (error) {
+      helper.hideMainContainer();
+      return error;
     }
-    return repeatWords;
   },
 
   play(src) {
@@ -117,6 +144,7 @@ const helper = {
     levelOptionList.children[value].classList.add('selected');
     levelOptionList.children[value].click();
   },
+  hideGameIntroStat() {},
 };
 
 export default helper;

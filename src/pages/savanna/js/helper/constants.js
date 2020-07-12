@@ -31,6 +31,9 @@ const healtBar = document.querySelector('.healt-bar');
 const menu = document.querySelector('.sidenav');
 const soundIcon = document.querySelector('.sound-icon');
 const nextRoundButton = document.querySelector('.next-round');
+const popUpError = document.querySelector('.popup-error');
+const mainContainer = document.querySelector('.main');
+const refreshButton = document.querySelector('.refresh');
 
 export {
   appStartButton,
@@ -66,4 +69,7 @@ export {
   menu,
   soundIcon,
   nextRoundButton,
+  popUpError,
+  mainContainer,
+  refreshButton,
 };

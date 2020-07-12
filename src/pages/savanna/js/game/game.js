@@ -29,6 +29,7 @@ import {
   resumeButton,
   soundIcon,
   nextRoundButton,
+  refreshButton,
 } from '../helper/constants';
 import helper from '../helper/helper';
 
@@ -54,12 +55,12 @@ export default class Game {
     this.currentWord = null;
     this.currentIntreval = null;
     this.currentDataSet = null;
-    this.nextDataSet = null;
     this.keyPressHandler = this.keyboardCheckAnswer.bind(this);
     this.mouseClickHandler = this.mouseCheckAnswer.bind(this);
     this.props = {
       dontKnowWords: [],
       knowWords: [],
+      error: [],
     };
     this.startGame = this.startGame.bind(this);
     gameStartButton.addEventListener('click', this.startGame);
@@ -72,9 +73,12 @@ export default class Game {
     homeButton.addEventListener('click', this.showPopupMenu.bind(this));
     resumeButton.addEventListener('click', this.resumeGame.bind(this));
     nextRoundButton.addEventListener('click', this.newGame.bind(this));
+    refreshButton.addEventListener('click', this.refreshPage.bind(this));
     helper.renredHearts();
+    this.preloaderController.showPreloader();
     this.getUserData();
     this.createTranslates();
+    this.preloaderController.hidePreloader();
   }
 
   async getUserData() {
@@ -107,12 +111,12 @@ export default class Game {
     helper.renderUserName(data);
   }
 
-  async falseLogin() {
+  async falseLogin(data) {
     await this.createNewWords();
     this.login = false;
     repeatOption.checked = false;
     repeatOption.disabled = true;
-    helper.renderEmptyUserName();
+    helper.renderUserName(data);
     helper.renderRepeatDontWork();
   }
 
@@ -160,35 +164,45 @@ export default class Game {
   }
 
   createRound() {
-    this.isIntro = false;
-    this.isGame = true;
-    this.currentWord = this.currentDataSet.pop();
-    this.answers.push(this.currentWord.wordTranslate);
-    while (this.answers.length < 4) {
-      if (this.translates.pop !== this.currentWord.wordTranslate) {
-        this.answers.push(this.translates.pop());
+    try {
+      this.isIntro = false;
+      this.isGame = true;
+      this.currentWord = this.currentDataSet.pop();
+      this.answers.push(this.currentWord.wordTranslate);
+      while (this.answers.length < 4) {
+        if (this.translates.pop !== this.currentWord.wordTranslate) {
+          this.answers.push(this.translates.pop());
+        }
       }
+      this.answers.sort(() => Math.random() - 0.5);
+    } catch (error) {
+      this.stop();
+      helper.hideMainContainer();
     }
-    this.answers.sort(() => Math.random() - 0.5);
   }
 
   renderRound() {
-    if (this.translates.length < 10) {
-      this.createTranslates();
+    try {
+      if (this.translates.length < 10) {
+        this.createTranslates();
+      }
+      this.createRound();
+      this.stopHighlight();
+      this.isFallWord();
+      this.renderLevel(this.repeat);
+      this.fallingWordText.innerHTML = this.currentWord.word;
+      this.answersElements.forEach((answer, index) => {
+        answer.setAttribute('key', index + 1);
+        // eslint-disable-next-line no-param-reassign
+        answer.innerHTML = `<span class="digit">${index + 1}</span> ${this.answers.pop()}`;
+      });
+      this.height = 0;
+      document.body.addEventListener('keydown', this.keyPressHandler);
+      answerContainer.addEventListener('click', this.mouseClickHandler);
+    } catch (error) {
+      this.stop();
+      helper.hideMainContainer();
     }
-    this.createRound();
-    this.stopHighlight();
-    this.isFallWord();
-    this.renderLevel(this.repeat);
-    this.fallingWordText.innerHTML = this.currentWord.word;
-    this.answersElements.forEach((answer, index) => {
-      answer.setAttribute('key', index + 1);
-      // eslint-disable-next-line no-param-reassign
-      answer.innerHTML = `<span class="digit">${index + 1}</span> ${this.answers.pop()}`;
-    });
-    this.height = 0;
-    document.body.addEventListener('keydown', this.keyPressHandler);
-    answerContainer.addEventListener('click', this.mouseClickHandler);
   }
 
   renderLevel(repeat) {
@@ -310,7 +324,7 @@ export default class Game {
         this.wrongAnswer(this.mute);
       }
     } catch (error) {
-      console.log('Нажата неверная кнопка');
+      this.props.error.push(error);
     }
   }
 
@@ -408,7 +422,7 @@ export default class Game {
         audio.play();
       }
     } catch (error) {
-      console.log(error);
+      this.props.error.push(error);
     }
   }
 
@@ -431,6 +445,7 @@ export default class Game {
     this.props = {
       dontKnowWords: [],
       knowWords: [],
+      error: [],
     };
     this.restoreHealt();
     this.currentWord = null;
@@ -500,5 +515,10 @@ export default class Game {
       statistic.classList.remove('hidden');
     }
     popupMenu.classList.add('hidden');
+  }
+
+  refreshPage() {
+    // eslint-disable-next-line no-restricted-globals
+    location.reload();
   }
 }
