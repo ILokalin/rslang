@@ -3,19 +3,25 @@ html, body {
 }
 
 body {
-  background: linear-gradient(90deg,#3fccbf,#e0f2f1);
+  background-image: url("assets/img/background.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
   background-attachment: fixed;
 }
 
 .game-description{
   margin: 160px 20px 0 20px;
-  font-size: 18px;
-  font-weight: 500;
+  font-size: 2rem;
   text-align: justify;
 }
 
 .sidenav-trigger {
   margin-left: 20px;
+}
+
+.avatar__name {
+  padding-left: 10px;
 }
 
 .game-container {
@@ -37,6 +43,10 @@ body {
   position: absolute;
   top: 20px;
   color: #fff;
+}
+
+.select-wrapper {
+  padding-left: 10px;
 }
 
 .abort-game-btn {
@@ -122,12 +132,14 @@ body {
   box-shadow: 0 3px 3px 0 rgba(0,0,0,.14), 0 1px 7px 0 rgba(0,0,0,.12), 0 3px 1px -1px rgba(0,0,0,.2);
 }
 
-.select-words-window {
+.select-words-window,
+.warning-window {
   text-align: center;
   margin-top: 150px;
 }
 
-.select-words-description {
+.select-words-description,
+.warning-description {
   font-size: 18px;
 }
 
