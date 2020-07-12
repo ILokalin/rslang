@@ -358,6 +358,7 @@ export default class GameSprint {
         .userWordsGetAll(['onlearn'])
         .then(
           (value) => {
+            words = [];
             const { paginatedResults } = value[0];
             paginatedResults.flat().map(({ _id, word, wordTranslate }) => {
               return words.push({ _id, word, wordTranslate });
@@ -384,6 +385,7 @@ export default class GameSprint {
     } else {
       dataController.getWords({ group: this.gameLevel - 1, page: 1, wordsPerPage: 200 }).then(
         (value) => {
+          words = [];
           value.flat().map(({ id, word, wordTranslate }) => {
             return words.push({ _id: id, word, wordTranslate });
           });
@@ -511,13 +513,15 @@ export default class GameSprint {
       titleUl.classList.add('words-statistick--wrong');
       titleUl.innerHTML = 'Ошибки';
     }
-
+    const uniqueArray = arrayWords.filter((item, pos) => {
+      return arrayWords.indexOf(item) === pos;
+    })
     ul.appendChild(titleUl);
     this.choiceLevel();
-    arrayWords.forEach((element) => {
+    uniqueArray.forEach((element) => {
       const word = element;
-      // eslint-disable-next-line no-underscore-dangle
       dataController
+        // eslint-disable-next-line no-underscore-dangle
         .getWordMaterials(element._id)
         .then((materialOfCard) => {
           word.image = materialOfCard.image;
