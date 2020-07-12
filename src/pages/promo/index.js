@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import './index.scss';
 import 'materialize-css';
 
@@ -6,6 +7,5 @@ const elems = document.querySelectorAll('.slider');
 const sliderOptions = {
   indicators: true,
   interval: 4000,
-}
-const instances = M.Slider.init(elems, sliderOptions);
-
+};
+M.Slider.init(elems, sliderOptions);

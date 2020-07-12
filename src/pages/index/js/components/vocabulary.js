@@ -60,31 +60,35 @@ export default class VocabularyWord {
       const interval = (2 * element.userWord.optional.progress + 1) * 24 * 60 * 60 * 1000;
       const nextTime = new Date(+lastDate + interval);
       // eslint-disable-next-line no-underscore-dangle
-      this.dataController.getWordMaterials(element._id).then((materialOfCard) => {
-        word.image = materialOfCard.image;
-        word.audio = materialOfCard.audio;
-        word.audioExample = materialOfCard.audioExample;
-        word.audioMeaning = materialOfCard.audioMeaning;
-      }).then(() => {
-        const wordState = word;
-        wordState.lastDate = lastDate.toLocaleString("ru", {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric'
+      this.dataController
+        // eslint-disable-next-line no-underscore-dangle
+        .getWordMaterials(element._id)
+        .then((materialOfCard) => {
+          word.image = materialOfCard.image;
+          word.audio = materialOfCard.audio;
+          word.audioExample = materialOfCard.audioExample;
+          word.audioMeaning = materialOfCard.audioMeaning;
+        })
+        .then(() => {
+          const wordState = word;
+          wordState.lastDate = lastDate.toLocaleString('ru', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+          });
+          wordState.nextTime = nextTime.toLocaleString('ru', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+          });
+          wordState.progress = this.getLearnProgressString(word.userWord.optional.progress);
+          const li = ElementGen('li', 'vocabulary__word-container');
+          li.appendChild(this.createHeader(wordState));
+          li.appendChild(this.createBody(wordState));
+          ul.appendChild(li);
+          this.playSound(li);
+          this.restoreWordInLerningCategory(li, word);
         });
-        wordState.nextTime = nextTime.toLocaleString("ru", {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric'
-        });
-        wordState.progress = this.getLearnProgressString(word.userWord.optional.progress);
-        const li = ElementGen('li', 'vocabulary__word-container');
-        li.appendChild(this.createHeader(wordState));
-        li.appendChild(this.createBody(wordState));
-        ul.appendChild(li);
-        this.playSound(li);
-        this.restoreWordInLerningCategory(li, word);
-      });
     });
     return ul;
   }
@@ -93,14 +97,11 @@ export default class VocabularyWord {
     return arrayWords.sort((a, b) => {
       const wordA = a.word.toLowerCase();
       const wordB = b.word.toLowerCase();
-      if (wordA < wordB)
-        return -1
-      if (wordA > wordB)
-        return 1
-      return 0
-    })
+      if (wordA < wordB) return -1;
+      if (wordA > wordB) return 1;
+      return 0;
+    });
   }
-
 
   renderVocabularyWords(words, category) {
     const { paginatedResults } = words[0];
@@ -112,10 +113,7 @@ export default class VocabularyWord {
       ),
     );
     category.appendChild(
-      this.renderWordsContainerColum(
-        sortArrayWords.slice(Math.ceil(sortArrayWords.length / 2)),
-        2,
-      ),
+      this.renderWordsContainerColum(sortArrayWords.slice(Math.ceil(sortArrayWords.length / 2)), 2),
     );
     // eslint-disable-next-line no-undef
     M.AutoInit();
@@ -135,10 +133,15 @@ export default class VocabularyWord {
 
   restoreWordInLerningCategory(li, wordState) {
     const vocabularyRestorIcon = li.querySelectorAll('.restore-icon');
-    const vocabularyOnLearnColumn = vocabularyOnLearn.getElementsByClassName(`on-learn__column${this.curentCloum}`);
+    const vocabularyOnLearnColumn = vocabularyOnLearn.getElementsByClassName(
+      `on-learn__column${this.curentCloum}`,
+    );
 
-    if (this.curentCloum === 1) { this.curentCloum = 2 }
-    else { this.curentCloum = 1 }
+    if (this.curentCloum === 1) {
+      this.curentCloum = 2;
+    } else {
+      this.curentCloum = 1;
+    }
     vocabularyRestorIcon.forEach((element) =>
       element.addEventListener('click', () => {
         vocabularyOnLearnColumn[0].appendChild(li);
@@ -147,9 +150,8 @@ export default class VocabularyWord {
           id: wordState._id,
           status: 'onlearn',
           progress: wordState.userWord.optional.progress,
-        }
-        this.dataController.userWordsPut(saveOption).then((response) => response,
-          (report) => console.log(report));
+        };
+        this.dataController.userWordsPut(saveOption);
       }),
     );
   }
@@ -178,7 +180,7 @@ export default class VocabularyWord {
       (response) => {
         this.renderVocabularyWords(response, vocabularyOnLearn);
       },
-      (rejectReport) => console.log(rejectReport),
+      (rejectReport) => rejectReport,
     );
 
     this.dataController.userWordsGetAll(['hard']).then(

@@ -1,20 +1,30 @@
+/* eslint-disable import/no-cycle */
 import { puzzleGrooveWidth } from '../constants';
 import {
-  isPaintingOpen, hidePaintingInfo,
-  showPaintingInfo, setPaintingInfo, hideBackgroundPic, showBackgroundPic,
-  setRoundPainting, getPaintingCutSrc, getPaintingImageSrc, getRoundPainting,
+  isPaintingOpen,
+  hidePaintingInfo,
+  showPaintingInfo,
+  setPaintingInfo,
+  hideBackgroundPic,
+  showBackgroundPic,
+  setRoundPainting,
+  getPaintingCutSrc,
+  getPaintingImageSrc,
+  getRoundPainting,
 } from './paintingService';
+import { roundStatisticAudioHandler, autopronounce } from './audioService';
 import {
-  roundStatisticAudioHandler, autopronounce,
-} from './audioService';
-import {
-  getLengthOfAllPieces, getSizeOfPiece, getGameRowWidth, getGameRowHeight,
+  getLengthOfAllPieces,
+  getSizeOfPiece,
+  getGameRowWidth,
+  getGameRowHeight,
 } from './sizingService';
+import { setGameRound, setRound } from './roundService';
 import {
-  setGameRound, setRound,
-} from './roundService';
-import {
-  setSentenceTranslation, showTranslation, hideTranslation, connectSentenceWithHints,
+  setSentenceTranslation,
+  showTranslation,
+  hideTranslation,
+  connectSentenceWithHints,
 } from './translationService';
 import { getWordsForRound, getSymbolsCount, getUserWordsForGame } from './textService';
 
@@ -29,16 +39,36 @@ const shuffleArray = (array) => {
 
 const connectPuzzles = (gameResults) => {
   gameResults.children.forEach((child, index) => {
-    child.setAttribute('style', `left:-${(index * puzzleGrooveWidth)}px;`);
+    child.setAttribute('style', `left:-${index * puzzleGrooveWidth}px;`);
   });
 };
 
 export {
-  isPaintingOpen, hidePaintingInfo, showPaintingInfo, setPaintingInfo,
-  hideBackgroundPic, showBackgroundPic, connectPuzzles, getLengthOfAllPieces,
-  shuffleArray, getSymbolsCount, getGameRowWidth, getGameRowHeight, setRoundPainting,
-  setGameRound, getWordsForRound, roundStatisticAudioHandler, autopronounce,
-  connectSentenceWithHints, setSentenceTranslation, showTranslation, hideTranslation,
-  getSizeOfPiece, setRound, getRoundPainting, getPaintingCutSrc, getPaintingImageSrc,
+  isPaintingOpen,
+  hidePaintingInfo,
+  showPaintingInfo,
+  setPaintingInfo,
+  hideBackgroundPic,
+  showBackgroundPic,
+  connectPuzzles,
+  getLengthOfAllPieces,
+  shuffleArray,
+  getSymbolsCount,
+  getGameRowWidth,
+  getGameRowHeight,
+  setRoundPainting,
+  setGameRound,
+  getWordsForRound,
+  roundStatisticAudioHandler,
+  autopronounce,
+  connectSentenceWithHints,
+  setSentenceTranslation,
+  showTranslation,
+  hideTranslation,
+  getSizeOfPiece,
+  setRound,
+  getRoundPainting,
+  getPaintingCutSrc,
+  getPaintingImageSrc,
   getUserWordsForGame,
 };

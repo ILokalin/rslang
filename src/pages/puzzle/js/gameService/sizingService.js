@@ -1,6 +1,4 @@
-import {
-  painting, puzzleGrooveWidth,
-} from '../constants';
+import { painting, puzzleGrooveWidth } from '../constants';
 
 const getGameRowWidth = () => document.querySelector('.game-row').offsetWidth;
 const getGameRowHeight = () => painting.getBoundingClientRect().height * 0.1;
@@ -16,12 +14,11 @@ const getSizeOfPiece = (canvas, word) => {
   return ctx.measureText(word).width + puzzleGrooveWidth * 2;
 };
 
-const getLengthOfAllPieces = (arr) => arr.reduce((sum, element) => {
-  const canvas = document.createElement('canvas');
-  const estimatedSize = getSizeOfPiece(canvas, element);
-  return sum + estimatedSize;
-}, 0);
+const getLengthOfAllPieces = (arr) =>
+  arr.reduce((sum, element) => {
+    const canvas = document.createElement('canvas');
+    const estimatedSize = getSizeOfPiece(canvas, element);
+    return sum + estimatedSize;
+  }, 0);
 
-export {
-  getLengthOfAllPieces, getSizeOfPiece, getGameRowWidth, getGameRowHeight,
-};
+export { getLengthOfAllPieces, getSizeOfPiece, getGameRowWidth, getGameRowHeight };

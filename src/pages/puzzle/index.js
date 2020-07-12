@@ -2,12 +2,13 @@ import './index.scss';
 import 'materialize-css';
 import { store } from './js/storage';
 import {
-  playButtonHandler, selectLevelHandler, chooseRoundHandler, checkBoxHandler, 
-  checkIfUserIsSaved, checkCheckboxes, storageHandle,
+  playButtonHandler,
+  selectLevelHandler,
+  chooseRoundHandler,
+  checkBoxHandler,
+  storageHandle,
 } from './js/helpers';
-import {
- sideNav, dataController, statBtn,
-} from './js/constants';
+import { sideNav } from './js/constants';
 import { startRound } from './js/game';
 import { whoIsGameFor } from './js/userService';
 
@@ -35,9 +36,11 @@ const options = {
     };
   },
   async onCloseEnd() {
-    if (store.round !== store.prevRound.round 
-    || store.level !== store.prevRound.level 
-    || store.playUserWords !== store.prevRound.playUserWords) {
+    if (
+      store.round !== store.prevRound.round ||
+      store.level !== store.prevRound.level ||
+      store.playUserWords !== store.prevRound.playUserWords
+    ) {
       await startRound();
     }
   },

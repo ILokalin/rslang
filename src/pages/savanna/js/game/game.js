@@ -24,26 +24,27 @@ import {
   levelAndRoundselectors,
   statisticContainer,
   soundButton,
-  popupMenu,
-  homeButton,
-  resumeButton,
   soundIcon,
   nextRoundButton,
+  refreshButton,
 } from '../helper/constants';
 import helper from '../helper/helper';
 
 export default class Game {
   constructor() {
+    this.dataController = new DataController();
+    this.preloaderController = new PreloaderController();
+    this.preloaderController.showPreloader();
     this.fallingWordElement = fallingWordElement;
     this.fallingWordText = fallingWordText;
     this.answersElements = answerElements;
-    this.dataController = new DataController();
-    this.preloaderController = new PreloaderController();
     this.health = health;
     this.repeat = false;
     this.login = false;
     this.mute = false;
+    this.isPopMenu = false;
     this.isGame = false;
+    this.isIntro = true;
     this.level = 0;
     this.round = 0;
     this.height = 0;
@@ -53,12 +54,12 @@ export default class Game {
     this.currentWord = null;
     this.currentIntreval = null;
     this.currentDataSet = null;
-    this.nextDataSet = null;
     this.keyPressHandler = this.keyboardCheckAnswer.bind(this);
     this.mouseClickHandler = this.mouseCheckAnswer.bind(this);
     this.props = {
       dontKnowWords: [],
       knowWords: [],
+      error: [],
     };
     this.startGame = this.startGame.bind(this);
     gameStartButton.addEventListener('click', this.startGame);
@@ -68,12 +69,12 @@ export default class Game {
     repeatOption.addEventListener('change', this.changeRepeatOption.bind(this));
     statisticContainer.addEventListener('click', this.playWord.bind(this));
     soundButton.addEventListener('click', this.changeMute.bind(this));
-    homeButton.addEventListener('click', this.showPopupMenu.bind(this));
-    resumeButton.addEventListener('click', this.resumeGame.bind(this));
     nextRoundButton.addEventListener('click', this.newGame.bind(this));
+    refreshButton.addEventListener('click', this.refreshPage.bind(this));
     helper.renredHearts();
     this.getUserData();
     this.createTranslates();
+    this.preloaderController.hidePreloader();
   }
 
   async getUserData() {
@@ -81,9 +82,14 @@ export default class Game {
   }
 
   async trueLogin(data) {
-    this.round = data.savanna.lastRound;
-    this.level = data.savanna.lastLevel;
     this.login = true;
+    try {
+      this.level = data.savanna.lastLevel;
+      this.round = data.savanna.lastRound;
+    } catch (e) {
+      this.level = 0;
+      this.round = 0;
+    }
     helper.renderCurrentRoundInOption(this.round);
     helper.renderCurrentLevelInOption(this.level);
     await this.createRepeatWords();
@@ -98,16 +104,15 @@ export default class Game {
       this.switchOption();
       helper.renderNeedMoreWords();
     }
-    console.log(this.currentDataSet);
     helper.renderUserName(data);
   }
 
-  async falseLogin() {
+  async falseLogin(data) {
     await this.createNewWords();
     this.login = false;
     repeatOption.checked = false;
     repeatOption.disabled = true;
-    helper.renderEmptyUserName();
+    helper.renderUserName(data);
     helper.renderRepeatDontWork();
   }
 
@@ -119,7 +124,6 @@ export default class Game {
   changeLevel(event) {
     this.level = +event.target.value - 1;
     this.createNewWords();
-    console.log(this.level);
   }
 
   async changeRepeatOption() {
@@ -155,40 +159,49 @@ export default class Game {
     this.translates = await helper.getTranslatesByApi(this.dataController);
   }
 
-  createRound(repeat) {
-    this.isGame = true;
-    if (repeat) {
+  createRound() {
+    try {
+      this.isIntro = false;
+      this.isGame = true;
       this.currentWord = this.currentDataSet.pop();
-    } else {
-      this.currentWord = this.currentDataSet.pop();
-    }
-    this.answers.push(this.currentWord.wordTranslate);
-    while (this.answers.length < 4) {
-      if (this.translates.pop !== this.currentWord.wordTranslate) {
-        this.answers.push(this.translates.pop());
+      this.answers.push(this.currentWord.wordTranslate);
+      while (this.answers.length < 4) {
+        if (this.translates.pop !== this.currentWord.wordTranslate) {
+          this.answers.push(this.translates.pop());
+        }
       }
+      this.answers.sort(() => Math.random() - 0.5);
+    } catch (error) {
+      this.stop();
+      helper.hideMainContainer();
     }
-    this.answers.sort(() => Math.random() - 0.5);
   }
 
   renderRound() {
-    if (this.translates.length < 10) {
-      this.createTranslates();
+    try {
+      if (this.translates.length < 10) {
+        this.createTranslates();
+      }
+      this.createRound();
+      this.stopHighlight();
+      this.isFallWord();
+      this.renderLevel(this.repeat);
+      this.fallingWordText.innerHTML = this.currentWord.word;
+      this.answersElements.forEach((answer, index) => {
+        answer.setAttribute('key', index + 1);
+        // eslint-disable-next-line no-param-reassign
+        answer.innerHTML = `<span class="digit">${index + 1}</span> ${this.answers.pop()}`;
+      });
+      this.height = 0;
+      document.body.addEventListener('keydown', this.keyPressHandler);
+      answerContainer.addEventListener('click', this.mouseClickHandler);
+      if (this.isPopMenu) {
+        this.stop();
+      }
+    } catch (error) {
+      this.stop();
+      helper.hideMainContainer();
     }
-    this.createRound(this.repeat);
-    this.stopHighlight();
-    this.isFallWord();
-    this.renderLevel(this.repeat);
-    this.fallingWordText.innerHTML = this.currentWord.word;
-    this.answersElements.forEach((answer, index) => {
-      answer.setAttribute('key', index + 1);
-      // eslint-disable-next-line no-param-reassign
-      answer.innerHTML = `${index + 1} ${this.answers.pop()}`;
-    });
-    this.height = 0;
-    document.body.addEventListener('keydown', this.keyPressHandler);
-    answerContainer.addEventListener('click', this.mouseClickHandler);
-    console.log(this.currentDataSet);
   }
 
   renderLevel(repeat) {
@@ -274,10 +287,9 @@ export default class Game {
         await this.createNewWords();
         this.start(true);
       }
+    } else if (this.currentDataSet.length === 0 || this.countRepeat === 29) {
+      this.showStat(true);
     } else {
-      if (this.currentDataSet.length === 0 || this.countRepeat === 29) {
-        this.showStat(true);
-      }
       this.countRepeat += 1;
       this.start(true);
     }
@@ -293,7 +305,17 @@ export default class Game {
     this.stop();
     this.health -= 1;
     this.highlightAnswer();
-    if (this.health <= 0 || this.currentDataSet.length === 0) {
+    if (this.health <= 0) {
+      this.showStat();
+    } else if (
+      this.currentDataSet.length === 0 &&
+      this.props.knowWords.length > this.props.dontKnowWords.length
+    ) {
+      this.showStat(true);
+    } else if (
+      this.currentDataSet.length === 0 &&
+      this.props.knowWords.length < this.props.dontKnowWords.length
+    ) {
       this.showStat();
     } else {
       this.start();
@@ -311,7 +333,7 @@ export default class Game {
         this.wrongAnswer(this.mute);
       }
     } catch (error) {
-      console.log(error);
+      this.props.error.push(error);
     }
   }
 
@@ -409,12 +431,11 @@ export default class Game {
         audio.play();
       }
     } catch (error) {
-      console.log(error);
+      this.props.error.push(error);
     }
   }
 
   resetRoundAndLevel() {
-    console.log(this.level, this.round, this.countRepeat);
     if (this.level === 6) {
       this.level = 0;
     }
@@ -427,12 +448,14 @@ export default class Game {
   }
 
   async prepareNewGame(repeat) {
+    this.preloaderController.showPreloader();
     this.resetRoundAndLevel();
     helper.renderCurrentRoundInOption(this.round);
     helper.renderCurrentLevelInOption(this.level);
     this.props = {
       dontKnowWords: [],
       knowWords: [],
+      error: [],
     };
     this.restoreHealt();
     this.currentWord = null;
@@ -445,17 +468,19 @@ export default class Game {
       await this.createNewWords();
     }
     await this.createTranslates();
+    this.preloaderController.hidePreloader();
   }
 
   showGameOptions() {
+    this.isIntro = true;
     this.prepareNewGame(this.repeat);
     statistic.classList.add('hidden');
     intro.classList.remove('hidden');
   }
 
-  newGame(e) {
+  async newGame(e) {
     e.preventDefault();
-    this.prepareNewGame(this.repeat);
+    await this.prepareNewGame(this.repeat);
     gameContainer.classList.remove('hidden');
     gameHeader.classList.remove('hidden');
     statistic.classList.add('hidden');
@@ -478,23 +503,8 @@ export default class Game {
     soundIcon.classList.toggle('disabled');
   }
 
-  showPopupMenu(e) {
-    if (!this.isGame) {
-      statistic.classList.add('hidden');
-    }
-    popupMenu.classList.remove('hidden');
-    this.stop();
-    e.preventDefault();
-  }
-
-  resumeGame() {
-    if (this.isGame) {
-      this.isFallWord();
-      document.body.addEventListener('keydown', this.keyPressHandler);
-      answerContainer.addEventListener('click', this.mouseClickHandler);
-    } else {
-      statistic.classList.remove('hidden');
-    }
-    popupMenu.classList.add('hidden');
+  refreshPage() {
+    // eslint-disable-next-line no-restricted-globals
+    location.reload();
   }
 }
