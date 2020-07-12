@@ -120,7 +120,6 @@ export default class AuditionGame {
         this.startGame();
       },
       () => {
-        this.preloaderController.hidePreloader();
         this.startGame();
       },
     );
@@ -157,7 +156,7 @@ export default class AuditionGame {
       },
       (rejectReport) => {
         const message = `API request failed with error: ${rejectReport.message}`;
-
+        this.preloaderController.hidePreloader();
         AuditionGame.openModal(message);
       },
     );
