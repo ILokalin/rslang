@@ -5,7 +5,6 @@ import {
   gameContainer,
   userNameEl,
   difficultySelector,
-  logInBtn,
   errorMessageEl,
   warningMessageWindow,
   warningMessageText,
@@ -13,9 +12,6 @@ import {
   selectWordsWindow,
   ownWordsBtn,
   allWordsBtn,
-  popUp,
-  popUpResumeBtn,
-  abortGameBtn,
 } from './constants';
 
 export default class AuditionGame {
@@ -115,17 +111,16 @@ export default class AuditionGame {
     this.preloaderController.showPreloader();
     this.dataController.getUser().then(
       (userSettings) => {
-        abortGameBtn.addEventListener('click', AuditionGame.showPopUp);
         this.preloaderController.hidePreloader();
         this.user = userSettings.name;
-        this.level = userSettings.audition.gameLevel;
+        if (userSettings.audition) {
+          this.level = userSettings.audition.gameLevel;
+        }
         userNameEl.innerText = this.user;
         this.startGame();
       },
       () => {
         this.preloaderController.hidePreloader();
-        logInBtn.classList.remove('hidden');
-        logInBtn.addEventListener('click', this.logInListener);
         this.startGame();
       },
     );
@@ -416,7 +411,6 @@ export default class AuditionGame {
   }
 
   endGame() {
-    abortGameBtn.removeEventListener('click', AuditionGame.showPopUp);
     new AuditionGameStatistics(this.roundsData, this.user, this.startGame.bind(this));
   }
 
@@ -425,13 +419,5 @@ export default class AuditionGame {
     const gradient = `linear-gradient(90deg,#3fccbf,#e0f2f1 ${percent}%)`;
 
     document.body.style.background = gradient;
-  }
-
-  static showPopUp(e) {
-    e.preventDefault();
-    popUp.classList.remove('hidden');
-    popUpResumeBtn.onclick = () => {
-      popUp.classList.add('hidden');
-    };
   }
 }

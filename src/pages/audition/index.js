@@ -11,10 +11,8 @@ startGameBtn.addEventListener('click', () => new AuditionGame());
 M.AutoInit();
 
 const storageHandle = ({ key }) => {
-  if (key === 'isLogin' && !JSON.parse(localStorage[key])) {
-    window.location.reload();
-  } else if (key === 'isLogin' && JSON.parse(localStorage[key])) {
-    window.location.reload();
+  if (key === 'isLogin') {
+    document.location.reload();
   }
 };
 

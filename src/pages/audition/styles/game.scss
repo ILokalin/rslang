@@ -12,13 +12,17 @@ body {
 
 .game-description{
   margin: 160px 20px 0 20px;
-  font-size: 18px;
+  font-size: 2rem;
   font-weight: 500;
   text-align: justify;
 }
 
 .sidenav-trigger {
   margin-left: 20px;
+}
+
+.avatar__name {
+  padding-left: 10px;
 }
 
 .game-container {
@@ -40,6 +44,10 @@ body {
   position: absolute;
   top: 20px;
   color: #fff;
+}
+
+.select-wrapper {
+  padding-left: 10px;
 }
 
 .abort-game-btn {
