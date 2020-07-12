@@ -80,6 +80,7 @@ export default class Game {
   }
 
   async trueLogin(data) {
+    this.preloaderController.showPreloader();
     this.login = true;
     try {
       this.level = data.savanna.lastLevel;
@@ -103,6 +104,7 @@ export default class Game {
       helper.renderNeedMoreWords();
     }
     helper.renderUserName(data);
+    this.preloaderController.hidePreloader();
   }
 
   async falseLogin(data) {
@@ -242,10 +244,10 @@ export default class Game {
         this.props.dontKnowWords.push(this.currentWord);
         this.takeHealth();
         this.health -= 1;
+        this.highlightAnswer();
         if (this.health <= 0) {
           this.showStat();
         } else {
-          this.highlightAnswer();
           this.start();
         }
       }
@@ -255,15 +257,19 @@ export default class Game {
   }
 
   mouseCheckAnswer(event) {
+    const div = event.target.closest('.answer-options__item');
     if (
-      event.target.classList.contains('answer-options__item') &&
-      event.target.innerText.slice(2) === this.currentWord.wordTranslate
+      (event.target.classList.contains('answer-options__item') &&
+        event.target.innerText.slice(2) === this.currentWord.wordTranslate) ||
+      div.innerText.slice(2) === this.currentWord.wordTranslate
     ) {
       this.correctAnswer(this.mute);
     } else if (
-      event.target.classList.contains('answer-options__item') &&
-      event.target.innerText.slice(2) !== this.currentWord.wordTranslate
+      (event.target.classList.contains('answer-options__item') &&
+        event.target.innerText.slice(2) !== this.currentWord.wordTranslate) ||
+      div.innerText.slice(2) !== this.currentWord.wordTranslate
     ) {
+      div.classList.add('highlight-error');
       event.target.classList.add('highlight-error');
       this.wrongAnswer(this.mute);
     }
