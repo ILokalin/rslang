@@ -28,8 +28,10 @@ import {
   trainingBtn,
   mainPageStats,
   mainLogoutMsg,
+  menuHome,
 } from '../constants';
 import { whoIsGameFor } from './whoIsGameFor';
+import { cleanPage, cleanStatisticsTable } from './helpers'
 
 const userLogout = () => {
   dataController.logoutUser();
@@ -38,10 +40,12 @@ const userLogout = () => {
     btn.classList.add('hidden');
   });
   titleUser.innerText = 'CAPTAIN ANONIMUS';
+  menuHome.click();
   menuLinks.forEach((link) => {link.classList.add('disabled-link')});
   trainingBtn.classList.add('disabled');
   mainPageStats.classList.add('hidden');
   mainLogoutMsg.classList.remove('hidden');
+  cleanPage();  
 };
 
 const storageHandle = ({ key }) => {
@@ -89,7 +93,6 @@ settingsSaveBtns.forEach((btn) => {
       settings.showAnswerBtnEnabled = +showAnswerBtn.checked;
       settings.autoPlayEnabled = +autoPlay.checked;
     }
-    console.log(settings);
     localStorage.setItem('cardsSettings', JSON.stringify(settings));
     dataController.setUserOptions({settings});
   });
@@ -97,4 +100,9 @@ settingsSaveBtns.forEach((btn) => {
 
 document.querySelector('.message-login').addEventListener('click', () => {
   loginButton.click();
+})
+
+document.querySelector('.clear-stat-btn').addEventListener('click', async () => {
+  await dataController.clearStatistics();
+  cleanStatisticsTable();
 })

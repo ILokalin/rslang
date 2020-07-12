@@ -57,9 +57,8 @@ export const whoIsGameFor = () => {
       vocabulary.renderVocabulary();
 
       const statistics = await dataController.getUserStatistics();
-      console.log(statistics);
       const shortTermStat = statistics.card.shortTime;
-      renderShortTermStat(userSettings.settings, shortTermStat); 
+      await renderShortTermStat(userSettings.settings, shortTermStat); 
 
       renderStatChart(statistics); 
       renderTable(statistics);    

@@ -144,7 +144,6 @@ function dragHandler(mousedownEvent) {
 
 const playNextSentence = async () => {
   checkCheckboxes();
-  console.log(gameState.words);
   const word = gameState.words[gameState.currentSentence];
   const sentence = word.textExample;
   renderPuzzlesInInputField(sentence);
@@ -204,27 +203,27 @@ const startRound = async () => {
     dontknow: [],
   };
   preloaderController.hidePreloader();
-  
-  setGameRound(); 
+  if (gameState.words) {
+    setGameRound(); 
 
-  setRoundPainting();
-  setPaintingInfo();
-  
-  painting.onload = async () => {
-    document.querySelector('.game-result').setAttribute('style', `height: ${painting.clientHeight}px`);
-   await playNextSentence();
-  };
-  pictureBtn.dataset.pictureOn = store.hints.isPictureOn;
-  hideTranslation();
-  checkBtn.classList.add('hidden');
-  continueBtn.classList.add('hidden');
-  dontKnowBtn.classList.remove('hidden');
-  resultsBtn.classList.add('hidden');
-  
+    setRoundPainting();
+    setPaintingInfo();
+    
+    painting.onload = async () => {
+      document.querySelector('.game-result').setAttribute('style', `height: ${painting.clientHeight}px`);
+      await playNextSentence();
+    };
+    
+    pictureBtn.dataset.pictureOn = store.hints.isPictureOn;
+    hideTranslation();
+    checkBtn.classList.add('hidden');
+    continueBtn.classList.add('hidden');
+    dontKnowBtn.classList.remove('hidden');
+    resultsBtn.classList.add('hidden');
+  }  
 };
 
 const goToNextRound = async () => {
-  console.log(store);
   hideBackgroundPic();
   hidePaintingInfo();
   roundStatisticsPage.classList.add('hidden');
@@ -234,8 +233,7 @@ const goToNextRound = async () => {
     setRound();
   }  
 // TODO send to settings round and level;
-console.log(store.stringifySettings());
-  if (JSON.parse(localStorage.getItem('isLogin'))) {
+if (JSON.parse(localStorage.getItem('isLogin'))) {
     dataController.setUserOptions({puzzle: store.stringifySettings()}).then(async () => { 
       await startRound();
     });

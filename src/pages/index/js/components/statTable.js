@@ -62,8 +62,8 @@ const renderSprintStats = (fullStatObj) => {
 
     td1.insertAdjacentText('afterbegin', roundStat.date);
     td2.insertAdjacentText('afterbegin', roundStat.result);
-    td3.insertAdjacentText('afterbegin', roundStat.rightAnswer);
-    td4.insertAdjacentText('afterbegin', roundStat.wrongAnswer);
+    td3.insertAdjacentText('afterbegin', roundStat.knownWords);
+    td4.insertAdjacentText('afterbegin', roundStat.mistakeWords);
   });
 }
 

@@ -237,6 +237,7 @@ export default class Card {
       mySwiper.slides[mySwiper.activeIndex].querySelector('.hard-btn'),
     ];
     const cardTitle = event.target.closest('.card').querySelector('.card-title');
+    const word = event.target.closest('.card').querySelector('.input_text').dataset.word;
     const {progress} = cardTitle.dataset;
     const {wordId} = cardTitle.dataset;
     let saveOption;
@@ -251,7 +252,6 @@ export default class Card {
             status: 'onlearn',
             progress: newProgress,
           }
-          console.log(saveOption);
           if (progress) {       
             await dataController.userWordsPut(saveOption);
           } else {
@@ -267,7 +267,6 @@ export default class Card {
             status: 'onlearn',
             progress: newProgress,
           }
-          console.log(saveOption);
           if (progress) {       
             await dataController.userWordsPut(saveOption);
           } else {
@@ -283,7 +282,6 @@ export default class Card {
             status: 'hard',
             progress: (newProgress >= 0 ? newProgress : 0),
           }
-          console.log(saveOption);
           if (progress) {       
             await dataController.userWordsPut(saveOption);
           } else {
@@ -291,7 +289,7 @@ export default class Card {
           }
           cardTitle.dataset.progress = (newProgress >= 0 ? newProgress : 0);
           cardTitle.dataset.difficulty = 'hard';
-          showToastHard()
+          showToastHard(word);
       }
       buttonsArr.forEach((el) => el.setAttribute('disabled', 'disabled'))
     }    
@@ -316,7 +314,6 @@ export default class Card {
         status: 'deleted',
         progress: (progress || 0),
       }
-      console.log(saveOption);
       if (progress) {       
         await dataController.userWordsPut(saveOption);       
       } else {
@@ -334,7 +331,6 @@ export default class Card {
         status: (wordDifficulty || 'onlearn'),
         progress: (newProgress >= 0 ? newProgress : 0),
       }
-      console.log(saveOption);
       if (progress) {       
         await dataController.userWordsPut(saveOption);        
       } else {
@@ -372,7 +368,10 @@ export default class Card {
     const {wordId} = cardTitle.dataset;
     const wordDifficulty = cardTitle.dataset.difficulty;
     const showAnswerBtn = event.target.closest('.card').querySelector('.show-answer-btn');
+    const submitAnswer = event.target.closest('.card').querySelector('.submit-answer');
     let isWrong;
+
+    submitAnswer.setAttribute('disabled', 'disabled');
 
     input.blur();
 
@@ -399,7 +398,6 @@ export default class Card {
         status: 'onlearn',
         progress: 0,
       }  
-      console.log(saveOption)
       await dataController.userWordsPut(saveOption);    
       cardTitle.dataset.progress = 0;
       cardTitle.dataset.difficulty = 'onlearn';
@@ -410,7 +408,6 @@ export default class Card {
         status: (wordDifficulty || 'onlearn'),
         progress: newProgress,
       }
-      console.log(saveOption)
       await dataController.userWordsPost(saveOption);
       cardTitle.dataset.progress = newProgress;
       cardTitle.dataset.difficulty = wordDifficulty || 'onlearn';
@@ -425,6 +422,7 @@ export default class Card {
         result.style.zIndex = -1;
         result.innerHTML = '';
         input.focus();
+        submitAnswer.removeAttribute('disabled');
       }, 3000);
 
       await againBtnAct();  

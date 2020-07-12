@@ -7,7 +7,6 @@ import { updateMaterialComponents, setProgressbarToCurrentPosition, getApproprat
 
 export default class Training {
   constructor(newWordsAmountPerDay, maxWordsPerDay, shortTermStat) {
-    console.log(settings);
     this.shortTermStat = shortTermStat || {
       date: moment().format('DD-MMM-YYYY'),
       totalCards: 0,
@@ -21,7 +20,6 @@ export default class Training {
 
     getApproprateWords(newWordsAmountPerDay, maxWordsPerDay).then((res)=> {
       this.words = res;
-      console.log(res);
       preloaderController.hidePreloader();
       this.start();      
     })
@@ -64,8 +62,7 @@ export default class Training {
     document.querySelector('.statistics__correct-answers').innerText = isNaN(rightAnswersPersent) ? '0%' : rightAnswersPersent + '%';
     document.querySelector('.statistics__total-cards').innerText = this.shortTermStat.totalCards;
     document.querySelector('.statistics__correct-in-row').innerText = this.shortTermStat.longestChain;
-    console.log(this.shortTermStat);
-  }
+    }
 
   continueTraining() {
     getApproprateWords(5, 10).then((res)=>{
