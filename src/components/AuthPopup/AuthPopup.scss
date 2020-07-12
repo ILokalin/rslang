@@ -12,8 +12,9 @@
   background-color: #3337;
 
   &__authorization {
-    width: 50%;
     margin: 0 auto;
+    width: 50%;
+    min-width: 720px;
   }
 
   & .card-panel {
@@ -24,7 +25,7 @@
     padding: 0 20px;
   }
 
-  & .first-line {
+  &__line {
     margin: 0 auto;
   }
 
@@ -32,17 +33,26 @@
     padding-left: 5px;
   }
 
-  & .buttons-wrapper {
+  &__entry-wrapper {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
 
     & p {
       margin: 0;
     }
   }
 
+  & .buttons-wrapper {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__buttons-wrapper {
+    display: flex;
+  }
+
   &__button {
-    &.cancel-btn.col {
+    &.cancel-btn.col.m6 {
       margin-left: 5px;
     }
 
@@ -53,6 +63,40 @@
       cursor: pointer;
       padding: 0;
       text-decoration: underline;
+    }
+  }
+
+  &__info-message {
+    opacity: 0.5;
+    transition: 0.5s;
+    font-size: 12px;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  @media (max-width: 780px) {
+    &__authorization {
+      min-width: 90%;
+    }
+  }
+
+  @media (max-width: 600px) {
+    &__title {
+      font-size: xx-large;
+    }
+
+    &__buttons-wrapper {
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    &__button {
+      &.cancel-btn.col.m6 {
+        margin-top: 5px;
+        margin-left: 0;
+      }
     }
   }
 }

@@ -1,24 +1,21 @@
 export const reportMessages = {
-  default: {
-    welcome: 'Please input email & password',
-  },
   words: {
-    400: 'Bad request',
-    417: 'Expectation Failed',
+    400: 'Сбой в запросе',
+    417: 'Сбой в работе - это слово уже записано',
   },
   userSettings: {
-    400: 'Bad request',
-    401: 'Access token is missing or invalid',
-    404: 'Settings not found',
+    400: 'Сбой в запросе. Используйте данные от пользователя зарегистрированного в этой версии игры!',
+    401: 'Истекло время доступа - требуется повторить вход в систему',
+    404: 'Нет настроек пользователя - используйте данные авторизации зарегистрированные в этой версии игры!',
   },
   signIn: {
-    403: 'Incorrect e-mail or password',
+    403: 'Неверный адрес почты или пароль',
   },
   user: {
-    400: 'Bad request',
-    401: 'Access token is missing or invalid',
-    404: 'User not found',
-    422: 'Incorrect e-mail or password',
-    417: 'Maybe this email already is register',
+    400: 'Ошибка в запросе - уточните данные',
+    401: 'Истекло время доступа - требуется повторить вход в систему',
+    404: 'Пользователь не существует.',
+    422: 'Неверный адрес почты или пароль.',
+    417: 'Вероятно, пользователь с таким адресом уже существует.',
   },
 };
