@@ -25,12 +25,18 @@ const helper = {
     popUpError.classList.remove('hidden');
   },
 
-  async getTranslatesByApi(dataController) {
+  getRandomDigit(max) {
+    return Math.floor(Math.random() * Math.floor(max));
+  },
+
+  async getTranslatesByApi(dataController, preloaderController) {
+    preloaderController.showPreloader();
     const transtales = [];
     const dataSet = await dataController
-      .getWords({ group: 0, wordsPerPage: 600 })
+      .getWords({ group: helper.getRandomDigit(5), wordsPerPage: 200 })
       .then((data) => data.sort(() => Math.random() - 0.5));
     dataSet.forEach((element) => transtales.push(element.wordTranslate));
+    preloaderController.hidePreloader();
     return transtales;
   },
 
@@ -39,8 +45,8 @@ const helper = {
     let repeatWords = await dataController
       .userWordsGetAll(['onlearn', 'hard', 'deleted'])
       .then((data) => data[0].paginatedResults);
-    preloaderController.hidePreloader();
     repeatWords.sort(() => Math.random() - 0.5);
+    preloaderController.hidePreloader();
     if (repeatWords.length < 10) {
       repeatWords = null;
     }
