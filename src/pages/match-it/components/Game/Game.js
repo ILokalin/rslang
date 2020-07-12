@@ -166,6 +166,7 @@ export default class Game {
   }
 
   async optionSelected() {
+    results.classList.add('hidden');
     this.clearGameResults();
     this.clearStatistics();
     this.gameSettings.displayRound();
