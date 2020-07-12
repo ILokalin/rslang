@@ -150,9 +150,9 @@ const Utils = {
   },
 
   validateRoundValue: () => {
-    const round = parseInt(roundSelect.value, 10);
+    const round = parseInt(roundSelectEl.value, 10);
     if (round > ROUNDS_MAX_COUNT) {
-      roundSelect.value = ROUNDS_MAX_COUNT;
+      roundSelectEl.value = ROUNDS_MAX_COUNT;
     }
   },
 
