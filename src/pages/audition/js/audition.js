@@ -50,6 +50,7 @@ export default class AuditionGame {
     warningMessageWindow.classList.remove('hidden');
     warningMessageText.innerText = message;
     warningMessageBtn.onclick = () => {
+      this.roundsData = [];
       this.playWithAllWords();
       warningMessageWindow.classList.add('hidden');
     };
@@ -144,6 +145,7 @@ export default class AuditionGame {
       (response) => {
         this.preloaderController.hidePreloader();
         const words = response[0].paginatedResults;
+        
 
         if (words.length < 10) {
           const message =
@@ -164,7 +166,7 @@ export default class AuditionGame {
 
   showSelectWordsWindow(words) {
     selectWordsWindow.classList.remove('hidden');
-
+  
     ownWordsBtn.onclick = () => {
       this.playWithOwnWords(words);
       selectWordsWindow.classList.add('hidden');
@@ -178,13 +180,13 @@ export default class AuditionGame {
 
   playWithOwnWords(words) {
     words.sort(() => Math.random() - Math.random());
-
-    if (words.length < 10) {
+    if (words.length < 50) {
       this.roundsNumber = Math.floor(words.length / 5);
     }
 
     const trigger = document.querySelector('.dropdown-trigger');
     trigger.disabled = true;
+    
     this.createRoundsData(words);
     this.createCurrentRoundPage();
     this.createNextRoundPage();
@@ -411,7 +413,7 @@ export default class AuditionGame {
   }
 
   endGame() {
-    new AuditionGameStatistics(this.roundsData, this.user, this.startGame.bind(this));
+    new AuditionGameStatistics(this.roundsData, this.roundsNumber, this.user, this.startGame.bind(this));
   }
 
   changeBackground() {
