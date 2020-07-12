@@ -24,23 +24,20 @@ import {
   levelAndRoundselectors,
   statisticContainer,
   soundButton,
-  popupMenu,
-  homeButton,
-  resumeButton,
   soundIcon,
   nextRoundButton,
   refreshButton,
-  mainContainer,
 } from '../helper/constants';
 import helper from '../helper/helper';
 
 export default class Game {
   constructor() {
+    this.dataController = new DataController();
+    this.preloaderController = new PreloaderController();
+    this.preloaderController.showPreloader();
     this.fallingWordElement = fallingWordElement;
     this.fallingWordText = fallingWordText;
     this.answersElements = answerElements;
-    this.dataController = new DataController();
-    this.preloaderController = new PreloaderController();
     this.health = health;
     this.repeat = false;
     this.login = false;
@@ -72,12 +69,9 @@ export default class Game {
     repeatOption.addEventListener('change', this.changeRepeatOption.bind(this));
     statisticContainer.addEventListener('click', this.playWord.bind(this));
     soundButton.addEventListener('click', this.changeMute.bind(this));
-    homeButton.addEventListener('click', this.showPopupMenu.bind(this));
-    resumeButton.addEventListener('click', this.resumeGame.bind(this));
     nextRoundButton.addEventListener('click', this.newGame.bind(this));
     refreshButton.addEventListener('click', this.refreshPage.bind(this));
     helper.renredHearts();
-    this.preloaderController.showPreloader();
     this.getUserData();
     this.createTranslates();
     this.preloaderController.hidePreloader();
@@ -484,9 +478,9 @@ export default class Game {
     intro.classList.remove('hidden');
   }
 
-  newGame(e) {
+  async newGame(e) {
     e.preventDefault();
-    this.prepareNewGame(this.repeat);
+    await this.prepareNewGame(this.repeat);
     gameContainer.classList.remove('hidden');
     gameHeader.classList.remove('hidden');
     statistic.classList.add('hidden');
@@ -507,30 +501,6 @@ export default class Game {
   changeMute() {
     this.mute = !this.mute;
     soundIcon.classList.toggle('disabled');
-  }
-
-  showPopupMenu(e) {
-    if (!this.isGame || !this.isIntro) {
-      mainContainer.classList.add('hidden');
-    }
-    if (!this.isGame || this.isIntro) {
-      mainContainer.classList.add('hidden');
-    }
-    this.isPopMenu = true;
-    popupMenu.classList.remove('hidden');
-    this.stop();
-    e.preventDefault();
-  }
-
-  resumeGame() {
-    if (this.isGame) {
-      this.isFallWord();
-      document.body.addEventListener('keydown', this.keyPressHandler);
-      answerContainer.addEventListener('click', this.mouseClickHandler);
-    }
-    mainContainer.classList.remove('hidden');
-    this.isPopMenu = false;
-    popupMenu.classList.add('hidden');
   }
 
   refreshPage() {

@@ -24,9 +24,6 @@ const audio = document.querySelector('.audio');
 const repeatOption = document.querySelector('.repeat');
 const levelAndRoundselectors = document.querySelectorAll('.game-option');
 const statisticContainer = document.querySelector('.statistic-container');
-const homeButton = document.querySelector('.home');
-const popupMenu = document.querySelector('.popup-menu');
-const resumeButton = document.querySelector('.resume');
 const healtBar = document.querySelector('.healt-bar');
 const menu = document.querySelector('.sidenav');
 const soundIcon = document.querySelector('.sound-icon');
@@ -62,9 +59,6 @@ export {
   repeatOption,
   levelAndRoundselectors,
   statisticContainer,
-  homeButton,
-  popupMenu,
-  resumeButton,
   healtBar,
   menu,
   soundIcon,
