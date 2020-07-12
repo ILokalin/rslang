@@ -185,7 +185,6 @@ export const authPopupForm = {
                             {
                               tag: 'button',
                               type: 'button',
-                              href: '#',
                               classAdd: 'login-btn,btn,waves-effect,waves-light,col,s3',
                               innerText: 'Регистрация',
                               isAccess: 'register',
@@ -193,7 +192,6 @@ export const authPopupForm = {
                             {
                               tag: 'button',
                               type: 'button',
-                              href: '#',
                               classAdd: 'login-btn,btn,waves-effect,waves-light,col,s3',
                               innerText: 'Вход',
                               isAccess: 'login',
@@ -201,7 +199,6 @@ export const authPopupForm = {
                             {
                               tag: 'button',
                               type: 'button',
-                              href: '#',
                               className: 'button',
                               classAdd:
                                 'cancel-btn,btn,waves-effect,waves-light,teal,lighten-2,col,s3',
