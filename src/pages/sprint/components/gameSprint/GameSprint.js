@@ -77,7 +77,7 @@ let wrongRight = [];
 
 export default class GameSprint {
   constructor(score) {
-    this.gameTime = 30;
+    this.gameTime = 60;
     this.currentGameTime = 0;
     this.stopGameTime = 0;
     this.stepTime = 1;
