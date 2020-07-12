@@ -157,6 +157,7 @@ export default class Game {
   }
 
   async levelOrRoundSelected() {
+    RESULTS.classList.add('hidden');
     this.clearStatistics();
     this.saveSettings();
     this.restartGame();
