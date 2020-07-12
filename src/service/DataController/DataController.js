@@ -43,7 +43,6 @@ export class DataController {
 
     authPopupState.watch((state) => {
       if (state) {
-        showAuthReport(reportMessages.default.welcome);
         this.isAuthInProgress = true;
       } else if (this.isAuthInProgress) {
         this.isAuthInProgress = false;
@@ -215,7 +214,7 @@ export class DataController {
           this.resolve(this.unpackUserSettings(userSettings.optional));
         },
         (rejectReport) => {
-          showAuthReport(reportMessages[rejectReport.master][rejectReport.code]);
+          this.authErrorReport(rejectReport);
         },
       );
   }
@@ -230,7 +229,7 @@ export class DataController {
           this.resolve(this.unpackUserSettings(userSettings.optional));
         },
         (rejectReport) => {
-          showAuthReport(reportMessages[rejectReport.master][rejectReport.code]);
+          this.authErrorReport(rejectReport);
         },
       );
   }
@@ -254,9 +253,13 @@ export class DataController {
           this.resolve(this.unpackUserSettings(userSettings.optional));
         },
         (rejectReport) => {
-          showAuthReport(reportMessages[rejectReport.master][rejectReport.code]);
+          this.authErrorReport(rejectReport);
         },
       );
+  }
+
+  authErrorReport(rejectReport) {
+    showAuthReport(reportMessages[rejectReport.master][rejectReport.code] ?? rejectReport.message);
   }
 
   checkToken() {

@@ -21,7 +21,6 @@ class Store {
     this.hints.isTranslationOn,
     this.hints.isPictureOn,
     ] = arr.map(el => +el);     
-    console.log(this);
   }
 
   stringifySettings() {
