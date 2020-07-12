@@ -50,7 +50,6 @@ export default class AuditionGame {
     warningMessageWindow.classList.remove('hidden');
     warningMessageText.innerText = message;
     warningMessageBtn.onclick = () => {
-      this.roundsData = [];
       this.playWithAllWords();
       warningMessageWindow.classList.add('hidden');
     };
@@ -195,6 +194,15 @@ export default class AuditionGame {
   }
 
   playWithAllWords() {
+    this.round = 0;
+    this.roundsData = [];
+    this.roundsNumber = 10;
+
+    const trigger = document.querySelector('.dropdown-trigger');
+    if (trigger.disabled) {
+      trigger.disabled = false;
+    }
+    
     const pages = this.generatePages();
 
     this.getWords(pages);
