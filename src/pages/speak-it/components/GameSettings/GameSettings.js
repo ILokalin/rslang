@@ -1,3 +1,4 @@
+import Utils from '../../services/utils';
 import { levelSelectEl, roundSelectEl, roundLabelEl } from '../../data/constants';
 
 export default class GameSettings {
@@ -6,6 +7,7 @@ export default class GameSettings {
     const [level, round] = this.dataProvider.getInitialGameRound().split('.');
     levelSelectEl.value = level.toString();
     roundSelectEl.value = round.toString();
+    Utils.validateRoundValue();
     // eslint-disable-next-line no-undef
     M.AutoInit();
   }
@@ -23,6 +25,7 @@ export default class GameSettings {
   }
 
   updateGameData() {
+    Utils.validateRoundValue();
     this.levelOrRoundSelected();
   }
 }

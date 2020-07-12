@@ -149,6 +149,13 @@ const Utils = {
     document.documentElement.scrollTop = 0;
   },
 
+  validateRoundValue: () => {
+    const round = parseInt(roundSelect.value, 10);
+    if (round > ROUNDS_MAX_COUNT) {
+      roundSelect.value = ROUNDS_MAX_COUNT;
+    }
+  },
+
   goToNextRound: () => {
     const level = parseInt(levelSelectEl.value, 10);
     const round = parseInt(roundSelectEl.value, 10);
