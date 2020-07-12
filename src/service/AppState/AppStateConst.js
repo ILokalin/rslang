@@ -3,3 +3,7 @@ export const preloaderCommand = {
   short: 'short',
   long: 'long',
 };
+
+export const defaultMessageReport = {
+  isVisible: false,
+};

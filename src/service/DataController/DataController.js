@@ -1,4 +1,5 @@
 import { AuthPopup } from 'Components/AuthPopup';
+import { MessageReportView } from 'Components/MessageReportView';
 import moment from 'moment';
 import {
   openAuthPopup,
@@ -6,6 +7,9 @@ import {
   authPopupState,
   userDataStore,
   showAuthReport,
+  openMessageReport,
+  messageReportState,
+  answerfromReportStore,
 } from 'Service/AppState';
 import {
   apiGetWords,
@@ -27,11 +31,62 @@ import {
 } from './dataControllerConst';
 
 const authPopup = new AuthPopup();
+const messageReport = new MessageReportView();
 
 export class DataController {
   constructor() {
-    authPopup.init();
+    this.beforeUnloadProcess = this.beforeUnloadProcess.bind(this);
+    this.storageHandle = this.storageHandle.bind(this);
 
+    authPopup.init();
+    messageReport.init();
+    this.authPopupInitialize();
+    this.messageFormInitialize();
+    this.unloadInit();
+    window.addEventListener('storage', this.storageHandle);
+  }
+
+  storageHandle({ key }) {
+    if (key === 'isLogin') {
+      this.unloadIsApprove = true;
+      document.location.reload();
+    }
+  }
+
+  unloadInit() {
+    window.addEventListener('beforeunload', this.beforeUnloadProcess);
+  }
+
+  beforeUnloadProcess(event) {
+    event.preventDefault();
+    const isLogin = localStorage.getItem('isLogin');
+    const isHaveUserNow = isLogin && JSON.parse(isLogin);
+    if (!this.unloadIsApprove && isHaveUserNow) {
+      // eslint-disable-next-line no-param-reassign
+      event.returnValue = '';
+    }
+  }
+
+  messageFormInitialize() {
+    answerfromReportStore.watch((answer) => {
+      if (this.isShowErrorReport) {
+        if (answer !== '') {
+          answer();
+        }
+      }
+    });
+
+    messageReportState.watch((state) => {
+      const { isVisible } = state;
+      if (isVisible) {
+        this.isShowErrorReport = true;
+      } else {
+        this.isShowErrorReport = false;
+      }
+    });
+  }
+
+  authPopupInitialize() {
     userDataStore.watch((userData) => {
       if (this.isAuthInProgress) {
         if (userData.statusRegister) {
@@ -46,9 +101,15 @@ export class DataController {
         this.isAuthInProgress = true;
       } else if (this.isAuthInProgress) {
         this.isAuthInProgress = false;
+        localStorage.setItem('isLogin', false);
         this.reject(dataControllerConst.cancelUser);
       }
     });
+  }
+
+  restartPage() {
+    this.unloadIsApprove = true;
+    document.location.reload();
   }
 
   getWordMaterials(wordId) {
@@ -174,9 +235,12 @@ export class DataController {
             (rejectReport) => reject(rejectReport),
           );
       } else {
-        // temp cover - TODO algorithm for auth
-        // eslint-disable-next-line prefer-promise-reject-errors
-        reject({ message: 'user not defined' });
+        openMessageReport({
+          title: 'Сбой при записи статистики.',
+          message:
+            'В системе нет данных о пользователе. Нарушено хранение токена.\nНеобходимо перезагрузить приложение',
+          okCallback: this.restartPage,
+        });
       }
     });
   }
@@ -194,9 +258,12 @@ export class DataController {
           (rejectReport) => reject(rejectReport),
         );
       } else {
-        // temp cover - TODO algorithm for auth
-        // eslint-disable-next-line prefer-promise-reject-errors
-        reject({ message: 'user not defined' });
+        openMessageReport({
+          title: 'Сбой при чтении статистики.',
+          message:
+            'В системе нет данных о пользователе. Нарушено хранение токена.\nНеобходимо перезагрузить приложение',
+          okCallback: this.restartPage,
+        });
       }
     });
   }
