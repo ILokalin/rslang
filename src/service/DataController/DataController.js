@@ -311,7 +311,6 @@ export class DataController {
     const tempStatisticsObject = {
       optional: this.unpackUserSettings(optional),
     };
-
     if (uploadStatistics.card) {
       tempStatisticsObject.optional.card = this.cardStatisticsAggregate(
         tempStatisticsObject.optional.card,
@@ -335,7 +334,6 @@ export class DataController {
     }
 
     tempStatisticsObject.optional = this.packUserSettings(tempStatisticsObject.optional);
-    debugger
     return tempStatisticsObject;
   }
 
@@ -368,7 +366,7 @@ export class DataController {
     this.getUserStatistics().then((currentStatistics) =>
       apiUserSettingsPut(
         this.prepareUploadStatistics(currentStatistics, {
-          card: this.orderingStatResult(currentStatistics).card,
+          card: currentStatistics.card.shortTime,
         }),
         'statistics',
       ),
