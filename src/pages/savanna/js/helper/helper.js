@@ -16,15 +16,8 @@ const helper = {
   },
 
   async getWordsByApi(dataController, level, round) {
-    try {
-      const words = await dataController
-        .getWords({ group: level, page: round })
-        .then((data) => data);
-      return words.sort(() => Math.random() - 0.5);
-    } catch (error) {
-      helper.hideMainContainer();
-      return error;
-    }
+    const words = await dataController.getWords({ group: level, page: round }).then((data) => data);
+    return words.sort(() => Math.random() - 0.5);
   },
 
   hideMainContainer() {
@@ -33,35 +26,25 @@ const helper = {
   },
 
   async getTranslatesByApi(dataController) {
-    try {
-      const transtales = [];
-      const dataSet = await dataController
-        .getWords({ group: 0, wordsPerPage: 600 })
-        .then((data) => data.sort(() => Math.random() - 0.5));
-      dataSet.forEach((element) => transtales.push(element.wordTranslate));
-      return transtales;
-    } catch (error) {
-      helper.hideMainContainer();
-      return error;
-    }
+    const transtales = [];
+    const dataSet = await dataController
+      .getWords({ group: 0, wordsPerPage: 600 })
+      .then((data) => data.sort(() => Math.random() - 0.5));
+    dataSet.forEach((element) => transtales.push(element.wordTranslate));
+    return transtales;
   },
 
   async getWordsRepeatByApi(dataController, preloaderController) {
-    try {
-      preloaderController.showPreloader();
-      let repeatWords = await dataController
-        .userWordsGetAll(['onlearn', 'hard', 'deleted'])
-        .then((data) => data[0].paginatedResults);
-      preloaderController.hidePreloader();
-      repeatWords.sort(() => Math.random() - 0.5);
-      if (repeatWords.length < 10) {
-        repeatWords = null;
-      }
-      return repeatWords;
-    } catch (error) {
-      helper.hideMainContainer();
-      return error;
+    preloaderController.showPreloader();
+    let repeatWords = await dataController
+      .userWordsGetAll(['onlearn', 'hard', 'deleted'])
+      .then((data) => data[0].paginatedResults);
+    preloaderController.hidePreloader();
+    repeatWords.sort(() => Math.random() - 0.5);
+    if (repeatWords.length < 10) {
+      repeatWords = null;
     }
+    return repeatWords;
   },
 
   play(src) {

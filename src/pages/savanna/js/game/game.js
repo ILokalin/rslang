@@ -30,6 +30,7 @@ import {
   soundIcon,
   nextRoundButton,
   refreshButton,
+  mainContainer,
 } from '../helper/constants';
 import helper from '../helper/helper';
 
@@ -44,6 +45,7 @@ export default class Game {
     this.repeat = false;
     this.login = false;
     this.mute = false;
+    this.isPopMenu = false;
     this.isGame = false;
     this.isIntro = true;
     this.level = 0;
@@ -199,6 +201,9 @@ export default class Game {
       this.height = 0;
       document.body.addEventListener('keydown', this.keyPressHandler);
       answerContainer.addEventListener('click', this.mouseClickHandler);
+      if (this.isPopMenu) {
+        this.stop();
+      }
     } catch (error) {
       this.stop();
       helper.hideMainContainer();
@@ -306,7 +311,17 @@ export default class Game {
     this.stop();
     this.health -= 1;
     this.highlightAnswer();
-    if (this.health <= 0 || this.currentDataSet.length === 0) {
+    if (this.health <= 0) {
+      this.showStat();
+    } else if (
+      this.currentDataSet.length === 0 &&
+      this.props.knowWords.length > this.props.dontKnowWords.length
+    ) {
+      this.showStat(true);
+    } else if (
+      this.currentDataSet.length === 0 &&
+      this.props.knowWords.length < this.props.dontKnowWords.length
+    ) {
       this.showStat();
     } else {
       this.start();
@@ -439,6 +454,7 @@ export default class Game {
   }
 
   async prepareNewGame(repeat) {
+    this.preloaderController.showPreloader();
     this.resetRoundAndLevel();
     helper.renderCurrentRoundInOption(this.round);
     helper.renderCurrentLevelInOption(this.level);
@@ -458,6 +474,7 @@ export default class Game {
       await this.createNewWords();
     }
     await this.createTranslates();
+    this.preloaderController.hidePreloader();
   }
 
   showGameOptions() {
@@ -494,11 +511,12 @@ export default class Game {
 
   showPopupMenu(e) {
     if (!this.isGame || !this.isIntro) {
-      statistic.classList.add('hidden');
+      mainContainer.classList.add('hidden');
     }
     if (!this.isGame || this.isIntro) {
-      intro.classList.add('hidden');
+      mainContainer.classList.add('hidden');
     }
+    this.isPopMenu = true;
     popupMenu.classList.remove('hidden');
     this.stop();
     e.preventDefault();
@@ -509,11 +527,9 @@ export default class Game {
       this.isFallWord();
       document.body.addEventListener('keydown', this.keyPressHandler);
       answerContainer.addEventListener('click', this.mouseClickHandler);
-    } else if (this.isIntro) {
-      intro.classList.remove('hidden');
-    } else {
-      statistic.classList.remove('hidden');
     }
+    mainContainer.classList.remove('hidden');
+    this.isPopMenu = false;
     popupMenu.classList.add('hidden');
   }
 
