@@ -58,7 +58,7 @@ export default class Game {
     errorsLabel.innerText = this.props.errors;
     knowsLabel.innerText = this.props.know;
     Utils.disableCardsTransfer();
-    checkBtn.classList.add('activeBtn');
+    checkBtn.classList.add('activeBtn', 'disabled');
     scoreLabel.children[0].innerHTML = this.props.know;
     Utils.displayResults();
     scoreLabel.classList.remove('hidden');
@@ -140,7 +140,7 @@ export default class Game {
   }
 
   clearGameResults() {
-    checkBtn.classList.remove('activeBtn');
+    checkBtn.classList.remove('activeBtn', 'disabled');
     scoreLabel.classList.add('hidden');
     scoreLabel.children[0].innerHTML = '';
   }
@@ -166,6 +166,7 @@ export default class Game {
   }
 
   async optionSelected() {
+    results.classList.add('hidden');
     this.clearGameResults();
     this.clearStatistics();
     this.gameSettings.displayRound();
