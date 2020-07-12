@@ -10,8 +10,8 @@
 <body>
   <nav>
     <div class="nav-wrapper brown z-depth-5">
-      <a href="#" class="brand-logo center">Savanna</a>
-      <a href="#" class="home"><i class="medium material-icons">home</i></a>
+      <h1 class="brand-logo center">Savanna</h1>
+      <a href="/index" class="home"><i class="medium material-icons">home</i></a>
     </div>
   </nav>
 
@@ -23,7 +23,10 @@
         Ты можешь сделать это с помощью мышки или клавиатуры.
       </p>
       <p class="intro-text">
-        По умолчанию мы повторяем выученные слова. Включить изучение новых слов ты можешь в меню слева.
+        По умолчанию мы повторяем выученные слова. Включить изучение новых слов ты можешь в меню
+        слева.
+        Для успешного окончания игры надо угадать максимум 30 слов. При повторении их может быть меньше, но не меньше
+        10.
       </p>
       <ul id="slide-out" class="sidenav">
         <li>
@@ -64,7 +67,7 @@
         </li>
       </ul>
       <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
-      <a href="#" class="btn btn-large waves-effect waves-light intro-btn brown lighten-1 pulse startGame">
+      <a href="#" class="btn btn-large waves-effect waves-light intro-btn brown lighten-1 startGame">
         <i class="material-icons right">videogame_asset</i>
         Играть!
       </a>
@@ -90,10 +93,10 @@
           <p class="falling-word__item text-answer"></p>
         </div>
         <div class="answer-options">
-          <p class="answer-options__item text"></p>
-          <p class="answer-options__item text"></p>
-          <p class="answer-options__item text"></p>
-          <p class="answer-options__item text"></p>
+          <div class="answer-options__item text"></div>
+          <div class="answer-options__item text"></div>
+          <div class="answer-options__item text"></div>
+          <div class="answer-options__item text"></div>
         </div>
       </div>
     </div>
@@ -112,10 +115,10 @@
         </div>
         <div class="answers-valid-items"></div>
         <div class="btns btns-res">
-          <a href="#" class="btn btn-large brown lighten-1 pulse restart">
+          <a href="#" class="btn  brown lighten-1  restart">
             <i class="material-icons right">videogame_asset</i>В меню
           </a>
-          <a href="#" class="btn btn-large brown lighten-1 pulse next-round">
+          <a href="#" class="btn  brown lighten-1  next-round">
             <i class="material-icons right">videogame_asset</i>Продолжить
           </a>
         </div>
@@ -123,27 +126,43 @@
     </div>
 
 
-    <div class="popup-menu hidden">
-      <div class="popup-menu-container">
-        <div class="popup-title">Тренировка еще не закончена!</div>
-        <div class="popup-description">
-          Если вы вернетесь в главное меню, то статистика за данную игру не будет сохранена.
-        </div>
-        <div class="btns btns-popup-menu">
-          <a href="/index" class="btn-small brown lighten-1  back-to-home">
-            Главное меню
-          </a>
-          <a href="#" class="btn-small  brown lighten-1  resume">
-            Продолжить
-          </a>
-        </div>
-      </div>
-    </div>
-
-    <audio class="audio" src="" autoplay></audio>
-
   </main>
 
+  <div class="popup-menu hidden">
+    <div class="popup-menu-container">
+      <div class="popup-title">Тренировка еще не закончена!</div>
+      <div class="popup-description">
+        Если вы вернетесь в главное меню, то статистика за данную игру не будет сохранена.
+      </div>
+      <div class="btns btns-popup-menu">
+        <a href="/index" class="btn-small brown lighten-1  back-to-home">
+          Главное меню
+        </a>
+        <a href="#" class="btn-small  brown lighten-1  resume">
+          Продолжить
+        </a>
+      </div>
+    </div>
+  </div>
+  <audio class="audio" src="" autoplay></audio>
+
+  <div class="popup-error hidden">
+    <div class="popup-error-container">
+      <div class="popup-error-title">Ошибка!</div>
+      <div class="popup-error-description">
+        Не получилось получить данные с сервера.
+        Попробуйте повторить через некоторое время.
+      </div>
+      <div class="btns btns-popup-error">
+        <a href="/index" class="btn-small brown lighten-1  back-to-home">
+          Главное меню
+        </a>
+        <a href="#" class="btn-small  brown lighten-1  refresh">
+          Обновить
+        </a>
+      </div>
+    </div>
+  </div>
 
 </body>
 

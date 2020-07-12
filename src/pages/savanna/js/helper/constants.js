@@ -24,13 +24,13 @@ const audio = document.querySelector('.audio');
 const repeatOption = document.querySelector('.repeat');
 const levelAndRoundselectors = document.querySelectorAll('.game-option');
 const statisticContainer = document.querySelector('.statistic-container');
-const homeButton = document.querySelector('.home');
-const popupMenu = document.querySelector('.popup-menu');
-const resumeButton = document.querySelector('.resume');
 const healtBar = document.querySelector('.healt-bar');
 const menu = document.querySelector('.sidenav');
 const soundIcon = document.querySelector('.sound-icon');
 const nextRoundButton = document.querySelector('.next-round');
+const popUpError = document.querySelector('.popup-error');
+const mainContainer = document.querySelector('.main');
+const refreshButton = document.querySelector('.refresh');
 
 export {
   appStartButton,
@@ -59,11 +59,11 @@ export {
   repeatOption,
   levelAndRoundselectors,
   statisticContainer,
-  homeButton,
-  popupMenu,
-  resumeButton,
   healtBar,
   menu,
   soundIcon,
   nextRoundButton,
+  popUpError,
+  mainContainer,
+  refreshButton,
 };
