@@ -475,7 +475,8 @@ export default class GameSprint {
         dropDownMenuElement[this.gameLevel].click();
         this.userStatus = true;
       },
-      () => {
+      (rejectReport) => {
+        avatarName.innerText = rejectReport.name;
         this.gameLevel = 1;
         this.constrolLevelAfterReload();
         this.choiceLevel();
