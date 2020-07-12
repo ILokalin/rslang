@@ -13,8 +13,9 @@ export const whoIsGameFor = () => {
         checkCheckboxes();
       }
     },
-    () => {
-      document.querySelector('.avatar__name').innerText = 'CAPTAIN ANONIMUS';
+    (rejectReport) => {
+      console.log('User canceled');
+      document.querySelector('.avatar__name').innerText = rejectReport.name ;
       document.querySelector('.user-words-checkbox').disabled = 'disabled';
       statBtn.classList.add('hidden');
     },

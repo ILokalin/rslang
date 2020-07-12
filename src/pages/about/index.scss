@@ -60,18 +60,21 @@ $totalColumns: 6;
       display: block;
       padding-top: 100%;
     }
+
+    @media screen and (min-width: 1000px) {
     
-    &:hover {
-      z-index: 1;
-      box-shadow: 0 8px 50px rgba(#000, 0.2);
-      transform: scale(1.20);
-      transition: box-shadow 0.2s ease,
-                  transform 0.2s ease,
-                  z-index 0s 0s ease;
-      
-      .#{$prefix}-social {
-        margin: 16px 0 0;
-        opacity: 1;
+      &:hover {
+        z-index: 1;
+        box-shadow: 0 8px 50px rgba(#000, 0.2);
+        transform: scale(1.20);
+        transition: box-shadow 0.2s ease,
+                    transform 0.2s ease,
+                    z-index 0s 0s ease;
+        
+        .#{$prefix}-social {
+          margin: 16px 0 0;
+          opacity: 1;
+        }
       }
     }
     
