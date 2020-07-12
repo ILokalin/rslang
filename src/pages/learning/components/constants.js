@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import Swiper from 'swiper';
 import { DataController } from 'Service/DataController/DataController';
 import { PreloaderController } from 'Service/PreloaderController';
@@ -15,7 +16,6 @@ const mySwiper = new Swiper('.swiper-container', {
   },
   navigation: {
     nextEl: '.swiper-button-next',
-    // prevEl: '.swiper-button-prev',
   },
   a11y: {
     prevSlideMessage: 'Previous card',

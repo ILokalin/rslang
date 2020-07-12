@@ -33,7 +33,7 @@
   justify-content: space-between;
   align-items: center;
   height: 55vh;
-  @media screen and (max-width: 750px) {
+  @media screen and (max-width: 768px) {
     flex-direction: row-reverse;
     align-items: baseline;
     justify-content: space-evenly;
@@ -49,18 +49,17 @@
   position: absolute;
   pointer-events: none;
   top: 0px;
-  
 }
 .answer-options {
   position: absolute;
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
+  justify-content: center;
   align-items: center;
   width: 100%;
   max-width: 1200px;
   bottom: inherit;
-  @media screen and (max-width: 750px) {
+  @media screen and (max-width: 768px) {
     flex-direction: column;
     align-items: baseline;
     bottom: 0;
@@ -76,4 +75,16 @@
 .filled {
   fill: black;
 }
-
+.answer-options__item {
+  max-height: 37px;
+  margin: 0px 30px;
+  @media screen and (max-width: 768px) {
+    margin: 20px 0px;
+  }
+}
+.digit {
+  color: #ffffff;
+  background: #174994;
+  padding: 0px 12px 3px 12px;
+  border-radius: 50%;
+}

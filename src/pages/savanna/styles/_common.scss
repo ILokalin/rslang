@@ -22,18 +22,26 @@ body {
 .text {
   font-size: 1.7rem;
   padding: 1px 5px;
-  color: #2B92E0;
+  color: #000000;
 }
 .text-answer {
   font-size: 2.3rem;
-  color: #2B92E0;
+  color: #000000;
 }
 .text:hover {
   cursor: pointer;
-  background: hsla(0, 0%, 100%, 0.3);
 }
 .hidden {
   visibility: hidden;
   pointer-events: none;
   opacity: 0;
+}
+.disabled {
+  pointer-events: none;
+  opacity: 0.3;
+}
+.btn {
+  @media screen and (max-width: 350px) {
+    font-size: 12px;
+  }
 }

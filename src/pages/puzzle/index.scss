@@ -59,6 +59,10 @@ main {
   @extend .brown-text; 
 }
 
+.user-words-checkbox {
+  margin-left: 20px;
+}
+
 .hints {
   @include flex;
   flex-direction: column;
@@ -66,7 +70,7 @@ main {
 }
 
 .hints li, .level-select, .range-field, .round-select,
-#slide-out > li:nth-child(7)  {
+#slide-out > li:nth-child(8)  {
   padding-left: 20px;
 }
 

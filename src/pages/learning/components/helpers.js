@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 /* eslint-disable no-plusplus */
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-param-reassign */
@@ -14,11 +15,9 @@ const measureWordWidth = (word) => {
 const saveTrainingStatistics = async () => {
   const saveOptions = {
     card: mySwiper.train.shortTermStat,
-  }
-  console.log(saveOptions);
+  };
   await dataController.setUserStatistics(saveOptions);
-}
-
+};
 
 const updateMaterialComponents = () => {
   // eslint-disable-next-line no-undef
@@ -44,7 +43,7 @@ const handleVolumeBtn = () => {
     soundBtn.querySelector('i').innerText = 'volume_off';
     soundBtn.dataset.tooltip = 'Включить звуки';
   }
-}
+};
 
 const setProgressbarToCurrentPosition = () => {
   const current = document.querySelector('.swiper-pagination-current').innerText;
@@ -87,14 +86,13 @@ const hideTranscription = () => {
 
 const showPicture = () => {
   mySwiper.slides[mySwiper.activeIndex].querySelector('.image-association').style.zIndex = 3;
-}
+};
 
 const showFooterBtns = () => {
   mySwiper.slides[mySwiper.activeIndex].querySelector('.card-action').classList.remove('hidden');
-}
+};
 
 const allowNextCard = async () => {
-  console.log(mySwiper);
   if (mySwiper.activeIndex === mySwiper.slides.length - 1) {
     await saveTrainingStatistics();
     // eslint-disable-next-line no-undef
@@ -119,7 +117,7 @@ const audioPlay = (audio) => {
   audio.src = tracks[0];
   audio.autoplay = true;
 
-  audio.onended = function () {
+  audio.onended = () => {
     current += 1;
     if (current === tracks.length) {
       allowNextCard();
@@ -156,19 +154,19 @@ const showExample = () => {
 
 const againBtnAct = async () => {
   const cardTitle = mySwiper.slides[mySwiper.activeIndex].querySelector('.card-title');
-  const {wordId} = cardTitle.dataset;
-  const {difficulty} = cardTitle.dataset;
-  const {progress} = cardTitle.dataset;
+  const { wordId } = cardTitle.dataset;
+  const { difficulty } = cardTitle.dataset;
+  const { progress } = cardTitle.dataset;
   // eslint-disable-next-line no-underscore-dangle
-  const wordState = mySwiper.train.words.find((el) => ((el._id || el.id) === wordId));
+  const wordState = mySwiper.train.words.find((el) => (el._id || el.id) === wordId);
   const dupl = new Card(wordState, true);
 
   // eslint-disable-next-line no-undef
   M.AutoInit();
-  
+
   const duplTitle = dupl.cardElem.querySelector('.card-title');
-  duplTitle.dataset.difficulty = (difficulty || 'onlearn');
-  duplTitle.dataset.progress = (progress || 0);
+  duplTitle.dataset.difficulty = difficulty || 'onlearn';
+  duplTitle.dataset.progress = progress || 0;
 
   mySwiper.appendSlide(dupl.cardElem);
   mySwiper.update();
@@ -178,60 +176,61 @@ const againBtnAct = async () => {
 };
 
 const getLearnProgressString = (k) => {
-  if (k===0) {
+  if (k === 0) {
     return 'в начале изучения';
   }
-  if (k>0 && k<=2) {
+  if (k > 0 && k <= 2) {
     return 'недавно начали изучать';
   }
-  if (k>2 && k<=4) {
+  if (k > 2 && k <= 4) {
     return 'хорошее начало';
   }
-  if (k>4 && k<=8) {
+  if (k > 4 && k <= 8) {
     return 'хорошо знаете слово';
   }
-  if (k>8) {
+  if (k > 8) {
     return 'отлично знаете слово';
   }
   return 'новое слово';
-}
+};
 
 const updateProgress = (curProgress, isWrong) => {
   let res;
-  const quantityOfSettingsEnabled = settings.cardContainsExample 
-    + settings.cardContainsMeaning
-    + settings.cardContainsTranslation
-    + settings.cardContainsTranscription
-    + settings.cardContainsPicture;
-  
+  const quantityOfSettingsEnabled =
+    settings.cardContainsExample +
+    settings.cardContainsMeaning +
+    settings.cardContainsTranslation +
+    settings.cardContainsTranscription +
+    settings.cardContainsPicture;
+
   if (isWrong) {
     res = curProgress - quantityOfSettingsEnabled * 0.1;
   } else {
     res = curProgress + (6 - quantityOfSettingsEnabled) * 0.1;
   }
-  return ((res > 0) ? res : 0);
-}
+  return res > 0 ? res : 0;
+};
 
 const showToastDeleted = (word) => {
-  // eslint-disable-next-line no-undef  
+  // eslint-disable-next-line no-undef
   M.toast({
     html: `Слово ${word} удалено из Словаря. Вы можете восстановить его в Словаре`,
   });
-}
+};
 
 const showToastHard = (word) => {
-  // eslint-disable-next-line no-undef  
+  // eslint-disable-next-line no-undef
   M.toast({
     html: `Слово ${word} помещено в раздел "Сложные". Вы можете изменить это в Словаре`,
   });
-}
+};
 
 const shuffle = (array) => {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [array[i], array[j]] = [array[j], array[i]];
   }
-}
+};
 
 const getApproprateWords = async (newWordsAmount, totalAmount) => {
   let res = [];
@@ -239,22 +238,21 @@ const getApproprateWords = async (newWordsAmount, totalAmount) => {
   let groupsCount = 0;
   const todayObj = new Date();
   const today = new Date(todayObj.getFullYear(), todayObj.getMonth(), todayObj.getDate());
-// получить все слова пользователя
+  // получить все слова пользователя
   const userWordsReponse = await dataController.userWordsGetAll(['hard', 'onlearn', 'deleted']);
-  const userWords = userWordsReponse["0"].paginatedResults;
-  console.log(userWords);
+  const userWords = userWordsReponse['0'].paginatedResults;
   while (res.length < newWordsAmount) {
-    // получить много слов общих 
+    // получить много слов общих
     const query = {
-        group: groupsCount,
-        page: pagesCount,
-        wordsPerExampleSentenceLTE: '',
-        wordsPerPage: userWords.length * 3 < totalAmount ? totalAmount : userWords.length * 3,
-      };
+      group: groupsCount,
+      page: pagesCount,
+      wordsPerExampleSentenceLTE: '',
+      wordsPerPage: userWords.length * 3 < totalAmount ? totalAmount : userWords.length * 3,
+    };
     // eslint-disable-next-line no-await-in-loop
     const generalWords = await dataController.getWords(query);
-    if (generalWords.length) {   
-      // выделить из общих слова неюзера       
+    if (generalWords.length) {
+      // выделить из общих слова неюзера
       for (let i = 0; i < generalWords.length; i++) {
         const word = generalWords[i];
         // eslint-disable-next-line no-underscore-dangle
@@ -265,26 +263,25 @@ const getApproprateWords = async (newWordsAmount, totalAmount) => {
             break;
           }
         }
-      } 
+      }
     } else groupsCount++;
     pagesCount++;
   }
 
   const filteredUserWords = userWords.filter((userWord) => {
     // посчитать дату следующего повторения юзер слов и сравнить с сегодня (<= сегодня)
-      const lastDate = new Date(userWord.userWord.optional.lastDate);
-      const interval = (2 * userWord.userWord.optional.progress + 1)*24*60*60*1000;
-      const nextTime = new Date(+lastDate + interval)
-      return nextTime <= today;
-    })
-    // слайс по количеству слов на повторение (тотал - новые)
+    const lastDate = new Date(userWord.userWord.optional.lastDate);
+    const interval = (2 * userWord.userWord.optional.progress + 1) * 24 * 60 * 60 * 1000;
+    const nextTime = new Date(+lastDate + interval);
+    return nextTime <= today;
+  });
+  // слайс по количеству слов на повторение (тотал - новые)
   res = res.concat(filteredUserWords.slice(0, totalAmount - newWordsAmount));
-  // шафл массива 
+  // шафл массива
   shuffle(res);
 
-  return res;    
-}
-
+  return res;
+};
 
 export {
   measureWordWidth,
@@ -298,7 +295,7 @@ export {
   showExplanation,
   showExample,
   audioPlay,
-  getLearnProgressString, 
+  getLearnProgressString,
   updateProgress,
   showToastDeleted,
   getApproprateWords,

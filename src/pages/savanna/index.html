@@ -10,77 +10,66 @@
 <body>
   <nav>
     <div class="nav-wrapper brown z-depth-5">
-      <a href="#" class="brand-logo center">Savanna</a>
-      <ul class="right">
-        <li><a class="user-name"></a></li>
-      </ul>
+      <h1 class="brand-logo center">Savanna</h1>
+      <a href="/index" class="home"><i class="medium material-icons">home</i></a>
     </div>
   </nav>
+
+
   <main class="main">
-
-
     <div class="intro">
       <p class="intro-text">
-        Hello! You need to guess the translation of the word.
-        You can do it with the keyboard or mouse!
+        Привет! В этой игре нужно угадать перевод слова.
+        Ты можешь сделать это с помощью мышки или клавиатуры.
       </p>
       <p class="intro-text">
-        But first choose difficulty.
-      </p>
-      <a href="#" class="btn btn-large waves-effect waves-light intro-btn brown lighten-1 pulse app-start">
-        <i class="material-icons right">videogame_asset</i>
-        Run!
-      </a>
-    </div>
-
-
-
-
-    <div class="difficult hidden">
-      <p class="difficult-text">
-        Select the difficult!
+        По умолчанию мы повторяем выученные слова. Включить изучение новых слов ты можешь в меню
+        слева.
+        Для успешного окончания игры надо угадать максимум 30 слов. При повторении их может быть меньше, но не меньше
+        10.
       </p>
       <ul id="slide-out" class="sidenav">
         <li>
-          <div class="user-view"> Choose game options </div>
+          <div class="avatar center blue lighten-5">
+            <img class="avatar__img" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/20625/avatar-bg.png" />
+            <h4 class="avatar__name"></h4>
+          </div>
+        </li>
+        <li>
+          <div class="user-view"> Выберите настройки игры </div>
         </li>
         <li>
           <div class="divider"></div>
         </li>
-        <li><a class="subheader">Difficulty</a></li>
+        <li><a class="subheader">Сложность</a></li>
         <li>
-          <div class="input-field col s12">
+          <div class="game-option level input-field col s12">
             <select class="level">
-              <option value="1" selected>Level 1</option>
-              <option value="2">Level 2</option>
-              <option value="3">Level 3</option>
-              <option value="4">Level 4</option>
-              <option value="5">Level 5</option>
-              <option value="6">Level 6</option>
+              <option value="1">Уровень 1</option>
+              <option value="2">Уровень 2</option>
+              <option value="3">Уровень 3</option>
+              <option value="4">Уровень 4</option>
+              <option value="5">Уровень 5</option>
+              <option value="6">Уровень 6</option>
             </select>
           </div>
         </li>
         <li>
-          <div class="input-field col s12">
-            <select class="round">
-              <option value="1" selected>Round 1</option>
-              <option value="2">Round 2</option>
-              <option value="3">Round 3</option>
-              <option value="4">Round 4</option>
-              <option value="5">Round 5</option>
-              <option value="6">Round 6</option>
-            </select>
+          <div class="game-option input-field col s6">
+            <input class="round" placeholder="Choose round" min="1" max="30" type="number">
           </div>
         </li>
-        <li><label>
-            <input type="checkbox" class="filled-in" />
-            <span>Repeat words</span>
-          </label></li>
+        <li>
+          <label class="is-repeat">
+            <input class="repeat" type="checkbox" class="filled-in" />
+            <span>Повторение слов</span>
+          </label>
+        </li>
       </ul>
       <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
-      <a href="#" class="btn btn-large waves-effect waves-light intro-btn brown lighten-1 pulse startGame">
+      <a href="#" class="btn btn-large waves-effect waves-light intro-btn brown lighten-1 startGame">
         <i class="material-icons right">videogame_asset</i>
-        Play!
+        Играть!
       </a>
     </div>
 
@@ -90,104 +79,90 @@
         <h4 class="stage"></h4>
         <ul class="game-info-settings">
           <li class="healt-bar">
-            <svg height="20pt" viewBox="0 -20 480 480" width="20pt" xmlns="http://www.w3.org/2000/svg">
-              <path class="heart"
-                d="m348 8c-44.773438.003906-86.066406 24.164062-108 63.199219-21.933594-39.035157-63.226562-63.195313-108-63.199219-68.480469 0-124 63.519531-124 132 0 172 232 292 232 292s232-120 232-292c0-68.480469-55.519531-132-124-132zm0 0"
-                fill="#ff6243" />
-              <path
-                d="m348 0c-43 .0664062-83.28125 21.039062-108 56.222656-24.71875-35.183594-65-56.1562498-108-56.222656-70.320312 0-132 65.425781-132 140 0 72.679688 41.039062 147.535156 118.6875 216.480469 35.976562 31.882812 75.441406 59.597656 117.640625 82.625 2.304687 1.1875 5.039063 1.1875 7.34375 0 42.183594-23.027344 81.636719-50.746094 117.601563-82.625 77.6875-68.945313 118.726562-143.800781 118.726562-216.480469 0-74.574219-61.679688-140-132-140zm-108 422.902344c-29.382812-16.214844-224-129.496094-224-282.902344 0-66.054688 54.199219-124 116-124 41.867188.074219 80.460938 22.660156 101.03125 59.128906 1.539062 2.351563 4.160156 3.765625 6.96875 3.765625s5.429688-1.414062 6.96875-3.765625c20.570312-36.46875 59.164062-59.054687 101.03125-59.128906 61.800781 0 116 57.945312 116 124 0 153.40625-194.617188 266.6875-224 282.902344zm0 0"
-                fill="#3e3d42" /></svg>
-            <svg height="20pt" viewBox="0 -20 480 480" width="20pt" xmlns="http://www.w3.org/2000/svg">
-              <path class="heart"
-                d="m348 8c-44.773438.003906-86.066406 24.164062-108 63.199219-21.933594-39.035157-63.226562-63.195313-108-63.199219-68.480469 0-124 63.519531-124 132 0 172 232 292 232 292s232-120 232-292c0-68.480469-55.519531-132-124-132zm0 0"
-                fill="#ff6243" />
-              <path
-                d="m348 0c-43 .0664062-83.28125 21.039062-108 56.222656-24.71875-35.183594-65-56.1562498-108-56.222656-70.320312 0-132 65.425781-132 140 0 72.679688 41.039062 147.535156 118.6875 216.480469 35.976562 31.882812 75.441406 59.597656 117.640625 82.625 2.304687 1.1875 5.039063 1.1875 7.34375 0 42.183594-23.027344 81.636719-50.746094 117.601563-82.625 77.6875-68.945313 118.726562-143.800781 118.726562-216.480469 0-74.574219-61.679688-140-132-140zm-108 422.902344c-29.382812-16.214844-224-129.496094-224-282.902344 0-66.054688 54.199219-124 116-124 41.867188.074219 80.460938 22.660156 101.03125 59.128906 1.539062 2.351563 4.160156 3.765625 6.96875 3.765625s5.429688-1.414062 6.96875-3.765625c20.570312-36.46875 59.164062-59.054687 101.03125-59.128906 61.800781 0 116 57.945312 116 124 0 153.40625-194.617188 266.6875-224 282.902344zm0 0"
-                fill="#3e3d42" /></svg>
-            <svg height="20pt" viewBox="0 -20 480 480" width="20pt" xmlns="http://www.w3.org/2000/svg">
-              <path class="heart"
-                d="m348 8c-44.773438.003906-86.066406 24.164062-108 63.199219-21.933594-39.035157-63.226562-63.195313-108-63.199219-68.480469 0-124 63.519531-124 132 0 172 232 292 232 292s232-120 232-292c0-68.480469-55.519531-132-124-132zm0 0"
-                fill="#ff6243" />
-              <path
-                d="m348 0c-43 .0664062-83.28125 21.039062-108 56.222656-24.71875-35.183594-65-56.1562498-108-56.222656-70.320312 0-132 65.425781-132 140 0 72.679688 41.039062 147.535156 118.6875 216.480469 35.976562 31.882812 75.441406 59.597656 117.640625 82.625 2.304687 1.1875 5.039063 1.1875 7.34375 0 42.183594-23.027344 81.636719-50.746094 117.601563-82.625 77.6875-68.945313 118.726562-143.800781 118.726562-216.480469 0-74.574219-61.679688-140-132-140zm-108 422.902344c-29.382812-16.214844-224-129.496094-224-282.902344 0-66.054688 54.199219-124 116-124 41.867188.074219 80.460938 22.660156 101.03125 59.128906 1.539062 2.351563 4.160156 3.765625 6.96875 3.765625s5.429688-1.414062 6.96875-3.765625c20.570312-36.46875 59.164062-59.054687 101.03125-59.128906 61.800781 0 116 57.945312 116 124 0 153.40625-194.617188 266.6875-224 282.902344zm0 0"
-                fill="#3e3d42" /></svg>
-            <svg height="20pt" viewBox="0 -20 480 480" width="20pt" xmlns="http://www.w3.org/2000/svg">
-              <path class="heart"
-                d="m348 8c-44.773438.003906-86.066406 24.164062-108 63.199219-21.933594-39.035157-63.226562-63.195313-108-63.199219-68.480469 0-124 63.519531-124 132 0 172 232 292 232 292s232-120 232-292c0-68.480469-55.519531-132-124-132zm0 0"
-                fill="#ff6243" />
-              <path
-                d="m348 0c-43 .0664062-83.28125 21.039062-108 56.222656-24.71875-35.183594-65-56.1562498-108-56.222656-70.320312 0-132 65.425781-132 140 0 72.679688 41.039062 147.535156 118.6875 216.480469 35.976562 31.882812 75.441406 59.597656 117.640625 82.625 2.304687 1.1875 5.039063 1.1875 7.34375 0 42.183594-23.027344 81.636719-50.746094 117.601563-82.625 77.6875-68.945313 118.726562-143.800781 118.726562-216.480469 0-74.574219-61.679688-140-132-140zm-108 422.902344c-29.382812-16.214844-224-129.496094-224-282.902344 0-66.054688 54.199219-124 116-124 41.867188.074219 80.460938 22.660156 101.03125 59.128906 1.539062 2.351563 4.160156 3.765625 6.96875 3.765625s5.429688-1.414062 6.96875-3.765625c20.570312-36.46875 59.164062-59.054687 101.03125-59.128906 61.800781 0 116 57.945312 116 124 0 153.40625-194.617188 266.6875-224 282.902344zm0 0"
-                fill="#3e3d42" /></svg>
-            <svg height="20pt" viewBox="0 -20 480 480" width="20pt" xmlns="http://www.w3.org/2000/svg">
-              <path class="heart"
-                d="m348 8c-44.773438.003906-86.066406 24.164062-108 63.199219-21.933594-39.035157-63.226562-63.195313-108-63.199219-68.480469 0-124 63.519531-124 132 0 172 232 292 232 292s232-120 232-292c0-68.480469-55.519531-132-124-132zm0 0"
-                fill="#ff6243" />
-              <path
-                d="m348 0c-43 .0664062-83.28125 21.039062-108 56.222656-24.71875-35.183594-65-56.1562498-108-56.222656-70.320312 0-132 65.425781-132 140 0 72.679688 41.039062 147.535156 118.6875 216.480469 35.976562 31.882812 75.441406 59.597656 117.640625 82.625 2.304687 1.1875 5.039063 1.1875 7.34375 0 42.183594-23.027344 81.636719-50.746094 117.601563-82.625 77.6875-68.945313 118.726562-143.800781 118.726562-216.480469 0-74.574219-61.679688-140-132-140zm-108 422.902344c-29.382812-16.214844-224-129.496094-224-282.902344 0-66.054688 54.199219-124 116-124 41.867188.074219 80.460938 22.660156 101.03125 59.128906 1.539062 2.351563 4.160156 3.765625 6.96875 3.765625s5.429688-1.414062 6.96875-3.765625c20.570312-36.46875 59.164062-59.054687 101.03125-59.128906 61.800781 0 116 57.945312 116 124 0 153.40625-194.617188 266.6875-224 282.902344zm0 0"
-                fill="#3e3d42" /></svg>
           </li>
           <li>
             <button class="hint-btn pronounce-btn col s1 btn waves-effect waves-light brown lighten-1 sound-switcher"
               name="action">
-              <i class="material-icons">music_note</i>
-            </button>
-          </li>
-          <li>
-            <button class="hint-btn pronounce-btn col s1 btn waves-effect waves-light brown lighten-1" name="action">
-              <i class="material-icons">exit_to_app</i>
+              <i class="material-icons sound-icon">music_note</i>
             </button>
           </li>
         </ul>
       </div>
       <div class="game-field">
         <div class="falling-word">
-          <p class="falling-word__item text-answer">don't work</p>
+          <p class="falling-word__item text-answer"></p>
         </div>
         <div class="answer-options">
-          <p class="answer-options__item text"></p>
-          <p class="answer-options__item text"></p>
-          <p class="answer-options__item text"></p>
-          <p class="answer-options__item text"></p>
+          <div class="answer-options__item text"></div>
+          <div class="answer-options__item text"></div>
+          <div class="answer-options__item text"></div>
+          <div class="answer-options__item text"></div>
         </div>
       </div>
     </div>
 
 
     <div class="statistic hidden">
-      <div class="error-container">
-        <p class="error-stat">I don't know</p>
-        <span class="error-count left badge red"></span>
-      </div>
-      <table class="centered responsive-table">
-        <tbody class="error-table">
-        </tbody>
-      </table>
-      <div class="know-container">
-        <p class="know-stat">I know</p>
-        <span class="know-count left badge green"></span>
-      </div>
-      <table class="centered responsive-table">
-        <tbody class="know-table">
-        </tbody>
-      </table>
-      <div class="btns btns-res">
-        <a href="#" class="btn btn-large waves-effect waves-light intro-btn brown lighten-1 pulse restart">
-          <i class="material-icons right">videogame_asset</i>New Game!
-        </a>
+      <div class="statistic-container">
+        <div class="result-title">Результат</div>
+        <div class="answers-invalid">
+          <div class="answers-invalid-title"><span>ОШИБОК:</span> 2</div>
+          <div class="answers-invalid-items"></div>
+        </div>
+        <div class="answer-line"></div>
+        <div class="answers-valid">
+          <div class="answers-valid-title"><span>ЗНАЮ:</span> 2</div>
+        </div>
+        <div class="answers-valid-items"></div>
+        <div class="btns btns-res">
+          <a href="#" class="btn  brown lighten-1  restart">
+            <i class="material-icons right">videogame_asset</i>В меню
+          </a>
+          <a href="#" class="btn  brown lighten-1  next-round">
+            <i class="material-icons right">videogame_asset</i>Продолжить
+          </a>
+        </div>
       </div>
     </div>
 
 
-
-
-
-
-
-
-    <audio class="audio" src="" autoplay></audio>
-
   </main>
 
+  <div class="popup-menu hidden">
+    <div class="popup-menu-container">
+      <div class="popup-title">Тренировка еще не закончена!</div>
+      <div class="popup-description">
+        Если вы вернетесь в главное меню, то статистика за данную игру не будет сохранена.
+      </div>
+      <div class="btns btns-popup-menu">
+        <a href="/index" class="btn-small brown lighten-1  back-to-home">
+          Главное меню
+        </a>
+        <a href="#" class="btn-small  brown lighten-1  resume">
+          Продолжить
+        </a>
+      </div>
+    </div>
+  </div>
+  <audio class="audio" src="" autoplay></audio>
+
+  <div class="popup-error hidden">
+    <div class="popup-error-container">
+      <div class="popup-error-title">Ошибка!</div>
+      <div class="popup-error-description">
+        Не получилось получить данные с сервера.
+        Попробуйте повторить через некоторое время.
+      </div>
+      <div class="btns btns-popup-error">
+        <a href="/index" class="btn-small brown lighten-1  back-to-home">
+          Главное меню
+        </a>
+        <a href="#" class="btn-small  brown lighten-1  refresh">
+          Обновить
+        </a>
+      </div>
+    </div>
+  </div>
 
 </body>
 

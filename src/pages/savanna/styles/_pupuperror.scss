@@ -1,0 +1,38 @@
+.popup-error {
+  position: absolute;
+  top: 200px;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  z-index: 1000;
+  padding: 10px;
+  transition: 0.5s;
+  text-align: center;
+  transition: 0.5s;
+}
+.popup-error-container {
+  position: relative;
+  width: 300px;
+  height: 300px;
+  margin: 0 auto;
+  border-radius: 8px;
+  border: 1px solid #e6e9ee;
+  background-color: #fff;
+  padding: 42px 16px;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  box-sizing: border-box;
+}
+.btns-popup-error {
+  width: calc(100%-32px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  position: absolute;
+  bottom: 20px;
+}
