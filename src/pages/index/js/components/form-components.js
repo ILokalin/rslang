@@ -37,18 +37,16 @@ justNewWords.addEventListener('change', () => {
 
 newCardsPerDay.addEventListener('change', () => {
   document.querySelector('.new-words-amount').innerText = newCardsPerDay.value;
-}
-)
+});
 
 document.querySelector('.card-info-checkboxes').addEventListener('click', () => {
-  const requeredCheckboxes = [translation, meaning, example];
   if (!(translation.checked && meaning.checked && example.checked)) {
     message.classList.remove('hidden');
-  } 
-  if (translation.checked || meaning.checked || example.checked) {
-    message.classList.add('hidden');  
   }
-})
+  if (translation.checked || meaning.checked || example.checked) {
+    message.classList.add('hidden');
+  }
+});
 
 export const handleSettingsView = () => {
   const settings = JSON.parse(localStorage.getItem('cardsSettings'));
@@ -70,6 +68,3 @@ export const handleSettingsView = () => {
   showAnswerBtn.checked = settings.showAnswerBtnEnabled;
   autoPlay.checked = settings.autoPlayEnabled;
 };
-
-
-
