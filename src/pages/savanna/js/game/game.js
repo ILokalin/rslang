@@ -76,7 +76,9 @@ export default class Game {
   }
 
   async getUserData() {
+    this.preloaderController.showPreloader();
     this.dataController.getUser().then(this.trueLogin.bind(this), this.falseLogin.bind(this));
+    this.preloaderController.hidePreloader();
   }
 
   async trueLogin(data) {
@@ -93,7 +95,7 @@ export default class Game {
     helper.renderCurrentLevelInOption(this.level);
     await this.createRepeatWords();
     repeatOption.checked = true;
-    this.switchOption();
+    await this.switchOption();
     this.repeat = true;
     if (!this.currentDataSet) {
       await this.createNewWords();
