@@ -1,12 +1,14 @@
-import AuditionGameStatistics from './game-statistics'
 import { PreloaderController } from 'Service/PreloaderController';
 import { DataController } from 'Service/DataController';
+import AuditionGameStatistics from './game-statistics';
 import {
   gameContainer,
   userNameEl,
   difficultySelector,
-  logInBtn,
   errorMessageEl,
+  warningMessageWindow,
+  warningMessageText,
+  warningMessageBtn,
   selectWordsWindow,
   ownWordsBtn,
   allWordsBtn,
@@ -33,14 +35,24 @@ export default class AuditionGame {
     this.keyboardEnterListener = this.keyboardEnterHandler.bind(this);
   }
 
-  static openModal(message)  {
+  static openModal(message) {
     const modal = M.Modal.getInstance(document.querySelector('.modal'));
     errorMessageEl.innerText = message;
     modal.open();
   }
 
-  static getRandomNumber (max) {
-      return Math.floor(Math.random() * Math.floor(max));
+  static getRandomNumber(max) {
+    return Math.floor(Math.random() * Math.floor(max));
+  }
+
+  showWarningWindow(message) {
+    gameContainer.innerHTML = '';
+    warningMessageWindow.classList.remove('hidden');
+    warningMessageText.innerText = message;
+    warningMessageBtn.onclick = () => {
+      this.playWithAllWords();
+      warningMessageWindow.classList.add('hidden');
+    };
   }
 
   addKeyboardHandler() {
@@ -53,29 +65,28 @@ export default class AuditionGame {
 
     if (key >= 1 && key <= 5) {
       const word = this.roundsData[this.round].wordTranslate;
-      const selectedEl = document.querySelector (`.current-round [data-order="${key}"]`);
+      const selectedEl = document.querySelector(`.current-round [data-order="${key}"]`);
       const selectedAnswer = selectedEl.innerText.slice(3);
 
-        if (selectedAnswer === word) {
-          selectedEl.classList.add('correct');
-          this.showAnswer();
-          this.roundsData[this.round].answer = true;
-
-        } else {
-          selectedEl.classList.add('wrong');
-          this.showAnswer();
-          this.roundsData[this.round].answer = false;
-        }
+      if (selectedAnswer === word) {
+        selectedEl.classList.add('correct');
+        this.showAnswer();
+        this.roundsData[this.round].answer = true;
+      } else {
+        selectedEl.classList.add('wrong');
+        this.showAnswer();
+        this.roundsData[this.round].answer = false;
       }
     }
+  }
 
   keyboardEnterHandler(e) {
     const { key } = e;
 
     if (key === `Enter`) {
       const puzzledWord = document.querySelector('.current-round > .puzzled-word-element');
-      
-      if (puzzledWord.classList.contains ('answered')) {
+
+      if (puzzledWord.classList.contains('answered')) {
         this.endRound();
       } else {
         this.showAnswer();
@@ -83,30 +94,36 @@ export default class AuditionGame {
     }
   }
 
-
   addSelectDifficultyHandler() {
-    difficultySelector.addEventListener('change', this.selectDifficultyHandler.bind(this))
+    difficultySelector.addEventListener('change', this.selectDifficultyHandler.bind(this));
   }
 
   selectDifficultyHandler(e) {
     this.level = e.target.value;
-    this.startGame();
+    if (this.user) {
+      this.dataController.setUserOptions({ audition: { gameLevel: this.level } });
+    }
+    const message = `Уровень сложности ${+this.level + 1}`;
+    this.showWarningWindow(message);
   }
 
   getUserData() {
-    this.dataController.getUser()
-      .then(
-        (userSettings) => {
-          this.user = userSettings.name;
-          userNameEl.innerText = this.user;
-          this.startGame();
-        },
-        (rejectReport) => {
-          logInBtn.classList.remove('hidden');
-          logInBtn.addEventListener('click', this.logInListener);
-          this.startGame();
+    this.preloaderController.showPreloader();
+    this.dataController.getUser().then(
+      (userSettings) => {
+        this.preloaderController.hidePreloader();
+        this.user = userSettings.name;
+        if (userSettings.audition) {
+          this.level = userSettings.audition.gameLevel;
         }
-      )
+        userNameEl.innerText = this.user;
+        this.startGame();
+      },
+      () => {
+        this.preloaderController.hidePreloader();
+        this.startGame();
+      },
+    );
   }
 
   startGame() {
@@ -123,32 +140,32 @@ export default class AuditionGame {
 
   getUserWords() {
     this.preloaderController.showPreloader();
-    this.dataController.userWordsGetAll(['onlearn'])
-      .then(
-        (response) => {
-          this.preloaderController.hidePreloader();
-          const words = response[0].paginatedResults;
+    this.dataController.userWordsGetAll(['onlearn']).then(
+      (response) => {
+        this.preloaderController.hidePreloader();
+        const words = response[0].paginatedResults;
+        
 
-          if (words.length < 10) {
-            const message = 'Вы не выучили достаточное количество слов для игры. Игра начнется со всеми словами.'
-            
-            AuditionGame.openModal(message);
-            this.playWithAllWords();
-          } else {
-            this.showSelectWordsWindow(words);
-          }
-        },
-        (rejectReport) => {
-          const message = `API request failed with error: ${rejectReport.message}`;
+        if (words.length < 10) {
+          const message =
+            'Вы не выучили достаточное количество слов для игры. Игра начнется со всеми словами.';
 
-          AuditionGame.openModal(message);
+          this.showWarningWindow(message);
+        } else {
+          this.showSelectWordsWindow(words);
         }
-      )
+      },
+      (rejectReport) => {
+        const message = `API request failed with error: ${rejectReport.message}`;
+
+        AuditionGame.openModal(message);
+      },
+    );
   }
 
   showSelectWordsWindow(words) {
     selectWordsWindow.classList.remove('hidden');
-    
+  
     ownWordsBtn.onclick = () => {
       this.playWithOwnWords(words);
       selectWordsWindow.classList.add('hidden');
@@ -162,13 +179,13 @@ export default class AuditionGame {
 
   playWithOwnWords(words) {
     words.sort(() => Math.random() - Math.random());
-
-    if (words.length < 10) {
-      this.roundsNumber = Math.floor(words.length/5);
+    if (words.length < 50) {
+      this.roundsNumber = Math.floor(words.length / 5);
     }
 
-    const trigger= document.querySelector('.dropdown-trigger');
+    const trigger = document.querySelector('.dropdown-trigger');
     trigger.disabled = true;
+    
     this.createRoundsData(words);
     this.createCurrentRoundPage();
     this.createNextRoundPage();
@@ -177,6 +194,15 @@ export default class AuditionGame {
   }
 
   playWithAllWords() {
+    this.round = 0;
+    this.roundsData = [];
+    this.roundsNumber = 10;
+
+    const trigger = document.querySelector('.dropdown-trigger');
+    if (trigger.disabled) {
+      trigger.disabled = false;
+    }
+    
     const pages = this.generatePages();
 
     this.getWords(pages);
@@ -198,15 +224,15 @@ export default class AuditionGame {
 
   fetchWords(pageNumber) {
     const url = `https://afternoon-falls-25894.herokuapp.com/words?group=${this.level}&page=${pageNumber}`;
-    
+
     return fetch(url);
   }
 
   getWords(pages) {
     this.preloaderController.showPreloader();
-    Promise.all(pages.map(page => this.fetchWords(page)))
-      .then(responses => Promise.all(responses.map(r => r.json())))
-      .then(result => {
+    Promise.all(pages.map((page) => this.fetchWords(page)))
+      .then((responses) => Promise.all(responses.map((r) => r.json())))
+      .then((result) => {
         this.preloaderController.hidePreloader();
         const words = [].concat(...result).sort(() => Math.random() - Math.random());
         this.createRoundsData(words);
@@ -215,10 +241,11 @@ export default class AuditionGame {
         this.addKeyboardHandler();
         this.startRound();
       })
-      .catch((err) => {
-        const message = `API request failed with error: ${err.message}`
+      .catch(() => {
+        this.preloaderController.hidePreloader();
+        const message = `Не получилось загрузить слова. Возможно проблемы с сетью. Попробуйте ещё раз через какое-то время`;
         AuditionGame.openModal(message);
-      })
+      });
   }
 
   createRoundsData(words) {
@@ -228,22 +255,21 @@ export default class AuditionGame {
       roundData.word = roundWords[0].word;
       roundData.wordTranslate = roundWords[0].wordTranslate;
       roundData.id = '';
-      
+
       if (roundWords[0].id) {
         roundData.id = roundWords[0].id;
       } else if (roundWords[0]._id) {
         roundData.id = roundWords[0]._id;
       }
-  
+
       roundData.audio = new Audio();
       roundData.image = new Image();
 
-      this.dataController.getWordMaterials(roundData.id)
-        .then((materialOfCard) => {
-          roundData.image.src = materialOfCard.image;
-          roundData.audio.src = materialOfCard.audio
-          });
-      
+      this.dataController.getWordMaterials(roundData.id).then((materialOfCard) => {
+        roundData.image.src = materialOfCard.image;
+        roundData.audio.src = materialOfCard.audio;
+      });
+
       roundData.translations = roundWords.map((word) => word.wordTranslate);
       roundData.translations.sort(() => Math.random() - Math.random());
 
@@ -251,18 +277,18 @@ export default class AuditionGame {
     }
   }
 
-  createCurrentRoundPage () {
+  createCurrentRoundPage() {
     const roundData = this.roundsData[this.round];
     const wrapper = this.createRoundPage(roundData);
 
-    wrapper.classList.add('current-round')
+    wrapper.classList.add('current-round');
   }
 
-  createNextRoundPage () {
+  createNextRoundPage() {
     const roundData = this.roundsData[this.round + 1];
     const wrapper = this.createRoundPage(roundData);
-    
-    wrapper.classList.add('next-round')
+
+    wrapper.classList.add('next-round');
   }
 
   createRoundPage(data) {
@@ -290,14 +316,16 @@ export default class AuditionGame {
 
     const wordTranslationBlock = document.createElement('div');
     wordTranslationBlock.classList.add('words-translations-block');
-    data.translations.forEach((el, index) => this.writeWordsTranslations(el, index + 1, wordTranslationBlock));
+    data.translations.forEach((el, index) =>
+      this.writeWordsTranslations(el, index + 1, wordTranslationBlock),
+    );
     wordTranslationBlock.addEventListener('click', this.wordClickListener);
     gameWrapper.append(wordTranslationBlock);
 
     const checkAnswerBtn = document.createElement('button');
     checkAnswerBtn.classList.add('check-answer-btn');
     checkAnswerBtn.classList.add('btn');
-    checkAnswerBtn.innerText = ('Я не знаю');
+    checkAnswerBtn.innerText = 'Я не знаю';
     checkAnswerBtn.addEventListener('click', this.showAnswerListener);
     gameWrapper.append(checkAnswerBtn);
 
@@ -309,16 +337,17 @@ export default class AuditionGame {
     wordTranslationEl.classList.add('words-translations-element');
     wordTranslationEl.innerText = `${order}. ${el}`;
     wordTranslationEl.id = el;
-    wordTranslationEl.setAttribute('data-order', order)
+    wordTranslationEl.setAttribute('data-order', order);
     block.append(wordTranslationEl);
   }
 
   showAnswer() {
-    const word = this.roundsData[this.round].wordTranslate;
     const image = document.querySelector('.current-round > .word-image-element');
     const puzzledWord = document.querySelector('.current-round > .puzzled-word-element');
     const checkAnswerBtn = document.querySelector('.current-round > .check-answer-btn');
-    const wordTranslationBlock = document.querySelector('.current-round > .words-translations-block');
+    const wordTranslationBlock = document.querySelector(
+      '.current-round > .words-translations-block',
+    );
 
     wordTranslationBlock.removeEventListener('click', this.wordClickListener);
     document.removeEventListener('keydown', this.keyboardNumbersListener);
@@ -328,18 +357,20 @@ export default class AuditionGame {
     this.roundsData[this.round].answer = false;
 
     if (this.round === this.roundsNumber - 1) {
-      checkAnswerBtn.innerText = ('Конец игры');
+      checkAnswerBtn.innerText = 'Конец игры';
     } else {
-      checkAnswerBtn.innerText = ('Следующий вопрос');
+      checkAnswerBtn.innerText = 'Следующий вопрос';
     }
 
-    checkAnswerBtn.removeEventListener('click', this.showAnswerListener)
-    checkAnswerBtn.addEventListener('click', this.endRoundListener)
+    checkAnswerBtn.removeEventListener('click', this.showAnswerListener);
+    checkAnswerBtn.addEventListener('click', this.endRoundListener);
   }
 
   checkAnswer(event) {
     const word = this.roundsData[this.round].wordTranslate;
-    const wordTranslationBlock = document.querySelector('.current-round > .words-translations-block');
+    const wordTranslationBlock = document.querySelector(
+      '.current-round > .words-translations-block',
+    );
     document.removeEventListener('keydown', this.keyboardListener);
 
     if (event.target.id) {
@@ -359,7 +390,7 @@ export default class AuditionGame {
 
   startRound() {
     setTimeout(() => this.roundsData[this.round].audio.play(), 500);
-    
+
     document.addEventListener('keydown', this.keyboardNumbersListener);
     this.changeBackground();
   }
@@ -390,15 +421,13 @@ export default class AuditionGame {
   }
 
   endGame() {
-    new AuditionGameStatistics(this.roundsData, this.user, this.startGame.bind(this));
+    new AuditionGameStatistics(this.roundsData, this.roundsNumber, this.user, this.startGame.bind(this));
   }
 
   changeBackground() {
-    const percent = (this.round + 1) / this.roundsNumber * 100;
+    const percent = ((this.round + 1) / this.roundsNumber) * 100;
     const gradient = `linear-gradient(90deg,#3fccbf,#e0f2f1 ${percent}%)`;
 
     document.body.style.background = gradient;
   }
 }
-
-

@@ -8,15 +8,20 @@ import {
   allWords,
   ERRORS_MAX_COUNT,
   scoreLabel,
+  results,
+  errorsLabel,
+  knowsLabel,
+  returnBtn,
   nextBtn,
   checkBtn,
   restartBtn,
   roundLabel,
+  resultsErrors,
+  resultsKnows,
 } from '../../data/constants';
 
 export default class Game {
   constructor(dataController, preloaderController, dataTransferService, userService) {
-    localStorage.isStart = false;
     this.props = {
       errors: ERRORS_MAX_COUNT,
       know: 0,
@@ -27,6 +32,7 @@ export default class Game {
     this.dataProvider = new DataProvider(dataController, preloaderController, userService);
     this.dataTransfer = dataTransferService;
     this.userService = userService;
+    window.addEventListener('storage', Utils.storageHandle);
   }
 
   async start() {
@@ -42,24 +48,39 @@ export default class Game {
     restartBtn.addEventListener('click', this.onRestartBtnClick.bind(this));
     nextBtn.addEventListener('click', this.onNextBtnClick.bind(this));
     checkBtn.addEventListener('click', this.showResults.bind(this));
+    returnBtn.addEventListener('click', Utils.onReturnBtnClick);
   }
 
   async showResults(e) {
     if (checkBtn.classList.contains('activeBtn')) {
       return;
     }
+    errorsLabel.innerText = this.props.errors;
+    knowsLabel.innerText = this.props.know;
     Utils.disableCardsTransfer();
     checkBtn.classList.add('activeBtn');
     scoreLabel.children[0].innerHTML = this.props.know;
     Utils.displayResults();
     scoreLabel.classList.remove('hidden');
-    if (this.userService.isAuthorized()) {
-      await this.sendStatisticsToBackEnd();
-    }
+    resultsErrors.innerHTML = '';
+    resultsKnows.innerHTML = '';
+    this.props.errorsArr.forEach((item) => this.appendResultsItem(item, resultsErrors));
+    this.props.knowArr.forEach((item) => this.appendResultsItem(item, resultsKnows));
+    results.classList.remove('hidden');
+    Utils.goToTop();
     e.preventDefault();
   }
 
-  async sendSettingsToBackEnd() {
+  appendResultsItem(el, arr) {
+    const item = el;
+    item.className = 'item';
+    item.draggable = false;
+    arr.appendChild(item);
+  }
+
+  async saveSettings() {
+    this.gameSettings.displayRound();
+    Utils.setCurrentRound(this.dataProvider.getCurrentGameRound());
     if (this.userService.isAuthorized()) {
       await this.dataController.setUserOptions({
         'match-it': { gameRound: this.dataProvider.getCurrentGameRound() },
@@ -68,10 +89,10 @@ export default class Game {
   }
 
   async sendStatisticsToBackEnd() {
-    const results = Math.floor((this.props.know / ERRORS_MAX_COUNT) * 100) || 0;
+    const totalResult = Math.floor((this.props.know / ERRORS_MAX_COUNT) * 100) || 0;
     const requestBody = {
       'match-it': {
-        result: results,
+        result: totalResult,
         round: roundLabel.innerHTML,
         knownWords: this.props.know,
         mistakeWords: this.props.errors,
@@ -86,7 +107,11 @@ export default class Game {
   }
 
   async onNextBtnClick(e) {
+    if (this.userService.isAuthorized()) {
+      await this.sendStatisticsToBackEnd();
+    }
     Utils.goToNextRound();
+    results.classList.add('hidden');
     await this.restartGame();
     e.preventDefault();
   }
@@ -95,11 +120,14 @@ export default class Game {
     this.props.errorsArr = [];
     this.props.errorsArr.length = 0;
     const words = [];
-    this.gameSettings.displayRound();
-    this.sendSettingsToBackEnd();
+    this.saveSettings();
     const wordsData = await this.dataProvider.getData();
     this.clearGameContainer();
-    await wordsData.forEach(this.createCard.bind(this));
+    await Promise.all(
+      wordsData.map(async (data, i) => {
+        await this.createCard(data, i);
+      }),
+    );
     wordsData.forEach((data) => words.push(data));
     words.sort(() => 0.5 - Math.random());
     words.forEach(this.createWordCard, this);
@@ -141,7 +169,7 @@ export default class Game {
     this.clearGameResults();
     this.clearStatistics();
     this.gameSettings.displayRound();
-    this.sendSettingsToBackEnd();
+    this.saveSettings();
     await this.createCardPage();
   }
 
@@ -168,7 +196,7 @@ export default class Game {
     CARD.id = `word-${data.id || data._id}`;
     CARD.draggable = true;
     CARD.classList.add('card-panel', 'teal', 'draggable');
-    CARD.innerHTML = Utils.getWordCard(`${data.word}`);
+    CARD.innerHTML = Utils.getWordCard(`${data.word}`, `${data.wordTranslate}`);
     cardWrapper.append(CARD);
     const cln = CARD.cloneNode(true);
     this.props.errorsArr.push(cln);

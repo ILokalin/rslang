@@ -17,6 +17,7 @@ $empty-cards-color: color('blue', 'lighten-5') !default;
   box-shadow: 0 24px 38px 3px rgba(0, 0, 0, 0.14), 0 9px 46px 8px rgba(0, 0, 0, 0.12),
     0 11px 15px -7px rgba(0, 0, 0, 0.2);
 }
+
 .droptarget {
   transition: border-width 0.5s linear;
 }
@@ -81,6 +82,10 @@ $empty-cards-color: color('blue', 'lighten-5') !default;
 .card-panel {
   transition: 0.5s;
   padding: 10px;
+  border-radius: 2px;
+  .translation {
+    display: none;
+  }
 }
 
 .results .card-title.error {
@@ -96,7 +101,7 @@ $empty-cards-color: color('blue', 'lighten-5') !default;
 .container__cards .card-panel.draggable {
   position: absolute;
   top: 0;
-  z-index: 1000;
+  z-index: 99;
   left: 50%;
   transform: translate(-50%, -50%);
   top: calc(50% - 0.25rem);
@@ -126,6 +131,17 @@ $empty-cards-color: color('blue', 'lighten-5') !default;
   &.m4 {
     width: auto;
   }
+}
+
+.container__words.dashed {
+  padding: 0.75rem;
+  margin-top: 8px;
+  display: block;
+  border: 5px solid #fff;
+  border-top-color: #fff;
+  border-bottom-color: #fff;
+  border-radius: 15px;
+  border-style: dashed;
 }
 
 @media only screen and (min-width: 601px) {

@@ -9,14 +9,11 @@
 
 <body>
   <header class="header">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <nav>
       <div class="nav-wrapper orange z-depth-5">
-        <a href="#" class="brand-logo center">Sprint</a>
-        <ul class="right">
-          <li><a class="logout-btn waves-effect waves-light btn yellow darken-2">LOGOUT</a></li>
-        </ul>
+        <h1 class="brand-logo center">Sprint</h1>
+        <a href="/index" target="_self" class="home right padding-right"><i class="medium material-icons">home</i></a>
       </div>
     </nav>
     <div class="game-page hidden">
@@ -25,18 +22,18 @@
           <div class="avatar center orange-text lighten-5">
             <img class="avatar__img" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/20625/avatar-bg.png" />
             <h4 class="avatar__name" id='avatar__name'>CAPTAIN ANONIMUS</h4>
-            <a class="avatar__logout logout-btn orange-text" href="#!">LOGOUT</a>
           </div>
         </li>
         <li>
           <div class="level-select input-field col s12">
             <select>
-              <option value="1" selected>Level 1</option>
-              <option value="2">Level 2</option>
-              <option value="3">Level 3</option>
-              <option value="4">Level 4</option>
-              <option value="5">Level 5</option>
-              <option value="6">Level 6</option>
+              <option value="1" data-columns="3">Слова пользователя</option>
+              <option value="2">Уровень 1</option>
+              <option value="3">Уровень 2</option>
+              <option value="4">Уровень 3</option>
+              <option value="5">Уровень 4</option>
+              <option value="6">Уровень 5</option>
+              <option value="7">Уровень 6</option>
             </select>
           </div>
         </li>
@@ -55,8 +52,12 @@
         </div>
       </div>
     </div>
+    <div class="material-icons sound-controll" id='sound-controll--on'>volume_up</div>
+    <div class="material-icons sound-controll hide" id='sound-controll--off'>volume_off</div>
     <div class="score" id="score">0</div>
-    <div class="container_game" id='container'>
+    <div class="container_game opasity" id='container'>
+      <div class="sprint-discription" id='discription'>Вы увидите слово на английском языке и перевод слова,<br /> нужно
+        указать принадлежит ли данный перевод этому слову.</div>
       <div class="game hide" id="game">
         <div class="series" id="series">
           <div class="series_points">
@@ -82,8 +83,22 @@
           <button class="answer-buttons_right-btn button" id="right-btn">Верно</button>
         </div>
       </div>
+      <div class="statistick-short hide" id='statistick'>
+        <div class="score-statistick" id="score-statistick">0</div>
+        <div class="answers-statistick">
+          <div class="counter-answers">Правильных ответов:&nbsp <div class="answer-statistick--right"
+              id="answer-statistick--right">0
+            </div>
+          </div>
+          <div class="counter-answers">Ошибок допущенно:&nbsp <div class="answer-statistick--wrong"
+              id="answer-statistick--wrong">0
+            </div>
+          </div>
+        </div>
+        <div class="statistick-words" id="statistick-words"></div>
+      </div>
       <div class="game-container_start-btn">
-        <button class="btn orange" id="controls_start-btn">Начать игру</button>
+        <button class="btn-large orange waves-effect waves-orange pulse" id="controls_start-btn">Начать игру</button>
       </div>
     </div>
   </main>

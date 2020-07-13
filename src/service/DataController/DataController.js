@@ -23,6 +23,7 @@ import {
   dataControllerConst,
   cardDefaultSettingsTemplate,
   cardShortStatTemplate,
+  statisticsItems,
 } from './dataControllerConst';
 
 const authPopup = new AuthPopup();
@@ -42,7 +43,6 @@ export class DataController {
 
     authPopupState.watch((state) => {
       if (state) {
-        showAuthReport(reportMessages.default.welcome);
         this.isAuthInProgress = true;
       } else if (this.isAuthInProgress) {
         this.isAuthInProgress = false;
@@ -214,7 +214,7 @@ export class DataController {
           this.resolve(this.unpackUserSettings(userSettings.optional));
         },
         (rejectReport) => {
-          showAuthReport(reportMessages[rejectReport.master][rejectReport.code]);
+          this.authErrorReport(rejectReport);
         },
       );
   }
@@ -229,7 +229,7 @@ export class DataController {
           this.resolve(this.unpackUserSettings(userSettings.optional));
         },
         (rejectReport) => {
-          showAuthReport(reportMessages[rejectReport.master][rejectReport.code]);
+          this.authErrorReport(rejectReport);
         },
       );
   }
@@ -253,9 +253,13 @@ export class DataController {
           this.resolve(this.unpackUserSettings(userSettings.optional));
         },
         (rejectReport) => {
-          showAuthReport(reportMessages[rejectReport.master][rejectReport.code]);
+          this.authErrorReport(rejectReport);
         },
       );
+  }
+
+  authErrorReport(rejectReport) {
+    showAuthReport(reportMessages[rejectReport.master][rejectReport.code] ?? rejectReport.message);
   }
 
   checkToken() {
@@ -267,7 +271,6 @@ export class DataController {
   }
 
   orderingStatResult(userStatistics) {
-    const statisticsItems = ['savanna', 'audition', 'puzzle', 'sprint', 'speak-it', 'match-it'];
     const { learnedWords = 0, optional = {} } = userStatistics;
     const today = moment().format('DD-MMM-YYYY');
     const shortStat = { ...cardShortStatTemplate, ...{ date: today } };
@@ -283,35 +286,17 @@ export class DataController {
     return originStatistics;
   }
 
-  findTopStatistics(topList, currentResult) {
-    let nextFindPosition = currentResult;
-
-    const topResult = topList.map((topPosition) => {
-      if (nextFindPosition.result >= topPosition.result) {
-        const returnItem = nextFindPosition;
-        nextFindPosition = topPosition;
-        return returnItem;
-      }
-      return topPosition;
-    });
-
-    if (topResult.length < 5) {
-      topResult.push(nextFindPosition);
-    }
-
-    return topResult;
-  }
-
   cardStatisticsAggregate(originStatOptionalCard, shortTimeStat, today) {
     const shortStat = { ...cardShortStatTemplate, ...{ date: today } };
-    const { longTime = [], shortTime = shortStat } = originStatOptionalCard;
+
+    const { longTime = [], shortTime = shortStat } = originStatOptionalCard ?? {};
     const resultOptionalCard = {
       longTime,
       shortTime,
     };
 
     if (shortTime.date === today) {
-      resultOptionalCard.shortTime = {...shortTimeStat, ...{date: today}};
+      resultOptionalCard.shortTime = { ...shortTimeStat, ...{ date: today } };
     } else {
       const longTimeStatItem = [shortTime.date, shortTime.newWords];
       resultOptionalCard.longTime.push(longTimeStatItem);
@@ -326,7 +311,6 @@ export class DataController {
     const tempStatisticsObject = {
       optional: this.unpackUserSettings(optional),
     };
-
     if (uploadStatistics.card) {
       tempStatisticsObject.optional.card = this.cardStatisticsAggregate(
         tempStatisticsObject.optional.card,
@@ -341,14 +325,9 @@ export class DataController {
         const statisticsItem = { ...uploadStatistics[key], ...todayAsObj };
         if (optional[key]) {
           tempStatisticsObject.optional[key].longTime.push(statisticsItem);
-          tempStatisticsObject.optional[key].top = this.findTopStatistics(
-            tempStatisticsObject.optional[key].top,
-            statisticsItem,
-          );
         } else {
           tempStatisticsObject.optional[key] = {
             longTime: [statisticsItem],
-            top: [statisticsItem],
           };
         }
       });
@@ -381,5 +360,16 @@ export class DataController {
       resultUserSettings[field] = JSON.stringify(userSettings[field]);
     });
     return resultUserSettings;
+  }
+
+  clearStatistics() {
+    this.getUserStatistics().then((currentStatistics) =>
+      apiUserSettingsPut(
+        this.prepareUploadStatistics(currentStatistics, {
+          card: currentStatistics.card.shortTime,
+        }),
+        'statistics',
+      ),
+    );
   }
 }

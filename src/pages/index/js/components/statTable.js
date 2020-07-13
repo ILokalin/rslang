@@ -1,6 +1,5 @@
 import { ElementGen } from 'Src/service/DomGen/DomGen';
 
-
 const renderAudioChallengeStats = (fullStatObj) => {
   const tBody = document.querySelector('#stat-audiochallenge tbody');
   const stats = fullStatObj.audition.longTime;
@@ -12,7 +11,7 @@ const renderAudioChallengeStats = (fullStatObj) => {
     td1.insertAdjacentText('afterbegin', roundStat.date);
     td2.insertAdjacentText('afterbegin', roundStat.result);
   });
-}
+};
 
 const renderPuzzleStats = (fullStatObj) => {
   const tBody = document.querySelector('#stat-puzzle tbody');
@@ -31,7 +30,7 @@ const renderPuzzleStats = (fullStatObj) => {
     td4.insertAdjacentText('afterbegin', roundStat.knownWords);
     td5.insertAdjacentText('afterbegin', roundStat.mistakeWords);
   });
-}
+};
 
 const renderSavannaStats = (fullStatObj) => {
   const tBody = document.querySelector('#stat-savanna tbody');
@@ -48,7 +47,7 @@ const renderSavannaStats = (fullStatObj) => {
     td3.insertAdjacentText('afterbegin', roundStat.knownWords);
     td4.insertAdjacentText('afterbegin', roundStat.mistakeWords);
   });
-}
+};
 
 const renderSprintStats = (fullStatObj) => {
   const tBody = document.querySelector('#stat-sprint tbody');
@@ -62,10 +61,10 @@ const renderSprintStats = (fullStatObj) => {
 
     td1.insertAdjacentText('afterbegin', roundStat.date);
     td2.insertAdjacentText('afterbegin', roundStat.result);
-    td3.insertAdjacentText('afterbegin', roundStat.rightAnswer);
-    td4.insertAdjacentText('afterbegin', roundStat.wrongAnswer);
+    td3.insertAdjacentText('afterbegin', roundStat.knownWords);
+    td4.insertAdjacentText('afterbegin', roundStat.mistakeWords);
   });
-}
+};
 
 const renderSpeakItStats = (fullStatObj) => {
   const tBody = document.querySelector('#stat-speakit tbody');
@@ -84,7 +83,7 @@ const renderSpeakItStats = (fullStatObj) => {
     td4.insertAdjacentText('afterbegin', roundStat.knownWords);
     td5.insertAdjacentText('afterbegin', roundStat.mistakeWords);
   });
-}
+};
 
 const renderMatchItStats = (fullStatObj) => {
   const tBody = document.querySelector('#stat-matchit tbody');
@@ -103,7 +102,7 @@ const renderMatchItStats = (fullStatObj) => {
     td4.insertAdjacentText('afterbegin', roundStat.knownWords);
     td5.insertAdjacentText('afterbegin', roundStat.mistakeWords);
   });
-}
+};
 
 export const renderTable = (fullStatObj) => {
   renderAudioChallengeStats(fullStatObj);
@@ -112,4 +111,4 @@ export const renderTable = (fullStatObj) => {
   renderMatchItStats(fullStatObj);
   renderSprintStats(fullStatObj);
   renderSpeakItStats(fullStatObj);
-}
+};
