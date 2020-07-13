@@ -74,7 +74,7 @@ settingsSaveBtns.forEach((btn) => {
         settings.newCardsPerDay = +newCardsPerDay.value;
         settings.justNewWords = +justNewWords.checked;
       }
-    } else if (!(translation.checked || translation.checked || example.checked)) {
+    } else if (!(translation.checked || meaning.checked || example.checked)) {
       message.classList.remove('hidden');
       translation.checked = true;
     } else {
