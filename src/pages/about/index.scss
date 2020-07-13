@@ -5,6 +5,15 @@
   border-radius: 50%;
 }
 
+.video-container {
+  display: flex;
+  justify-content: center;
+}
+
+.video-frame {
+  margin: 0 auto;
+}
+
 $prefix: at;
 $totalColumns: 6;
 
