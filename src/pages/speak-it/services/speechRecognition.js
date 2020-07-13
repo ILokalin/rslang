@@ -6,6 +6,7 @@ import {
   RESULTS_BTN,
   ERRORS_MAX_COUNT,
   ATTEMPTS_PER_WORD,
+  RESTART,
   speechRecognitionLanguage,
 } from '../data/constants';
 
@@ -74,20 +75,19 @@ export default class SpeechRecognitionService {
   speakButtonClick(evt) {
     this.attempts = ATTEMPTS_PER_WORD;
     localStorage.isStartSpeakIt = !JSON.parse(localStorage.isStartSpeakIt);
-    Utils.prepareScore();
     if (JSON.parse(localStorage.isStartSpeakIt)) {
-      this.startRecording();
       SPEAK_BTN.classList.add('activeBtn');
       SPEAK_BTN.innerText = 'Стоп игра';
+      Utils.prepareScore();
       Utils.resetMainCard();
       Utils.disableCardClick();
+      this.startRecording();
     } else if (!JSON.parse(localStorage.isStartSpeakIt)) {
       this.stopRecording();
       SPEAK_BTN.classList.remove('activeBtn');
       SPEAK_BTN.innerText = 'Начать говорить';
-      Utils.resetMainCard();
       Utils.disableCardClick();
-      Utils.resetCards();
+      RESTART.click();
     }
     evt.preventDefault();
   }
