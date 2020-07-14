@@ -1,4 +1,13 @@
-import { userNameElement, audio, healtBar, health, menu, roundOption } from './constants';
+import {
+  userNameElement,
+  audio,
+  healtBar,
+  health,
+  menu,
+  roundOption,
+  popUpError,
+  mainContainer,
+} from './constants';
 import '../../assets/img/savanna-heart.svg';
 
 const helper = {
@@ -6,21 +15,28 @@ const helper = {
     userNameElement.innerText = `${user.name}`;
   },
 
-  renderEmptyUserName() {
-    userNameElement.innerText = '';
-  },
-
   async getWordsByApi(dataController, level, round) {
     const words = await dataController.getWords({ group: level, page: round }).then((data) => data);
     return words.sort(() => Math.random() - 0.5);
   },
 
-  async getTranslatesByApi(dataController) {
+  hideMainContainer() {
+    mainContainer.classList.add('hidden');
+    popUpError.classList.remove('hidden');
+  },
+
+  getRandomDigit(max) {
+    return Math.floor(Math.random() * Math.floor(max));
+  },
+
+  async getTranslatesByApi(dataController, preloaderController) {
+    preloaderController.showPreloader();
     const transtales = [];
-    const dataSet = dataController
-      .getWords({ group: 0, wordsPerPage: 600 })
+    const dataSet = await dataController
+      .getWords({ group: helper.getRandomDigit(5), wordsPerPage: 200 })
       .then((data) => data.sort(() => Math.random() - 0.5));
-    (await dataSet).forEach((element) => transtales.push(element.wordTranslate));
+    dataSet.forEach((element) => transtales.push(element.wordTranslate));
+    preloaderController.hidePreloader();
     return transtales;
   },
 
@@ -29,6 +45,7 @@ const helper = {
     let repeatWords = await dataController
       .userWordsGetAll(['onlearn', 'hard', 'deleted'])
       .then((data) => data[0].paginatedResults);
+    repeatWords.sort(() => Math.random() - 0.5);
     preloaderController.hidePreloader();
     if (repeatWords.length < 10) {
       repeatWords = null;
@@ -56,13 +73,13 @@ const helper = {
           mistakeWords: wordsObject.dontKnowWords.length,
         },
       })
-      .then((dataStat) => console.log(dataStat));
+      .then((dataStat) => dataStat);
   },
 
   setUserOption(dataController, level, round) {
     dataController
       .setUserOptions({ savanna: { lastLevel: level, lastRound: round } })
-      .then((data) => console.log(data));
+      .then((data) => data);
   },
 
   makeCorrectNoise() {
@@ -116,6 +133,7 @@ const helper = {
     levelOptionList.children[value].classList.add('selected');
     levelOptionList.children[value].click();
   },
+  hideGameIntroStat() {},
 };
 
 export default helper;

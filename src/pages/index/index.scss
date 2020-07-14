@@ -8,19 +8,9 @@
   display: none!important;
 }
 
-.disabled-link {
-  pointer-events: none;
-  cursor: default;
-  @extend .grey-text, .text-lighten-2;
-  & i {
-    @extend .grey-text, .text-lighten-2;
-  } 
-}
-
 header, main, footer, .settings-container, .statistics-container, .vocabulary-container {
   padding-left: 300px;
 }
-
 
 @media only screen and (max-width : 992px) {
   header, main, footer, .settings-container, .statistics-container, .vocabulary-container {
@@ -29,6 +19,16 @@ header, main, footer, .settings-container, .statistics-container, .vocabulary-co
   .settings-container {
     width: 80%;
   }
+}
+
+.brand-logo {
+  @media screen and (max-width : 400px) {
+    font-size: 1.5rem!important;
+  }
+}
+
+.card-action .btn-flat {
+  text-transform: none!important;
 }
 
 //Side
@@ -44,6 +44,15 @@ header, main, footer, .settings-container, .statistics-container, .vocabulary-co
 
 .menu__training, .menu__training i  {
   @extend .teal-text, .text-lighten-2;
+}
+
+.disabled-link {
+  pointer-events: none;
+  cursor: default;
+  @extend .grey-text, .text-lighten-2;
+  & i {
+    @extend .grey-text, .text-lighten-2;
+  } 
 }
 
 // Settings
@@ -98,7 +107,9 @@ header, main, footer, .settings-container, .statistics-container, .vocabulary-co
   margin-bottom:0;
 }
 
-
+.card .card-image img {
+  position: static;
+}
 
 //pie
 
@@ -201,6 +212,13 @@ header, main, footer, .settings-container, .statistics-container, .vocabulary-co
 	}
 }
 
+.stat-table-header {
+  margin: 20px;
+  display: flex; 
+  justify-content: space-between;
+  align-items: center;
+}
+
 // vocabulary 
 
 .collapsible-header {
@@ -241,4 +259,5 @@ header, main, footer, .settings-container, .statistics-container, .vocabulary-co
 #vocabulary__on-learn span.badge {
   margin-left: auto !important;
 }
+
 

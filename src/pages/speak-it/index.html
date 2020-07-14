@@ -8,59 +8,59 @@
 <body>
 <nav>
     <div class="nav-wrapper blue darken-4 z-depth-5">
-        <a href="#" class="brand-logo center">Speak It</a>
-        <a href="/index" target="_blank" class="home"><i class="medium material-icons">home</i></a>
+        <a href="#" data-target="slide-out" class="sidenav-trigger hidden"><i class="material-icons">menu</i></a>
+        <h1 class="brand-logo center">Speak It</h1>
+        <a href="/index" class="home"><i class="medium material-icons">home</i></a>
     </div>
 </nav>
 <main class="main">
     <div class="intro-page">
         <div class="intro">
             <p class="intro-text">
-                Click on the words to hear them sound.
+                Speak It - игра для эффективного узучения правильного произношения и написания слов за счет наличия визуального и аудио сопровождения.
                 <br />
-                Click on the button and speak the words into the microphone.
+                Выбирай слова, чтобы узнать перевод и услышать их звучание.
+                <br />
+                Играй, произнося слова в микрофон. Удачи!
             </p>
             <a href="#" class="btn btn-large waves-effect waves-light intro-btn blue darken-2 pulse">
                 <i class="material-icons right">send</i>
-                Start
+                Старт
             </a>
         </div>
     </div>
     <div class="game-page">
         <ul id="slide-out" class="sidenav">
-            <div class="avatar center blue lighten-5">
+            <li class="avatar center blue lighten-5">
                 <img class="avatar__img" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/20625/avatar-bg.png" />
                 <h4 class="avatar__name"></h4>
-            </div>
-            <ul>
+            </li>
                 <li>
-                    <div class="user-view"> Choose game options </div>
+                    <div class="user-view">Опции игры</div>
                 </li>
                 <li>
                     <div class="divider"></div>
                 </li>
-                <li><a class="subheader">Difficulty</a></li>
+                <li><a class="subheader">Сложность</a></li>
                 <li>
                     <div class="level-select input-field col s12">
                         <select>
-                            <option value="0">Your Words</option>
-                            <option value="1" selected>Level 1</option>
-                            <option value="2">Level 2</option>
-                            <option value="3">Level 3</option>
-                            <option value="4">Level 4</option>
-                            <option value="5">Level 5</option>
-                            <option value="6">Level 6</option>
+                            <option value="0">Ваши слова</option>
+                            <option value="1" selected>Уровень 1</option>
+                            <option value="2">Уровень 2</option>
+                            <option value="3">Уровень 3</option>
+                            <option value="4">Уровень 4</option>
+                            <option value="5">Уровень 5</option>
+                            <option value="6">Уровень 6</option>
                         </select>
                     </div>
                 </li>
                 <li>
                     <div class="round-select input-field col s6">
-                        <input class="disabled validate" placeholder="Choose round" min="1" max="60" type="number">
+                        <input class="disabled validate" placeholder="Выберите раунд" min="1" max="60" type="number">
                     </div>
                 </li>
-            </ul>
         </ul>
-        <a href="#" data-target="slide-out" class="sidenav-trigger hidden"><i class="material-icons">menu</i></a>
     </div>
     <div class="container hidden">
         <div class="res">
@@ -74,9 +74,9 @@
         </div>
         <div class="items"></div>
         <div class="btns">
-            <a href="#" class="btn btn-large restart waves-effect waves-light blue darken-2">Restart</a>
-            <a href="#" class="btn btn-large waves-effect waves-light voice user-speech blue darken-2">Speak please</a>
-            <a href="#" class="btn btn-large waves-effect waves-light result blue darken-2">Results</a>
+            <a href="#" class="btn btn-large restart waves-effect waves-light blue darken-2">Повторить</a>
+            <a href="#" class="btn btn-large waves-effect waves-light voice user-speech blue darken-2">Начать говорить</a>
+            <a href="#" class="btn btn-large waves-effect waves-light result blue darken-2">Результат</a>
         </div>
     </div>
     <div class="results hidden">
@@ -93,8 +93,8 @@
             </p>
             <div class="success-item"></div>
             <div class="btns btns-res">
-                <a href="#" class="btn waves-effect waves-light btn-res return">Return</a>
-                <a href="#" class="btn waves-effect waves-light btn-res new-game">New game</a>
+                <a href="#" class="btn waves-effect waves-light btn-res return">Вернуться</a>
+                <a href="#" class="btn waves-effect waves-light btn-res new-game">Новая игра</a>
             </div>
          </tr>
         </table>
@@ -102,11 +102,11 @@
 </main>
 <div id="modal-error" class="modal">
     <div class="modal-content">
-        <h4>Ooops!</h4>
+        <h4>Упс!</h4>
         <p class="error-text"></p>
     </div>
     <div class="modal-footer">
-        <a href="#!" class="modal-close waves-effect waves-green btn-flat">Ok</a>
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat">Ок</a>
     </div>
 </div>
 </body>

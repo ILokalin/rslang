@@ -1,8 +1,4 @@
 import {
-  settings,
-  statistcs,
-  vocabulary,
-  main,
   dataController,
   titleUser,
   loginButton,
@@ -28,8 +24,10 @@ import {
   trainingBtn,
   mainPageStats,
   mainLogoutMsg,
+  menuHome,
 } from '../constants';
 import { whoIsGameFor } from './whoIsGameFor';
+import { cleanPage, cleanStatisticsTable } from './helpers';
 
 const userLogout = () => {
   dataController.logoutUser();
@@ -38,10 +36,14 @@ const userLogout = () => {
     btn.classList.add('hidden');
   });
   titleUser.innerText = 'CAPTAIN ANONIMUS';
-  menuLinks.forEach((link) => {link.classList.add('disabled-link')});
+  menuHome.click();
+  menuLinks.forEach((link) => {
+    link.classList.add('disabled-link');
+  });
   trainingBtn.classList.add('disabled');
   mainPageStats.classList.add('hidden');
   mainLogoutMsg.classList.remove('hidden');
+  cleanPage();
 };
 
 const storageHandle = ({ key }) => {
@@ -72,7 +74,7 @@ settingsSaveBtns.forEach((btn) => {
         settings.newCardsPerDay = +newCardsPerDay.value;
         settings.justNewWords = +justNewWords.checked;
       }
-    } else if (!(translation.checked || translation.checked || example.checked)) {
+    } else if (!(translation.checked || meaning.checked || example.checked)) {
       message.classList.remove('hidden');
       translation.checked = true;
     } else {
@@ -89,12 +91,16 @@ settingsSaveBtns.forEach((btn) => {
       settings.showAnswerBtnEnabled = +showAnswerBtn.checked;
       settings.autoPlayEnabled = +autoPlay.checked;
     }
-    console.log(settings);
     localStorage.setItem('cardsSettings', JSON.stringify(settings));
-    dataController.setUserOptions({settings});
+    dataController.setUserOptions({ settings });
   });
 });
 
 document.querySelector('.message-login').addEventListener('click', () => {
   loginButton.click();
-})
+});
+
+document.querySelector('.clear-stat-btn').addEventListener('click', async () => {
+  await dataController.clearStatistics();
+  cleanStatisticsTable();
+});

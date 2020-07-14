@@ -32,6 +32,11 @@ main .btn {
 .btn.result {
   width: 300px;
   margin: 0 30px;
+  .disabled {
+    color: -internal-light-dark-color(rgba(16, 16, 16, 0.3), rgb(170, 170, 170));
+    background-color: -internal-light-dark-color(rgba(239, 239, 239, 0.3), rgba(19, 1, 1, 0.3));
+    border-color: -internal-light-dark-color(rgba(118, 118, 118, 0.3), rgba(195, 195, 195, 0.3));
+  }
 }
 
 .btn-res:first-child {

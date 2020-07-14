@@ -1,8 +1,15 @@
 /* eslint-disable no-plusplus */
 import { store } from './storage';
 import {
-  gamePage, homePage, translateBtn, pronounceBtn, pictureBtn,
-  roundsCount,  inputField, roundStatisticsPage, translation, fullStatPage, dataController,
+  gamePage,
+  homePage,
+  translateBtn,
+  pronounceBtn,
+  pictureBtn,
+  roundsCount,
+  inputField,
+  translation,
+  dataController,
 } from './constants';
 // eslint-disable-next-line
 import { startRound, hidePaintingInfo, hideBackgroundPic } from './game';
@@ -23,7 +30,7 @@ const handleRoundsPerLevel = () => {
 const getRandomInteger = (min, max) => {
   const rand = min - 0.5 + Math.random() * (max - min + 1);
   return Math.round(rand);
-}
+};
 
 const shuffle = (array) => {
   for (let i = array.length - 1; i > 0; i--) {
@@ -31,7 +38,7 @@ const shuffle = (array) => {
     // eslint-disable-next-line no-param-reassign
     [array[i], array[j]] = [array[j], array[i]];
   }
-}
+};
 
 const checkCheckboxes = () => {
   const autoPronounceCheckbox = document.querySelector('.auto-pronounce-check input');
@@ -81,7 +88,7 @@ const playButtonHandler = async () => {
 const selectLevelHandler = async (event) => {
   store.level = event.target.value;
   if (JSON.parse(localStorage.getItem('isLogin'))) {
-    await dataController.setUserOptions({puzzle: store.stringifySettings()});
+    await dataController.setUserOptions({ puzzle: store.stringifySettings() });
   }
   document.querySelector('.round-select input').classList.remove('disabled');
   handleRoundsPerLevel();
@@ -90,7 +97,7 @@ const selectLevelHandler = async (event) => {
 const chooseRoundHandler = async (event) => {
   store.round = event.target.value;
   if (JSON.parse(localStorage.getItem('isLogin'))) {
-    await dataController.setUserOptions({puzzle: store.stringifySettings()});
+    await dataController.setUserOptions({ puzzle: store.stringifySettings() });
   }
 };
 
@@ -127,8 +134,13 @@ const checkBoxHandler = async (event) => {
         store.hints.isPictureOn = isChecked;
         toggleBtn(pictureBtn, isChecked);
         inputField.querySelector('.game-row').children.forEach((canvas) => {
-          setBackgroundToPuzzlePiece(canvas, canvas.dataset.sx,
-            canvas.dataset.sy, canvas.dataset.word, store.hints.isPictureOn);
+          setBackgroundToPuzzlePiece(
+            canvas,
+            canvas.dataset.sx,
+            canvas.dataset.sy,
+            canvas.dataset.word,
+            store.hints.isPictureOn,
+          );
         });
         break;
       }
@@ -149,13 +161,19 @@ const checkBoxHandler = async (event) => {
       }
     }
     if (JSON.parse(localStorage.getItem('isLogin'))) {
-      await dataController.setUserOptions({puzzle: store.stringifySettings()});
+      await dataController.setUserOptions({ puzzle: store.stringifySettings() });
     }
   }
 };
 
-
 export {
-  playButtonHandler, selectLevelHandler, chooseRoundHandler, checkBoxHandler, 
-  checkCheckboxes, handleRoundsPerLevel, getRandomInteger, shuffle, storageHandle,
+  playButtonHandler,
+  selectLevelHandler,
+  chooseRoundHandler,
+  checkBoxHandler,
+  checkCheckboxes,
+  handleRoundsPerLevel,
+  getRandomInteger,
+  shuffle,
+  storageHandle,
 };

@@ -5,7 +5,7 @@ const getGameRound = () => `Раунд ${store.level}.${store.round}`;
 const setGameRound = () => {
   const roundTitle = document.querySelector('.game-header h4');
   if (store.playUserWords) {
-    roundTitle.innerText = 'Ваши Слова'
+    roundTitle.innerText = 'Ваши Слова';
   } else {
     roundTitle.innerText = getGameRound();
   }
@@ -22,6 +22,4 @@ const setRound = () => {
   }
 };
 
-export {
-  setGameRound, getGameRound, setRound,
-};
+export { setGameRound, getGameRound, setRound };

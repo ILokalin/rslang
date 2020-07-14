@@ -16,8 +16,23 @@
   flex-direction: column;
 }
 
+.anki-btn {
+  margin-bottom: 20px;
+}
+
 .slider-container {
-  width: 100%;
+  width: 90vw;
+  height: 55vw!important;
+}
+
+.slides {
+  width: 90vw;
+  height: 50vw!important;
+}
+
+.slider .indicators {
+  position: static; 
+  margin: 20px;
 }
 
 .description {

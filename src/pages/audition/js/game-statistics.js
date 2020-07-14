@@ -2,9 +2,10 @@ import { DataController } from 'Service/DataController';
 import { gameContainer } from './constants';
 
 export default class AuditionGameStatistics {
-  constructor(words, user, startNewGame) {
+  constructor(words, rounds, user, startNewGame) {
     this.dataController = new DataController();
     this.gameWords = words;
+    this.roundsNumber = rounds;
     // eslint-disable-next-line no-unused-expressions
     this.resultMessage;
     this.user = user;
@@ -15,7 +16,7 @@ export default class AuditionGameStatistics {
   getGameStatistics() {
     const answeredWords = this.gameWords.filter((word) => word.answer);
     const errorWords = this.gameWords.filter((word) => !word.answer);
-    const points = (answeredWords.length / 10) * 100;
+    const points = (answeredWords.length / this.roundsNumber) * 100;
     if (this.user) {
       this.saveGameStatistic(points, answeredWords, errorWords);
     } else {
