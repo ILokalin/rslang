@@ -92,6 +92,8 @@ export class DataController {
       if (this.isAuthInProgress) {
         if (userData.statusRegister) {
           this.authChainResponsibility = this.chainCreateSignInSettingsGet;
+        } else {
+          this.authChainResponsibility = this.chainSignInSettingsGet;
         }
         this.authChainResponsibility(userData);
       }
@@ -182,12 +184,12 @@ export class DataController {
         apiUserSettingsGet().then(
           (userSettings) => resolve(this.unpackUserSettings(userSettings.optional)),
           () => {
-            this.authChainResponsibility = this.chainSignInSettingsGet;
+            // this.authChainResponsibility = this.chainSignInSettingsGet;
             openAuthPopup();
           },
         );
       } else {
-        this.authChainResponsibility = this.chainSignInSettingsGet;
+        // this.authChainResponsibility = this.chainSignInSettingsGet;
         openAuthPopup();
       }
     });
