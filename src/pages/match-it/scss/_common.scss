@@ -10,7 +10,9 @@ body {
 .bg {
   background-image: url(./assets/img/bg-climb.png);
   background-size: cover;
-  background-position: center;
+  background-position: center, top;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
 }
 
 .main {
