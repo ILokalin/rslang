@@ -117,22 +117,7 @@ describe('Helpers tests', () => {
     ).toBe(6);
   });
 
-  test('The findTopStatistics insert better results in middle array', () => {
-    expect(
-      dataController.findTopStatistics([{ result: 50 }, { result: 25 }], { result: 30 })[1].result,
-    ).toBe(30);
-  });
-
-  test('The findTopStatistics cut top list of 5 positions ', () => {
-    expect(
-      dataController.findTopStatistics(
-        [{ result: 50 }, { result: 25 }, { result: 10 }, { result: 6 }, { result: 4 }],
-        { result: 30 },
-      ).length,
-    ).toBe(5);
-  });
-
-  test('Cards statistics has aggregating on days', () => {
+  test('Cards statistics has replaced on days', () => {
     const originStatOptionalCard = {
       longTime: [
         ['02-Jul-2020', 40],
@@ -163,8 +148,8 @@ describe('Helpers tests', () => {
       ],
       shortTime: {
         date: '04-Jul-2020',
-        totalCards: 6,
-        wrightAnswers: 5,
+        totalCards: 5,
+        wrightAnswers: 4,
         newWords: 2,
         chain: 1,
         longestChain: 3,
@@ -175,6 +160,81 @@ describe('Helpers tests', () => {
     expect(
       dataController.cardStatisticsAggregate(originStatOptionalCard, shortTimeStat, today),
     ).toEqual(checkStat);
+  });
+
+    test('Cards statistics aggregated one day statistics', () => {
+    const originStatOptionalCard = {
+      longTime: [
+        ['02-Jul-2020', 40],
+        ['03-Jul-2020', 40],
+      ],
+      shortTime: {
+        date: '04-Jul-2020',
+        totalCards: 1,
+        wrightAnswers: 1,
+        newWords: 5,
+        chain: 1,
+        longestChain: 1,
+      },
+    };
+
+    const shortTimeStat = {
+      totalCards: 5,
+      wrightAnswers: 4,
+      newWords: 2,
+      chain: 1,
+      longestChain: 3,
+    };
+
+    const checkStat = {
+      longTime: [
+        ['02-Jul-2020', 40],
+        ['03-Jul-2020', 40],
+        ['04-Jul-2020', 5],
+      ],
+      shortTime: {
+        date: '05-Jul-2020',
+        totalCards: 5,
+        wrightAnswers: 4,
+        newWords: 2,
+        chain: 1,
+        longestChain: 3,
+      },
+    };
+
+    const today = moment(new Date('07-05-20')).format('DD-MMM-YYYY');
+    expect(
+      dataController.cardStatisticsAggregate(originStatOptionalCard, shortTimeStat, today),
+    ).toEqual(checkStat);
+  });
+
+  test('Day statistics move to long time list if new date', () => {
+    const originStatistics = {
+      learnedWords: 10,
+      optional: {
+        card:
+          '{"longTime":[["03-Jul-2020",20],["04-Jul-2020",15],["05-Jul-2020",35],["06-Jul-2020",3],["07-Jul-2020",2],["08-Jul-2020",6],["09-Jul-2020",2],["10-Jul-2020",1],["11-Jul-2020",10],["12-Jul-2020",0],["13-Jul-2020",10]],"shortTime":{"totalCards":1,"wrightAnswers":1,"newWords":5,"chain":1,"longestChain":1,"date":"14-Jul-2020"}}',
+      },
+    };
+
+    const uploadStatistics = {
+      card: {
+        totalCards: 5,
+        wrightAnswers: 4,
+        newWords: 2,
+        chain: 1,
+        longestChain: 3,
+      },
+    };
+
+    const testResult = {
+      optional: {
+        card: "{\"longTime\":[[\"03-Jul-2020\",20],[\"04-Jul-2020\",15],[\"05-Jul-2020\",35],[\"06-Jul-2020\",3],[\"07-Jul-2020\",2],[\"08-Jul-2020\",6],[\"09-Jul-2020\",2],[\"10-Jul-2020\",1],[\"11-Jul-2020\",10],[\"12-Jul-2020\",0],[\"13-Jul-2020\",10],[\"14-Jul-2020\",5]],\"shortTime\":{\"totalCards\":5,\"wrightAnswers\":4,\"newWords\":2,\"chain\":1,\"longestChain\":3,\"date\":\"15-Jul-2020\"}}",
+      },
+      learnedWords: 109
+    }
+
+    expect(dataController.prepareUploadStatistics(originStatistics, uploadStatistics)).toEqual(testResult);
   });
 
   test('Cards statistics create new short stat with clear original', () => {
