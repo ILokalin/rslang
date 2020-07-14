@@ -162,7 +162,7 @@ describe('Helpers tests', () => {
     ).toEqual(checkStat);
   });
 
-    test('Cards statistics aggregated one day statistics', () => {
+  test('Cards statistics aggregated one day statistics', () => {
     const originStatOptionalCard = {
       longTime: [
         ['02-Jul-2020', 40],
@@ -229,12 +229,15 @@ describe('Helpers tests', () => {
 
     const testResult = {
       optional: {
-        card: "{\"longTime\":[[\"03-Jul-2020\",20],[\"04-Jul-2020\",15],[\"05-Jul-2020\",35],[\"06-Jul-2020\",3],[\"07-Jul-2020\",2],[\"08-Jul-2020\",6],[\"09-Jul-2020\",2],[\"10-Jul-2020\",1],[\"11-Jul-2020\",10],[\"12-Jul-2020\",0],[\"13-Jul-2020\",10],[\"14-Jul-2020\",5]],\"shortTime\":{\"totalCards\":5,\"wrightAnswers\":4,\"newWords\":2,\"chain\":1,\"longestChain\":3,\"date\":\"15-Jul-2020\"}}",
+        card:
+          '{"longTime":[["03-Jul-2020",20],["04-Jul-2020",15],["05-Jul-2020",35],["06-Jul-2020",3],["07-Jul-2020",2],["08-Jul-2020",6],["09-Jul-2020",2],["10-Jul-2020",1],["11-Jul-2020",10],["12-Jul-2020",0],["13-Jul-2020",10],["14-Jul-2020",5]],"shortTime":{"totalCards":5,"wrightAnswers":4,"newWords":2,"chain":1,"longestChain":3,"date":"15-Jul-2020"}}',
       },
-      learnedWords: 109
-    }
+      learnedWords: 109,
+    };
 
-    expect(dataController.prepareUploadStatistics(originStatistics, uploadStatistics)).toEqual(testResult);
+    expect(dataController.prepareUploadStatistics(originStatistics, uploadStatistics)).toEqual(
+      testResult,
+    );
   });
 
   test('Cards statistics create new short stat with clear original', () => {
