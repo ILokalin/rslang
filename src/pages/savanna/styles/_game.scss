@@ -76,8 +76,9 @@
   fill: black;
 }
 .answer-options__item {
-  max-height: 37px;
+  max-height: 40px;
   margin: 0px 20px;
+  padding: 0px 4px 10px 5px;
   @media screen and (max-width: 768px) {
     margin: 20px 0px;
   }
