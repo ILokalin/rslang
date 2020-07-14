@@ -51,7 +51,6 @@ const config = {
     'speak-it': PATH.source + '/pages/speak-it/index.js',
     'match-it': PATH.source + '/pages/match-it/index.js',
     'sprint':   PATH.source + '/pages/sprint/index.js',
-    'server-demo': PATH.source + '/pages/serverDemo/index.js',
   },
   output: {
     path: PATH.dist,
@@ -184,11 +183,6 @@ const config = {
       template: PATH.source + '/pages/sprint/index.html',
       chunks: ['sprint'],
       filename: 'sprint/index.html',
-    }),
-    new HtmlWebPackPlugin({
-      template: PATH.source + '/pages/serverDemo/index.html',
-      chunks: ['server-demo'],
-      filename: 'server-demo/index.html',
     }),
     new HtmlWebPackPlugin({
       template: PATH.source + '/pages/learning/index.html',
