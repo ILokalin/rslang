@@ -11,7 +11,7 @@ export const messageReportForm = {
           className: 'header',
           children: [
             {
-              tag: 'h2',
+              tag: 'h3',
               className: 'title',
               isAccess: 'title',
             },
@@ -24,6 +24,7 @@ export const messageReportForm = {
         },
         {
           tag: 'div',
+          className: 'buttons-wrapper',
           children: [
             {
               tag: 'button',

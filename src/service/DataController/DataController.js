@@ -37,6 +37,7 @@ export class DataController {
   constructor() {
     this.beforeUnloadProcess = this.beforeUnloadProcess.bind(this);
     this.storageHandle = this.storageHandle.bind(this);
+    this.restartPage = this.restartPage.bind(this);
 
     authPopup.init();
     messageReport.init();
@@ -129,7 +130,18 @@ export class DataController {
   }
 
   userWordsGetAll(groupWords) {
-    return apiUserAggregatedWords(groupWords);
+    return apiUserAggregatedWords(groupWords).then(
+      (responseData) => responseData,
+      (rejectReport) => {
+        openMessageReport({
+          title: 'Сбой при чтении слов пользователя.',
+          message: `Ответ сервера: ${
+            reportMessages[rejectReport.master][rejectReport.code] ?? rejectReport.message
+          }. Необходимо перезагрузить приложение.`,
+          okCallback: this.restartPage,
+        });
+      },
+    );
   }
 
   userWordsGet(wordId) {
@@ -144,7 +156,18 @@ export class DataController {
         progress,
       },
     };
-    return apiUserWordsSave(id, sendWordData, 'PUT');
+    return apiUserWordsSave(id, sendWordData, 'PUT').then(
+      (responseData) => responseData,
+      (rejectReport) => {
+        openMessageReport({
+          title: 'Сбой при записи слов пользователя.',
+          message: `Ответ сервера: ${
+            reportMessages[rejectReport.master][rejectReport.code] ?? rejectReport.message
+          }. Необходимо перезагрузить приложение.`,
+          okCallback: this.restartPage,
+        });
+      },
+    );
   }
 
   userWordsPost({ status = 'onlearn', id, progress = 0 }) {
@@ -155,7 +178,18 @@ export class DataController {
         progress,
       },
     };
-    return apiUserWordsSave(id, sendWordData, 'POST');
+    return apiUserWordsSave(id, sendWordData, 'POST').then(
+      (responseData) => responseData,
+      (rejectReport) => {
+        openMessageReport({
+          title: 'Сбой при записи слов пользователя.',
+          message: `Ответ сервера: ${
+            reportMessages[rejectReport.master][rejectReport.code] ?? rejectReport.message
+          }. Необходимо перезагрузить приложение.`,
+          okCallback: this.restartPage,
+        });
+      },
+    );
   }
 
   getMaterials(file) {
@@ -184,12 +218,10 @@ export class DataController {
         apiUserSettingsGet().then(
           (userSettings) => resolve(this.unpackUserSettings(userSettings.optional)),
           () => {
-            // this.authChainResponsibility = this.chainSignInSettingsGet;
             openAuthPopup();
           },
         );
       } else {
-        // this.authChainResponsibility = this.chainSignInSettingsGet;
         openAuthPopup();
       }
     });
@@ -258,7 +290,15 @@ export class DataController {
           (userStatistics) => {
             resolve(this.orderingStatResult(userStatistics));
           },
-          (rejectReport) => reject(rejectReport),
+          (rejectReport) => {
+            openMessageReport({
+              title: 'Сбой при чтении статистики.',
+              message: `Ответ сервера: ${
+                reportMessages[rejectReport.master][rejectReport.code] ?? rejectReport.message
+              }. Необходимо перезагрузить приложение.`,
+              okCallback: this.restartPage,
+            });
+          },
         );
       } else {
         openMessageReport({

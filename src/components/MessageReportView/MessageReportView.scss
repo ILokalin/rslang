@@ -1,5 +1,6 @@
 .report {
   --color-bg-overley: #3337;
+  --color-bg-form: white;
 
   display: flex;
   position: fixed;
@@ -12,7 +13,20 @@
   background-color: var(--color-bg-overley);
 
   &__form {
-    width: 50%;
     margin: 0 auto;
+    border-radius: 5px;
+    background-color: var(--color-bg-form);
+    padding: 30px;
+    width: 50%;
+    min-width: 720px;
+  }
+
+  &__header {
+    margin: 0 auto;
+  }
+
+  &__buttons-wrapper {
+    display: flex;
+    justify-content: flex-end;
   }
 }
