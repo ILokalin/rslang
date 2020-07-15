@@ -116,10 +116,15 @@ export default class Game {
     repeatOption.disabled = true;
     helper.renderUserName(data);
     helper.renderRepeatDontWork();
+    helper.renderCurrentRoundInOption(this.round);
   }
 
   changeRound(event) {
     this.round = +event.target.value - 1;
+    if (this.round > 29) {
+      this.round = 29;
+    }
+    helper.renderCurrentRoundInOption(this.round);
     this.createNewWords();
   }
 
@@ -287,6 +292,7 @@ export default class Game {
     if (!this.repeat) {
       if (this.round === 29) {
         this.level += 1;
+        this.round += 1;
         this.showStat(true);
       } else {
         this.round += 1;
@@ -445,7 +451,7 @@ export default class Game {
     if (this.level === 6) {
       this.level = 0;
     }
-    if (this.round === 29) {
+    if (this.round === 30) {
       this.round = 0;
     }
     if (this.countRepeat === 29) {
