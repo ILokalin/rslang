@@ -1,5 +1,5 @@
 import { createEvent, createStore } from 'effector';
-import { preloaderCommand } from './AppStateConst';
+import { preloaderCommand, defaultMessageReport } from './AppStateConst';
 
 export const openAuthPopup = createEvent();
 export const closeAuthPopup = createEvent();
@@ -21,3 +21,15 @@ export const closePreloader = createEvent();
 export const preloaderState = createStore(preloaderCommand.hide)
   .on(openPreloader, (_, value) => value)
   .on(closePreloader, (_, value) => value);
+
+export const openMessageReport = createEvent();
+export const closeMessageReport = createEvent();
+export const messageReportState = createStore(defaultMessageReport)
+  .on(openMessageReport, (_, value) => ({ ...value, ...{ isVisible: true } }))
+  .on(closeMessageReport, () => defaultMessageReport);
+
+export const answerFromMessageReport = createEvent();
+export const answerfromReportStore = createStore('').on(
+  answerFromMessageReport,
+  (_, answer) => answer,
+);

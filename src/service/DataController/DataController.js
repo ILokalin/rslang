@@ -1,4 +1,5 @@
 import { AuthPopup } from 'Components/AuthPopup';
+import { MessageReportView } from 'Components/MessageReportView';
 import moment from 'moment';
 import {
   openAuthPopup,
@@ -6,6 +7,9 @@ import {
   authPopupState,
   userDataStore,
   showAuthReport,
+  openMessageReport,
+  messageReportState,
+  answerfromReportStore,
 } from 'Service/AppState';
 import {
   apiGetWords,
@@ -27,15 +31,70 @@ import {
 } from './dataControllerConst';
 
 const authPopup = new AuthPopup();
+const messageReport = new MessageReportView();
 
 export class DataController {
   constructor() {
-    authPopup.init();
+    this.beforeUnloadProcess = this.beforeUnloadProcess.bind(this);
+    this.storageHandle = this.storageHandle.bind(this);
+    this.restartPage = this.restartPage.bind(this);
 
+    authPopup.init();
+    messageReport.init();
+    this.authPopupInitialize();
+    this.messageFormInitialize();
+    this.unloadInit();
+    window.addEventListener('storage', this.storageHandle);
+  }
+
+  storageHandle({ key }) {
+    if (key === 'isLogin') {
+      this.unloadIsApprove = true;
+      document.location.reload();
+    }
+  }
+
+  unloadInit() {
+    window.addEventListener('beforeunload', this.beforeUnloadProcess);
+  }
+
+  beforeUnloadProcess(event) {
+    event.preventDefault();
+    const isItGame = /[a-zA-Z]/.test(document.location.pathname);
+    const isLogin = localStorage.getItem('isLogin');
+    const isHaveUserNow = isLogin && JSON.parse(isLogin);
+    if (!this.unloadIsApprove && isHaveUserNow && isItGame) {
+      // eslint-disable-next-line no-param-reassign
+      event.returnValue = '';
+    }
+  }
+
+  messageFormInitialize() {
+    answerfromReportStore.watch((answer) => {
+      if (this.isShowErrorReport) {
+        if (answer !== '') {
+          answer();
+        }
+      }
+    });
+
+    messageReportState.watch((state) => {
+      const { isVisible } = state;
+      if (isVisible) {
+        this.isShowErrorReport = true;
+      } else {
+        this.isShowErrorReport = false;
+      }
+    });
+  }
+
+  authPopupInitialize() {
     userDataStore.watch((userData) => {
       if (this.isAuthInProgress) {
         if (userData.statusRegister) {
           this.authChainResponsibility = this.chainCreateSignInSettingsGet;
+        } else {
+          this.authChainResponsibility = this.chainSignInSettingsGet;
         }
         this.authChainResponsibility(userData);
       }
@@ -46,9 +105,15 @@ export class DataController {
         this.isAuthInProgress = true;
       } else if (this.isAuthInProgress) {
         this.isAuthInProgress = false;
+        localStorage.setItem('isLogin', false);
         this.reject(dataControllerConst.cancelUser);
       }
     });
+  }
+
+  restartPage() {
+    this.unloadIsApprove = true;
+    document.location.reload();
   }
 
   getWordMaterials(wordId) {
@@ -65,7 +130,18 @@ export class DataController {
   }
 
   userWordsGetAll(groupWords) {
-    return apiUserAggregatedWords(groupWords);
+    return apiUserAggregatedWords(groupWords).then(
+      (responseData) => responseData,
+      (rejectReport) => {
+        openMessageReport({
+          title: 'Сбой при чтении слов пользователя.',
+          message: `Ответ сервера: ${
+            reportMessages[rejectReport.master][rejectReport.code] ?? rejectReport.message
+          }. Необходимо перезагрузить приложение.`,
+          okCallback: this.restartPage,
+        });
+      },
+    );
   }
 
   userWordsGet(wordId) {
@@ -80,7 +156,18 @@ export class DataController {
         progress,
       },
     };
-    return apiUserWordsSave(id, sendWordData, 'PUT');
+    return apiUserWordsSave(id, sendWordData, 'PUT').then(
+      (responseData) => responseData,
+      (rejectReport) => {
+        openMessageReport({
+          title: 'Сбой при записи слов пользователя.',
+          message: `Ответ сервера: ${
+            reportMessages[rejectReport.master][rejectReport.code] ?? rejectReport.message
+          }. Необходимо перезагрузить приложение.`,
+          okCallback: this.restartPage,
+        });
+      },
+    );
   }
 
   userWordsPost({ status = 'onlearn', id, progress = 0 }) {
@@ -91,7 +178,18 @@ export class DataController {
         progress,
       },
     };
-    return apiUserWordsSave(id, sendWordData, 'POST');
+    return apiUserWordsSave(id, sendWordData, 'POST').then(
+      (responseData) => responseData,
+      (rejectReport) => {
+        openMessageReport({
+          title: 'Сбой при записи слов пользователя.',
+          message: `Ответ сервера: ${
+            reportMessages[rejectReport.master][rejectReport.code] ?? rejectReport.message
+          }. Необходимо перезагрузить приложение.`,
+          okCallback: this.restartPage,
+        });
+      },
+    );
   }
 
   getMaterials(file) {
@@ -120,12 +218,10 @@ export class DataController {
         apiUserSettingsGet().then(
           (userSettings) => resolve(this.unpackUserSettings(userSettings.optional)),
           () => {
-            this.authChainResponsibility = this.chainSignInSettingsGet;
             openAuthPopup();
           },
         );
       } else {
-        this.authChainResponsibility = this.chainSignInSettingsGet;
         openAuthPopup();
       }
     });
@@ -174,9 +270,12 @@ export class DataController {
             (rejectReport) => reject(rejectReport),
           );
       } else {
-        // temp cover - TODO algorithm for auth
-        // eslint-disable-next-line prefer-promise-reject-errors
-        reject({ message: 'user not defined' });
+        openMessageReport({
+          title: 'Сбой при записи статистики.',
+          message:
+            'В системе нет данных о пользователе. Нарушено хранение токена.\nНеобходимо перезагрузить приложение',
+          okCallback: this.restartPage,
+        });
       }
     });
   }
@@ -191,12 +290,23 @@ export class DataController {
           (userStatistics) => {
             resolve(this.orderingStatResult(userStatistics));
           },
-          (rejectReport) => reject(rejectReport),
+          (rejectReport) => {
+            openMessageReport({
+              title: 'Сбой при чтении статистики.',
+              message: `Ответ сервера: ${
+                reportMessages[rejectReport.master][rejectReport.code] ?? rejectReport.message
+              }. Необходимо перезагрузить приложение.`,
+              okCallback: this.restartPage,
+            });
+          },
         );
       } else {
-        // temp cover - TODO algorithm for auth
-        // eslint-disable-next-line prefer-promise-reject-errors
-        reject({ message: 'user not defined' });
+        openMessageReport({
+          title: 'Сбой при чтении статистики.',
+          message:
+            'В системе нет данных о пользователе. Нарушено хранение токена.\nНеобходимо перезагрузить приложение',
+          okCallback: this.restartPage,
+        });
       }
     });
   }
