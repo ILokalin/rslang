@@ -58,7 +58,11 @@ export default class VocabularyWord {
       const word = element;
       const lastDate = new Date(element.userWord.optional.lastDate);
       const interval = (2 * element.userWord.optional.progress + 1) * 24 * 60 * 60 * 1000;
-      const nextTime = new Date(+lastDate + interval);
+      let nextTime = new Date(+lastDate + interval);
+      const currentDate = new Date();
+      if (nextTime < currentDate) {
+        nextTime = currentDate;
+      }
       // eslint-disable-next-line no-underscore-dangle
       this.dataController
         // eslint-disable-next-line no-underscore-dangle
