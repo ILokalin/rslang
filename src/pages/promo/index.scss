@@ -1,0 +1,59 @@
+@import 'materialize-css';
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
+.page-footer {
+  padding-top: 0px !important;
+}
+
+.parallax {
+  opacity: 0.7;
+}
+
+.main-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.repo-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-direction: column;
+  h5 {
+    margin: 0.656rem 0;
+  }
+  iframe {
+    margin-top: 0.656rem;
+  }
+}
+
+.anki-btn {
+  margin-bottom: 20px;
+}
+
+.slider-container {
+  width: 90vw;
+  height: 55vw !important;
+}
+
+.slides {
+  width: 90vw;
+  height: 50vw !important;
+}
+
+.slider .indicators {
+  position: static;
+  margin: 20px;
+}
+
+.description {
+  font-size: 2rem;
+}
+
+@media only screen and (max-width: 320px) {
+  .repo-info a h5 {
+    font-size: 1.34rem;
+  }
+}

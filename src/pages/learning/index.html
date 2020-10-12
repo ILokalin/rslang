@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cards</title>
+</head>
+<body>
+  <header>
+    <a href="/index" class="home tooltipped left" data-position="bottom" data-tooltip="На главную" ><i class="medium material-icons teal-text text-lighten-2">home</i></a>
+    <ul class="toolbar right">
+      <li>
+        <a class="sound-button tooltipped" data-position="bottom" data-tooltip="Отключить звуки"><i class="medium material-icons teal-text text-lighten-2">volume_up</i></a>
+      </li>
+      <li><a class="save-settings-button tooltipped" data-position="bottom" data-tooltip="Сохранить прогресс"><i class="medium material-icons teal-text text-lighten-2">save</i></a></li>     
+      <li><a href="#" data-target="slide-out" class="sidenav-trigger tooltipped" data-position="bottom" data-tooltip="Статистика"><i class="medium material-icons teal-text text-lighten-2">insert_chart</i></a></li>      
+    </ul>    
+    <h1 class="header__title center">Карточки</h1> 
+    <ul id="slide-out" class="sidenav">
+      <li>
+        <a class="sidenav-close" href="#!">
+          <i class="small material-icons">close</i>
+          <span>Моя статистика</span>
+        </a>
+      </li>
+      <li>
+        <div class="divider"></div>
+      </li>
+      <li>
+        <div class="statistics">
+        <blockquote>
+          <ul>
+            <li>
+              <p><span class="statistics__new-words-num">0</span> новых слов</p>
+            </li>
+            <li>
+              <p><span class="statistics__correct-answers">0%</span> верных ответов</p>
+            </li>
+            <li>
+              <p><span class="statistics__total-cards">0</span> карточек</p>
+            </li>
+            <li>
+              <p><span class="statistics__correct-in-row">0</span> верных ответов подряд</p>
+            </li>
+          </ul>
+        </blockquote>
+        </div>
+      </li>
+    </ul>
+    
+  </header>
+  <main>
+    <div class="swiper-container">
+      <div class="swiper-wrapper">      
+      </div>   
+    </div>
+    <div class="progress tooltipped" data-position="bottom" data-tooltip="0%">
+        <div class="determinate" style="width: 0%"></div>
+      </div>
+      <div class="swiper-pagination"></div>
+      <!-- <div class="swiper-button-prev"></div> -->
+    <div class="swiper-button-next"></div>
+    <div class="modal modal-end">
+      <div class="modal-content">
+        <h4>Ура! На сегодня все.</h4>
+        <a class="open-short-stat btn modal-close waves-effect waves-light btn-flat">Посмотреть статистику тренировки</a>
+        <p>Есть еще новые карточки, но дневной лимит исчерпан. 
+        Вы можете увеличить лимит в настройках, но, пожалуйста, имейте ввиду, что чем больше новых карточек вы посмотрите, 
+        тем больше Вам надо будет повторять в ближайшее время. <br>
+        Настройки вы можете найти на главной странице в Меню.<br>
+        Для обучения сверх обычного расписания нажмите кнопку "Учить еще" ниже.</p>
+      </div>
+      <div class="modal-footer">
+        <a href="/index" class="modal-settings-btn modal-close waves-effect waves-green btn-flat"><i class="material-icons">home</i>Главная страница</a>
+        <a href="#!" class="modal-more-btn modal-close waves-effect waves-green btn-flat">Учить еще</a>
+      </div>
+    </div>
+    <div class="modal modal-done-for-today">
+      <div class="modal-content">
+        <h4>Сегодня вы уже тренировались</h4>
+        <p>Есть еще новые карточки, но дневной лимит исчерпан. 
+        Вы можете увеличить лимит в настройках, но, пожалуйста, имейте ввиду, что чем больше новых карточек вы посмотрите, 
+        тем больше Вам надо будет повторять в ближайшее время. <br>
+        Настройки вы можете найти на главной странице в Меню.<br>
+        Для обучения сверх обычного расписания нажмите кнопку "Учить еще" ниже.</p>
+      </div>
+      <div class="modal-footer">
+        <a href="/index" class="modal-settings-btn modal-close waves-effect waves-green btn-flat"><i class="material-icons">home</i>Главная страница</a>
+        <a href="#!" class="modal-done-more modal-close waves-effect waves-green btn-flat">Учить еще</a>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

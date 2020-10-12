@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Match It</title>
+  </head>
+  <body class="bg">
+    <nav>
+        <div class="nav-wrapper purple darken-2 z-depth-5">
+            <a href="#" data-target="slide-out" class="sidenav-trigger hidden"><i class="material-icons">menu</i></a>
+            <h1 class="brand-logo center">Match It</h1>
+            <a href="/index" class="home"><i class="medium material-icons">home</i></a>
+        </div>
+    </nav>
+
+    <main class="main">
+        <div class="intro-page">
+            <div class="intro">
+                <p class="intro-text">
+                    Match It - простая, но интересная игра, построенная на связи слов и изображений.
+                    Ты сможешь проверить, как много слов ты уже знаешь. И не только!
+                    Путем ассоциаций ты легко запомнишь более сотни самых широко употребляемых английских слов
+                    различных уровней сложности. Вперед к цели!
+                </p>
+                <a href="#" class="btn btn-large waves-effect waves-light intro-btn purple darken-2 pulse">
+                    <i class="material-icons left">art_track</i>
+                    Старт
+                </a>
+            </div>
+        </div>
+        <div class="game-page hidden">
+            <ul id="slide-out" class="sidenav">
+                <li class="avatar center blue lighten-5">
+                    <img class="avatar__img" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/20625/avatar-bg.png" alt="avatar"/>
+                    <h4 class="avatar__name"></h4>
+                </li>
+                <li>
+                    <div class="user-view">Опции игры</div>
+                </li>
+                <li>
+                    <div class="divider"></div>
+                </li>
+                <li><a class="subheader">Сложность</a></li>
+                <li>
+                    <div class="level-select input-field col s12">
+                        <select>
+                            <option value="0">Ваши слова</option>
+                            <option value="1" selected>Уровень 1</option>
+                            <option value="2">Уровень 2</option>
+                            <option value="3">Уровень 3</option>
+                            <option value="4">Уровень 4</option>
+                            <option value="5">Уровень 5</option>
+                            <option value="6">Уровень 6</option>
+                        </select>
+                    </div>
+                </li>
+                <li>
+                    <div class="round-select input-field col s6">
+                        <input class="disabled validate" placeholder="Выберите раунд" min="1" max="66" type="number">
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="container cards hidden">
+            <div class="res">
+                <h4 class="round-label hidden">Раунд 1.1</h4>
+                <h4 class="score hidden">Совпадений: <span>0</span></h4>
+            </div>
+            <div class="row">
+                <div class="container__words col l5 s6 m4 droptarget">
+                </div>
+                <div class="container__cards col l7 s6 m8">
+                </div>
+            </div>
+            <div class="btns">
+                <a href="#" class="btn btn-large restart waves-effect waves-light">Начать снова</a>
+                <a href="#" class="btn btn-large waves-effect waves-light result">Проверить</a>
+            </div>
+        </div>
+    </main>
+    <div class="game-results hidden">
+        <table class="results-container responsive-table">
+            <tr><td><p class="errors">
+                Ошибок
+                <span class="errors-num">9</span>
+            </p>
+                <div class="errors-item"></div>
+                <p class="success">
+                    Знаю
+                    <span class="success-num">0</span>
+                </p>
+                <div class="success-item"></div>
+                <div class="btns btns-res">
+                    <a href="#" class="btn waves-effect waves-light return">Вернуться</a>
+                    <a href="#" class="btn waves-effect waves-light next">Следующий раунд</a>
+                </div>
+            </tr>
+        </table>
+    </div>
+    <div id="modal-error" class="modal">
+        <div class="modal-content">
+            <h4>Упс!</h4>
+            <p class="error-text"></p>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Ок</a>
+        </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,78 @@
+{
+  "name": "rslang",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "browserslist": [
+    "> 0.25%, not dead"
+  ],
+  "scripts": {
+    "start": "webpack-dev-server --history-api-fallback --inline --open",
+    "build": "npm run clear -s && webpack --progress",
+    "lint": "eslint ./src",
+    "lint:fix": "eslint ./src --fix",
+    "clear": "del-cli dist",
+    "test": "jest",
+    "prettier": "prettier --write src/**/*.js"
+  },
+  "author": "Group 22 RS School 2020q1",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "jest": {
+    "moduleDirectories": [
+      "node_modules"
+    ],
+    "moduleNameMapper": {
+      "^Components(.*)$": "<rootDir>/src/components$1",
+      "^Service(.*)$": "<rootDir>/src/service$1"
+    }
+  },
+  "devDependencies": {
+    "@babel/core": "^7.6.0",
+    "@babel/preset-env": "^7.6.0",
+    "autoprefixer": "^9.6.1",
+    "babel-eslint": "^10.1.0",
+    "babel-loader": "^8.0.6",
+    "copy-webpack-plugin": "^5.0.5",
+    "css-loader": "^3.2.0",
+    "css-mqpacker": "^7.0.0",
+    "cssnano": "^4.1.10",
+    "del-cli": "^3.0.0",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb": "^18.1.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-config-prettier": "^6.5.0",
+    "eslint-loader": "^3.0.2",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-prettier": "^3.1.3",
+    "file-loader": "^4.2.0",
+    "html-loader": "^0.5.5",
+    "html-webpack-plugin": "^3.2.0",
+    "image-webpack-loader": "^6.0.0",
+    "jest": "^26.0.1",
+    "mini-css-extract-plugin": "^0.8.0",
+    "node-sass": "^4.13.0",
+    "postcss-loader": "^3.0.0",
+    "prettier": "2.0.5",
+    "sass-loader": "^8.0.0",
+    "style-loader": "^1.0.0",
+    "uglifyjs-webpack-plugin": "^2.2.0",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.9",
+    "webpack-dev-server": "^3.8.2"
+  },
+  "dependencies": {
+    "chart.js": "^2.9.3",
+    "core-js": "^3.4.7",
+    "effector": "^20.17.0",
+    "jquery": "^3.5.0",
+    "materialize-css": "^1.0.0-rc.2",
+    "moment": "^2.27.0",
+    "node-fetch": "^2.6.0",
+    "normalize.css": "^8.0.1",
+    "swiper": "^5.4.5"
+  }
+}

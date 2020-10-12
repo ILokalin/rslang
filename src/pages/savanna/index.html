@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Savanna</title>
+</head>
+
+<body>
+  <nav>
+    <div class="nav-wrapper brown z-depth-5">
+      <h1 class="brand-logo center">Savanna</h1>
+      <a href="/index" class="home"><i class="medium material-icons">home</i></a>
+    </div>
+  </nav>
+
+
+  <main class="main">
+    <div class="intro">
+      <p class="intro-text">
+        Привет! В этой игре нужно угадать перевод слова.
+        Ты можешь сделать это с помощью мышки или клавиатуры.
+      </p>
+      <p class="intro-text">
+        По умолчанию мы повторяем выученные слова. Включить изучение новых слов ты можешь в меню
+        слева.
+        Для успешного окончания игры надо угадать максимум 30 слов. При повторении их может быть меньше, но не меньше
+        10.
+      </p>
+      <ul id="slide-out" class="sidenav">
+        <li>
+          <div class="avatar center blue lighten-5">
+            <img class="avatar__img" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/20625/avatar-bg.png" />
+            <h4 class="avatar__name"></h4>
+          </div>
+        </li>
+        <li>
+          <div class="user-view"> Выберите настройки игры </div>
+        </li>
+        <li>
+          <div class="divider"></div>
+        </li>
+        <li><a class="subheader">Сложность</a></li>
+        <li>
+          <div class="game-option level input-field col s12">
+            <select class="level">
+              <option value="1">Уровень 1</option>
+              <option value="2">Уровень 2</option>
+              <option value="3">Уровень 3</option>
+              <option value="4">Уровень 4</option>
+              <option value="5">Уровень 5</option>
+              <option value="6">Уровень 6</option>
+            </select>
+          </div>
+        </li>
+        <li>
+          <div class="game-option input-field col s6">
+            <input class="round" placeholder="Choose round" min="1" max="30" type="number">
+          </div>
+        </li>
+        <li>
+          <label class="is-repeat">
+            <input class="repeat" type="checkbox" class="filled-in" />
+            <span>Повторение слов</span>
+          </label>
+        </li>
+      </ul>
+      <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+      <a href="#" class="btn btn-large waves-effect waves-light intro-btn brown lighten-1 startGame">
+        <i class="material-icons right">videogame_asset</i>
+        Играть!
+      </a>
+    </div>
+
+
+    <div class="game-container hidden">
+      <div class="game-header">
+        <h4 class="stage"></h4>
+        <ul class="game-info-settings">
+          <li class="healt-bar">
+          </li>
+          <li>
+            <button class="hint-btn pronounce-btn col s1 btn waves-effect waves-light brown lighten-1 sound-switcher"
+              name="action">
+              <i class="material-icons sound-icon">music_note</i>
+            </button>
+          </li>
+        </ul>
+      </div>
+      <div class="game-field">
+        <div class="falling-word">
+          <p class="falling-word__item text-answer"></p>
+        </div>
+        <div class="answer-options">
+          <div class="answer-options__item text"></div>
+          <div class="answer-options__item text"></div>
+          <div class="answer-options__item text"></div>
+          <div class="answer-options__item text"></div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="statistic hidden">
+      <div class="statistic-container">
+        <div class="result-title">Результат</div>
+        <div class="answers-invalid">
+          <div class="answers-invalid-title"><span>ОШИБОК:</span> 2</div>
+          <div class="answers-invalid-items"></div>
+        </div>
+        <div class="answer-line"></div>
+        <div class="answers-valid">
+          <div class="answers-valid-title"><span>ЗНАЮ:</span> 2</div>
+        </div>
+        <div class="answers-valid-items"></div>
+        <div class="btns btns-res">
+          <a href="#" class="btn  brown lighten-1  restart">
+            <i class="material-icons right">videogame_asset</i>В меню
+          </a>
+          <a href="#" class="btn  brown lighten-1  next-round">
+            <i class="material-icons right">videogame_asset</i>Продолжить
+          </a>
+        </div>
+      </div>
+    </div>
+
+
+  </main>
+
+  <audio class="audio" src="" autoplay></audio>
+
+  <div class="popup-error hidden">
+    <div class="popup-error-container">
+      <div class="popup-error-title">Ошибка!</div>
+      <div class="popup-error-description">
+        Не получилось получить данные с сервера.
+        Попробуйте повторить через некоторое время.
+      </div>
+      <div class="btns btns-popup-error">
+        <a href="/index" class="btn-small brown lighten-1  back-to-home">
+          Главное меню
+        </a>
+        <a href="#" class="btn-small  brown lighten-1  refresh">
+          Обновить
+        </a>
+      </div>
+    </div>
+  </div>
+
+</body>
+
+</html>

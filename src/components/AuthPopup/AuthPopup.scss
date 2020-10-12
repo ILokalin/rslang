@@ -1,0 +1,102 @@
+@import "materialize-css";
+
+.auth-popup {
+  display: flex;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  align-items: center;
+  z-index: 1000;
+  background-color: #3337;
+
+  &__authorization {
+    margin: 0 auto;
+    width: 50%;
+    min-width: 720px;
+  }
+
+  & .card-panel {
+    border-radius: 5px;
+  }
+
+  & .input-wrapper {
+    padding: 0 20px;
+  }
+
+  &__line {
+    margin: 0 auto;
+  }
+
+  & .input-field .validate {
+    padding-left: 5px;
+  }
+
+  &__entry-wrapper {
+    display: flex;
+    justify-content: space-between;
+
+    & p {
+      margin: 0;
+    }
+  }
+
+  & .buttons-wrapper {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__buttons-wrapper {
+    display: flex;
+  }
+
+  &__button {
+    &.cancel-btn.col.m6 {
+      margin-left: 5px;
+    }
+
+    &--link {
+      margin: 0;
+      border: none;
+      background: none;
+      cursor: pointer;
+      padding: 0;
+      text-decoration: underline;
+    }
+  }
+
+  &__info-message {
+    opacity: 0.5;
+    transition: 0.5s;
+    font-size: 12px;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  @media (max-width: 780px) {
+    &__authorization {
+      min-width: 90%;
+    }
+  }
+
+  @media (max-width: 600px) {
+    &__title {
+      font-size: xx-large;
+    }
+
+    &__buttons-wrapper {
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    &__button {
+      &.cancel-btn.col.m6 {
+        margin-top: 5px;
+        margin-left: 0;
+      }
+    }
+  }
+}

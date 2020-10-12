@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/x-icon" href="./assets/icons/favicon.ico">
+    <title>English puzzle</title>
+</head>
+<body>
+    <nav>
+        <div class="nav-wrapper z-depth-5">
+            <a class="brand-logo center">English puzzle</a>
+            <a href="/index" class="home-btn right"><i class="material-icons">home</i></a>
+        </div>
+    </nav>   
+    <main>
+        <div class="home-page">
+            <p class='home-page__desc'> Привет! Попробуй завершить 6 уровней игры в пазл или тренируй слова из своего словаря! Каждый пазл содержит 10 английских продложений, которые Вам предстоит собрать по кусочкам. Есть три типа подсказок: произношение, картинка и перевод. В конце вы увидите мировой шедевр живописи.
+                Поехали! </p>            
+            <a class="home-page__btn btn-large waves-effect waves-light red lighten-2 pulse"><i class="material-icons">extension</i> Играть!</a>
+        </div>         
+        <div class="game-page hidden">
+            <ul id="slide-out" class="sidenav">
+                <li>
+                    <div class="avatar center blue lighten-5">
+                        <img class="avatar__img" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/20625/avatar-bg.png" />
+                        <h5 class="avatar__name">CAPTAIN ANONIMUS</h5>
+                    </div>
+                </li>
+                <li>
+                    <div class="user-view"> Опции игры </div>
+                </li>                
+                <li>
+                    <div class="divider"></div>
+                </li>
+                <li><a class="subheader">Сложность</a></li>                
+                <li>
+                    <div class="level-select input-field col s12">
+                        <select>
+                            <option value="1" selected>Уровень 1</option>
+                            <option value="2">Уровень 2</option>
+                            <option value="3">Уровень 3</option>
+                            <option value="4">Уровень 4</option>
+                            <option value="5">Уровень 5</option>
+                            <option value="6">Уровень 6</option>
+                        </select>
+                    </div>
+                </li>
+                <li>                 
+                <div class="round-select input-field col s6">
+                    <input class = "disabled" placeholder="Выберите раунд" min="1"  type="number" class="validate">
+                </div>
+                </li>
+                <li>
+                    <div class="divider"></div>
+                </li>
+                <li>
+                    <label>
+                        <input class="user-words-checkbox" type="checkbox" />
+                        <span>Тренировать мои слова</span>
+                    </label>
+                </li>
+                <li>
+                    <div class="divider"></div>
+                </li>
+                <li><a class="subheader">Подсказки</a></li>
+                <li>
+                    <ul class="hints">
+                        <li>
+                            <label>
+                                <input class="translate-checkbox" type="checkbox" />
+                                <span>Перевод</span>
+                            </label>
+                        </li>
+                        <li>
+                            <label>
+                                <input class="pronounce-checkbox" type="checkbox" />
+                                <span>Произношение</span>
+                            </label>
+                        </li>
+                        <li>
+                            <label>
+                                <input class="picture-checkbox" type="checkbox" />
+                                <span>Картинка</span>
+                            </label>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+            <div class="game-header">
+                <h4>Round 1.1</h4>
+                <ul class="hints-panel">
+                    <li>
+                        <label class="auto-pronounce-check col s1">
+                            <input type="checkbox" />
+                            <span>Автопроизношение</span>
+                        </label>
+                    </li>
+                    <li>
+                        <button class="hint-btn translate-btn col s1 btn waves-effect waves-light red lighten-2 disabled" name="action">
+                            <i class="material-icons">translate</i>
+                        </button>
+                    </li>
+                    <li>
+                        <button class="hint-btn pronounce-btn col s1 btn waves-effect waves-light red lighten-2 disabled" name="action">
+                            <i class="material-icons">music_note</i>
+                        </button>
+                    </li>
+                    <li>
+                        <button class="hint-btn picture-btn col s1 btn waves-effect waves-light red lighten-2 disabled" name="action">
+                            <i class="material-icons">photo</i>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+            <div class="game-container">  
+                <div class="translation-container">
+                    <p class="sentence-translation right"></p>
+                </div>      
+                
+                <div class="game-result">
+                    <ul>
+                        <li class="game-row"></li>
+                        <li class="game-row"></li>
+                        <li class="game-row"></li>
+                        <li class="game-row"></li>
+                        <li class="game-row"></li>
+                        <li class="game-row"></li>
+                        <li class="game-row"></li>
+                        <li class="game-row"></li>
+                        <li class="game-row"></li>
+                        <li class="game-row"></li>
+                    </ul>
+                    <img class="painting"  alt="painting">
+                </div>
+                <div class="game-input">
+                    <div class="game-row"></div>
+                    <div class="painting-info center hidden"></div>
+                </div>
+                <div class="game-footer">
+                    <ul class="footer-buttons">
+                        <li>
+                            <button class="dontknow-btn footer-btn btn waves-effect waves-light red lighten-2 " name="action">
+                                Я не знаю
+                            </button>
+                        </li>                       
+                        <li>
+                            <button class="check-btn footer-btn btn waves-effect waves-light red lighten-2 hidden" name="action">
+                                Проверить
+                            </button>
+                        </li>
+                        <li>
+                            <button class="continue-btn footer-btn btn waves-effect waves-light red lighten-2 hidden" name="action">
+                                Продолжить
+                            </button>
+                        </li>
+                        <li>
+                            <button class="results-btn footer-btn btn waves-effect waves-light red lighten-2 hidden" name="action">
+                                Результат
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </div>      
+        </div>
+        <div class="round-statistics-page hidden">
+            <div class="miniature-container center">
+                <a class="link-to-painting" href=""  target="_blank">
+                    <img class="miniature-painting"  alt="miniature-painting">
+                </a>
+                <div class="miniature-painting-info center-align"></div>
+            </div>
+         
+                <p class="round-statistics-dontknow center-align">Ошибки<span class="round-statistics-dontknow-number left badge red"></span></p> 
+                <table class="responsive-table centered dontknow-table">
+                    <tbody></tbody>
+                </table>          
+           
+                <p class="round-statistics-know center-align">Я знаю<span class="round-statistics-know-number left badge green"></span></p>
+                <table class="responsive-table centered know-table">
+                    <tbody></tbody>                
+                </table> 
+                <footer>
+                    <ul class="round-statistics-buttons">
+                        <li>
+                            <button class="round-statistic-continue-btn footer-btn btn waves-effect waves-light red lighten-2" name="action">
+                                Продолжить
+                            </button>
+                        </li>
+                        <li>
+                            <button class="statistic-btn footer-btn btn waves-effect waves-light red lighten-2" name="action">
+                                Статистика
+                            </button>
+                        </li>
+                    </ul>
+                </footer>    
+        </div>
+        <div class="full-stat-page white hidden">
+            <h4 class="center">Statistic</h4>
+            <table class="responsive-table centered">
+                <thead>
+                    <tr>
+                        <th>Раунд</th>
+                        <th>Дата</th>
+                        <th>Я знаю</th>
+                        <th>Ошибки</th>
+                    </tr>
+                </thead>
+                <tbody>               
+                    
+
+                </tbody>
+            </table>
+            <button class="full-statistic-continue-btn btn waves-effect waves-light red lighten-2 right" name="action">
+                Продолжить
+            </button>
+        </div>
+        <audio src=""></audio>
+    </main>
+    <div id="modal1" class="modal">
+        <div class="modal-content">
+            <h4>Ooops!</h4>
+            <p class="error-text"></p>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Ok</a>
+        </div>
+    </div>
+</body>
+</html>
